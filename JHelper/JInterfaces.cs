@@ -33,4 +33,20 @@ namespace JReact
         void Subscribe(JGenericDelegate<T> action);
         void UnSubscribe(JGenericDelegate<T> action);
     }
+    
+    public interface iTrackable
+    {
+        bool IsTracking { get; }
+        void StartTracking();
+        void StopTracking();
+    }
+    
+    //the interface to identify a task
+    public interface iTask
+    {
+        string TaskName { get; }
+        event JAction OnComplete;
+        JAction ThisTask { get; }
+        bool IsRunning { get; }
+    }
 }
