@@ -7,13 +7,15 @@ namespace JReact
     /// <summary>
     /// this is something to activate a number of views on the scene
     /// </summary>
-    public abstract class J_Mono_ViewActivator : MonoBehaviour
+    public abstract class J_Mono_ViewActor : MonoBehaviour
     {
         #region FIELDS AND PROPERTIES
+        public event JActivationDelegate OnActivation;
+        
         //the views we want to activate
         [BoxGroup("Views", true, true, -50), SerializeField, Required] private GameObject[] _views;
         //to decide if we want to start them as active
-        [BoxGroup("Views", true, true, -50), SerializeField] private bool _startsActive = false;
+        [BoxGroup("Views", true, true, -50), SerializeField] protected bool _startsActive = false;
         #endregion
 
         #region INITIALIZATION
@@ -45,6 +47,8 @@ namespace JReact
                 if (_views[i] == null) continue;
                 ActivateSpecificView(_views[i], activateView);
             }
+
+            if (OnActivation != null) OnActivation(activateView);
         }
 
         //this is used to activate a specific view

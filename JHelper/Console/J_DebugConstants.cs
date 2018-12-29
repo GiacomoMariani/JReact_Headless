@@ -16,5 +16,7 @@ namespace JReact
         public const string Debug_State = "-DebugState- ";
         //the reset tag
         public const string Debug_Reset = "-Reset- ";
+        //the scene tag
+        public const string Debug_SceneManager = "-SceneManager- ";
     }
 }
