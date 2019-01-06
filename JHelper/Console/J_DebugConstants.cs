@@ -18,5 +18,8 @@ namespace JReact
         public const string Debug_Reset = "-Reset- ";
         //the scene tag
         public const string Debug_SceneManager = "-SceneManager- ";
+        //the timer tag
+        public const string Debug_TimeProgress = "-Time- ";
+
     }
 }

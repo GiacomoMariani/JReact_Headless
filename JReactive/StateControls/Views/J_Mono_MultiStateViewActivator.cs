@@ -8,9 +8,20 @@ namespace JReact.StateControls
     /// <summary>
     /// used to change the menu based on the state
     /// </summary>
-    public class J_UiView_StateActor : J_Mono_ViewActor
+    public class J_Mono_MultiStateViewActivator : MonoBehaviour
     {
         #region VALUES AND PROPERTIES
+        //the views related to this element
+        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private J_Mono_ViewActivator _view;
+        private J_Mono_ViewActivator ThisView
+        {
+            get
+            {
+                if (_view == null) _view = GetComponent<J_Mono_ViewActivator>();
+                return _view;
+            }
+        }
+
         [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
         protected J_StateControl _mainStateControl;
 
@@ -29,20 +40,19 @@ namespace JReact.StateControls
                 //otherwise we set the value
                 _isActive = value;
                 //then we call the desired method to open or close
-                ActivateView(_isActive);
+                ThisView.ActivateView(_isActive);
             }
         }
         #endregion
 
         #region INITIALIZATION
-        //set this as requested
-        protected override void InitThis() { IsActive = _startsActive; }
+        private void Awake()
+        {
+            SanityChecks();
+        }
 
-        //main checks related to this
         protected virtual void SanityChecks()
         {
-            base.SanityChecks();
-            //check all states
             for (int i = 0; i < _validStates.Length; i++)
                 Assert.IsNotNull(_validStates[i], $"{gameObject.name} has a missing state at index {i}");
         }

@@ -7,7 +7,7 @@ namespace JReact
     /// <summary>
     /// this is something to activate a number of views on the scene
     /// </summary>
-    public abstract class J_Mono_ViewActor : MonoBehaviour
+    public class J_Mono_ViewActivator : MonoBehaviour
     {
         #region FIELDS AND PROPERTIES
         public event JActivationDelegate OnActivation;
@@ -31,7 +31,7 @@ namespace JReact
         //used to check that every element is valid
         protected virtual void SanityChecks()
         {
-            Assert.IsTrue(_views.Length > 0, string.Format("{0} requires at least one view", gameObject.name));
+            Assert.IsTrue(_views.Length > 0, $"{gameObject.name} requires at least one view");
         }
 
         //used to initialize this element
@@ -40,7 +40,7 @@ namespace JReact
 
         #region ACTIVATION
         //used to activate the views
-        protected void ActivateView(bool activateView)
+        public void ActivateView(bool activateView)
         {
             for (int i = 0; i < _views.Length; i++)
             {
