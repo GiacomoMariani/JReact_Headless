@@ -1,0 +1,62 @@
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
+
+namespace JReact
+{
+    /// <summary>
+    /// helper to create a transform
+    /// </summary>
+    [CreateAssetMenu(menuName = "Reactive/Basics/Transform Creator")]
+    public class J_TransformGenerator : ScriptableObject
+    {
+        #region FIELDS AND PROPERTIES
+        // --------------- SETUP --------------- //
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_TransformGenerator Parent;
+
+        // --------------- STATE --------------- //
+        [BoxGroup("State", true, true, 5), ReadOnly] private Transform _thisTransform;
+        public Transform ThisTransform
+        {
+            get
+            {
+                if (_thisTransform == null) _thisTransform = GenerateNewTransform();
+                return _thisTransform;
+            }
+            private set => _thisTransform = value;
+        }
+        #endregion
+
+        //creates the transform when missing
+        private Transform GenerateNewTransform()
+        {
+            // --------------- CHECKS --------------- //
+            if (!AllParentsValid()) return null; 
+            
+            // --------------- CREATION WITH NAME --------------- //
+            var transformToSpawn = new GameObject(name).transform;
+
+            // --------------- PARENTING --------------- //
+            if (Parent != null) transformToSpawn.SetParent(Parent.ThisTransform);
+
+            //COMPLETE
+            return transformToSpawn;
+        }
+
+        //used to avoid a circular parenting
+        private bool AllParentsValid()
+        {
+            var currentCheck = Parent;
+            while (currentCheck != null)
+            {
+                if (currentCheck != this)
+                {
+                    currentCheck = currentCheck.Parent;
+                    continue;
+                }
+                HelperConsole.DisplayError($"{name} has a circular parent.");
+                return false;
+            }
+            return true;
+        }
+    }
+}

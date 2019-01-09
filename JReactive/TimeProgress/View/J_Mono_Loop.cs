@@ -7,7 +7,7 @@ namespace JReact.TimeProgress
     /// <summary>
     /// sends events during a loop
     /// </summary>
-    public class J_MonoLoop : MonoBehaviour
+    public class J_Mono_Loop : MonoBehaviour
     {
         // --------------- ELEMENTS RELATED TO COUTNINT --------------- //
         [BoxGroup("Setup - Count", true, true, 0), SerializeField] private bool _startAtAwake = true;
