@@ -22,9 +22,9 @@ namespace JReact.Pool
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _disableItemInPool = true;
 
         // --------------- STATE --------------- //
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private T _firstItem;
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private bool _initializationComplete = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T _firstItem;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _initializationComplete = false;
         #endregion
 
         #region INITIALIZATION

@@ -14,7 +14,7 @@ namespace JReact
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_TransformGenerator Parent;
 
         // --------------- STATE --------------- //
-        [BoxGroup("State", true, true, 5), ReadOnly] private Transform _thisTransform;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Transform _thisTransform;
         public Transform ThisTransform
         {
             get
