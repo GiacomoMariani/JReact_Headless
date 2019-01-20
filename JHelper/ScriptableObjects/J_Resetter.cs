@@ -24,13 +24,12 @@ namespace JReact
                 if (group[i] is iResettable)
                 {
                     ((iResettable) group[i]).ResetThis();
-                    HelperConsole.DisplayMessage("Resetting object \"" + group[i], J_DebugConstants.Debug_Reset);
+                    JConsole.Log("Resetting object \"" + group[i], J_LogConstants.Reset, this);
                 }
                 else
                 {
-                    HelperConsole
-                                 .DisplayWarning("The scriptable object \"" + group[i] + "\" is marked for reset, but is not an iResettable",
-                                                 J_DebugConstants.Debug_Reset);
+                    JConsole.Warning("The scriptable object \"" + group[i] + "\" is marked for reset, but is not an iResettable",
+                                     J_LogConstants.Reset, this);
                 }
             }
         }

@@ -16,8 +16,8 @@ namespace JReact.TimeProgress
         private event JGenericDelegate<float> OnTick;
 
         [BoxGroup("Setup", true, true, 0), SerializeField, Range(0.05f, 2.5f)] private float _tickLengthInSeconds = 1.0f;
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private bool _isTicking;
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private int _objectId = -1;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isTicking;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _objectId = -1;
         #endregion
 
         #region COMMANDS
@@ -36,7 +36,7 @@ namespace JReact.TimeProgress
         public void StartCount()
         {
             //make sure everything is setup correctly and starts the counting
-            HelperConsole.DisplayMessage($"{name} starts counting", J_DebugConstants.Debug_TimeProgress);
+            JConsole.Log($"{name} starts counting", J_LogConstants.TimeProgress, this);
             SanityChecks();
             //complete the setup
             _objectId  = GetInstanceID();
@@ -48,7 +48,7 @@ namespace JReact.TimeProgress
         //stops the timer
         public void StopCount()
         {
-            HelperConsole.DisplayMessage($"{name} stops counting", J_DebugConstants.Debug_TimeProgress);
+            JConsole.Log($"{name} stops counting", J_LogConstants.TimeProgress, this);
             Timing.KillCoroutines(_objectId, JCoroutineTags.COROUTINE_TimerTag);
             _isTicking = false;
         }

@@ -17,13 +17,19 @@ namespace JReact.Collections
 
         // --------------- STATE --------------- //
         //the current processer using to process a task
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private iTask _currentProcedure;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iTask _currentProcedure;
         //the queue of processors
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private Queue<iTask> _procedureQueue = new Queue<iTask>();
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<iTask> _procedureQueue = new Queue<iTask>();
         //to check if any task is running
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] public bool IsActive { get { return _currentProcedure != null; } }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive
+        {
+            get { return _currentProcedure != null; }
+        }
         //the total task procedures
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private int TotalProcessors { get { return _procedureQueue.Count; } }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int TotalProcessors
+        {
+            get { return _procedureQueue.Count; }
+        }
         #endregion
 
         #region COMMANDS
@@ -33,12 +39,12 @@ namespace JReact.Collections
         /// <param name="taskToProcess">the task to process</param>
         public void ProcessTask(iTask taskToProcess)
         {
-            HelperConsole.DisplayMessage(string.Format("{0} task added. Current tasks: {1}", name, TotalProcessors));
+            JConsole.Log($"{name} task added. Current tasks: {TotalProcessors}", J_LogConstants.Task, this);
 
             if (TotalProcessors >= _allocatedTasks)
             {
-                HelperConsole.DisplayWarning(string.Format("{0} has too many tasks. Current {1} / Max {2}.\nAborting Task: {3}"
-                                                           , name, TotalProcessors, _allocatedTasks, taskToProcess.TaskName));
+                JConsole.Warning($"{name} has too many tasks. Current {TotalProcessors} / Max {_allocatedTasks}.\nAborting Task: {taskToProcess.TaskName}",
+                                 J_LogConstants.Task, this);
                 return;
             }
 
@@ -75,7 +81,7 @@ namespace JReact.Collections
             if (_currentProcedure != null) StopTrackingTask();
             _procedureQueue.Clear();
         }
-        
+
         //stop tracking the current task
         private void StopTrackingTask()
         {

@@ -33,7 +33,7 @@ namespace JReact
             if (int.TryParse(stringToConvert, out valueToReturn)) return valueToReturn;
 
             //otherwise send a warning and return 0
-            Debug.LogWarning(string.Format("The string '{0}' cannot be converted into integere. Returning 0.", stringToConvert));
+            Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into integer. Returning 0.");
             return 0;
         }
         #endregion
@@ -120,7 +120,7 @@ namespace JReact
         {
             foreach (var element in collection) { element.UnSubscribe(actionToPerform); }
         }
-        
+
         //reset 
         public static void ResetAll(ICollection<iResettable> collection)
         {
@@ -157,18 +157,16 @@ namespace JReact
 
             //check if we have at least a component
             Assert.IsFalse(elementSearched.Length == 0,
-                           string.Format("There is no {0} components on {1}", component, gameObjectToCheck.name));
+                           $"There is no {component} components on {gameObjectToCheck.name}");
 
             //check that we have just one component
             Assert.IsFalse(elementSearched.Length > 1,
-                           string.Format("There are too many components of {0} on {1}", component, gameObjectToCheck.name));
+                           $"There are too many components of {component} on {gameObjectToCheck.name}");
             //check that the component is of the specified class
             if (elementSearched.Length > 0)
             {
                 Assert.IsTrue(elementSearched[0].GetType() == component.GetElementType(),
-                              string.Format("The class requested is of a parent class. Weapon {0}, class found {1}, class requested {2}. Player {3}",
-                                            gameObjectToCheck, elementSearched[0].GetType(), component.GetElementType(),
-                                            gameObjectToCheck.transform.root.gameObject));
+                              $"The class requested is of a parent class. Weapon {gameObjectToCheck}, class found {elementSearched[0].GetType()}, class requested {component.GetElementType()}. Player {gameObjectToCheck.transform.root.gameObject}");
             }
         }
         #endregion
@@ -182,8 +180,7 @@ namespace JReact
         public static float GetRandomValue(this Vector2 range)
         {
             Assert.IsTrue(range.x <= range.y,
-                          string.Format("The y value of the given range needs to be higher than x. X = {0}, Y = {1}", range.x,
-                                        range.y));
+                          $"The y value of the given range needs to be higher than x. X = {range.x}, Y = {range.y}");
             return Random.Range(range.x, range.y);
         }
 
@@ -194,8 +191,7 @@ namespace JReact
         public static int RandomValue(this Vector2Int rangeInt)
         {
             Assert.IsTrue(rangeInt.x <= rangeInt.y,
-                          string.Format("The y value of the given range needs to be higher than x. X = {0}, Y = {1}", rangeInt.x,
-                                        rangeInt.y));
+                          $"The y value of the given range needs to be higher than x. X = {rangeInt.x}, Y = {rangeInt.y}");
             return UnityEngine.Random.Range(rangeInt.x, rangeInt.y);
         }
         #endregion
@@ -246,8 +242,7 @@ namespace JReact
         {
             //sanity check
             Assert.IsTrue(transparency >= 0f && transparency <= 1.0f,
-                          string.Format("The transparency to be set on {0} should be between 0 and 1. Received value: {1}",
-                                        spriteRenderer.gameObject.name, transparency));
+                          $"The transparency to be set on {spriteRenderer.gameObject.name} should be between 0 and 1. Received value: {transparency}");
             //clamp the value
             transparency = Mathf.Clamp(transparency, 0f, 1f);
             //get the color
@@ -265,8 +260,7 @@ namespace JReact
         {
             //sanity check
             Assert.IsTrue(transparency >= 0f && transparency <= 1.0f,
-                          string.Format("The transparency to be set on {0} should be between 0 and 1. Received value: {1}",
-                                        image.gameObject.name, transparency));
+                          $"The transparency to be set on {image.gameObject.name} should be between 0 and 1. Received value: {transparency}");
             //clamp the value
             transparency = Mathf.Clamp(transparency, 0f, 1f);
             //get the color

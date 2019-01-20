@@ -48,7 +48,7 @@ namespace JReact.Collections
             //make sure the element is in the list
             if (!_thisCollection.Contains(item))
             {
-                HelperConsole.DisplayWarning(String.Format("The element {0} is not in the list {1} ", item, name));
+                JConsole.Warning($"The element {item} is not in the list", J_LogConstants.Collection, this);
                 return false;
             }
 

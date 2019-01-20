@@ -56,7 +56,7 @@ namespace JReact.TimeProgress
             Assert.IsFalse(_IsActive, $"{gameObject.name} is already looping and cannot start again. Cancel command.");
             if (_IsActive) return;
 
-            HelperConsole.DisplayMessage($"Loop starts on {gameObject.name}", J_DebugConstants.Debug_TimeProgress);
+            JConsole.Log($"Loop starts on {gameObject.name}", J_LogConstants.TimeProgress, this);
             // --------------- PROGRESS SET --------------- //
             _progressEvent.SubscribeToComplete(TriggerThisLoop);
             _progressEvent.StartProgress(_intervalInSeconds);
@@ -79,7 +79,7 @@ namespace JReact.TimeProgress
             Assert.IsTrue(_IsActive, $"{gameObject.name} is not looping and cannot stop. Cancel command.");
             if (!_IsActive) return;
 
-            HelperConsole.DisplayMessage($"Loop stops on {gameObject.name}", J_DebugConstants.Debug_TimeProgress);
+            JConsole.Log($"Loop stops on {gameObject.name}", J_LogConstants.TimeProgress, this);
             // --------------- COMPLETE LOOP --------------- //
             _progressEvent.UnSubscribeToComplete(TriggerThisLoop);
             _progressEvent.StopProgress();

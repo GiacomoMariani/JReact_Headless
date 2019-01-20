@@ -16,7 +16,7 @@ namespace JReact.StateControls
         private event JAction OnExitEvent;
         
         //to check if this state is active
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private bool _isActivated;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isActivated;
         public bool IsActivated { get { return _isActivated; } private set { _isActivated = value; } }
 
         //raise event also activate the state

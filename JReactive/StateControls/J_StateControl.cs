@@ -115,8 +115,7 @@ namespace JReact.StateControls
             // --------------- AFTER INITIALIZATION --------------- //
             //confirm he initialization with the event, if anything require setup after initialization
             if (_afterInitialization != null) SendAfterInitializationEvents();
-            HelperConsole.DisplayMessage($"Initialization completed on {name} with {_validStates.Length} states.",
-                                         J_DebugConstants.Debug_State);
+            JConsole.Log($"Initialization completed on {name} with {_validStates.Length} states.", J_LogConstants.State, this);
         }
 
         // sends all the events we want to have before the initialization
@@ -147,8 +146,8 @@ namespace JReact.StateControls
             if (StateAlreadySet(stateToSet)) return;
             SetStateSanityChecks(stateToSet);
 
-            HelperConsole.DisplayMessage($"{name} from {(CurrentState != null ? CurrentState.name : "null")} to {stateToSet.name}.",
-                                         J_DebugConstants.Debug_State);
+            JConsole.Log($"{name} from {(CurrentState != null ? CurrentState.name : "null")} to {stateToSet.name}.",
+                         J_LogConstants.State, this);
 
             // --------------- COMMAND PROCESSING --------------- //
             CurrentState = stateToSet;
@@ -169,8 +168,8 @@ namespace JReact.StateControls
         {
             if (stateToSet == CurrentState)
             {
-                HelperConsole.DisplayWarning($"{name} wants to set {stateToSet.name}, but it is already the current state",
-                                             J_DebugConstants.Debug_State);
+                JConsole.Warning($"{name} wants to set {stateToSet.name}, but it is already the current state",
+                                 J_LogConstants.State, this);
                 return true;
             }
 

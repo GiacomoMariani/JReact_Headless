@@ -30,8 +30,8 @@ namespace JReact
         private Transform GenerateNewTransform()
         {
             // --------------- CHECKS --------------- //
-            if (!AllParentsValid()) return null; 
-            
+            if (!AllParentsValid()) return null;
+
             // --------------- CREATION WITH NAME --------------- //
             var transformToSpawn = new GameObject(name).transform;
 
@@ -53,9 +53,11 @@ namespace JReact
                     currentCheck = currentCheck.Parent;
                     continue;
                 }
-                HelperConsole.DisplayError($"{name} has a circular parent.");
+
+                JConsole.Error($"{name} has a circular parent.", J_LogConstants.SceneView, this);
                 return false;
             }
+
             return true;
         }
     }

@@ -40,7 +40,8 @@ namespace JReact.TimeProgress
         {
             if (_identifier != null &&
                 identifier  != null)
-                HelperConsole.DisplayWarning($"{name} has already an identifier ({_identifier.name}. Cannot set {identifier.name})");
+                JConsole.Warning($"{name} has already an identifier ({_identifier.name}. Cannot set {identifier.name})",
+                                 J_LogConstants.TimeProgress, this);
             if (_identifier == null) _identifier = identifier;
         }
 
@@ -49,7 +50,8 @@ namespace JReact.TimeProgress
         {
             if (_timer != null &&
                 timer  != null)
-                HelperConsole.DisplayWarning($"{name} has already a timer ({_timer.name}. Cannot set {timer.name})");
+                JConsole.Warning($"{name} has already a timer ({_timer.name}. Cannot set {timer.name})",
+                                 J_LogConstants.TimeProgress, this);
             if (_timer == null &&
                 timer  != null) _timer = timer;
         }
@@ -164,7 +166,7 @@ namespace JReact.TimeProgress
         public void SubscribeToStart(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressStart   += actionToSend; }
         public void UnSubscribeToStart(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressStart -= actionToSend; }
 
-        public void SubscribeToTick(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick   += actionToSend; }
+        public void SubscribeToTick(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick           += actionToSend; }
         public void UnSubscribeToProgressTick(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick -= actionToSend; }
 
         public void SubscribeToComplete(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressComplete   += actionToSend; }

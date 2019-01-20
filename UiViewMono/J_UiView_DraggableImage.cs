@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using JReact.UiView;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace JReact
+namespace JReact.UiView
 {
     /// <summary>
     /// an image that can be dragged

@@ -43,16 +43,12 @@ namespace JReact
             //STEP 1 - check if all save conditions are met
             for (int i = 0; i < _conditions.Length; i++)
             {
-                Assert.IsNotNull(_conditions[i],
-                                 string.Format("The save condition at index {0} of {1} is null", name, i));
-                if (!_conditions[i].CurrentValue)
-                {
-                    HelperConsole.DisplayMessage(string.Format("{0} - save canceled. Condition not met: {1}", name,
-                                                               _conditions[i].name));
-                    return;
-                }
+                Assert.IsNotNull(_conditions[i], $"The save condition at index {name} of {i} is null");
+                if (_conditions[i].CurrentValue) continue;
+                JConsole.Log($"{name} - save canceled. Condition not met: {_conditions[i].name}", J_LogConstants.EventTag, this);
+                return;
             }
-            
+
             //STEP 2 - if conditions are met send the event
             _unityEventToSend.Invoke();
         }

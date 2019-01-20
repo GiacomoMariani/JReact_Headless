@@ -14,7 +14,7 @@ namespace JReact.Pool.SpecialEffect
         #region FIELDS AND PROPERTIES
         public event JGenericDelegate<J_PoolItem_SpecialEffect> OnActivation;
 
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
         #endregion
 
         #region INITIALIZATION

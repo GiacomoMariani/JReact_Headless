@@ -14,7 +14,7 @@ namespace JReact.UiView
         private float _maxIntervalBetweenPress = 2.0f;
 
         //the last pressed time
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private float _lastTapTime;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private float _lastTapTime;
         #endregion
 
         #region BUTTON INTERFACE

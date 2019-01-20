@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 
-namespace JReact.StateControls
+namespace JReact
 {
     /// <summary>
     /// uses a click event to send an action

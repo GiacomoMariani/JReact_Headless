@@ -3,19 +3,21 @@
 namespace JReact
 {
     /// <summary>
-    /// this is a singleton used to debug elements in a specific way
+    /// displays a message in the console
     /// </summary>
-    public static class HelperConsole
+    public static class JConsole
     {
         #region MAIN LOGGERS
         /// <summary>
         /// this message display a message in the console
         /// </summary>
         /// <param name="message">the message to be logged</param>
-        public static void DisplayMessage(string message, string consoleTag = "")
+        /// <param name="context"> the related context</param>
+        /// <param name="consoleTag">a tag useful for console pro</param>
+        public static void Log(string message, string consoleTag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.Log(consoleTag + message);
+            Debug.Log($"{consoleTag} {message}", context);
 #endif
 #if !UNITY_EDITOR
 			Debug.Log(consoleTag + message);
@@ -26,10 +28,12 @@ namespace JReact
         /// this message display a warning in the console, it may differ based on the platform
         /// </summary>
         /// <param name="message">the message to be logged</param>
-        public static void DisplayWarning(string message, string consoleTag = "")
+        /// <param name="context"> the related context</param>
+        /// <param name="consoleTag">a tag useful for console pro</param>
+        public static void Warning(string message, string consoleTag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.LogWarning(consoleTag + message);
+            Debug.LogWarning($"{consoleTag} {message}", context);
 #endif
 #if !UNITY_EDITOR
 			Debug.LogWarning(consoleTag + message);
@@ -40,10 +44,12 @@ namespace JReact
         /// this message display an error in the console, it may differ based on the platform
         /// </summary>
         /// <param name="message">the message to be logged</param>
-        public static void DisplayError(string message)
+        /// <param name="context"> the related context</param>
+        /// <param name="consoleTag">a tag useful for console pro</param>
+        public static void Error(string message, string consoleTag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.LogError(message);
+            Debug.LogError($"{consoleTag} {message}", context);
 #endif
 #if !UNITY_EDITOR
 			Debug.LogWarning(message);
@@ -57,10 +63,10 @@ namespace JReact
         /// </summary>
         /// <param name="workOnThis">To find the class that needs this.</param>
         /// <param name="message">A comment of description.</param>
-        public static void RememberToDo(object workOnThis, string message)
+        public static void RememberToDo(string message, object workOnThis)
         {
 #if UNITY_EDITOR
-            Debug.Log(string.Format("#TO DO#\n{0} needs to be completed.\n Task: {1}", workOnThis.GetType(), message));
+            Debug.Log($"#TO DO#\n{workOnThis.GetType()} needs to be completed.\n Task: {message}");
 #endif
         }
         #endregion
@@ -70,16 +76,15 @@ namespace JReact
         /// Used to store quick reminders
         /// </summary>
         /// <param name="message">A comment of description.</param>
-        public static void QuickLog(string message = "")
-        {
-            DisplayMessage(message, J_DebugConstants.QuickCheckLogsTag);
-        }
+        /// <param name="context"> the related context</param>
+        public static void QuickLog(string message, Object context = null) { Log(message, J_LogConstants.QuickLogTag, context); }
 
         /// <summary>
         /// this is used to display important messages on the console
         /// </summary>
         /// <param name="message">the message we want to display</param>
-        public static void DisplayImportantMessage(string message) { DisplayMessage(message, J_DebugConstants.HighlightLogTag); }
+        /// <param name="context"> the related context</param>
+        public static void ImportantLog(string message, Object context = null) { Log(message, J_LogConstants.HighLogTag, context); }
         #endregion
     }
 }

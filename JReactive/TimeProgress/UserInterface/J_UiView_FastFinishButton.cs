@@ -12,7 +12,7 @@ namespace JReact.TimeProgress
     {
         #region FIELDS AND PROPERTIES
         private Button _thisButton;
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private Button ThisButton
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Button ThisButton
         {
             get
             {

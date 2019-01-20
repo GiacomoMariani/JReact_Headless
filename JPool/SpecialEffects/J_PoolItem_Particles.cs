@@ -15,7 +15,7 @@ namespace JReact.Pool.SpecialEffect
     {
         #region FIELDS AND PROPERTIES
         #endregion
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private ParticleSystem _particles;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private ParticleSystem _particles;
         private ParticleSystem _ThisParticles
         {
             get

@@ -15,8 +15,8 @@ namespace JReact.Pool
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _returnInPoolAtDisable = true;
         
         // --------------- STATE --------------- //
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] internal T NextItemInPool { get; private set; }
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private J_Pool<T> _poolOwner;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] internal T NextItemInPool { get; private set; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_Pool<T> _poolOwner;
         #endregion
 
         #region POOL METHODS

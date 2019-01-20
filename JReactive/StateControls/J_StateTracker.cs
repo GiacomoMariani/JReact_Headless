@@ -74,7 +74,7 @@ namespace JReact.StateControls
         {
             if (NoPreviousStates()) return;
 
-            HelperConsole.DisplayMessage($"{name} resets {_stateControl.name} to {PreviousState}", J_DebugConstants.Debug_State);
+            JConsole.Log($"{name} resets {_stateControl.name} to {PreviousState}", J_LogConstants.State, this);
             _stateControl.SetNewState(PreviousState);
             _previousStates.RemoveAt(_previousStates.Count - 1);
         }
@@ -83,8 +83,7 @@ namespace JReact.StateControls
         private bool NoPreviousStates()
         {
             if (_previousStates.Count > 0) return false;
-            HelperConsole.DisplayWarning($"Currently there are no previous states on {name}. Aborting command.",
-                                         J_DebugConstants.Debug_State);
+            JConsole.Warning($"Currently there are no previous states on {name}. Aborting command.", J_LogConstants.State, this);
             return true;
         }
         #endregion

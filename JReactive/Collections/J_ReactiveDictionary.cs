@@ -19,7 +19,7 @@ namespace JReact.Collections
 
         #region VALUES AND PROPERTIES
         //the dictionary related to this collection
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector]
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
         protected Dictionary<TKey, TValue> _thisDictionary = new Dictionary<TKey, TValue>();
         private int _count;
         private int _count1;
@@ -34,7 +34,7 @@ namespace JReact.Collections
         /// </summary>
         public void UpdateElement(TKey key, TValue value)
         {
-            Assert.IsNotNull(_thisDictionary, String.Format("{0} not initiated", name));
+            Assert.IsNotNull(_thisDictionary, $"{name} not initiated");
             InternalUpdateElement(key, value);
             if (OnDictionaryChange != null) OnDictionaryChange(key);
         }

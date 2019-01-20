@@ -28,8 +28,7 @@ namespace JReact.Collections
         /// <returns>returns the value requestes</returns>
         public T GetElementFromName(string elementNameKey)
         {
-            Assert.IsTrue(ThisDictionary.ContainsKey(elementNameKey),
-                          string.Format("Name Key -{0}- not found in -{1}-", elementNameKey, name));
+            Assert.IsTrue(ThisDictionary.ContainsKey(elementNameKey), $"Name Key -{elementNameKey}- not found in -{name}-");
             return ThisDictionary[elementNameKey];
         }
 

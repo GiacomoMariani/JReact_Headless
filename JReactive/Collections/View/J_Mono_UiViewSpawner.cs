@@ -15,11 +15,11 @@ namespace JReact.UiView.Collections
     {
         #region FIELDS AND PROPERTIES
         //requires a collection to show
-        [BoxGroup("State", true, true, 5), ReadOnly] protected abstract J_ReactiveCollection<T> _CollectionToShow { get; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_ReactiveCollection<T> _CollectionToShow { get; }
         //the view prefab
-        [BoxGroup("State", true, true, 5), ReadOnly] protected abstract J_Mono_Actor<T> _UiViewPrefab { get; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_Mono_Actor<T> _UiViewPrefab { get; }
         //the tracked elements
-        [BoxGroup("State", true, true, 5), ReadOnly] private Dictionary<T, J_Mono_Actor<T>> _trackedElements = new Dictionary<T, J_Mono_Actor<T>>();
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Dictionary<T, J_Mono_Actor<T>> _trackedElements = new Dictionary<T, J_Mono_Actor<T>>();
         #endregion
 
         #region INITIALIZATION
@@ -32,8 +32,8 @@ namespace JReact.UiView.Collections
         //used to check that every element is valid
         private void SanityChecks()
         {
-            Assert.IsNotNull(_UiViewPrefab, string.Format("This object ({0}) needs an element for the value elementToCheck", gameObject.name));
-            Assert.IsNotNull(_CollectionToShow, string.Format("This object ({0}) needs an element for the value _collectionToShow", gameObject.name));
+            Assert.IsNotNull(_UiViewPrefab, $"This object ({gameObject.name}) needs an element for the value elementToCheck");
+            Assert.IsNotNull(_CollectionToShow, $"This object ({gameObject.name}) needs an element for the value _collectionToShow");
         }
         #endregion
 

@@ -28,7 +28,7 @@ namespace JReact.SceneControls
             _isInitialized = true;
             //store the first scene, without triggering the event
             _currentScene = SceneManager.GetActiveScene();
-            HelperConsole.DisplayMessage($"{name} complete the setup", J_DebugConstants.Debug_SceneManager);
+            JConsole.Log($"{name} complete the setup", J_LogConstants.SceneManager, this);
         }
         #endregion
 
@@ -69,8 +69,8 @@ namespace JReact.SceneControls
         //this is sent when the new scene is changed
         private void SceneChanged(Scene oldScene, Scene newScene)
         {
-            HelperConsole.DisplayMessage($"{name} changed from scene -{oldScene.name}- to scene -{newScene.name}-",
-                                         J_DebugConstants.Debug_SceneManager);
+            JConsole.Log($"{name} changed from scene -{oldScene.name}- to scene -{newScene.name}-",
+                         J_LogConstants.SceneManager, this);
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= SceneChanged;
             CurrentScene                                                =  newScene;
             if (OnSceneChange != null) OnSceneChange(oldScene, newScene);

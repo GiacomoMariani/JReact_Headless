@@ -18,7 +18,7 @@ namespace JReact.Pool.SpecialEffect
         [BoxGroup("Setup", true, true, 0), SerializeField] private string _animatorTrigger;
 
         // --------------- STATE --------------- //
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private Animator _thisAnimator;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Animator _thisAnimator;
         private Animator _ThisAnimator
         {
             get
