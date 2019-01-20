@@ -36,20 +36,20 @@ namespace JReact.TimeProgress
         public void StartCount()
         {
             //make sure everything is setup correctly and starts the counting
-            JConsole.Log($"{name} starts counting", J_LogConstants.TimeProgress, this);
+            JConsole.Log($"{name} starts counting", J_LogTags.TimeProgress, this);
             SanityChecks();
             //complete the setup
             _objectId  = GetInstanceID();
             _isTicking = true;
             //starts counting
-            Timing.RunCoroutine(CountOneTick(), Segment.Update, _objectId, JCoroutineTags.COROUTINE_TimerTag);
+            Timing.RunCoroutine(CountOneTick(), Segment.Update, _objectId, J_CoroutineTags.COROUTINE_TimerTag);
         }
 
         //stops the timer
         public void StopCount()
         {
-            JConsole.Log($"{name} stops counting", J_LogConstants.TimeProgress, this);
-            Timing.KillCoroutines(_objectId, JCoroutineTags.COROUTINE_TimerTag);
+            JConsole.Log($"{name} stops counting", J_LogTags.TimeProgress, this);
+            Timing.KillCoroutines(_objectId, J_CoroutineTags.COROUTINE_TimerTag);
             _isTicking = false;
         }
         #endregion
@@ -89,7 +89,7 @@ namespace JReact.TimeProgress
             if (OnTick != null) OnTick(realTimePassed);
 
             //move ahead to the next tick
-            Timing.RunCoroutine(CountOneTick(), Segment.Update, _objectId, JCoroutineTags.COROUTINE_TimerTag);
+            Timing.RunCoroutine(CountOneTick(), Segment.Update, _objectId, J_CoroutineTags.COROUTINE_TimerTag);
         }
         #endregion
 

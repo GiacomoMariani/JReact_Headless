@@ -230,6 +230,19 @@ namespace JReact
             //return the seconds passed
             return passedTime.TotalSeconds;
         }
+
+        /// <summary>
+        /// converts a date time to unix time
+        /// </summary>
+        /// <param name="dateTime">the date time to convert</param>
+        /// <returns>the unix time, converted</returns>
+        public static int GetUnixTimeStamp(this DateTime dateTime)
+        {
+            DateTime epochStart = new DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+            var      unixTime   = (int) (dateTime - epochStart).TotalSeconds;
+            JConsole.Log($"Current time unix = {unixTime}");
+            return unixTime;
+        }
         #endregion
 
         #region 2D

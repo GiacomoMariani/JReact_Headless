@@ -77,14 +77,14 @@ namespace JReact
         /// </summary>
         /// <param name="message">A comment of description.</param>
         /// <param name="context"> the related context</param>
-        public static void QuickLog(string message, Object context = null) { Log(message, J_LogConstants.QuickLogTag, context); }
+        public static void QuickLog(string message, Object context = null) { Log(message, J_LogTags.QuickLogTag, context); }
 
         /// <summary>
         /// this is used to display important messages on the console
         /// </summary>
         /// <param name="message">the message we want to display</param>
         /// <param name="context"> the related context</param>
-        public static void ImportantLog(string message, Object context = null) { Log(message, J_LogConstants.HighLogTag, context); }
+        public static void ImportantLog(string message, Object context = null) { Log(message, J_LogTags.HighLogTag, context); }
         #endregion
     }
 }

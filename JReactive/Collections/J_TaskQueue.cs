@@ -39,12 +39,12 @@ namespace JReact.Collections
         /// <param name="taskToProcess">the task to process</param>
         public void ProcessTask(iTask taskToProcess)
         {
-            JConsole.Log($"{name} task added. Current tasks: {TotalProcessors}", J_LogConstants.Task, this);
+            JConsole.Log($"{name} task added. Current tasks: {TotalProcessors}", J_LogTags.Task, this);
 
             if (TotalProcessors >= _allocatedTasks)
             {
                 JConsole.Warning($"{name} has too many tasks. Current {TotalProcessors} / Max {_allocatedTasks}.\nAborting Task: {taskToProcess.TaskName}",
-                                 J_LogConstants.Task, this);
+                                 J_LogTags.Task, this);
                 return;
             }
 

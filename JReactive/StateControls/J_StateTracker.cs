@@ -16,7 +16,7 @@ namespace JReact.StateControls
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxStatesToTrack = 5;
 
         //used to get the previous state
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector]
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
         public J_State PreviousState
         {
             get
@@ -25,8 +25,8 @@ namespace JReact.StateControls
                 return _previousStates[_previousStates.Count - 1];
             }
         }
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private bool _isInitialized = false;
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private List<J_State> _previousStates = new List<J_State>();
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isInitialized = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private List<J_State> _previousStates = new List<J_State>();
         #endregion
 
         #region INITIALIZATION AND LISTENERS
@@ -74,7 +74,7 @@ namespace JReact.StateControls
         {
             if (NoPreviousStates()) return;
 
-            JConsole.Log($"{name} resets {_stateControl.name} to {PreviousState}", J_LogConstants.State, this);
+            JConsole.Log($"{name} resets {_stateControl.name} to {PreviousState}", J_LogTags.State, this);
             _stateControl.SetNewState(PreviousState);
             _previousStates.RemoveAt(_previousStates.Count - 1);
         }
@@ -83,7 +83,7 @@ namespace JReact.StateControls
         private bool NoPreviousStates()
         {
             if (_previousStates.Count > 0) return false;
-            JConsole.Warning($"Currently there are no previous states on {name}. Aborting command.", J_LogConstants.State, this);
+            JConsole.Warning($"Currently there are no previous states on {name}. Aborting command.", J_LogTags.State, this);
             return true;
         }
         #endregion

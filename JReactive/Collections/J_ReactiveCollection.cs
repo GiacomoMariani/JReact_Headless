@@ -20,9 +20,9 @@ namespace JReact.Collections
 
         #region VALUES AND PROPERTIES
         //the list related to this collection
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] protected List<T> _thisCollection = new List<T>();
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected List<T> _thisCollection = new List<T>();
         //the amount of elements in the collection
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] public int Count { get { return _thisCollection.Count; } }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count { get { return _thisCollection.Count; } }
         //main accessor
         public T this[int index] { get { return _thisCollection[index]; } }
         #endregion
@@ -48,7 +48,7 @@ namespace JReact.Collections
             //make sure the element is in the list
             if (!_thisCollection.Contains(item))
             {
-                JConsole.Warning($"The element {item} is not in the list", J_LogConstants.Collection, this);
+                JConsole.Warning($"The element {item} is not in the list", J_LogTags.Collection, this);
                 return false;
             }
 

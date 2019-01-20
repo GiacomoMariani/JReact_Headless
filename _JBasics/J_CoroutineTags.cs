@@ -1,6 +1,6 @@
 namespace JReact
 {
-    public class JCoroutineTags
+    public class J_CoroutineTags
     {
         //special effects
         public const string COROUTINE_SpecialEffectTag = "J_SpecialEffectTag";
@@ -12,5 +12,8 @@ namespace JReact
         public  const string COROUTINE_TimerTag = "J_TimerExclusive";
         //the mover agent for pathfinding
         public  const string COROUTINE_MoverAgent = "J_MoverAgent";
+        //cursor
+        public const string COROUTINE_MouseFollow = "COROUTINE_MouseFollowTag";
+        public const string COROUTINE_MouseEffect = "COROUTINE_MouseEffectTag";
     }
 }

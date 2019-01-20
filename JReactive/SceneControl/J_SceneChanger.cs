@@ -17,8 +17,8 @@ namespace JReact.SceneControls
         private event JFloatDelegate OnLoadProgress;
 
         //to make sure we save one first scene
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private bool _isInitialized = false;
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private Scene _currentScene;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isInitialized = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Scene _currentScene;
         public Scene CurrentScene { get => _currentScene; private set => _currentScene = value; }
         #endregion
 
@@ -28,7 +28,7 @@ namespace JReact.SceneControls
             _isInitialized = true;
             //store the first scene, without triggering the event
             _currentScene = SceneManager.GetActiveScene();
-            JConsole.Log($"{name} complete the setup", J_LogConstants.SceneManager, this);
+            JConsole.Log($"{name} complete the setup", J_LogTags.SceneManager, this);
         }
         #endregion
 
@@ -40,13 +40,13 @@ namespace JReact.SceneControls
         public void LoadScene(string sceneName)
         {
             if (!_isInitialized) SetupThis();
-            Timing.RunCoroutine(LoadingTheScene(sceneName), Segment.Update, JCoroutineTags.COROUTINE_SceneChangerTag);
+            Timing.RunCoroutine(LoadingTheScene(sceneName), Segment.Update, J_CoroutineTags.COROUTINE_SceneChangerTag);
         }
 
         /// <summary>
         /// used to cancel the load of a given scene
         /// </summary>
-        public void CancelLoadScene() { Timing.KillCoroutines(JCoroutineTags.COROUTINE_SceneChangerTag); }
+        public void CancelLoadScene() { Timing.KillCoroutines(J_CoroutineTags.COROUTINE_SceneChangerTag); }
         #endregion
 
         #region SCENE PROCESSING
@@ -70,7 +70,7 @@ namespace JReact.SceneControls
         private void SceneChanged(Scene oldScene, Scene newScene)
         {
             JConsole.Log($"{name} changed from scene -{oldScene.name}- to scene -{newScene.name}-",
-                         J_LogConstants.SceneManager, this);
+                         J_LogTags.SceneManager, this);
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= SceneChanged;
             CurrentScene                                                =  newScene;
             if (OnSceneChange != null) OnSceneChange(oldScene, newScene);

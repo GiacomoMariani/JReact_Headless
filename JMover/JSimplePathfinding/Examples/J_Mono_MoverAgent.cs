@@ -82,13 +82,13 @@ namespace JReact.Pathfinding
         {
             if (_debug)
                 JConsole.Log($"{gameObject.name} moving from {start.Coordinates} to {goal.Coordinates}",
-                             J_LogConstants.Pathdind, this);
+                             J_LogTags.Pathdind, this);
             _pathQueue.FindPath(start, goal, J_PathCost.CalculateNodeDistance, CanAccessNode, StartMovement);
         }
 
         private void StartMovement(List<T> path)
         {
-            Timing.RunCoroutine(MovingOnPath(path).CancelWith(gameObject), Segment.FixedUpdate, JCoroutineTags.COROUTINE_MoverAgent);
+            Timing.RunCoroutine(MovingOnPath(path).CancelWith(gameObject), Segment.FixedUpdate, J_CoroutineTags.COROUTINE_MoverAgent);
         }
         #endregion
 

@@ -60,7 +60,7 @@ namespace JReact.Pathfinding
         {
             if (_debug)
                 JConsole.Log($"{name} calculates from {startNode.Coordinates} to {goalNode.Coordinates}",
-                             J_LogConstants.Pathdind, this);
+                             J_LogTags.Pathdind, this);
 
             // --------------- SETTING UP THE CALCULATION --------------- //
             var goalReached = false;
@@ -123,9 +123,9 @@ namespace JReact.Pathfinding
 
             if (_debug)
                 JConsole.Log($"{name} Path from {startNode.Coordinates} to {goalNode.Coordinates}. Found: {goalReached}. Explored {_exploredNodes.Count} nodes.",
-                             J_LogConstants.Input, this);
+                             J_LogTags.Input, this);
             if (_debug && !goalReached)
-                JConsole.Log($"{name} No path Found. Nodes Explored {_exploredNodes.PrintAll()}", J_LogConstants.Input, this);
+                JConsole.Log($"{name} No path Found. Nodes Explored {_exploredNodes.PrintAll()}", J_LogTags.Input, this);
 
             //if we have not reached the goal we return null
             if (!goalReached ||
@@ -153,7 +153,7 @@ namespace JReact.Pathfinding
         //calculates the path backwards into an array
         private List<T> RecalculatePath(T goal, T start)
         {
-            //to count the step (used as safecheck for circular pathsss)
+            //to count the step (used as safecheck for circular paths)
             int steps = 0;
 
             //ignore null goals
@@ -170,7 +170,7 @@ namespace JReact.Pathfinding
                 //check for too long paths (circular path issue)
                 if (steps > _maxPathSteps)
                 {
-                    JConsole.Warning($"{name}Path too long. Path {_resultPath.PrintAll()}", J_LogConstants.Pathdind, this);
+                    JConsole.Warning($"{name}Path too long. Path {_resultPath.PrintAll()}", J_LogTags.Pathdind, this);
                     break;
                 }
             }
@@ -180,7 +180,7 @@ namespace JReact.Pathfinding
             _resultPath.Reverse();
 
             //log and return
-            if (_debug) JConsole.Log($"{name} Path found. Nodes: {_resultPath.Count}.", J_LogConstants.Pathdind, this);
+            if (_debug) JConsole.Log($"{name} Path found. Nodes: {_resultPath.Count}.", J_LogTags.Pathdind, this);
             return _resultPath;
         }
         #endregion

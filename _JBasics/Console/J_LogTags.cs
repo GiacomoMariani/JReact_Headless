@@ -1,6 +1,6 @@
 namespace JReact
 {
-    public class J_LogConstants
+    public class J_LogTags
     {
         //the tag for the important messages to be used by the console
         public const string HighLogTag = "-GAME_STATE-";

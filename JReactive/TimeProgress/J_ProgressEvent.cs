@@ -22,10 +22,10 @@ namespace JReact.TimeProgress
         public J_Identifier Identifier => _identifier;
 
         // --------------- STATE --------------- //
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private int _timeRequiredInSeconds;
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] public float SecondsFromStart { get; private set; }
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] private bool _paused = true;
-        [BoxGroup("State", true, true, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; } = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _timeRequiredInSeconds;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float SecondsFromStart { get; private set; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _paused = true;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; } = false;
 
         // --------------- BOOK KEEPING --------------- //
         [BoxGroup("Book Keeping", true, true, 10), ReadOnly, ShowInInspector]
@@ -41,7 +41,7 @@ namespace JReact.TimeProgress
             if (_identifier != null &&
                 identifier  != null)
                 JConsole.Warning($"{name} has already an identifier ({_identifier.name}. Cannot set {identifier.name})",
-                                 J_LogConstants.TimeProgress, this);
+                                 J_LogTags.TimeProgress, this);
             if (_identifier == null) _identifier = identifier;
         }
 
@@ -51,7 +51,7 @@ namespace JReact.TimeProgress
             if (_timer != null &&
                 timer  != null)
                 JConsole.Warning($"{name} has already a timer ({_timer.name}. Cannot set {timer.name})",
-                                 J_LogConstants.TimeProgress, this);
+                                 J_LogTags.TimeProgress, this);
             if (_timer == null &&
                 timer  != null) _timer = timer;
         }

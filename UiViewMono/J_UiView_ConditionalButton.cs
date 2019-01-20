@@ -37,7 +37,7 @@ namespace JReact.UiView
                 Assert.IsNotNull(_commandConditions[i], $"The save condition on {name} at index {i} is null");
                 if (_commandConditions[i].CurrentValue) continue;
 
-                JConsole.Log($"{name} - command stop. Condition not met: {_commandConditions[i].name}", J_LogConstants.UiView, this);
+                JConsole.Log($"{name} - command stop. Condition not met: {_commandConditions[i].name}", J_LogTags.UiView, this);
                 return false;
             }
 

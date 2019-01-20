@@ -48,7 +48,7 @@ namespace JReact.Pool.SpecialEffect
         protected virtual void RemoveAfterSeconds(float secondsToWait)
         {
             Timing.RunCoroutine(PlayThanRemove(secondsToWait), Segment.LateUpdate, _instanceId,
-                                JCoroutineTags.COROUTINE_SpecialEffectTag);
+                                J_CoroutineTags.COROUTINE_SpecialEffectTag);
         }
 
         private IEnumerator<float> PlayThanRemove(float particleDuration)

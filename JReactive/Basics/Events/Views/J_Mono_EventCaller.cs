@@ -45,7 +45,7 @@ namespace JReact
             {
                 Assert.IsNotNull(_conditions[i], $"The save condition at index {name} of {i} is null");
                 if (_conditions[i].CurrentValue) continue;
-                JConsole.Log($"{name} - save canceled. Condition not met: {_conditions[i].name}", J_LogConstants.EventTag, this);
+                JConsole.Log($"{name} - save canceled. Condition not met: {_conditions[i].name}", J_LogTags.EventTag, this);
                 return;
             }
 
