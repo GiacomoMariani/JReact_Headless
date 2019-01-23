@@ -22,7 +22,7 @@ namespace JReact
     }
 
     //something that can be subscribed
-    public interface iBaseObservable
+    public interface iObservable
     {
         void Subscribe(JAction action);
         void UnSubscribe(JAction action);

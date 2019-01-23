@@ -100,7 +100,7 @@ namespace JReact.TimeProgress.Pause
         protected virtual void CalculateSecondsOffline() { _timeOffline = GetCurrentDate().GetUnixTimeStamp() - _startTimeUnix; }
         #endregion
 
-        #region SUBSCRIPTIONS
+        #region SUBSCRIBERS
         public void SubscribeToPauseStart(JAction actionToSend) { OnPauseStart   += actionToSend; }
         public void UnSubscribeToPauseStart(JAction actionToSend) { OnPauseStart -= actionToSend; }
 

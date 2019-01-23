@@ -63,7 +63,7 @@ namespace JReact.TimeProgress
             
             // --------------- SUBSCRIBING --------------- //
             _progressEvent.SubscribeToStart(ProgressStart);
-            _progressEvent.SubscribeToTick(ProgressUpdate);
+            _progressEvent.Subscribe(ProgressUpdate);
             _progressEvent.SubscribeToComplete(ProgressComplete);
         }
 
@@ -71,7 +71,7 @@ namespace JReact.TimeProgress
         {
             if (!_isTracking) return;
             _progressEvent.UnSubscribeToStart(ProgressStart);
-            _progressEvent.UnSubscribeToProgressTick(ProgressUpdate);
+            _progressEvent.UnSubscribe(ProgressUpdate);
             _progressEvent.UnSubscribeToComplete(ProgressComplete);
             ViewDisabled(_progressEvent);
             _isTracking = false;

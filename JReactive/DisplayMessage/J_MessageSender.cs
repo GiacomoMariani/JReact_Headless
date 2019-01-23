@@ -1,0 +1,69 @@
+﻿using JetBrains.Annotations;
+using Sirenix.OdinInspector;
+using UnityEngine;
+
+namespace JReact.ScreenMessage
+{
+    /// <summary>
+    /// sends the messages
+    /// </summary>
+    [CreateAssetMenu(menuName = "Reactive/Screen Message/Sender")]
+    public class J_MessageSender : ScriptableObject, iObservable<JMessage>
+    {
+        #region VALUES AND PROPERTIES
+        private event JGenericDelegate<JMessage> OnPublish;
+
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageId _defaultIdentifier;
+
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private JMessage _message;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _currentId = 0;
+        #endregion
+
+        #region MAIN COMMAND - SEND
+        /// <summary>
+        /// sends a message on the screen
+        /// </summary>
+        /// <param name="message">the text to send</param>
+        /// <param name="messageId">the type of message</param>
+        public void Send(string message, [CanBeNull] J_MessageId messageId = null)
+        {
+            //use default if no id set
+            if (messageId == null) messageId = _defaultIdentifier;
+
+            JConsole.Log($"{name} message id {messageId} = {message}", J_LogTags.Message, this);
+            CreateMessage(message, messageId);
+
+            //send the message
+            if (OnPublish != null) OnPublish(_message);
+        }
+
+        //updates the message to be sent
+        private void CreateMessage(string message, J_MessageId messageId)
+        {
+            _message.MessageContent = message;
+            _message.MessageId      = messageId;
+            _message.MessageNumber  = _currentId++;
+        }
+        #endregion
+
+        #region SUBSCRIBERS
+        public void Subscribe(JGenericDelegate<JMessage> actionToAdd) { OnPublish      += actionToAdd; }
+        public void UnSubscribe(JGenericDelegate<JMessage> actionToRemove) { OnPublish -= actionToRemove; }
+        #endregion
+
+        #region TEST
+        [BoxGroup("Debug", true, true, 50), SerializeField, AssetsOnly, Required] private J_MessageId _test;
+
+        [BoxGroup("Debug", true, true, 50), Button(ButtonSizes.Medium)]
+        private void SendTestMessage() { Send("This is just a test", _test); }
+        #endregion
+    }
+
+    //the message type
+    public struct JMessage
+    {
+        public int MessageNumber;
+        public string MessageContent;
+        public J_MessageId MessageId;
+    }
+}

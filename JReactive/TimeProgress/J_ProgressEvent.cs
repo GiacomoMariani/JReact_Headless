@@ -8,7 +8,7 @@ namespace JReact.TimeProgress
     /// this is an event connected to a time
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Time/Progress Event")]
-    public class J_ProgressEvent : ScriptableObject, iResettable
+    public class J_ProgressEvent : ScriptableObject, iObservable<J_ProgressEvent>, iResettable
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS RELATED TO PROGRESS --------------- //
@@ -166,8 +166,8 @@ namespace JReact.TimeProgress
         public void SubscribeToStart(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressStart   += actionToSend; }
         public void UnSubscribeToStart(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressStart -= actionToSend; }
 
-        public void SubscribeToTick(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick           += actionToSend; }
-        public void UnSubscribeToProgressTick(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick -= actionToSend; }
+        public void Subscribe(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick           += actionToSend; }
+        public void UnSubscribe(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick -= actionToSend; }
 
         public void SubscribeToComplete(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressComplete   += actionToSend; }
         public void UnSubscribeToComplete(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressComplete -= actionToSend; }

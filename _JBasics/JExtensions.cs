@@ -24,20 +24,6 @@ namespace JReact
         private const string MinutesSecondsWithoutFormat = "{0:D2}:{1:D2}";
         #endregion
 
-        #region INT
-        //an extension that tries to convert a string into int
-        public static int ToInt(this string stringToConvert)
-        {
-            //try getting the value
-            int valueToReturn;
-            if (int.TryParse(stringToConvert, out valueToReturn)) return valueToReturn;
-
-            //otherwise send a warning and return 0
-            Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into integer. Returning 0.");
-            return 0;
-        }
-        #endregion
-
         #region FLOAT
         //used to convert a float value into time string
         public static string ToTimeString(this float valueToConvert, bool withFormat = true)
@@ -100,13 +86,13 @@ namespace JReact
         /// <typeparam name="T">the type of element in the collection</typeparam>
         /// <returns>returns a random element</returns>
         public static void SubscribeToAll<T>(this ICollection<T> collection, JAction actionToPerform)
-            where T : iBaseObservable
+            where T : iObservable
         {
             foreach (var element in collection) { element.Subscribe(actionToPerform); }
         }
 
         public static void UnSubscribeToAll<T>(this ICollection<T> collection, JAction actionToPerform)
-            where T : iBaseObservable
+            where T : iObservable
         {
             foreach (var element in collection) { element.UnSubscribe(actionToPerform); }
         }
@@ -197,6 +183,28 @@ namespace JReact
         #endregion
 
         #region STRING
+        //converts a string into int
+        public static int ToInt(this string stringToConvert)
+        {
+            //try getting the value
+            if (int.TryParse(stringToConvert, out var valueToReturn)) return valueToReturn;
+
+            //otherwise send a warning and return 0
+            Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into integer. Returning 0.");
+            return 0;
+        }
+        
+        //converts a string into float
+        public static float ToFloat(this string stringToConvert)
+        {
+            //try getting the value
+            if (float.TryParse(stringToConvert, out var valueToReturn)) return valueToReturn;
+
+            //otherwise send a warning and return 0
+            Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into integer. Returning 0.");
+            return 0;
+        }
+        
         /// <summary>
         /// this is used to encode a string into a hex string
         /// </summary>

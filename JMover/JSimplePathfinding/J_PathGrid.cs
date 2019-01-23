@@ -7,7 +7,6 @@ namespace JReact.Pathfinding
     /// <summary>
     /// the grid for the pathfinding
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Pathfinding/Grid")]
     public abstract class J_PathGrid<T> : ScriptableObject
         where T : J_PathNode
     {

@@ -82,7 +82,7 @@ namespace JReact.Pathfinding
         {
             if (_debug)
                 JConsole.Log($"{gameObject.name} moving from {start.Coordinates} to {goal.Coordinates}",
-                             J_LogTags.Pathdind, this);
+                             J_LogTags.Pathfind, this);
             _pathQueue.FindPath(start, goal, J_PathCost.CalculateNodeDistance, CanAccessNode, StartMovement);
         }
 

@@ -30,10 +30,17 @@ namespace JReact.StateControls
         #endregion
 
         #region INITIALIZATION AND LISTENERS
-        public void Initialize()
+        public void Initialize(J_StateControl stateControl)
         {
+            if (stateControl != null) _stateControl = stateControl;
             SanityChecks();
             InitThis();
+        }
+        
+        private void SanityChecks()
+        {
+            Assert.IsNotNull(_stateControl, $"{name} needs a state control.");
+            Assert.IsFalse(_isInitialized, $"{name} already started, it should not start again.");
         }
 
         //used to initialize this element
@@ -43,12 +50,6 @@ namespace JReact.StateControls
             if (_isInitialized) return;
             _stateControl.Subscribe(ChangeState);
             _isInitialized = true;
-        }
-
-        private void SanityChecks()
-        {
-            Assert.IsNotNull(_stateControl, $"{name} needs a state control.");
-            Assert.IsFalse(_isInitialized, $"{name} already started, it should not start again.");
         }
         #endregion
 

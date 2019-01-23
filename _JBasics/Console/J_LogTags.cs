@@ -29,8 +29,12 @@ namespace JReact
         //scene view
         public const string SceneView = "-Scene View-";
         //pathfinding
-        public const string Pathdind = "-JPathfind-";
+        public const string Pathfind = "-JPathfind-";
         //input
         public const string Input = "-Input-";
+        //settings
+        public const string Settings = "-Settings-";
+        //message
+        public const string Message = "-Message-";
     }
 }

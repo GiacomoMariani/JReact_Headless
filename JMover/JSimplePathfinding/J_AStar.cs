@@ -8,7 +8,7 @@ using UnityEngine.Assertions;
 namespace JReact.Pathfinding
 {
     /// <summary>
-    /// the algorithm to calculate the pathfindin
+    /// the algorithm to calculate the pathfinding
     /// </summary>
     public abstract class J_AStar<T> : ScriptableObject
         where T : J_PathNode
@@ -18,7 +18,7 @@ namespace JReact.Pathfinding
         //the related grid
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_PathGrid<T> _pathGrid;
         //heuristic, used to calculate the path
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private JPathHeuristics _heuristics;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_PathHeuristics _heuristics;
         //max amount of steps for a path
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxPathSteps = 1000;
 
@@ -60,7 +60,7 @@ namespace JReact.Pathfinding
         {
             if (_debug)
                 JConsole.Log($"{name} calculates from {startNode.Coordinates} to {goalNode.Coordinates}",
-                             J_LogTags.Pathdind, this);
+                             J_LogTags.Pathfind, this);
 
             // --------------- SETTING UP THE CALCULATION --------------- //
             var goalReached = false;
@@ -170,7 +170,7 @@ namespace JReact.Pathfinding
                 //check for too long paths (circular path issue)
                 if (steps > _maxPathSteps)
                 {
-                    JConsole.Warning($"{name}Path too long. Path {_resultPath.PrintAll()}", J_LogTags.Pathdind, this);
+                    JConsole.Warning($"{name}Path too long. Path {_resultPath.PrintAll()}", J_LogTags.Pathfind, this);
                     break;
                 }
             }
@@ -180,7 +180,7 @@ namespace JReact.Pathfinding
             _resultPath.Reverse();
 
             //log and return
-            if (_debug) JConsole.Log($"{name} Path found. Nodes: {_resultPath.Count}.", J_LogTags.Pathdind, this);
+            if (_debug) JConsole.Log($"{name} Path found. Nodes: {_resultPath.Count}.", J_LogTags.Pathfind, this);
             return _resultPath;
         }
         #endregion

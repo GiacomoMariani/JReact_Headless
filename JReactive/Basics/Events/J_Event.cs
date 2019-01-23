@@ -7,7 +7,7 @@ namespace JReact
     /// this is a base event we can reference on unity editor
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Events/Event")]
-    public class J_Event : ScriptableObject, iBaseObservable
+    public class J_Event : ScriptableObject, iObservable
     {
         //the event raised by this property
         private event JAction OnEnter;

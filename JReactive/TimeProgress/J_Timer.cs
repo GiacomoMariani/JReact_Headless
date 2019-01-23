@@ -10,13 +10,13 @@ namespace JReact.TimeProgress
     /// the time counter
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Time/Timer")]
-    public class J_Timer : ScriptableObject
+    public class J_Timer : ScriptableObject, iObservable<float>, iResettable
     {
         #region FIELDS AND PROPERTIES
         private event JGenericDelegate<float> OnTick;
 
         [BoxGroup("Setup", true, true, 0), SerializeField, Range(0.05f, 2.5f)] private float _tickLengthInSeconds = 1.0f;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isTicking;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isRunning;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _objectId = -1;
         #endregion
 
@@ -37,10 +37,10 @@ namespace JReact.TimeProgress
         {
             //make sure everything is setup correctly and starts the counting
             JConsole.Log($"{name} starts counting", J_LogTags.TimeProgress, this);
-            SanityChecks();
+            if (!SanityChecks()) return;
             //complete the setup
             _objectId  = GetInstanceID();
-            _isTicking = true;
+            _isRunning = true;
             //starts counting
             Timing.RunCoroutine(CountOneTick(), Segment.Update, _objectId, J_CoroutineTags.COROUTINE_TimerTag);
         }
@@ -50,17 +50,18 @@ namespace JReact.TimeProgress
         {
             JConsole.Log($"{name} stops counting", J_LogTags.TimeProgress, this);
             Timing.KillCoroutines(_objectId, J_CoroutineTags.COROUTINE_TimerTag);
-            _isTicking = false;
+            _isRunning = false;
         }
         #endregion
 
         #region INITIALIZATION
         //make sure this is setup correctly
-        private void SanityChecks()
+        private bool SanityChecks()
         {
-            Assert.IsFalse(_isTicking, $"{name} is already ticking.");
-            Assert.IsTrue(_tickLengthInSeconds <= 0, $"{name} tick requires to be positive. Tick: {_tickLengthInSeconds}.");
-            if (_isTicking) return;
+            Assert.IsFalse(_isRunning, $"{name} is already ticking. Cancel command");
+            Assert.IsTrue(_tickLengthInSeconds > 0, $"{name} tick requires to be positive. Tick: {_tickLengthInSeconds}.");
+            if (_isRunning) return false;
+            return true;
         }
         #endregion
 
@@ -69,21 +70,21 @@ namespace JReact.TimeProgress
         private IEnumerator<float> CountOneTick()
         {
             //stop if requested
-            if (!_isTicking) yield break;
+            if (!_isRunning) yield break;
 
             //count the time before the tick
-            var beforeTickTime = UnityEngine.Time.time;
+            var beforeTickTime = Time.time;
             //wait the tick
             yield return Timing.WaitForSeconds(_tickLengthInSeconds);
             //count the time after the tick
-            var afterTickTime = UnityEngine.Time.time;
+            var afterTickTime = Time.time;
             //calculate the real passed time
             var realTimePassed = afterTickTime - beforeTickTime;
             //remove the  comment below to check time if required
             //Debug.Log("We've been waiting for " + realTimePassed + " for a tick of " + _tickLengthInSeconds);
 
             //do not send the event if not required anymore
-            if (!_isTicking) yield break;
+            if (!_isRunning) yield break;
 
             //send the event
             if (OnTick != null) OnTick(realTimePassed);
@@ -100,7 +101,7 @@ namespace JReact.TimeProgress
 
         #region DISABLE AND RESET
         protected virtual void OnDisable() { ResetThis(); }
-        private void ResetThis() { StopCount(); }
+        public void ResetThis() { if(_isRunning) StopCount(); }
         #endregion
     }
 }

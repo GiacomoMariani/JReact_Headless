@@ -21,18 +21,18 @@ namespace JReact
             if (_actorElement != null) ActorIsRemoved(_actorElement);
             //set the new actor
             _actorElement = actor;
-            ActorIsChanged(actor);
+            ActorUpdate(actor);
         }
 
         #region ABSTRACT IMPLEMENTATION
         //change and remove actor methods
-        protected abstract void ActorIsChanged(T element);
+        protected abstract void ActorUpdate(T element);
         protected virtual void ActorIsRemoved(T element) { }
         #endregion
 
         #region UNITY EVENTS
         //update the element if we already have one
-        protected virtual void OnEnable() { if (_actorElement != null) ActorIsChanged(_actorElement); }
+        protected virtual void OnEnable() { if (_actorElement != null) ActorUpdate(_actorElement); }
 
         //make sure everything is removed on destroy
         protected virtual void OnDisable() { if (_actorElement != null) ActorIsRemoved(_actorElement); }

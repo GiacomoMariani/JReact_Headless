@@ -8,8 +8,8 @@ namespace JReact.Pathfinding
     /// <summary>
     /// this the heuristic to calculate the A* pathfinding h cost (heuristic cost)
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Pathfinding/Heuristics")]
-    public class JPathHeuristics : ScriptableObject
+    [CreateAssetMenu(menuName = "Reactive/PathFinding/Heuristics")]
+    public class J_PathHeuristics : ScriptableObject
     {
         #region VALUES AND PROPERTIES
         public enum HeuristicsType { Euclidean, Manhattan }
@@ -36,7 +36,7 @@ namespace JReact.Pathfinding
         }
 
         /// <summary>
-        /// the euclidead estimate
+        /// the euclidean estimate
         /// </summary>
         private float EuclideanEstimate(Vector2 startPosition, Vector2 goalPosition)
         {
