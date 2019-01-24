@@ -70,8 +70,14 @@ namespace JReact.TimeProgress
             ResetValues();
 
             // --------------- SETUP --------------- //
-            if (createNewTimer) _timer = J_Timer.CreateNewTimer();
+            if (createNewTimer) _timer = J_Timer.CreateNewTimer<J_Timer>();
             _timeRequiredInSeconds = (int) secondsToComplete;
+            Assert.IsNotNull(_timer, $"{name} has no timer");
+            if (!_timer.IsRunning)
+            {
+                JConsole.Warning($"{_timer.name} on {name} was not running. Force Start.", J_LogTags.TimeProgress, this);
+                _timer.StartCount();
+            }
 
             // --------------- RUN --------------- //
             IsRunning = true;
@@ -166,7 +172,7 @@ namespace JReact.TimeProgress
         public void SubscribeToStart(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressStart   += actionToSend; }
         public void UnSubscribeToStart(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressStart -= actionToSend; }
 
-        public void Subscribe(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick           += actionToSend; }
+        public void Subscribe(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick   += actionToSend; }
         public void UnSubscribe(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick -= actionToSend; }
 
         public void SubscribeToComplete(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressComplete   += actionToSend; }
