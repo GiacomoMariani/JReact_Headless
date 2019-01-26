@@ -1,6 +1,6 @@
 namespace JReact
 {
-    public class J_LogTags
+    public class JLogTags
     {
         //the tag for the important messages to be used by the console
         public const string HighLogTag = "-GAME_STATE-";
@@ -36,5 +36,8 @@ namespace JReact
         public const string Settings = "-Settings-";
         //message
         public const string Message = "-Message-";
+        //build
+        public const string Build = "-Build-";
+
     }
 }

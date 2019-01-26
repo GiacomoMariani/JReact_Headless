@@ -38,7 +38,7 @@ namespace JReact.TimeProgress.Pause
             //ignore if already in pause
             if (IsPaused)
             {
-                JConsole.Warning($"{name} The pause is already active. Can't pause again.", J_LogTags.TimeProgress);
+                JConsole.Warning($"{name} The pause is already active. Can't pause again.", JLogTags.TimeProgress);
                 return;
             }
 
@@ -65,7 +65,7 @@ namespace JReact.TimeProgress.Pause
             //ignore if it was not in pause
             if (!IsPaused)
             {
-                JConsole.Warning($"{name} Pause was not active. Can't stop pause.", J_LogTags.TimeProgress);
+                JConsole.Warning($"{name} Pause was not active. Can't stop pause.", JLogTags.TimeProgress);
                 return;
             }
 

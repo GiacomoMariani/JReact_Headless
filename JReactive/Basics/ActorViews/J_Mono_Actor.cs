@@ -12,17 +12,11 @@ namespace JReact
     public abstract class J_Mono_Actor<T> : MonoBehaviour
     {
         #region FIELDS AND PROPERTIES
-        //we can set the actor directly or by injection
-        [BoxGroup("Actor", true, true, -5), SerializeField, AssetsOnly]
-        protected T _actorElement;
-
-        //to check if this has been initialized
-        [BoxGroup("Actor", true, true, -5), ReadOnly, ShowInInspector]
-        private bool _initCompleted = false;
-
-        //the the elements to show th package
-        [BoxGroup("Actor", true, true, -5), ReadOnly, ShowInInspector]
-        private iUpdater<T>[] _actorElements;
+        //sets the actor directly or by injection
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] protected T _actorElement;
+        
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _initCompleted = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iUpdater<T>[] _relatedElements;
         #endregion
 
         #region INITIALIZATION
@@ -35,7 +29,7 @@ namespace JReact
             //ignore if already initialized
             if (_initCompleted) return;
             //inject the element in the views
-            _actorElements = GetComponentsInChildren<iUpdater<T>>(true);
+            _relatedElements = GetComponentsInChildren<iUpdater<T>>(true);
             //set this as initialized
             _initCompleted = true;
         }
@@ -64,8 +58,8 @@ namespace JReact
         //update all the views with the request
         protected virtual void UpdateAllViews(T element)
         {
-            for (int i = 0; i < _actorElements.Length; i++)
-                UpdateView(_actorElements[i], element);
+            for (int i = 0; i < _relatedElements.Length; i++)
+                UpdateView(_relatedElements[i], element);
         }
 
         /// <summary>

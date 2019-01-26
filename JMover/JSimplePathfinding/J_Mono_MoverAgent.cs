@@ -82,13 +82,13 @@ namespace JReact.Pathfinding
         {
             if (_debug)
                 JConsole.Log($"{gameObject.name} moving from {start.Coordinates} to {goal.Coordinates}",
-                             J_LogTags.Pathfind, this);
+                             JLogTags.Pathfind, this);
             _pathQueue.FindPath(start, goal, J_PathCost.CalculateNodeDistance, CanAccessNode, StartMovement);
         }
 
         private void StartMovement(List<T> path)
         {
-            Timing.RunCoroutine(MovingOnPath(path).CancelWith(gameObject), Segment.FixedUpdate, J_CoroutineTags.COROUTINE_MoverAgent);
+            Timing.RunCoroutine(MovingOnPath(path).CancelWith(gameObject), Segment.FixedUpdate, JCoroutineTags.COROUTINE_MoverAgent);
         }
         #endregion
 
@@ -106,7 +106,7 @@ namespace JReact.Pathfinding
         private IEnumerator<float> MovingOnPath(List<T> path)
         {
             // --------------- START MOVING --------------- //
-            if (OnStart != null) OnStart(CurrentNode);
+            OnStart?.Invoke(CurrentNode);
             IsMoving = true;
 
             // --------------- LOOP --------------- //
@@ -117,21 +117,21 @@ namespace JReact.Pathfinding
                 {
                     // --------------- STEP START --------------- //
                     _doingStep = true;
-                    if (OnStepStart != null) OnStepStart(path[i].Coordinates, path[i + 1].Coordinates);
+                    OnStepStart?.Invoke(path[i].Coordinates, path[i + 1].Coordinates);
 
                     // --------------- MOVER ACTION --------------- //
                     Mover.SubscribeToReachFixedPosition(StepComplete);
                     Mover.MoveTransformToPosition(path[i + 1].transform.position, _stepInSeconds);
-                    
+
                     // --------------- UPDATE THE NODE --------------- //
                     CurrentNode = path[i + 1];
                     yield return Timing.WaitUntilFalse(GetDoingAStep);
                 }
             }
-            
+
             // --------------- STOP MOVING --------------- //
             IsMoving = false;
-            if (OnComplete != null) OnComplete(CurrentNode);
+            OnComplete?.Invoke(CurrentNode);
         }
 
         //sets the step as completed

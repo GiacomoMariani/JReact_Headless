@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using JReact.TimeProgress.Pause;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -22,9 +23,11 @@ namespace JReact.TimeProgress
         public J_Identifier Identifier => _identifier;
 
         // --------------- STATE --------------- //
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_PauseEvent _pauseEvent;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _timeRequiredInSeconds;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float SecondsFromStart { get; private set; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _paused = true;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _destroyAtDisable = false;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; } = false;
 
         // --------------- BOOK KEEPING --------------- //
@@ -35,26 +38,70 @@ namespace JReact.TimeProgress
         #endregion
 
         #region PRE SETUP
+        public static J_ProgressEvent CreateProgressEvent(bool destroyAtDisable = true)
+        {
+            var progress = CreateInstance<J_ProgressEvent>();
+            progress._destroyAtDisable = destroyAtDisable;
+            return progress;
+        }
+
         //add the identifier when requested
         public void SetIdentifier(J_Identifier identifier)
         {
-            if (_identifier != null &&
-                identifier  != null)
+            if (_identifier != null)
                 JConsole.Warning($"{name} has already an identifier ({_identifier.name}. Cannot set {identifier.name})",
-                                 J_LogTags.TimeProgress, this);
+                                 JLogTags.TimeProgress, this);
             if (_identifier == null) _identifier = identifier;
         }
 
         //make sure we have a valid timer
         public void SetTimer(J_Timer timer)
         {
-            if (_timer != null &&
-                timer  != null)
+            if (_timer != null)
                 JConsole.Warning($"{name} has already a timer ({_timer.name}. Cannot set {timer.name})",
-                                 J_LogTags.TimeProgress, this);
-            if (_timer == null &&
-                timer  != null) _timer = timer;
+                                 JLogTags.TimeProgress, this);
+            if (_timer == null) _timer = timer;
         }
+        #endregion
+
+        #region PAUSE
+        /// <summary>
+        /// connect the progress to a pause event
+        /// </summary>
+        /// <param name="pauseEvent"></param>
+        public void InjectPauseEvent(J_PauseEvent pauseEvent)
+        {
+            _pauseEvent = pauseEvent;
+            TrackPause();
+        }
+
+        /// <summary>
+        /// used to stop tracking a pause
+        /// </summary>
+        public void RemovePause()
+        {
+            Assert.IsNotNull(_pauseEvent, $"{name} has no pause event to remove");
+            UnTrackPause();
+        }
+
+        private void TrackPause()
+        {
+            if (_pauseEvent.IsPaused &&
+                !_paused) SetPause(true);
+            _pauseEvent.SubscribeToPauseStart(Pause);
+            _pauseEvent.SubscribeToPauseEnd(UnPause);
+        }
+
+        private void UnTrackPause()
+        {
+            if (_pauseEvent == null) return;
+            _pauseEvent.UnSubscribeToPauseStart(Pause);
+            _pauseEvent.UnSubscribeToPauseEnd(UnPause);
+            _pauseEvent = null;
+        }
+
+        private void Pause() { SetPause(true); }
+        private void UnPause(int item) { SetPause(false); }
         #endregion
 
         #region COMMANDS
@@ -70,18 +117,18 @@ namespace JReact.TimeProgress
             ResetValues();
 
             // --------------- SETUP --------------- //
-            if (createNewTimer) _timer = J_Timer.CreateNewTimer<J_Timer>();
+            if (createNewTimer) _timer = J_GenericCounter.CreateNewTimer<J_Timer>();
             _timeRequiredInSeconds = (int) secondsToComplete;
             Assert.IsNotNull(_timer, $"{name} has no timer");
             if (!_timer.IsRunning)
             {
-                JConsole.Warning($"{_timer.name} on {name} was not running. Force Start.", J_LogTags.TimeProgress, this);
+                JConsole.Warning($"{_timer.name} on {name} was not running. Force Start.", JLogTags.TimeProgress, this);
                 _timer.StartCount();
             }
 
             // --------------- RUN --------------- //
             IsRunning = true;
-            ProgressEvent();
+            StartEvent();
             _timer.Subscribe(AddTimePerTick);
         }
 
@@ -124,24 +171,15 @@ namespace JReact.TimeProgress
         #region MAIN EVENTS
         //sends the start event
         [BoxGroup("Debug", true, true, 100), Button("Start Event", ButtonSizes.Medium)]
-        private void ProgressEvent()
-        {
-            if (OnProgressStart != null) OnProgressStart(this);
-        }
+        private void StartEvent() { OnProgressStart?.Invoke(this); }
 
         //sends the tick event
         [BoxGroup("Debug", true, true, 100), Button("Tick Event", ButtonSizes.Medium)]
-        private void TickEvent()
-        {
-            if (OnProgressTick != null) OnProgressTick(this);
-        }
+        private void TickEvent() { OnProgressTick?.Invoke(this); }
 
         //sends the complete event
         [BoxGroup("Debug", true, true, 100), Button("Complete Event", ButtonSizes.Medium)]
-        private void CompleteEvent()
-        {
-            if (OnProgressComplete != null) OnProgressComplete(this);
-        }
+        private void CompleteEvent() { OnProgressComplete?.Invoke(this); }
         #endregion
 
         #region COUNT AND COMPLETION
@@ -184,8 +222,10 @@ namespace JReact.TimeProgress
 
         public void ResetThis()
         {
+            UnTrackPause();
             ResetValues();
             ResetEvents();
+            if (_destroyAtDisable) Destroy(this);
         }
 
         private void ResetValues()

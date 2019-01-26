@@ -37,7 +37,7 @@ namespace JReact.Pool.SpecialEffect
             //activate, play and event
             if (!gameObject.activeSelf) gameObject.SetActive(true);
             TriggerThisEffect();
-            if (OnActivation != null) OnActivation(this);
+            OnActivation?.Invoke(this);
         }
 
 
@@ -48,7 +48,7 @@ namespace JReact.Pool.SpecialEffect
         protected virtual void RemoveAfterSeconds(float secondsToWait)
         {
             Timing.RunCoroutine(PlayThanRemove(secondsToWait), Segment.LateUpdate, _instanceId,
-                                J_CoroutineTags.COROUTINE_SpecialEffectTag);
+                                JCoroutineTags.COROUTINE_SpecialEffectTag);
         }
 
         private IEnumerator<float> PlayThanRemove(float particleDuration)

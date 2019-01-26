@@ -22,7 +22,7 @@ namespace JReact.Mover
         private const int INT_StartID = -1;
 
         //the reference to the transform
-        [BoxGroup("Mover", true, true, 0), ReadOnly] protected Transform _ThisTransform { get { return this.transform; } }
+        [BoxGroup("Mover", true, true, 0), ReadOnly] protected Transform _ThisTransform => this.transform;
         //the id of the mover, it starts at -1, and then get identified
         [BoxGroup("Mover", true, true, 0), ReadOnly] private int _transformId = INT_StartID;
         [BoxGroup("Mover", true, true, 0), ReadOnly] private int _TransformId
@@ -36,19 +36,16 @@ namespace JReact.Mover
         //the current position of the mover, used also to move it
         [BoxGroup("Mover", true, true, 0), ReadOnly] protected virtual Vector2 _CurrentPosition
         {
-            get { return _ThisTransform.position; }
-            set { _ThisTransform.position = value; }
+            get => _ThisTransform.position;
+            set => _ThisTransform.position = value;
         }
 
         //movement speed
-        [BoxGroup("Move State", true, true, 5), ShowInInspector] private float _moveSpeed = 1f;
-        public float MoveSpeed { get { return _moveSpeed; } private set { _moveSpeed = value; } }
+        [BoxGroup("Move State", true, true, 5), ShowInInspector] public float MoveSpeed { get; private set; } = 1f;
         //movement direction
-        [BoxGroup("Move State", true, true, 5), ShowInInspector] private Vector2 _moveDirection = new Vector2();
-        public Vector2 MoveDirection { get { return _moveDirection; } private set { _moveDirection = value; } }
+        [BoxGroup("Move State", true, true, 5), ShowInInspector] public Vector2 MoveDirection { get; private set; } = new Vector2();
         //a bool to track movement
-        [BoxGroup("Move State", true, true, 5), ReadOnly] private bool _isMoving = false;
-        public bool IsMoving { get { return _isMoving; } private set { _isMoving = value; } }
+        [BoxGroup("Move State", true, true, 5) , ReadOnly] public bool IsMoving { get; private set; } = false;
         #endregion
 
         #region DIRECTION MOVEMENT - NORMALIZED
@@ -96,7 +93,7 @@ namespace JReact.Mover
             //move the transform on the given direction
             _CurrentPosition += (MoveDirection * MoveSpeed * Time.deltaTime);
             //send the event
-            if (OnMove != null) OnMove(_CurrentPosition);
+            OnMove?.Invoke(_CurrentPosition);
             //wait one frame, then run again
             yield return Timing.WaitForOneFrame;
             Timing.RunCoroutine(DirectionMove().CancelWith(gameObject), Segment.FixedUpdate, _TransformId, COROUTINE_MoveTransform);
@@ -174,7 +171,7 @@ namespace JReact.Mover
             var elapsedTime = 0f;
             //the starting position is the position of the transform at start
             Vector2 startingPos = _CurrentPosition;
-            //keep moving until we reach tehe time
+            //keep moving until we reach the time
             while (elapsedTime < timeToReach)
             {
                 //moving with a lerp
@@ -182,7 +179,7 @@ namespace JReact.Mover
                 //adding the elapsed time
                 elapsedTime += Time.deltaTime;
                 //send the event
-                if (OnMove != null) OnMove(_CurrentPosition);
+                OnMove?.Invoke(_CurrentPosition);
                 //wait a frame
                 yield return Timing.WaitForOneFrame;
             }
@@ -190,7 +187,7 @@ namespace JReact.Mover
             //stop moving at the end
             IsMoving = false;
             //send the event for the fixed position reached
-            if (OnFixedPositionReached != null) OnFixedPositionReached(_CurrentPosition);
+            OnFixedPositionReached?.Invoke(_CurrentPosition);
         }
         #endregion
 

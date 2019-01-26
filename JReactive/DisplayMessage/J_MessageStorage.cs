@@ -31,13 +31,13 @@ namespace JReact.ScreenMessage
         {
             if (_isRunning)
             {
-                JConsole.Warning($"{name} is already running. Cancel command", J_LogTags.Message, this);
+                JConsole.Warning($"{name} is already running. Cancel command", JLogTags.Message, this);
                 return false;
             }
 
             if (_sender == null)
             {
-                JConsole.Error($"{name} has no sender. Cancel command", J_LogTags.Message, this);
+                JConsole.Error($"{name} has no sender. Cancel command", JLogTags.Message, this);
                 return false;
             }
 

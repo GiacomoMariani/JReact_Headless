@@ -21,15 +21,9 @@ namespace JReact.Collections
         //the queue of processors
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<iTask> _procedureQueue = new Queue<iTask>();
         //to check if any task is running
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive
-        {
-            get { return _currentProcedure != null; }
-        }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive => _currentProcedure != null;
         //the total task procedures
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int TotalProcessors
-        {
-            get { return _procedureQueue.Count; }
-        }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int TotalProcessors => _procedureQueue.Count;
         #endregion
 
         #region COMMANDS
@@ -39,12 +33,12 @@ namespace JReact.Collections
         /// <param name="taskToProcess">the task to process</param>
         public void ProcessTask(iTask taskToProcess)
         {
-            JConsole.Log($"{name} task added. Current tasks: {TotalProcessors}", J_LogTags.Task, this);
+            JConsole.Log($"{name} task added. Current tasks: {TotalProcessors}", JLogTags.Task, this);
 
             if (TotalProcessors >= _allocatedTasks)
             {
                 JConsole.Warning($"{name} has too many tasks. Current {TotalProcessors} / Max {_allocatedTasks}.\nAborting Task: {taskToProcess.TaskName}",
-                                 J_LogTags.Task, this);
+                                 JLogTags.Task, this);
                 return;
             }
 

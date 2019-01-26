@@ -51,7 +51,7 @@ namespace JReact.TimeProgress
             SendTickEvent(realTimePassed);
 
             //move ahead to the next tick
-            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, J_CoroutineTags.COROUTINE_TimerTag);
+            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_TimerTag);
         }
         #endregion
     }

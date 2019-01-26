@@ -1,6 +1,6 @@
 namespace JReact
 {
-    public class J_CoroutineTags
+    public class JCoroutineTags
     {
         //special effects
         public const string COROUTINE_SpecialEffectTag = "J_SpecialEffectTag";

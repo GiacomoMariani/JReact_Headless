@@ -23,9 +23,9 @@ namespace JReact.Collections
         protected Dictionary<TKey, TValue> _thisDictionary = new Dictionary<TKey, TValue>();
         private int _count;
         private int _count1;
-        public Dictionary<TKey, TValue> ThisDictionary { get { return _thisDictionary; } }
+        public Dictionary<TKey, TValue> ThisDictionary => _thisDictionary;
         //main accessor
-        public TValue this[TKey index] { get { return _thisDictionary[index]; } }
+        public TValue this[TKey index] => _thisDictionary[index];
         #endregion
 
         #region MAIN COMMANDS
@@ -35,14 +35,14 @@ namespace JReact.Collections
         public void UpdateElement(TKey key, TValue value)
         {
             Assert.IsNotNull(_thisDictionary, $"{name} not initiated");
-            InternalUpdateElement(key, value);
-            if (OnDictionaryChange != null) OnDictionaryChange(key);
+            Internal_UpdateElement(key, value);
+            OnDictionaryChange?.Invoke(key);
         }
 
         /// <summary>
         /// the specific action to be sent when the dictionary is changed
         /// </summary>
-        protected virtual void InternalUpdateElement(TKey keyToChange, TValue valueToChange) { ThisDictionary[keyToChange] = valueToChange; }
+        protected virtual void Internal_UpdateElement(TKey keyToChange, TValue valueToChange) { ThisDictionary[keyToChange] = valueToChange; }
         #endregion
 
         #region SUBSCRIBERS

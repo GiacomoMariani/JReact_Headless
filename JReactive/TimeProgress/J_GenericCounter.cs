@@ -41,20 +41,20 @@ namespace JReact.TimeProgress
         public void StartCount()
         {
             //make sure everything is setup correctly and starts the counting
-            JConsole.Log($"{name} starts counting", J_LogTags.TimeProgress, this);
+            JConsole.Log($"{name} starts counting", JLogTags.TimeProgress, this);
             if (!SanityChecks()) return;
             //complete the setup
             _objectId = GetInstanceID();
             IsRunning = true;
             //starts counting
-            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, J_CoroutineTags.COROUTINE_TimerTag);
+            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_TimerTag);
         }
 
         //stops the timer
         public void StopCount()
         {
-            JConsole.Log($"{name} stops counting", J_LogTags.TimeProgress, this);
-            Timing.KillCoroutines(_objectId, J_CoroutineTags.COROUTINE_TimerTag);
+            JConsole.Log($"{name} stops counting", JLogTags.TimeProgress, this);
+            Timing.KillCoroutines(_objectId, JCoroutineTags.COROUTINE_TimerTag);
             IsRunning = false;
         }
         #endregion
@@ -74,10 +74,7 @@ namespace JReact.TimeProgress
         protected abstract IEnumerator<float> CountOneTick();
 
         //send the event
-        protected void SendTickEvent(float tickValue)
-        {
-            if (OnTick != null) OnTick(tickValue);
-        }
+        protected void SendTickEvent(float tickValue) { OnTick?.Invoke(tickValue); }
         #endregion
 
         #region SUBSCRIBERS
@@ -91,7 +88,7 @@ namespace JReact.TimeProgress
         #endregion
 
         #region DISABLE AND RESET
-        protected virtual void OnDisable() { ResetThis(); }
+        private void OnDisable() { ResetThis(); }
 
         public virtual void ResetThis()
         {

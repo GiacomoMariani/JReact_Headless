@@ -31,7 +31,7 @@ namespace JReact.StateControls
         //start and stop tracking on enable
         protected virtual void OnEnable()
         {
-            ThisView.ActivateView(_stateToActivate.IsActivated);
+            ThisView.ActivateView(_stateToActivate.IsActive);
             StartTracking();
         }
 

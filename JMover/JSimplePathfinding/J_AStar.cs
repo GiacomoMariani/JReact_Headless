@@ -60,7 +60,7 @@ namespace JReact.Pathfinding
         {
             if (_debug)
                 JConsole.Log($"{name} calculates from {startNode.Coordinates} to {goalNode.Coordinates}",
-                             J_LogTags.Pathfind, this);
+                             JLogTags.Pathfind, this);
 
             // --------------- SETTING UP THE CALCULATION --------------- //
             var goalReached = false;
@@ -123,9 +123,9 @@ namespace JReact.Pathfinding
 
             if (_debug)
                 JConsole.Log($"{name} Path from {startNode.Coordinates} to {goalNode.Coordinates}. Found: {goalReached}. Explored {_exploredNodes.Count} nodes.",
-                             J_LogTags.Input, this);
+                             JLogTags.Input, this);
             if (_debug && !goalReached)
-                JConsole.Log($"{name} No path Found. Nodes Explored {_exploredNodes.PrintAll()}", J_LogTags.Input, this);
+                JConsole.Log($"{name} No path Found. Nodes Explored {_exploredNodes.PrintAll()}", JLogTags.Input, this);
 
             //if we have not reached the goal we return null
             if (!goalReached ||
@@ -170,7 +170,7 @@ namespace JReact.Pathfinding
                 //check for too long paths (circular path issue)
                 if (steps > _maxPathSteps)
                 {
-                    JConsole.Warning($"{name}Path too long. Path {_resultPath.PrintAll()}", J_LogTags.Pathfind, this);
+                    JConsole.Warning($"{name}Path too long. Path {_resultPath.PrintAll()}", JLogTags.Pathfind, this);
                     break;
                 }
             }
@@ -180,7 +180,7 @@ namespace JReact.Pathfinding
             _resultPath.Reverse();
 
             //log and return
-            if (_debug) JConsole.Log($"{name} Path found. Nodes: {_resultPath.Count}.", J_LogTags.Pathfind, this);
+            if (_debug) JConsole.Log($"{name} Path found. Nodes: {_resultPath.Count}.", JLogTags.Pathfind, this);
             return _resultPath;
         }
         #endregion

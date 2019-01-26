@@ -14,15 +14,14 @@ namespace JReact.StateControls
     {
         //the main event to set the new state
         private event JAction OnExitEvent;
-        
+
         //to check if this state is active
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isActivated;
-        public bool IsActivated { get { return _isActivated; } private set { _isActivated = value; } }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; }
 
         //raise event also activate the state
         public override void RaiseEvent()
         {
-            IsActivated = true;
+            IsActive = true;
             base.RaiseEvent();
         }
 
@@ -30,12 +29,12 @@ namespace JReact.StateControls
         [ButtonGroup("State trigger", 200), Button("Raise Exit Event", ButtonSizes.Medium)]
         public virtual void RaiseExitEvent()
         {
-            IsActivated = false;
-            if (OnExitEvent != null) OnExitEvent();
+            IsActive = false;
+            OnExitEvent?.Invoke();
         }
 
         //a way to subscribe and unsubscribe to the exit event
-        public void SubscribeToExitEvent(JAction actionToSend) { OnExitEvent += actionToSend; }
+        public void SubscribeToExitEvent(JAction actionToSend) { OnExitEvent   += actionToSend; }
         public void UnSubscribeToExitEvent(JAction actionToSend) { OnExitEvent -= actionToSend; }
     }
 }

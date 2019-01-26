@@ -23,7 +23,7 @@ namespace JReact.TimeProgress
         [BoxGroup("Setup - Optionals", true, true, 10), SerializeField, AssetsOnly] private J_Timer _timer;
 
         // --------------- STATE --------------- //
-        [BoxGroup("State", true, true, 30), ReadOnly] private bool _IsActive => _progressEvent != null && _progressEvent.IsRunning;
+        [FoldoutGroup("State", false, 25), ReadOnly, ShowInInspector] private bool _isLooping;
 
         #region INITIALIZATION
         private void Awake()
@@ -53,11 +53,13 @@ namespace JReact.TimeProgress
         public void StartLoop()
         {
             //avoid multiple loops
-            Assert.IsFalse(_IsActive, $"{gameObject.name} is already looping and cannot start again. Cancel command.");
-            if (_IsActive) return;
+            Assert.IsFalse(_isLooping, $"{gameObject.name} is already looping and cannot start again. Cancel command.");
+            if (_isLooping) return;
+            _isLooping = true;
 
-            JConsole.Log($"Loop starts on {gameObject.name}", J_LogTags.TimeProgress, this);
+            JConsole.Log($"Loop starts on {gameObject.name}", JLogTags.TimeProgress, this);
             // --------------- PROGRESS SET --------------- //
+            Assert.IsTrue(!_progressEvent.IsRunning, $"{gameObject.name} loop progress -{_progressEvent.name}- was already running.");
             _progressEvent.SubscribeToComplete(TriggerThisLoop);
             _progressEvent.StartProgress(_intervalInSeconds);
         }
@@ -76,20 +78,25 @@ namespace JReact.TimeProgress
         public void StopLoop()
         {
             //avoid stop non active loop
-            Assert.IsTrue(_IsActive, $"{gameObject.name} is not looping and cannot stop. Cancel command.");
-            if (!_IsActive) return;
+            Assert.IsFalse(_isLooping, $"{gameObject.name} was not looping. Cancel command.");
+            if (!_isLooping) return;
 
-            JConsole.Log($"Loop stops on {gameObject.name}", J_LogTags.TimeProgress, this);
+            JConsole.Log($"Loop stops on {gameObject.name}", JLogTags.TimeProgress, this);
+            Assert.IsTrue(_progressEvent.IsRunning, $"{gameObject.name} loop progress -{_progressEvent.name}- was not running.");
             // --------------- COMPLETE LOOP --------------- //
             _progressEvent.UnSubscribeToComplete(TriggerThisLoop);
             _progressEvent.StopProgress();
             _unityEvents_AtEnd.Invoke();
+            _isLooping = false;
         }
         #endregion
 
         #region LISTENERS
         //stop on destroy
-        private void OnDestroy() { StopLoop(); }
+        private void OnDestroy()
+        {
+            if (_isLooping) StopLoop();
+        }
         #endregion
     }
 }

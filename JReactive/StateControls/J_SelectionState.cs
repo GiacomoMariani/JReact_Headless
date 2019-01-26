@@ -42,7 +42,7 @@ namespace JReact.StateControls
         /// <param name="itemToSelect">the item to select</param>
         public void SelectThis(iSelectable<T> itemToSelect)
         {
-            JConsole.Log($"{name} is selecting {itemToSelect.NameOfThis}", J_LogTags.State, this);
+            JConsole.Log($"{name} is selecting {itemToSelect.NameOfThis}", JLogTags.State, this);
             //selecting the element and call the state
             SelectedItem = itemToSelect;
             _stateControl.SetNewState(this);
@@ -54,7 +54,7 @@ namespace JReact.StateControls
         public void Deselect()
         {
             Assert.IsNotNull(SelectedItem, $"{name} is trying to deselect, but nothing is selected");
-            JConsole.Log($"{name} is deselecting element {SelectedItem.NameOfThis}", J_LogTags.State, this);
+            JConsole.Log($"{name} is deselecting element {SelectedItem.NameOfThis}", JLogTags.State, this);
             SelectedItem = null;
             _stateControl.SetNewState(_deselectionState);
         }

@@ -14,10 +14,7 @@ namespace JReact
 
         //this is the property we want to track
         [ButtonGroup("Commands", 200), Button("Raise Event", ButtonSizes.Medium)]
-        public virtual void RaiseEvent()
-        {
-            if (OnEnter != null) OnEnter();
-        }
+        public virtual void RaiseEvent() { OnEnter?.Invoke(); }
 
         //a way to subscribe and unsubscribe to this event
         public void Subscribe(JAction actionToSubscribe) { OnEnter   += actionToSubscribe; }

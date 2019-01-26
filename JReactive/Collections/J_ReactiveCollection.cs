@@ -22,9 +22,9 @@ namespace JReact.Collections
         //the list related to this collection
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected List<T> _thisCollection = new List<T>();
         //the amount of elements in the collection
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count { get { return _thisCollection.Count; } }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _thisCollection.Count;
         //main accessor
-        public T this[int index] { get { return _thisCollection[index]; } }
+        public T this[int index] => _thisCollection[index];
         #endregion
 
         #region MAIN COMMANDS
@@ -32,14 +32,14 @@ namespace JReact.Collections
         public void Add(T item)
         {
             //make sure the list has been initiated
-            Assert.IsNotNull(_thisCollection, "Collection not initialized: " + name);
-            Assert.IsTrue(item != null, "Null elements not valid on: "       + name);
+            Assert.IsNotNull(_thisCollection, $"{name} Collection not initialized");
+            Assert.IsTrue(item != null, $"{name} Null elements are not valid");
             //add the element
             _thisCollection.Add(item);
             //a method to be used on the element changed
             WhatHappensOnAdd(item);
             //send the event
-            if (OnAddToCollection != null) OnAddToCollection(item);
+            OnAddToCollection?.Invoke(item);
         }
 
         /// this method is used to add an item to the collection
@@ -48,7 +48,7 @@ namespace JReact.Collections
             //make sure the element is in the list
             if (!_thisCollection.Contains(item))
             {
-                JConsole.Warning($"The element {item} is not in the list", J_LogTags.Collection, this);
+                JConsole.Warning($"The element {item} is not in the list", JLogTags.Collection, this);
                 return false;
             }
 
@@ -57,7 +57,7 @@ namespace JReact.Collections
             //a method to be used on the element changed
             ElementRemoved(item);
             //send the event
-            if (OnRemoveToCollection != null) OnRemoveToCollection(item);
+            OnRemoveToCollection?.Invoke(item);
             return true;
         }
 
@@ -68,8 +68,7 @@ namespace JReact.Collections
         {
             //send the remove events for all the items
             for (int i = 0; i < Count; i++)
-                if (OnRemoveToCollection != null)
-                    OnRemoveToCollection(_thisCollection[i]);
+                OnRemoveToCollection?.Invoke(_thisCollection[i]);
 
             //just to double check everything is cleared
             _thisCollection.Clear();
@@ -129,7 +128,7 @@ namespace JReact.Collections
 
         public void CopyTo(T[] array, int arrayIndex) { _thisCollection.CopyTo(array, arrayIndex); }
 
-        public bool IsReadOnly { get { return false; } }
+        public bool IsReadOnly => false;
 
         public IEnumerator<T> GetEnumerator() { return _thisCollection.GetEnumerator(); }
 

@@ -28,7 +28,7 @@ namespace JReact.SceneControls
             _isInitialized = true;
             //store the first scene, without triggering the event
             _currentScene = SceneManager.GetActiveScene();
-            JConsole.Log($"{name} complete the setup", J_LogTags.SceneManager, this);
+            JConsole.Log($"{name} complete the setup", JLogTags.SceneManager, this);
         }
         #endregion
 
@@ -40,13 +40,13 @@ namespace JReact.SceneControls
         public void LoadScene(string sceneName)
         {
             if (!_isInitialized) SetupThis();
-            Timing.RunCoroutine(LoadingTheScene(sceneName), Segment.Update, J_CoroutineTags.COROUTINE_SceneChangerTag);
+            Timing.RunCoroutine(LoadingTheScene(sceneName), Segment.Update, JCoroutineTags.COROUTINE_SceneChangerTag);
         }
 
         /// <summary>
         /// used to cancel the load of a given scene
         /// </summary>
-        public void CancelLoadScene() { Timing.KillCoroutines(J_CoroutineTags.COROUTINE_SceneChangerTag); }
+        public void CancelLoadScene() { Timing.KillCoroutines(JCoroutineTags.COROUTINE_SceneChangerTag); }
         #endregion
 
         #region SCENE PROCESSING
@@ -62,7 +62,7 @@ namespace JReact.SceneControls
             {
                 //wait one frame and send the progress event
                 yield return Timing.WaitForOneFrame;
-                if (OnLoadProgress != null) OnLoadProgress(asyncLoad.progress);
+                OnLoadProgress?.Invoke(asyncLoad.progress);
             }
         }
 
@@ -70,10 +70,10 @@ namespace JReact.SceneControls
         private void SceneChanged(Scene oldScene, Scene newScene)
         {
             JConsole.Log($"{name} changed from scene -{oldScene.name}- to scene -{newScene.name}-",
-                         J_LogTags.SceneManager, this);
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= SceneChanged;
-            CurrentScene                                                =  newScene;
-            if (OnSceneChange != null) OnSceneChange(oldScene, newScene);
+                         JLogTags.SceneManager, this);
+            SceneManager.activeSceneChanged -= SceneChanged;
+            CurrentScene                    =  newScene;
+            OnSceneChange?.Invoke(oldScene, newScene);
         }
         #endregion
 

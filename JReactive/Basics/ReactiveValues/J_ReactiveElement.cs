@@ -18,11 +18,11 @@ namespace JReact
         [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly]
         public virtual T CurrentValue
         {
-            get { return _currentValue; }
+            get => _currentValue;
             set
             {
                 _currentValue = value;
-                if (OnPropertyChange != null) OnPropertyChange(value);
+                OnPropertyChange?.Invoke(value);
             }
         }
         #region SUBSCRIBERS AND LISTENERS

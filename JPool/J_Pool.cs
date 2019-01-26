@@ -42,7 +42,7 @@ namespace JReact.Pool
             _instanceId             = GetInstanceID();
             // --------------- START RECURSION --------------- //
             Timing.RunCoroutine(Populate(_startingItems, itemSetupAction), Segment.SlowUpdate, _instanceId,
-                                J_CoroutineTags.COROUTINE_PoolTag);
+                                JCoroutineTags.COROUTINE_PoolTag);
         }
 
         //checks that everything has been setup properly
@@ -66,7 +66,7 @@ namespace JReact.Pool
             remainingObjects--;
             if (remainingObjects > 0)
                 Timing.RunCoroutine(Populate(remainingObjects, itemSetupAction), Segment.SlowUpdate, _instanceId,
-                                    J_CoroutineTags.COROUTINE_PoolTag);
+                                    JCoroutineTags.COROUTINE_PoolTag);
         }
         #endregion
 

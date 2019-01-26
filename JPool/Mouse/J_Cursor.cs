@@ -68,7 +68,7 @@ namespace JReact.Pool.SpecialEffect
             SetupCursorViews();
             SetDefaultCursor();
             Cursor.visible = false;
-            Timing.RunCoroutine(FollowMouse(mainCamera), Segment.LateUpdate, J_CoroutineTags.COROUTINE_MouseFollow);
+            Timing.RunCoroutine(FollowMouse(mainCamera), Segment.LateUpdate, JCoroutineTags.COROUTINE_MouseFollow);
         }
 
         private void SetupCursorViews()
@@ -102,7 +102,7 @@ namespace JReact.Pool.SpecialEffect
         {
             _activeEffect = true;
             SetMouseEffect(_effect, _interval);
-            Timing.RunCoroutine(InstantiateEffect(mainCamera), Segment.LateUpdate, J_CoroutineTags.COROUTINE_MouseEffect);
+            Timing.RunCoroutine(InstantiateEffect(mainCamera), Segment.LateUpdate, JCoroutineTags.COROUTINE_MouseEffect);
         }
 
         private IEnumerator<float> InstantiateEffect(Camera mainCamera)
@@ -138,7 +138,7 @@ namespace JReact.Pool.SpecialEffect
         private void SetCursor(GameObject pointer)
         {
             CurrentCursor = pointer;
-            if (OnPointerChange != null) OnPointerChange(CurrentCursor);
+            OnPointerChange?.Invoke(CurrentCursor);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace JReact.Pool.SpecialEffect
             //remove the cursor
             if (!_activeCursor) return;
             if (CurrentCursor != null) CurrentCursor.gameObject.SetActive(false);
-            Timing.KillCoroutines(J_CoroutineTags.COROUTINE_MouseEffect);
+            Timing.KillCoroutines(JCoroutineTags.COROUTINE_MouseEffect);
             //reset the system cursor
             Cursor.visible = true;
             _activeCursor  = false;
@@ -176,7 +176,7 @@ namespace JReact.Pool.SpecialEffect
         public void DisableMouseEffect()
         {
             if (!_activeEffect) return;
-            Timing.KillCoroutines(J_CoroutineTags.COROUTINE_MouseEffect);
+            Timing.KillCoroutines(JCoroutineTags.COROUTINE_MouseEffect);
             _activeEffect = false;
         }
         #endregion
