@@ -34,7 +34,7 @@ namespace JReact.Selection
         /// selects an item
         /// </summary>
         /// <param name="item">the item selected</param>
-        public void SelectThis(T item) { Selected = item; }
+        public void Select(T item) { Selected = item; }
 
         /// any logic to be applied on the selected item
         protected virtual void ActOnSelection(T item) { }

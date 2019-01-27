@@ -1,8 +1,18 @@
-﻿using System;
-using UnityEngine.Events;
-
-namespace JReact
+﻿namespace JReact
 {
+    //something that might be stackable, such as inventory items
+    public interface iStackable : iObservable<int>
+    {
+        int CurrentAmount { get; }
+    }
+    
+    public interface iSelectable<out T> where T : class
+    {
+        string NameOfThis { get; }
+        bool IsSelected { get; set; }
+        T ThisElement { get; }
+    }
+
     //an interface to setup the state of the injectors
     public interface iInitiator<T>
     {
@@ -33,14 +43,14 @@ namespace JReact
         void Subscribe(JGenericDelegate<T> action);
         void UnSubscribe(JGenericDelegate<T> action);
     }
-    
+
     public interface iTrackable
     {
         bool IsTracking { get; }
         void StartTracking();
         void StopTracking();
     }
-    
+
     //the interface to identify a task
     public interface iTask
     {

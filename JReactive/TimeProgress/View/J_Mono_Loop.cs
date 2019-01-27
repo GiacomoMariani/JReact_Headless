@@ -20,7 +20,6 @@ namespace JReact.TimeProgress
 
         // --------------- OPTIONALS - THEY MAY BE AUTO IMPLEMENTED --------------- //
         [BoxGroup("Setup - Optionals", true, true, 10), SerializeField, AssetsOnly] private J_Progress _progressEvent;
-        [BoxGroup("Setup - Optionals", true, true, 10), SerializeField, AssetsOnly] private J_Timer _timer;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 25), ReadOnly, ShowInInspector] private bool _isLooping;
@@ -29,14 +28,12 @@ namespace JReact.TimeProgress
         private void Awake()
         {
             ProgressSafeChecks();
-            _unityEvents_AtStart.Invoke();
             if (_startAtAwake) StartLoop();
         }
 
         //make sure the progress event is set
         private void ProgressSafeChecks()
         {
-            //create the event at startup
             if (_progressEvent != null)
                 _progressEvent = J_Progress.InstantiateProgress<J_Progress>();
         }
@@ -52,9 +49,12 @@ namespace JReact.TimeProgress
             //avoid multiple loops
             Assert.IsFalse(_isLooping, $"{gameObject.name} is already looping and cannot start again. Cancel command.");
             if (_isLooping) return;
-            _isLooping = true;
 
+            // --------------- START --------------- //
             JConsole.Log($"Loop starts on {gameObject.name}", JLogTags.TimeProgress, this);
+            _isLooping = true;
+            _unityEvents_AtStart.Invoke();
+            
             // --------------- PROGRESS SET --------------- //
             Assert.IsTrue(!_progressEvent.IsRunning, $"{gameObject.name} loop progress -{_progressEvent.name}- was already running.");
             _progressEvent.SubscribeToComplete(TriggerThisLoop);

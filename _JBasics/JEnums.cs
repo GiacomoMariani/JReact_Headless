@@ -14,5 +14,7 @@ namespace JReact
         None
     }
     //the type of conditions
-    public enum ConditionType { And, Or }
+    public enum OperatorType { And, Or }
+
+    public enum ComparisonType { Less, Equal, More }
 }

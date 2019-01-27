@@ -8,7 +8,8 @@ namespace JReact.StateControls
     /// this class represent a simple state that contains also a selected item
     /// </summary>
     /// <typeparam name="T">the type of selected object we want</typeparam>
-    public abstract class J_SelectionState<T> : J_State where T : class
+    public abstract class J_SelectionState<T> : J_State 
+        where T : class
     {
         #region VALUES AND PROPERTIES
         //reference to the main control using the selection
@@ -78,12 +79,5 @@ namespace JReact.StateControls
             if (SelectedItem != null) SelectedItem = null;
         }
         #endregion
-    }
-
-    public interface iSelectable<out T> where T : class
-    {
-        string NameOfThis { get; }
-        bool IsSelected { get; set; }
-        T ThisElement { get; }
     }
 }

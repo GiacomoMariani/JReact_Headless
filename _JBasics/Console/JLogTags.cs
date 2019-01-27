@@ -38,6 +38,7 @@ namespace JReact
         public const string Message = "-Message-";
         //build
         public const string Build = "-Build-";
-
+        //conditions
+        public const string Conditions = "-Build-";
     }
 }
