@@ -35,23 +35,23 @@ namespace JReact.TimeProgress
 
         #region ABSTRACT IMPLEMENTATION
         //activate when the progress is running
-        protected override void ProgressStart(J_ProgressEvent progress) { ThisButton.interactable = true; }
+        protected override void ProgressStart(J_Progress progress) { ThisButton.interactable = true; }
 
-        protected override void ProgressUpdate(J_ProgressEvent progress) { }
+        protected override void ProgressUpdate(J_Progress progress) { }
 
         //deactivate when the progress is not running
-        protected override void ProgressComplete(J_ProgressEvent progress) { ThisButton.interactable = false; }
+        protected override void ProgressComplete(J_Progress progress) { ThisButton.interactable = false; }
         #endregion
 
         #region ENABLE / DISABLE
-        protected override void ViewEnabled(J_ProgressEvent progress)
+        protected override void ViewEnabled(J_Progress progress)
         {
             base.ViewEnabled(progress);
             ThisButton.interactable = _progressEvent.IsRunning;
             ThisButton.onClick.AddListener(TryPressButton);
         }
 
-        protected override void ViewDisabled(J_ProgressEvent progress) { ThisButton.onClick.RemoveListener(TryPressButton); }
+        protected override void ViewDisabled(J_Progress progress) { ThisButton.onClick.RemoveListener(TryPressButton); }
         #endregion
     }
 }

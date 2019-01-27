@@ -35,22 +35,22 @@ namespace JReact.TimeProgress
 
         #region ABSTRACT IMPLEMENTATION
         //setup the slider at enable
-        protected override void ViewEnabled(J_ProgressEvent progress)
+        protected override void ViewEnabled(J_Progress progress)
         {
             base.ViewEnabled(progress);
             if (progress.IsRunning) ThisSlider.value = progress.ProgressPercentage;
             gameObject.SetActive(progress.IsRunning);
         }
 
-        protected override void ProgressStart(J_ProgressEvent progress)
+        protected override void ProgressStart(J_Progress progress)
         {
             ThisSlider.value = progress.ProgressPercentage;
             gameObject.SetActive(true);
         }
 
-        protected override void ProgressUpdate(J_ProgressEvent progress) { ThisSlider.value = progress.ProgressPercentage; }
+        protected override void ProgressUpdate(J_Progress progress) { ThisSlider.value = progress.ProgressPercentage; }
 
-        protected override void ProgressComplete(J_ProgressEvent progress)
+        protected override void ProgressComplete(J_Progress progress)
         {
             gameObject.SetActive(false);
             ThisSlider.value = 0f;

@@ -19,7 +19,7 @@ namespace JReact.TimeProgress
         [BoxGroup("Setup - Events", true, true, 5), SerializeField] private JUnityEvent _unityEvents_AtEnd;
 
         // --------------- OPTIONALS - THEY MAY BE AUTO IMPLEMENTED --------------- //
-        [BoxGroup("Setup - Optionals", true, true, 10), SerializeField, AssetsOnly] private J_ProgressEvent _progressEvent;
+        [BoxGroup("Setup - Optionals", true, true, 10), SerializeField, AssetsOnly] private J_Progress _progressEvent;
         [BoxGroup("Setup - Optionals", true, true, 10), SerializeField, AssetsOnly] private J_Timer _timer;
 
         // --------------- STATE --------------- //
@@ -36,12 +36,9 @@ namespace JReact.TimeProgress
         //make sure the progress event is set
         private void ProgressSafeChecks()
         {
-            //create the event if missing
+            //create the event at startup
             if (_progressEvent != null)
-                _progressEvent = ScriptableObject.CreateInstance<J_ProgressEvent>();
-
-            //add the timer if set
-            if (_timer != null) _progressEvent.SetTimer(_timer);
+                _progressEvent = J_Progress.InstantiateProgress<J_Progress>();
         }
         #endregion
 
@@ -65,7 +62,7 @@ namespace JReact.TimeProgress
         }
 
         //invoke events and loop again
-        private void TriggerThisLoop(J_ProgressEvent progress)
+        private void TriggerThisLoop(J_Progress progress)
         {
             _unityEvents_AtLoop.Invoke();
             _progressEvent.StartProgress(_intervalInSeconds);
@@ -93,10 +90,7 @@ namespace JReact.TimeProgress
 
         #region LISTENERS
         //stop on destroy
-        private void OnDestroy()
-        {
-            if (_isLooping) StopLoop();
-        }
+        private void OnDestroy() { StopLoop(); }
         #endregion
     }
 }

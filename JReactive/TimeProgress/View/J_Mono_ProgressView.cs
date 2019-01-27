@@ -11,7 +11,7 @@ namespace JReact.TimeProgress
     {
         #region FIELDS AND PROPERTIES
         //the progress may be set manually of by injection
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] protected J_ProgressEvent _progressEvent;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] protected J_Progress _progressEvent;
         //this may be left unassigned
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Identifier _progressId;
 
@@ -37,7 +37,7 @@ namespace JReact.TimeProgress
         /// </summary>
         /// <param name="progress">the progress event</param>
         /// <param name="identifier">the identifier of the progress event</param>
-        public void InjectProgress(J_ProgressEvent progress, J_Identifier identifier = null)
+        public void InjectProgress(J_Progress progress, J_Identifier identifier = null)
         {
             //stop if an id has been set and there's no match
             if (_progressId != identifier &&
@@ -82,21 +82,21 @@ namespace JReact.TimeProgress
         /// <summary>
         /// triggered at progress starts
         /// </summary>
-        protected abstract void ProgressStart(J_ProgressEvent progress);
+        protected abstract void ProgressStart(J_Progress progress);
 
         /// <summary>
         /// triggered at each tick
         /// </summary>
-        protected abstract void ProgressUpdate(J_ProgressEvent progress);
+        protected abstract void ProgressUpdate(J_Progress progress);
 
         /// <summary>
         /// triggered at progress complete
         /// </summary>
-        protected abstract void ProgressComplete(J_ProgressEvent progress);
+        protected abstract void ProgressComplete(J_Progress progress);
         
         
-        protected virtual void ViewEnabled(J_ProgressEvent progress){}
-        protected virtual void ViewDisabled(J_ProgressEvent progress) { }
+        protected virtual void ViewEnabled(J_Progress progress){}
+        protected virtual void ViewDisabled(J_Progress progress) { }
         #endregion
 
         #region LISTENERS

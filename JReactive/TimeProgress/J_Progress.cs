@@ -1,5 +1,4 @@
-﻿using JReact.TimeProgress.Pause;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -9,25 +8,23 @@ namespace JReact.TimeProgress
     /// this is an event connected to a time
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Time/Progress Event")]
-    public class J_ProgressEvent : ScriptableObject, iObservable<J_ProgressEvent>, iResettable
+    public class J_Progress : ScriptableObject, iObservable<J_Progress>, iResettable
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS RELATED TO PROGRESS --------------- //
-        private event JGenericDelegate<J_ProgressEvent> OnProgressStart;
-        private event JGenericDelegate<J_ProgressEvent> OnProgressTick;
-        private event JGenericDelegate<J_ProgressEvent> OnProgressComplete;
+        private event JGenericDelegate<J_Progress> OnProgressStart;
+        private event JGenericDelegate<J_Progress> OnProgressTick;
+        private event JGenericDelegate<J_Progress> OnProgressComplete;
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] protected J_Timer _timer;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Timer _timer;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Identifier _identifier;
         public J_Identifier Identifier => _identifier;
 
         // --------------- STATE --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_PauseEvent _pauseEvent;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _timeRequiredInSeconds;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float SecondsFromStart { get; private set; }
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _paused = true;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _destroyAtDisable = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public virtual float SecondsFromStart { get; private set; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool Paused { get; private set; } = false;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; } = false;
 
         // --------------- BOOK KEEPING --------------- //
@@ -37,11 +34,12 @@ namespace JReact.TimeProgress
         public float RemainingSeconds => _timeRequiredInSeconds - SecondsFromStart;
         #endregion
 
-        #region PRE SETUP
-        public static J_ProgressEvent CreateProgressEvent(bool destroyAtDisable = true)
+        #region SETUP METHODS
+        public static T InstantiateProgress<T>(bool createTimer = true)
+            where T : J_Progress
         {
-            var progress = CreateInstance<J_ProgressEvent>();
-            progress._destroyAtDisable = destroyAtDisable;
+            var progress                     = CreateInstance<T>();
+            if (createTimer) progress._timer = J_GenericCounter.CreateNewTimer<J_Timer>();
             return progress;
         }
 
@@ -64,62 +62,19 @@ namespace JReact.TimeProgress
         }
         #endregion
 
-        #region PAUSE
-        /// <summary>
-        /// connect the progress to a pause event
-        /// </summary>
-        /// <param name="pauseEvent"></param>
-        public void InjectPauseEvent(J_PauseEvent pauseEvent)
-        {
-            _pauseEvent = pauseEvent;
-            TrackPause();
-        }
-
-        /// <summary>
-        /// used to stop tracking a pause
-        /// </summary>
-        public void RemovePause()
-        {
-            Assert.IsNotNull(_pauseEvent, $"{name} has no pause event to remove");
-            UnTrackPause();
-        }
-
-        private void TrackPause()
-        {
-            if (_pauseEvent.IsPaused &&
-                !_paused) SetPause(true);
-            _pauseEvent.SubscribeToPauseStart(Pause);
-            _pauseEvent.SubscribeToPauseEnd(UnPause);
-        }
-
-        private void UnTrackPause()
-        {
-            if (_pauseEvent == null) return;
-            _pauseEvent.UnSubscribeToPauseStart(Pause);
-            _pauseEvent.UnSubscribeToPauseEnd(UnPause);
-            _pauseEvent = null;
-        }
-
-        private void Pause() { SetPause(true); }
-        private void UnPause(int item) { SetPause(false); }
-        #endregion
-
         #region COMMANDS
         /// <summary>
         /// start the progress. Elements may be injected at start
         /// </summary>
         /// <param name="secondsToComplete">time required to complete this progress</param>
-        /// <param name="createNewTimer">set to true if we want to create/replace the timer</param>
-        public void StartProgress(float secondsToComplete, bool createNewTimer = false)
+        public virtual void StartProgress(float secondsToComplete)
         {
             // --------------- INITIALIZATION --------------- //
             if (!SanityChecks(secondsToComplete)) return;
             ResetValues();
 
             // --------------- SETUP --------------- //
-            if (createNewTimer) _timer = J_GenericCounter.CreateNewTimer<J_Timer>();
             _timeRequiredInSeconds = (int) secondsToComplete;
-            Assert.IsNotNull(_timer, $"{name} has no timer");
             if (!_timer.IsRunning)
             {
                 JConsole.Warning($"{_timer.name} on {name} was not running. Force Start.", JLogTags.TimeProgress, this);
@@ -147,7 +102,7 @@ namespace JReact.TimeProgress
         /// starts and stops the progress
         /// </summary>
         /// <param name="inPause">to set the pause</param>
-        public void SetPause(bool inPause) { _paused = inPause; }
+        public void SetPause(bool inPause) { Paused = inPause; }
 
         /// <summary>
         /// fast finish the progress
@@ -184,17 +139,23 @@ namespace JReact.TimeProgress
 
         #region COUNT AND COMPLETION
         //add the time for each tick
-        private void AddTimePerTick(float timePassed)
+        private void AddTimePerTick(float secondsFromCounter)
         {
             //stop if this is not active
-            if (_paused) return;
+            if (Paused) return;
 
             //add the time to the time passed
-            SecondsFromStart += timePassed;
-            TickEvent();
+            CountSeconds(secondsFromCounter);
 
             //stop if we reached the end
             if (SecondsFromStart >= _timeRequiredInSeconds) ProgressComplete();
+        }
+
+        //used to count the seconds passed
+        protected virtual void CountSeconds(float secondsFromCounter)
+        {
+            SecondsFromStart += secondsFromCounter;
+            TickEvent();
         }
 
         //this is used to start the construction
@@ -207,25 +168,23 @@ namespace JReact.TimeProgress
         #endregion
 
         #region SUBSCRIBE EVENTS
-        public void SubscribeToStart(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressStart   += actionToSend; }
-        public void UnSubscribeToStart(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressStart -= actionToSend; }
+        public void SubscribeToStart(JGenericDelegate<J_Progress> actionToSend) { OnProgressStart   += actionToSend; }
+        public void UnSubscribeToStart(JGenericDelegate<J_Progress> actionToSend) { OnProgressStart -= actionToSend; }
 
-        public void Subscribe(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick   += actionToSend; }
-        public void UnSubscribe(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressTick -= actionToSend; }
+        public void Subscribe(JGenericDelegate<J_Progress> actionToSend) { OnProgressTick   += actionToSend; }
+        public void UnSubscribe(JGenericDelegate<J_Progress> actionToSend) { OnProgressTick -= actionToSend; }
 
-        public void SubscribeToComplete(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressComplete   += actionToSend; }
-        public void UnSubscribeToComplete(JGenericDelegate<J_ProgressEvent> actionToSend) { OnProgressComplete -= actionToSend; }
+        public void SubscribeToComplete(JGenericDelegate<J_Progress> actionToSend) { OnProgressComplete   += actionToSend; }
+        public void UnSubscribeToComplete(JGenericDelegate<J_Progress> actionToSend) { OnProgressComplete -= actionToSend; }
         #endregion
 
         #region DISABLE AND RESET
         private void OnDisable() { ResetThis(); }
 
-        public void ResetThis()
+        public virtual void ResetThis()
         {
-            UnTrackPause();
             ResetValues();
             ResetEvents();
-            if (_destroyAtDisable) Destroy(this);
         }
 
         private void ResetValues()
@@ -233,7 +192,7 @@ namespace JReact.TimeProgress
             //reset the fields
             _timeRequiredInSeconds = 0;
             SecondsFromStart       = 0;
-            _paused                = false;
+            Paused                 = false;
             //stop if the progress is not counting
             if (IsRunning) StopTrackingTime();
         }
@@ -256,6 +215,6 @@ namespace JReact.TimeProgress
     //an interface for the progress view
     public interface iProgressView
     {
-        void InjectProgress(J_ProgressEvent progress, J_Identifier identifier = null);
+        void InjectProgress(J_Progress progress, J_Identifier identifier = null);
     }
 }

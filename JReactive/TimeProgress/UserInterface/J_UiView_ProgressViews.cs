@@ -17,13 +17,13 @@ namespace JReact.TimeProgress
         #endregion
 
         #region ABSTRACT IMPLEMENTATION
-        protected override void ProgressComplete(J_ProgressEvent progress) { ThisView.ActivateView(false); }
+        protected override void ProgressComplete(J_Progress progress) { ThisView.ActivateView(false); }
 
-        protected override void ProgressStart(J_ProgressEvent progress) { ThisView.ActivateView(true); }
+        protected override void ProgressStart(J_Progress progress) { ThisView.ActivateView(true); }
 
-        protected override void ProgressUpdate(J_ProgressEvent progress) { }
+        protected override void ProgressUpdate(J_Progress progress) { }
 
-        protected override void ViewEnabled(J_ProgressEvent progress)
+        protected override void ViewEnabled(J_Progress progress)
         {
             base.ViewEnabled(progress);
             ThisView.ActivateView(_progressEvent != null && _progressEvent.IsRunning);

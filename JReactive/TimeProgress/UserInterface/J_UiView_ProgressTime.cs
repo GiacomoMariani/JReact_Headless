@@ -32,11 +32,11 @@ namespace JReact.TimeProgress
         }
 
         //sets the time if the progress is running
-        protected override void ProgressStart(J_ProgressEvent progress) { ThisText.text = progress.RemainingSeconds.ToTimeString(); }
+        protected override void ProgressStart(J_Progress progress) { ThisText.text = progress.RemainingSeconds.ToTimeString(); }
 
-        protected override void ProgressUpdate(J_ProgressEvent progress) { ThisText.text = progress.RemainingSeconds.ToTimeString(); }
+        protected override void ProgressUpdate(J_Progress progress) { ThisText.text = progress.RemainingSeconds.ToTimeString(); }
 
-        protected override void ProgressComplete(J_ProgressEvent progress) { ThisText.text = null; }
+        protected override void ProgressComplete(J_Progress progress) { ThisText.text = null; }
         #endregion
     }
 }
