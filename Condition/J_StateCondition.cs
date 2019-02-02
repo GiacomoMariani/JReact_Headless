@@ -41,14 +41,14 @@ namespace JReact.Conditions
         {
             _validStates.SubscribeToAll(StateUpdate);
             for (int i = 0; i < _validStates.Length; i++)
-                _validStates[i].SubscribeToExitEvent(StateUpdate);
+                _validStates[i].SubscribeToExit(StateUpdate);
         }
 
         private void StopTrackStates()
         {
             _validStates.UnSubscribeToAll(StateUpdate);
             for (int i = 0; i < _validStates.Length; i++)
-                _validStates[i].UnSubscribeToExitEvent(StateUpdate);
+                _validStates[i].UnSubscribeToExit(StateUpdate);
         }
         #endregion
     }

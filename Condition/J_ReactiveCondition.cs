@@ -6,12 +6,12 @@ namespace JReact.Conditions
     /// <summary>
     /// a condition that may be attached to anything
     /// </summary>
-    public abstract class J_ReactiveCondition : JReactiveBool, iTrackable
+    public abstract class J_ReactiveCondition : JReactiveBool, iActivable
     {
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isTracking = false;
-        public bool IsTracking => _isTracking;
+        public bool IsActive => _isTracking;
 
-        public void StartTracking()
+        public void Initialize()
         {
             if (_isTracking)
             {
@@ -26,26 +26,21 @@ namespace JReact.Conditions
             InitializeCheck();
         }
 
-        public void StopTracking()
-        {
-            if (!_isTracking) return;
-            DeInitializeCheck();
-            _isTracking = false;
-        }
-
         protected abstract void InitializeCheck();
         protected abstract void DeInitializeCheck();
 
         public override void ResetThis()
         {
             base.ResetThis();
-            StopTracking();
+            if (!_isTracking) return;
+            DeInitializeCheck();
+            _isTracking = false;
         }
 
         public override void Subscribe(JGenericDelegate<bool> actionToSend)
         {
             base.Subscribe(actionToSend);
-            if (!_isTracking) StartTracking();
+            if (!_isTracking) Initialize();
         }
     }
 }
