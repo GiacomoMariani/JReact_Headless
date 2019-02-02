@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace JReact.Mover
+namespace JReact.Movement
 {
     /// <summary>
     /// this class is used to move the transform and offers different ways to achieve the movement

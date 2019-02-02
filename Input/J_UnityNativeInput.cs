@@ -1,7 +1,7 @@
 using JReact;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace JReact.JInput
 {
     public class Unity_AxisCatcher : iInputAxisGetter
     {

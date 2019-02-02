@@ -1,7 +1,7 @@
 ﻿using MEC;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
-using JReact.Mover;
+using JReact.Movement;
 using UnityEngine;
 using UnityEngine.Assertions;
 
