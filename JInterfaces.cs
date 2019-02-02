@@ -4,6 +4,7 @@
     public interface iFillable : iStackable
     {
         int MaxCapacity { get; }
+        int GetAmountBeforeFill();
         void SubscribeToMaxCapacity(JGenericDelegate<int> action);
         void UnSubscribeToMaxCapacity(JGenericDelegate<int> action);
     }
@@ -73,5 +74,17 @@
         event JAction OnComplete;
         JAction ThisTask { get; }
         bool IsRunning { get; }
+    }
+
+    //an interface of a ticker that may give a timer
+    public interface iDeltaTime
+    {
+        float ThisDeltaTime { get; }
+    }
+    
+    public interface iInputAxisGetter
+    {
+        float GetAxis(string axisId);
+        float GetAxisRaw(string axisId);
     }
 }

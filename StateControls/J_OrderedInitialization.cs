@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace JReact.StateControls
+namespace JReact.StateControl
 {
     /// <summary>
     /// used to set an order of initialization

@@ -1,4 +1,4 @@
-using JReact.StateControls;
+using JReact.StateControl;
 using Sirenix.OdinInspector;
 using UnityEngine;
 

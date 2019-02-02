@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace JReact.StateControls
+namespace JReact.StateControl
 {
     /// <summary>
     /// used to change the menu based on the state
@@ -23,7 +23,7 @@ namespace JReact.StateControls
         }
 
         [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
-        protected J_StateControl _mainStateControl;
+        protected J_SimpleStateControl _mainStateControl;
 
         //when we want to see this
         [BoxGroup("Controls", true, true, 0), SerializeField] protected J_State[] _validStates;

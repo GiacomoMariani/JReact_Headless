@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace JReact.StateControls
+namespace JReact.StateControl
 {
     //this button will bring player to the desired state
     [RequireComponent(typeof(Button))]
     public class J_UiView_ButtonStateCommand : J_UiView_ConditionalButton
     {
         [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
-        protected J_StateControl _mainStateControl;
+        protected J_SimpleStateControl _mainStateControl;
         [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
         protected J_State _desiredState;
 

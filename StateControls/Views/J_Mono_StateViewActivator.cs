@@ -1,7 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace JReact.StateControls
+namespace JReact.StateControl
 {
     /// <summary>
     /// this is used to hide or show a view based on the state

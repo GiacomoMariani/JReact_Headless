@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace JReact.StateControls
+namespace JReact.StateControl
 {
     /// <summary>
     /// used to track the flow of events to move back to a previous state
@@ -12,7 +12,7 @@ namespace JReact.StateControls
     public class J_StateTracker : ScriptableObject, iActivable
     {
         #region VALUES AND PROPERTIES
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required, AssetsOnly] private J_StateControl _stateControl;
+        [BoxGroup("Setup", true, true, 0), SerializeField, Required, AssetsOnly] private J_SimpleStateControl _stateControl;
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxStatesToTrack = 5;
 
         //used to get the previous state

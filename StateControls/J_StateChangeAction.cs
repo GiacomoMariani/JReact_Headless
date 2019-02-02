@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace JReact.StateControls
+namespace JReact.StateControl
 {
     /// <summary>
     /// a simple action used to change the state
@@ -13,7 +13,7 @@ namespace JReact.StateControls
         #region FIELDS AND PROPERTIES
         public UnityAction ThisAction => ChangeState;
         [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
-        protected J_StateControl _stateControl;
+        protected J_SimpleStateControl _stateControl;
         [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
         protected J_State _desiredState;
         #endregion

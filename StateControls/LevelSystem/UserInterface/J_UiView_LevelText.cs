@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace JReact.StateControls.LevelSystem
+namespace JReact.StateControl.LevelSystem
 {
     /// <summary>
     /// shows the current level on a text

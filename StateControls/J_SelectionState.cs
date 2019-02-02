@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace JReact.StateControls
+namespace JReact.StateControl
 {
     /// <summary>
     /// this class represent a simple state that contains also a selected item
@@ -13,7 +13,7 @@ namespace JReact.StateControls
     {
         #region VALUES AND PROPERTIES
         //reference to the main control using the selection
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private  J_StateControl _stateControl;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private  J_SimpleStateControl _stateControl;
         
         //the state to be sent on deselection
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State _deselectionState;

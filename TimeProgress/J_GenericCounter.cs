@@ -9,7 +9,7 @@ namespace JReact.TimeProgress
     /// <summary>
     /// a generic timer
     /// </summary>
-    public abstract class J_GenericCounter : ScriptableObject, iObservable<float>, iResettable
+    public abstract class J_GenericCounter : ScriptableObject, iObservable<float>, iResettable, iDeltaTime
     {
         #region FIELDS AND PROPERTIES
         protected event JGenericDelegate<float> OnTick;
@@ -19,8 +19,10 @@ namespace JReact.TimeProgress
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected int _objectId = -1;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; } = false;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _destroyAtDisable = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; } = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]public float ThisDeltaTime { get; private set; }
+
         #endregion
 
         #region COMMANDS
@@ -31,7 +33,7 @@ namespace JReact.TimeProgress
         public static T CreateNewTimer<T>(bool destroyAtDisable = true)
             where T : J_GenericCounter
         {
-            var timer = ScriptableObject.CreateInstance<T>();
+            var timer = CreateInstance<T>();
             timer._destroyAtDisable = destroyAtDisable;
             timer.StartCount();
             return timer;
@@ -73,8 +75,11 @@ namespace JReact.TimeProgress
         //this counts a single tick
         protected abstract IEnumerator<float> CountOneTick();
 
-        //send the event
-        protected void SendTickEvent(float tickValue) { OnTick?.Invoke(tickValue); }
+        //store the delta time and send the event
+        protected void SendTickEvent(float tickValue)
+        {
+            ThisDeltaTime = tickValue;
+            OnTick?.Invoke(tickValue); }
         #endregion
 
         #region SUBSCRIBERS

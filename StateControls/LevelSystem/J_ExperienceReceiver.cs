@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace JReact.StateControls.LevelSystem
+namespace JReact.StateControl.LevelSystem
 {
     /// <summary>
     /// the experience of a single element
@@ -30,11 +30,19 @@ namespace JReact.StateControls.LevelSystem
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int MaxCapacity
             => _levelProgress.CurrentLevelInfo.ExperienceNeeded;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private bool _CanGainExperience
-            => _levelProgress.MaxLevelReached;
+            => !_levelProgress.MaxLevelReached;
 
         [BoxGroup("Debug", true, true, 1000), SerializeField] private bool _debug = false;
         #endregion
 
+        #region CREATION
+        public static J_ExperienceReceiver Create(J_LevelProgression levelProgress)
+        {
+            var experience = CreateInstance<J_ExperienceReceiver>();
+            experience._levelProgress = levelProgress;
+            return experience;
+        }
+        #endregion
 
         #region TRACK METHODS
         public void Initialize()
@@ -50,37 +58,24 @@ namespace JReact.StateControls.LevelSystem
             IsActive      = true;
             CurrentAmount = 0;
 
-            _levelProgress.Subscribe(SetLevel);
+            _levelProgress.Subscribe(LevelUpdate);
         }
 
         private void SanityChecks() { Assert.IsNotNull(_levelProgress, $"{name} requires a _levelProgress"); }
-        #endregion
 
-        #region COMMANDS
-        public void SetLevel(J_LevelState previousLevel, J_LevelState currentLevel)
+        private void LevelUpdate(J_LevelState previousLevel, J_LevelState currentLevel)
         {
             OnMaxChanged?.Invoke(currentLevel.ExperienceNeeded);
             CurrentAmount = 0;
         }
         #endregion
 
+
+        #region GETTERS
+        public int GetAmountBeforeFill() { return MaxCapacity - CurrentAmount; }
+        #endregion
+
         #region EXPERIENCE PROGRESS
-        //adds a the experience to reach the next level and returns any non required amount
-        private int KeepAdding(int amount)
-        {
-            //max out the experience if player reached max level
-            if (!_CanGainExperience)
-            {
-                CurrentAmount = _levelProgress.CurrentLevelInfo.ExperienceNeeded;
-                return 0;
-            }
-
-            // --------------- ADDING --------------- //
-            //the remaining is the amount - required amount to get the next level
-            int remaining = CurrentAmount + amount - MaxCapacity;
-            return remaining;
-        }
-
         /// <summary>
         /// grants an amount of experience to the player
         /// </summary>
@@ -92,23 +87,31 @@ namespace JReact.StateControls.LevelSystem
                              JLogTags.LevelSystem, this);
 
             // --------------- CHECKERS --------------- //
-            if (!IsCommandValid(amountToAdd)) return false;
-
+            if (!CanAdd(amountToAdd)) return false;
 
             // --------------- KEEP ADDING UNTIL WE HAVE EXPERIENCE--------------- //
             //recursively add experience
-            while (amountToAdd > 0)
+            while (amountToAdd >= GetAmountBeforeFill())
             {
-                amountToAdd = KeepAdding(amountToAdd);
+                // --------------- STOP AT MAX --------------- //
+                if (!_CanGainExperience)
+                {
+                    CurrentAmount = _levelProgress.CurrentLevelInfo.ExperienceNeeded;
+                    return true;
+                }
+
+                amountToAdd -= GetAmountBeforeFill();
                 //if we have a level up we will also get the event of UpdateMax and the MaxCapacity will be directly updated
-                if (amountToAdd >= 0) _levelProgress.GainLevel();
+                _levelProgress.GainLevel();
             }
+
+            CurrentAmount = amountToAdd;
 
             return true;
         }
 
         //checks if the command is valid and sends some log if not
-        private bool IsCommandValid(int amountToAdd)
+        private bool CanAdd(int amountToAdd)
         {
             Assert.IsTrue(MaxCapacity > 0,
                           $"{name} max experience needs to be higher than 0 for {_levelProgress.CurrentLevelInfo.name}. Value {MaxCapacity}");
@@ -147,7 +150,7 @@ namespace JReact.StateControls.LevelSystem
                 return;
             }
 
-            _levelProgress.UnSubscribe(SetLevel);
+            _levelProgress.UnSubscribe(LevelUpdate);
             IsActive = false;
         }
         #endregion

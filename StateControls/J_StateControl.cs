@@ -1,4 +1,4 @@
-﻿/*
+/*
  * STRATEGY:
  * This scriptable object acts as a state machine, and offers an architecture that relies on Dependency 
  * Injection and Observer pattern. 
@@ -14,25 +14,14 @@
  * This script is using Odin Inspector for better visualization on the unity editor.
  */
 
-using Sirenix.OdinInspector;
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace JReact.StateControls
+namespace JReact.StateControl
 {
-    /// <summary>
-    /// This class implements a state machine sending event to be tracked by other scripts using 
-    /// Dependency Injection (we may inject just the desired state or this entire state control)
-    /// EXAMPLES OF USAGE: menu flow and transitions, weather system, simple artificial intelligence,
-    /// but also friend invitation or any other element that may be tracked with a state machine
-    /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Game States/State Control")]
-    public class J_StateControl : J_AsbtractStateControl<J_State>
-    {
-    }
-
-    public class J_AsbtractStateControl<T> : ScriptableObject, iActivable
+    public class J_StateControl<T> : ScriptableObject, iActivable
         where T : J_State
     {
         #region FIELDS AND PROPERTIES
@@ -47,7 +36,7 @@ namespace JReact.StateControls
         //a list of the valid states
         [Title("Setup", "The elements required to setup this control")]
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required]
-        private T _firstState;
+        protected T _firstState;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] protected T[] _validStates;
 
         // --------------- CURRENT SITUATION --------------- //
@@ -56,7 +45,8 @@ namespace JReact.StateControls
         [Title("State", "The current situation")]
         //the current state, with an available getter, to make sure anyone can check it
         //this property is also used to send the main events
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T _currentState;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
+        private T _currentState;
         public T CurrentState
         {
             get => _currentState;
@@ -64,22 +54,38 @@ namespace JReact.StateControls
             {
                 // --------------- EXIT EVENT --------------- //
                 //send exit event of the previous event
-                Assert.IsNotNull(CurrentState, $"Trying to exit from a null state from {name}.");
+                Assert.IsNotNull(CurrentState, $"{name} is trying to exit from a null state.");
                 CurrentState.RaiseExitEvent();
 
                 // --------------- VALUE SET --------------- //
                 //set the value and raise the event of the next state
-                Assert.IsNotNull(value, $"We're trying to set a null state on {name}.");
+                Assert.IsNotNull(value, $"{name} is trying to set a null state.");
                 _currentState = value;
 
                 // --------------- ENTER EVENT--------------- //
                 CurrentState.RaiseEvent();
             }
         }
-        
+
         //check if this state control has been initialized
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
         #endregion FIELDS AND PROPERTIES
+
+        #region INSTANTIATION
+        /// <summary>
+        /// instantiate a state control system
+        /// </summary>
+        /// <param name="states">the valid states</param>
+        /// <param name="initialize">if we want to initialize it, defaults at true</param>
+        /// <returns>returns a state control system</returns>
+        public static J_StateControl<T> Create(T[] states, bool initialize = true)
+        {
+            var stateControl = CreateInstance<J_StateControl<T>>();
+            stateControl._validStates = states;
+            if (initialize) stateControl.Initialize();
+            return stateControl;
+        }
+        #endregion INSTANTIATION
 
         #region INITIALIZATION
         /// <summary>
@@ -87,11 +93,13 @@ namespace JReact.StateControls
         /// </summary>
         public virtual void Initialize()
         {
+            Assert.IsFalse(IsActive, $"{name} was already active. stop command.");
+            if(IsActive) return;
+            IsActive = true;
             Assert.IsNotNull(_firstState, $"Please set a first state to validate the controls on: {name}");
             SetStateSanityChecks(_firstState);
             _currentState = _firstState;
             _firstState.RaiseEvent();
-            IsActive = true;
             JConsole.Log($"Initialization completed on {name} with {_validStates.Length} states.", JLogTags.State, this);
         }
         #endregion INITIALIZATION
@@ -137,10 +145,7 @@ namespace JReact.StateControls
         #endregion MAIN CONTROL
 
         #region SUBSCRIBE METHODS
-        /// <summary>
-        /// the following methods are used to subscribe/register to the transition event. they act like the observer pattern
-        /// </summary>
-        /// <param name="actionToSend">the action/handler to be sent at the event</param>
+        //the following methods are used to subscribe/register to the transition event. they act like the observer pattern
         public void Subscribe(StateTransition actionToSend)
         {
             if (!IsActive) Initialize();
@@ -161,6 +166,8 @@ namespace JReact.StateControls
         /// </summary>
         public virtual void ResetThis()
         {
+            if(!IsActive) return;
+            if(CurrentState != null) CurrentState.RaiseExitEvent();
             _currentState = null;
             IsActive      = false;
         }
