@@ -63,11 +63,11 @@ namespace JReact.StateControl
         #endregion
 
         #region STATE CONTROLS
-        public override void RaiseExitEvent()
+        public override void End()
         {
             //deselect if requested
             if (_deselectOnExit && SelectedItem != null) SelectedItem = null;
-            base.RaiseExitEvent();
+            base.End();
         }
         #endregion
 

@@ -11,19 +11,19 @@ namespace JReact.Conditions
     {
         #region FIELDS AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField] private OperatorType _operator = OperatorType.And;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private JReactiveBool[] _trueConditions;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private JReactiveBool[] _falseConditions;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveBool[] _trueConditions;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveBool[] _falseConditions;
         #endregion
 
         #region INITIALIZATION METHODS
-        protected override void InitializeCheck()
+        protected override void StartCheckingCondition()
         {
             ConditionsCheck(false);
             _trueConditions.SubscribeToAll(ConditionsCheck);
             _falseConditions.SubscribeToAll(ConditionsCheck);
         }
 
-        protected override void DeInitializeCheck()
+        protected override void StopCheckingCondition()
         {
             _trueConditions.UnSubscribeToAll(ConditionsCheck);
             _falseConditions.UnSubscribeToAll(ConditionsCheck);
@@ -44,7 +44,7 @@ namespace JReact.Conditions
                            RequiresAllCondition(_falseConditions, false);
         }
 
-        private bool RequiresAllCondition(JReactiveBool[] collectionToCheck, bool expectedValue)
+        private bool RequiresAllCondition(J_ReactiveBool[] collectionToCheck, bool expectedValue)
         {
             //check all true
             for (int i = 0; i < collectionToCheck.Length; i++)
@@ -63,7 +63,7 @@ namespace JReact.Conditions
         }
 
         //check all the values
-        private bool RequiresOneCondition(JReactiveBool[] collectionToCheck, bool expectedValue)
+        private bool RequiresOneCondition(J_ReactiveBool[] collectionToCheck, bool expectedValue)
         {
             //check all true
             for (int i = 0; i < collectionToCheck.Length; i++)

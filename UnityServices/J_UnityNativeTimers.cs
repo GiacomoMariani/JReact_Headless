@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace JReact.TimeProgress
+namespace JReact.UnityService
 {
     /// <summary>
     /// catches unity fixed time

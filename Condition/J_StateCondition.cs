@@ -16,13 +16,13 @@ namespace JReact.Conditions
         #endregion
 
         #region INITIALIZE AND RESET
-        protected override void InitializeCheck()
+        protected override void StartCheckingCondition()
         {
             StateUpdate();
             StartTrackStates();
         }
 
-        protected override void DeInitializeCheck() { StopTrackStates(); }
+        protected override void StopCheckingCondition() { StopTrackStates(); }
         #endregion
 
         private void StateUpdate() { CurrentValue = CheckStates(_passOnEnter); }
@@ -41,14 +41,14 @@ namespace JReact.Conditions
         {
             _validStates.SubscribeToAll(StateUpdate);
             for (int i = 0; i < _validStates.Length; i++)
-                _validStates[i].SubscribeToExit(StateUpdate);
+                _validStates[i].SubscribeToEnd(StateUpdate);
         }
 
         private void StopTrackStates()
         {
             _validStates.UnSubscribeToAll(StateUpdate);
             for (int i = 0; i < _validStates.Length; i++)
-                _validStates[i].UnSubscribeToExit(StateUpdate);
+                _validStates[i].UnSubscribeToEnd(StateUpdate);
         }
         #endregion
     }

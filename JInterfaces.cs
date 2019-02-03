@@ -8,14 +8,14 @@
         void SubscribeToMaxCapacity(JGenericDelegate<int> action);
         void UnSubscribeToMaxCapacity(JGenericDelegate<int> action);
     }
-    
+
     //something that might be stackable, such as inventory items
     public interface iStackable : iObservable<int>
     {
         int CurrentAmount { get; }
         bool Grant(int amount);
     }
-    
+
     public interface iSelectable<out T> where T : class
     {
         string NameOfThis { get; }
@@ -40,11 +40,11 @@
     {
         void ResetThis();
     }
-    
+
     public interface iActivable : iResettable
     {
         bool IsActive { get; }
-        void Initialize();
+        void Activate();
     }
 
     //something that can be subscribed
@@ -53,13 +53,10 @@
         void Subscribe(JAction action);
         void UnSubscribe(JAction action);
     }
-    
+
     //the state event
-    public interface iStateObservable : iObservable
+    public interface iStateObservable : iTask, iObservable
     {
-        bool IsActive { get; }
-        void SubscribeToExit(JAction action);
-        void UnSubscribeToExit(JAction action);
     }
 
     public interface iObservable<T>
@@ -71,10 +68,11 @@
     //the interface to identify a task
     public interface iTask
     {
-        string TaskName { get; }
-        event JAction OnComplete;
-        JAction ThisTask { get; }
-        bool IsRunning { get; }
+        string Name { get; }
+        bool IsActive { get; }
+        void Activate();
+        void SubscribeToEnd(JAction action);
+        void UnSubscribeToEnd(JAction action);
     }
 
     //an interface of a ticker that may give a timer
@@ -82,7 +80,7 @@
     {
         float ThisDeltaTime { get; }
     }
-    
+
     public interface iInputAxisGetter
     {
         float GetAxis(string axisId);

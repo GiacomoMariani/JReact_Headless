@@ -3,6 +3,6 @@
 namespace JReact
 {
     [CreateAssetMenu(menuName = "Reactive/Basics/Reactive Float")]
-    public class JReactiveFloat : J_ReactiveElement<float>
+    public class J_ReactiveFloat : J_ReactiveElement<float>
     { }
 }

@@ -14,7 +14,7 @@ namespace JReact.UiView
         [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _unityEventToSend;
         //the possible condition to cancel the commands
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required]
-        private JReactiveBool[] _commandConditions;
+        private J_ReactiveBool[] _commandConditions;
         //if we want to show the disabled button
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _showDisabledButton = true;
         #endregion

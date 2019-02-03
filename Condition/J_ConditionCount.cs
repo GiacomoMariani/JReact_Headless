@@ -17,13 +17,13 @@ namespace JReact.Conditions
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract T _stackable { get; }
 
-        protected override void InitializeCheck()
+        protected override void StartCheckingCondition()
         {
             UpdateCondition(_stackable.CurrentAmount);
             _stackable.Subscribe(UpdateCondition);
         }
 
-        protected override void DeInitializeCheck() { _stackable.UnSubscribe(UpdateCondition); }
+        protected override void StopCheckingCondition() { _stackable.UnSubscribe(UpdateCondition); }
 
         protected virtual void UpdateCondition(int currentAmount)
         {

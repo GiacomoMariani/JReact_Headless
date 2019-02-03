@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace JReact.Conditions
@@ -6,41 +7,35 @@ namespace JReact.Conditions
     /// <summary>
     /// a condition that may be attached to anything
     /// </summary>
-    public abstract class J_ReactiveCondition : JReactiveBool, iActivable
+    public abstract class J_ReactiveCondition : J_State
     {
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isTracking = false;
-        public bool IsActive => _isTracking;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
+        public J_ReactiveElement<bool> _Condition = CreateInstance<J_ReactiveElement<bool>>();
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
+        public bool CurrentValue { get => _Condition.CurrentValue; set => _Condition.CurrentValue = value; }
 
-        public void Initialize()
+        public override void Activate()
         {
-            if (_isTracking)
-            {
-                JConsole.Warning($"{name} is already tracking.", JLogTags.Conditions, this);
-                return;
-            }
-
-            if (!_startValue)
-                JConsole.Warning($"{name} is a condition and usually it start at false", JLogTags.Conditions, this);
-            _currentValue = _startValue;
-            _isTracking   = true;
-            InitializeCheck();
+            base.Activate();
+            CurrentValue = false;
+            StartCheckingCondition();
         }
 
-        protected abstract void InitializeCheck();
-        protected abstract void DeInitializeCheck();
+        protected abstract void StartCheckingCondition();
+        protected abstract void StopCheckingCondition();
 
-        public override void ResetThis()
+        public override void End()
         {
-            base.ResetThis();
-            if (!_isTracking) return;
-            DeInitializeCheck();
-            _isTracking = false;
+            base.End();
+            StopCheckingCondition();
         }
 
-        public override void Subscribe(JGenericDelegate<bool> actionToSend)
+        public void SubscribeToCondition(JGenericDelegate<bool> actionToSend)
         {
-            base.Subscribe(actionToSend);
-            if (!_isTracking) Initialize();
+            if (!IsActive) Activate();
+            _Condition.Subscribe(actionToSend);
         }
+
+        public void UnSubscribeToCondition(JGenericDelegate<bool> actionToSend) { _Condition.UnSubscribe(actionToSend); }
     }
 }

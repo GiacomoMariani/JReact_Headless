@@ -1,37 +1,38 @@
 ﻿using Sirenix.OdinInspector;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace JReact
 {
     /// <summary>
-    /// this class is a scriptable object that contains a state that might be injected into any
-    /// script who require to follow this state. It acts just like a JSimple event, but it has also
-    /// an exit event and not just an enter event
-    /// this script represent a game state
+    /// a state with an Activate method from J_Event, and with an exit event
+    /// this script represents usually a game state or a task
+    /// IMPORTANT CONSIDERATION
+    /// => if this is used as a STATE something external should call Activate and End
+    /// => if this is used as a TASK the external may call Activate, but End should be call internally
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Game States/J Reactive State")]
-    public class J_State : J_Event, iStateObservable, iResettable
+    [CreateAssetMenu(menuName = "Reactive/Game States/Reactive State")]
+    public class J_State : J_Event, iStateObservable, iActivable
     {
         //the main event to set the new state
         private event JAction OnExitEvent;
 
         //to check if this state is active
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
-
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public string Name => name;
+        
         //raise event also activate the state
-        public override void RaiseEvent()
+        public override void Activate()
         {
             Assert.IsFalse(IsActive, $"{name} was already active");
             if (IsActive) return;
             IsActive = true;
-            base.RaiseEvent();
+            base.Activate();
         }
 
         //this is the property we want to track
         [ButtonGroup("State trigger", 200), Button("Raise Exit Event", ButtonSizes.Medium)]
-        public virtual void RaiseExitEvent()
+        public virtual void End()
         {
             Assert.IsTrue(IsActive, $"{name} was not active");
             if (!IsActive) return;
@@ -40,15 +41,15 @@ namespace JReact
         }
 
         //a way to subscribe and unsubscribe to the exit event
-        public void SubscribeToExit(JAction actionToSend) { OnExitEvent   += actionToSend; }
-        public void UnSubscribeToExit(JAction actionToSend) { OnExitEvent -= actionToSend; }
+        public void SubscribeToEnd(JAction actionToSend) { OnExitEvent   += actionToSend; }
+        public void UnSubscribeToEnd(JAction actionToSend) { OnExitEvent -= actionToSend; }
 
         #region DISABLE AND RESET
         private void OnDisable() { ResetThis(); }
 
         public virtual void ResetThis()
         {
-            if (IsActive) RaiseExitEvent();
+            if (IsActive) End();
         }
         #endregion
     }

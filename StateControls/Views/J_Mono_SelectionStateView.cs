@@ -30,13 +30,13 @@ namespace JReact.StateControl
         {
             if (SelectionState.SelectedItem != null) SelectionUpdate(SelectionState.SelectedItem);
             SelectionState.Subscribe(UpdateThis);
-            SelectionState.SubscribeToExit(ExitState);
+            SelectionState.SubscribeToEnd(ExitState);
         }
 
         private void OnDisable()
         {
             SelectionState.UnSubscribe(UpdateThis);
-            SelectionState.UnSubscribeToExit(ExitState);
+            SelectionState.UnSubscribeToEnd(ExitState);
         }
         #endregion
     }

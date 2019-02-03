@@ -31,7 +31,7 @@ namespace JReact.StateControl
         #endregion
 
         #region INITIALIZATION AND LISTENERS
-        public void Initialize()
+        public void Activate()
         {
             SanityChecks();
             InitThis();

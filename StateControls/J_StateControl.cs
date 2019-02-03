@@ -55,7 +55,7 @@ namespace JReact.StateControl
                 // --------------- EXIT EVENT --------------- //
                 //send exit event of the previous event
                 Assert.IsNotNull(CurrentState, $"{name} is trying to exit from a null state.");
-                CurrentState.RaiseExitEvent();
+                CurrentState.End();
 
                 // --------------- VALUE SET --------------- //
                 //set the value and raise the event of the next state
@@ -63,7 +63,7 @@ namespace JReact.StateControl
                 _currentState = value;
 
                 // --------------- ENTER EVENT--------------- //
-                CurrentState.RaiseEvent();
+                CurrentState.Activate();
             }
         }
 
@@ -82,7 +82,7 @@ namespace JReact.StateControl
         {
             var stateControl = CreateInstance<J_StateControl<T>>();
             stateControl._validStates = states;
-            if (initialize) stateControl.Initialize();
+            if (initialize) stateControl.Activate();
             return stateControl;
         }
         #endregion INSTANTIATION
@@ -91,7 +91,7 @@ namespace JReact.StateControl
         /// <summary>
         /// sets the first state of the game
         /// </summary>
-        public virtual void Initialize()
+        public virtual void Activate()
         {
             Assert.IsFalse(IsActive, $"{name} was already active. stop command.");
             if(IsActive) return;
@@ -99,7 +99,7 @@ namespace JReact.StateControl
             Assert.IsNotNull(_firstState, $"Please set a first state to validate the controls on: {name}");
             SetStateSanityChecks(_firstState);
             _currentState = _firstState;
-            _firstState.RaiseEvent();
+            _firstState.Activate();
             JConsole.Log($"Initialization completed on {name} with {_validStates.Length} states.", JLogTags.State, this);
         }
         #endregion INITIALIZATION
@@ -148,7 +148,7 @@ namespace JReact.StateControl
         //the following methods are used to subscribe/register to the transition event. they act like the observer pattern
         public void Subscribe(StateTransition actionToSend)
         {
-            if (!IsActive) Initialize();
+            if (!IsActive) Activate();
             OnStateTransition += actionToSend;
         }
 
@@ -167,7 +167,7 @@ namespace JReact.StateControl
         public virtual void ResetThis()
         {
             if(!IsActive) return;
-            if(CurrentState != null) CurrentState.RaiseExitEvent();
+            if(CurrentState != null) CurrentState.End();
             _currentState = null;
             IsActive      = false;
         }

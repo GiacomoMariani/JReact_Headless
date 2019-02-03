@@ -16,7 +16,7 @@ namespace JReact.ScreenMessage
         internal event JGenericDelegate<bool> OnPrinting;
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private JReactiveString _stringMessage;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _stringMessage;
         [BoxGroup("Setup", true, true, 0), SerializeField, Range(0.01f, 0.5f)] private float _secondsForType = 0.1f;
 
         // --------------- STATE --------------- //

@@ -17,10 +17,10 @@ namespace JReact.PopUp
 
         // --------------- CONTENT --------------- //
         //J_Mono_ReactiveStringText might be used to display this
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private JReactiveString _title;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private JReactiveString _message;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private JReactiveString _confirmButtonText;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private JReactiveString _denyButtonText;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _title;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _message;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _confirmButtonText;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _denyButtonText;
 
         // --------------- ACTIONS --------------- //        
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent Confirm { get; private set; }
@@ -48,12 +48,12 @@ namespace JReact.PopUp
         #endregion
 
         #region OPEN AND CLOSE
-        public void Open() { RaiseEvent(); }
-        public void Close() { RaiseExitEvent(); }
+        public void Open() { Activate(); }
+        public void Close() { End(); }
 
-        public override void RaiseExitEvent()
+        public override void End()
         {
-            base.RaiseExitEvent();
+            base.End();
             ResetThis();
         }
         #endregion

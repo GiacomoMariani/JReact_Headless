@@ -3,6 +3,6 @@
 namespace JReact
 {
     [CreateAssetMenu(menuName = "Reactive/Basics/Reactive Int")]
-    public class JReactiveInt : J_ReactiveElement<int>
+    public class J_ReactiveInt : J_ReactiveElement<int>
     { }
 }

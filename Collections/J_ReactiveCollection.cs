@@ -11,7 +11,7 @@ namespace JReact.Collections
     /// a reactive collection that sends events at add and remove
     /// </summary>
     /// <typeparam name="T">the type of this collection</typeparam>
-    public abstract class J_ReactiveCollection<T> : ScriptableObject, iResettable, ICollection<T>
+    public abstract class J_ReactiveCollection<T> : ScriptableObject, iResettable, IList<T>
     {
         #region EVENT AND DELEGATES
         private event JGenericDelegate<T> OnAddToCollection;
@@ -23,8 +23,6 @@ namespace JReact.Collections
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected List<T> _thisCollection = new List<T>();
         //the amount of elements in the collection
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _thisCollection.Count;
-        //main accessor
-        public T this[int index] => _thisCollection[index];
         #endregion
 
         #region MAIN COMMANDS
@@ -119,7 +117,6 @@ namespace JReact.Collections
         #endregion
 
         #region DISABLE AND RESET
-        //we reset this on disable
         protected virtual void OnDisable() { ResetThis(); }
         #endregion
 
@@ -133,6 +130,27 @@ namespace JReact.Collections
         public IEnumerator<T> GetEnumerator() { return _thisCollection.GetEnumerator(); }
 
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+
+        public int IndexOf(T item) { return _thisCollection.IndexOf(item); }
+
+        public void Insert(int index, T item)
+        {
+            Assert.IsNotNull(_thisCollection, $"{name} Collection not initialized");
+            Assert.IsTrue(item != null, $"{name} Null elements are not valid");
+            RemoveAt(index);
+            _thisCollection.Insert(index, item);
+            WhatHappensOnAdd(item);
+            OnAddToCollection?.Invoke(item);
+        }
+
+        public void RemoveAt(int index)
+        {
+            Assert.IsTrue(index < Count, $"{name} has not the given index {index}. List length = {Count}");
+            var item = _thisCollection[index];
+            Remove(item);
+        }
+
+        public T this[int index] { get => _thisCollection[index]; set => Insert(index, value); }
         #endregion
     }
 }

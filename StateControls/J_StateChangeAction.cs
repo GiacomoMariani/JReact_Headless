@@ -11,7 +11,7 @@ namespace JReact.StateControl
     public class J_StateChangeAction : ScriptableObject
     {
         #region FIELDS AND PROPERTIES
-        public UnityAction ThisAction => ChangeState;
+        public UnityAction ThisAction => Process;
         [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
         protected J_SimpleStateControl _stateControl;
         [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
@@ -21,6 +21,6 @@ namespace JReact.StateControl
         /// <summary>
         /// sets the desired state
         /// </summary>
-        public void ChangeState() { _stateControl.SetNewState(_desiredState); }
+        public void Process() { _stateControl.SetNewState(_desiredState); }
     }
 }

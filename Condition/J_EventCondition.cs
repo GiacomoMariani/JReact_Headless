@@ -19,9 +19,9 @@ namespace JReact.Conditions
         #endregion
 
         #region INITIALIZE AND RESET
-        protected override void InitializeCheck() { StartTrackEvents(); }
+        protected override void StartCheckingCondition() { StartTrackEvents(); }
 
-        protected override void DeInitializeCheck() { StopTrackEvents(); }
+        protected override void StopCheckingCondition() { StopTrackEvents(); }
         #endregion
 
         #region ACTIONS AND TRACKING

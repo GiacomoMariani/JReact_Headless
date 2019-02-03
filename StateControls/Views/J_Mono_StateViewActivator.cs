@@ -40,13 +40,13 @@ namespace JReact.StateControl
         private void StartTracking()
         {
             _stateToActivate.Subscribe(OpenView);
-            _stateToActivate.SubscribeToExit(CloseView);
+            _stateToActivate.SubscribeToEnd(CloseView);
         }
 
         private void StopTracking()
         {
             _stateToActivate.UnSubscribe(OpenView);
-            _stateToActivate.UnSubscribeToExit(CloseView);
+            _stateToActivate.UnSubscribeToEnd(CloseView);
         }
         #endregion
     }

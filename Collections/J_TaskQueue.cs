@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -8,80 +10,90 @@ namespace JReact.Collections
     /// handles tasks in a given order
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Collection/Task Queue")]
-    public class J_TaskQueue : ScriptableObject
+    public class J_TaskQueue : J_State, IEnumerable<iTask>
     {
         #region FIELDS AND PROPERTIS
-        // --------------- SETUP --------------- //
-        //the max desired task
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _allocatedTasks = 10;
-
         // --------------- STATE --------------- //
-        //the current processer using to process a task
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iTask _currentProcedure;
-        //the queue of processors
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<iTask> _procedureQueue = new Queue<iTask>();
-        //to check if any task is running
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive => _currentProcedure != null;
+        //the current a task
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iTask _currentTask;
+        //the queue of tasks
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<iTask> _taskQueue = new Queue<iTask>();
         //the total task procedures
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int TotalProcessors => _procedureQueue.Count;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int TotalTasks => _taskQueue.Count;
         #endregion
 
         #region COMMANDS
-        /// <summary>
-        /// used to process a task
-        /// </summary>
-        /// <param name="taskToProcess">the task to process</param>
         public void ProcessTask(iTask taskToProcess)
         {
-            JConsole.Log($"{name} task added. Current tasks: {TotalProcessors}", JLogTags.Task, this);
-
-            if (TotalProcessors >= _allocatedTasks)
-            {
-                JConsole.Warning($"{name} has too many tasks. Current {TotalProcessors} / Max {_allocatedTasks}.\nAborting Task: {taskToProcess.TaskName}",
-                                 JLogTags.Task, this);
-                return;
-            }
-
+            JConsole.Log($"{name} task added. Current tasks: {TotalTasks}", JLogTags.Task, this);
             //send this task if no task is running, otherwise enqueue it
-            if (!IsActive) RunTask(taskToProcess);
+            if (!IsActive) StartQueueWith(taskToProcess);
             else EnqueueTask(taskToProcess);
         }
+        #endregion
 
+        #region START AND END QUEUE
+        //the first task activate the queue        
+        private void StartQueueWith(iTask taskToProcess)
+        {
+            Activate();
+            JConsole.Log($"{name} Task Queue START with {taskToProcess.Name}", JLogTags.Task, this);
+            RunTask(taskToProcess);
+        }
+
+        private void StopQueue(iTask currentTask)
+        {
+            JConsole.Log($"{name} Task Queue STOP with {_currentTask.Name}", JLogTags.Task, this);
+            End();
+        }
+        #endregion
+
+        #region PROCESSING TASKS
         private void RunTask(iTask taskToProcess)
         {
             //send the task and wait for the next
-            _currentProcedure = taskToProcess;
-            taskToProcess.ThisTask.Invoke();
-            taskToProcess.OnComplete += CheckNext;
+            JConsole.Log($"{name} running task {taskToProcess.Name}", JLogTags.Task, this);
+            _currentTask = taskToProcess;
+            taskToProcess.SubscribeToEnd(CheckNext);
+            taskToProcess.Activate();
         }
 
-        private void EnqueueTask(iTask taskToProcess) { _procedureQueue.Enqueue(taskToProcess); }
+        private void EnqueueTask(iTask taskToProcess)
+        {
+            JConsole.Log($"{name} enqueued {taskToProcess.Name}", JLogTags.Task, this);
+            _taskQueue.Enqueue(taskToProcess);
+        }
 
-        //this is called when te processed task is completed, and check if there's anything else in the queue
+        //this is called when the processed task is completed
         private void CheckNext()
         {
             StopTrackingTask();
-            if (TotalProcessors > 0) RunTask(_procedureQueue.Dequeue());
+            if (TotalTasks > 0) RunTask(_taskQueue.Dequeue());
         }
         #endregion
 
         #region DISABLE AND RESET
-        //we reset on disable, when the scriptable object goes out of scope
-        private void OnDisable() { ResetThis(); }
-
-        //used to reset the mouse
-        public void ResetThis()
+        public override void ResetThis()
         {
-            if (_currentProcedure != null) StopTrackingTask();
-            _procedureQueue.Clear();
+            base.ResetThis();
+            if (_currentTask != null) StopTrackingTask();
+            _taskQueue.Clear();
         }
 
-        //stop tracking the current task
         private void StopTrackingTask()
         {
-            _currentProcedure.OnComplete -= CheckNext;
-            _currentProcedure            =  null;
+            _currentTask.UnSubscribeToEnd(CheckNext);
+            if (_taskQueue.Count == 0) StopQueue(_currentTask);
+            _currentTask = null;
         }
+        #endregion
+
+        #region QUEUE CLASS
+        public IEnumerator<iTask> GetEnumerator() { return _taskQueue.GetEnumerator(); }
+
+        IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+        public int Count => _taskQueue.Count;
+        public bool Contains(iTask state) { return _taskQueue.Contains(state); }
         #endregion
     }
 }

@@ -9,7 +9,7 @@ namespace JReact.UiView
     public class J_Mono_ReactiveStringText : J_UiView_TextElement
     {
         //the string with the text
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private JReactiveString _stringScreenMessage;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _stringScreenMessage;
 
         #region LISTENERS
         //start and stop tracking on enable

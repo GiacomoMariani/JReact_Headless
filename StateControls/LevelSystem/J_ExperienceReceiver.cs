@@ -45,7 +45,7 @@ namespace JReact.StateControl.LevelSystem
         #endregion
 
         #region TRACK METHODS
-        public void Initialize()
+        public void Activate()
         {
             if (IsActive)
             {

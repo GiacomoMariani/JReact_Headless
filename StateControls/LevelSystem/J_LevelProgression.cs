@@ -55,20 +55,20 @@ namespace JReact.StateControl.LevelSystem
             experience.name         = string.Format(ExperienceSuffix, stateControl.name);
             stateControl.Experience = experience;
 
-            if (init) stateControl.Initialize();
+            if (init) stateControl.Activate();
             return stateControl;
         }
         #endregion INSTANTIATION
 
         #region COMMANDS
-        public override void Initialize()
+        public override void Activate()
         {
-            base.Initialize();
+            base.Activate();
             Assert.IsNotNull(Experience, $"{name} requires Experience");
             _currentLevelIndex = 0;
             PreviousExperience = 0;
             SetupLevels();
-            if (!Experience.IsActive) Experience.Initialize();
+            if (!Experience.IsActive) Experience.Activate();
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace JReact.StateControl.LevelSystem
 
             // --------------- SETUP --------------- //
             if (IsActive) ResetThis();
-            Initialize();
+            Activate();
 
             // --------------- SET LEVEL --------------- //
             if (callAllEvents) GainLevel(level - 1);
