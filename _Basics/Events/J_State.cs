@@ -12,7 +12,7 @@ namespace JReact
     /// this script represent a game state
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Game States/J Reactive State")]
-    public class J_State : J_Event, iStateObservable
+    public class J_State : J_Event, iStateObservable, iResettable
     {
         //the main event to set the new state
         private event JAction OnExitEvent;
@@ -45,6 +45,7 @@ namespace JReact
 
         #region DISABLE AND RESET
         private void OnDisable() { ResetThis(); }
+
         public virtual void ResetThis()
         {
             if (IsActive) RaiseExitEvent();
