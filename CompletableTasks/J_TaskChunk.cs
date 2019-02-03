@@ -15,7 +15,7 @@ namespace JReact.Conditions.Tasks
         #region FIELDS AND PROPERTIES
         private JGenericDelegate<J_TaskChunk> OnComplete;
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Task[] _tasks;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_CompletableTask[] _tasks;
         [InfoBox("Null => Cannot enqueue"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly]
         private J_TaskQueue _taskQueue;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Collection_DormantTasks _dormants;
@@ -25,7 +25,7 @@ namespace JReact.Conditions.Tasks
         [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] public ChunkState State { get; private set; } =
             ChunkState.NotStarted;
         [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] public string Title => name;
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private List<J_Task> _activeTasks = new List<J_Task>();
+        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private List<J_CompletableTask> _activeTasks = new List<J_CompletableTask>();
         #endregion
 
         #region SANITY CHECKS
@@ -73,7 +73,7 @@ namespace JReact.Conditions.Tasks
         }
 
         //remove the task when completed
-        private void StepCompleted(J_Task completedTask)
+        private void StepCompleted(J_CompletableTask completedTask)
         {
             // --------------- REMOVAL --------------- //
             completedTask.UnSubscribeToComplete(StepCompleted);

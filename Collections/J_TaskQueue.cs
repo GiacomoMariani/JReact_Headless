@@ -13,16 +13,20 @@ namespace JReact.Collections
     public class J_TaskQueue : J_State, IEnumerable<iTask>
     {
         #region FIELDS AND PROPERTIS
+        public const string NoTask = "QueueFree_NoTask";
         // --------------- STATE --------------- //
-        //the current a task
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iTask _currentTask;
-        //the queue of tasks
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<iTask> _taskQueue = new Queue<iTask>();
-        //the total task procedures
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int TotalTasks => _taskQueue.Count;
+
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public string CurrentTaskName => _currentTask != null
+                                                                                                                  ? _currentTask.Name
+                                                                                                                  : NoTask;
         #endregion
 
         #region COMMANDS
+        public static J_TaskQueue CreateInstance() { return CreateInstance<J_TaskQueue>(); }
+
         public void ProcessTask(iTask taskToProcess)
         {
             JConsole.Log($"{name} task added. Current tasks: {TotalTasks}", JLogTags.Task, this);

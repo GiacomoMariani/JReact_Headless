@@ -8,7 +8,7 @@ namespace JReact.Conditions.Tasks
     /// this is a tutorial that sends line of text
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Task/Tutorial Message")]
-    public class J_MessageTask : J_Task
+    public class J_MessageTask : J_CompletableTask
     {
         #region FIELDS AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required]

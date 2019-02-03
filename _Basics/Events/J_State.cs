@@ -20,6 +20,13 @@ namespace JReact
         //to check if this state is active
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public string Name => name;
+
+        public static J_State CreateInstance(string nameToSet)
+        {
+            var state = CreateInstance<J_State>();
+            state.name = nameToSet;
+            return state;
+        }
         
         //raise event also activate the state
         public override void Activate()

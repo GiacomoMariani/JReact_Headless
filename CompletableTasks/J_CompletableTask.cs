@@ -8,10 +8,10 @@ namespace JReact.Conditions.Tasks
     /// <summary>
     /// A task is a condition that might be completed
     /// </summary>
-    public abstract class J_Task : J_ReactiveCondition
+    public abstract class J_CompletableTask : J_ReactiveCondition
     {
         #region FIELDS AND PROPERTIES
-        private JGenericDelegate<J_Task> OnComplete;
+        private JGenericDelegate<J_CompletableTask> OnComplete;
         // --------------- TRIGGERS --------------- //
         [InfoBox("Null => Auto Start"), BoxGroup("Setup - Triggers", true, true, -15), SerializeField, AssetsOnly]
         private J_ReactiveCondition _startTrigger;
@@ -192,8 +192,8 @@ namespace JReact.Conditions.Tasks
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToComplete(JGenericDelegate<J_Task> actionToAdd) { OnComplete += actionToAdd; }
-        public void UnSubscribeToComplete(JGenericDelegate<J_Task> actionToRemove) { OnComplete -= actionToRemove; }
+        public void SubscribeToComplete(JGenericDelegate<J_CompletableTask> actionToAdd) { OnComplete += actionToAdd; }
+        public void UnSubscribeToComplete(JGenericDelegate<J_CompletableTask> actionToRemove) { OnComplete -= actionToRemove; }
         #endregion
     }
 

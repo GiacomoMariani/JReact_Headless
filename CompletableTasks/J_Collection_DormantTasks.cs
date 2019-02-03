@@ -7,7 +7,7 @@ namespace JReact.Conditions.Tasks
     /// stores the dormant tasks and reactivate them when required
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Task/Dormant Task")]
-    public class J_Collection_DormantTasks : J_ReactiveCollection<J_Task>
+    public class J_Collection_DormantTasks : J_ReactiveCollection<J_CompletableTask>
     {
         /// <summary>
         /// reactivates the steps
