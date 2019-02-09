@@ -4,7 +4,7 @@
     public interface iFillable : iStackable
     {
         int MaxCapacity { get; }
-        int GetAmountBeforeFill();
+        int FreeCapacity { get; }
         void SubscribeToMaxCapacity(JGenericDelegate<int> action);
         void UnSubscribeToMaxCapacity(JGenericDelegate<int> action);
     }

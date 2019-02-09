@@ -7,17 +7,15 @@ namespace JReact.Collections
     /// <summary>
     /// used to set an order of initialization
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Collection/Ordered Initialization")]
-    public class J_OrderOfInitialization : J_State
+    [CreateAssetMenu(menuName = "Reactive/Collection/Async Initialization")]
+    public class J_AsyncInitialization : J_State
     {
-        #region FIELDS AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State[] _orderedStates;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_TaskQueue _queue;
-        #endregion
 
-        public static J_OrderOfInitialization CreateInstance(J_State[] statesToInitialize)
+        public static J_AsyncInitialization CreateInstance(J_State[] statesToInitialize)
         {
-            var ordered = CreateInstance<J_OrderOfInitialization>();
+            var ordered = CreateInstance<J_AsyncInitialization>();
             ordered._orderedStates = statesToInitialize;
             ordered._queue = J_TaskQueue.CreateInstance();
             return ordered;
@@ -26,7 +24,7 @@ namespace JReact.Collections
         public override void Activate()
         {
             base.Activate();
-            JConsole.Log($"{name} start initialization for {_orderedStates.Length} states", JLogTags.State, this);
+            JConsole.Log($"{name} initialize for {_orderedStates.Length} states", JLogTags.Collection, this);
             SanityChecks();
 
             //process all states
@@ -55,7 +53,7 @@ namespace JReact.Collections
         public override void End()
         {
             base.End();
-            JConsole.Log($"{name} initialization complete", JLogTags.State, this);
+            JConsole.Log($"{name} initialization complete for {_orderedStates.Length} states", JLogTags.Collection, this);
         }
 
         public override void ResetThis()

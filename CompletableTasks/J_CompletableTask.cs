@@ -46,7 +46,18 @@ namespace JReact.Conditions.Tasks
         }
         #endregion
 
-        #region TUTORIAL STARTERS
+        public static J_CompletableTask CreateInstance<T>(J_TaskChunk chunk = null, J_ReactiveCondition start = null, J_ReactiveCondition complete= null, J_ReactiveCondition dormant= null)
+            where T : J_CompletableTask
+        {
+            var task = CreateInstance<T>();
+            task._startTrigger = start;
+            task._dormantTrigger = dormant;
+            task._completeTrigger = complete;
+            if(chunk != null) task.InjectChunk(chunk);
+            return task;
+        }
+
+        #region STARTERS
         internal void InjectChunk(J_TaskChunk chunk) { _chunk = chunk; }
 
         // launch the tasks. wait for triggers otherwise we directly start

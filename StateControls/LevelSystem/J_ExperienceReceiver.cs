@@ -31,6 +31,7 @@ namespace JReact.StateControl.LevelSystem
             => _levelProgress.CurrentLevelInfo.ExperienceNeeded;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private bool _CanGainExperience
             => !_levelProgress.MaxLevelReached;
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => MaxCapacity - CurrentAmount;
 
         [BoxGroup("Debug", true, true, 1000), SerializeField] private bool _debug = false;
         #endregion
@@ -70,11 +71,7 @@ namespace JReact.StateControl.LevelSystem
         }
         #endregion
 
-
-        #region GETTERS
-        public int GetAmountBeforeFill() { return MaxCapacity - CurrentAmount; }
-        #endregion
-
+        
         #region EXPERIENCE PROGRESS
         /// <summary>
         /// grants an amount of experience to the player
@@ -91,7 +88,7 @@ namespace JReact.StateControl.LevelSystem
 
             // --------------- KEEP ADDING UNTIL WE HAVE EXPERIENCE--------------- //
             //recursively add experience
-            while (amountToAdd >= GetAmountBeforeFill())
+            while (amountToAdd >= FreeCapacity)
             {
                 // --------------- STOP AT MAX --------------- //
                 if (!_CanGainExperience)
@@ -100,7 +97,7 @@ namespace JReact.StateControl.LevelSystem
                     return true;
                 }
 
-                amountToAdd -= GetAmountBeforeFill();
+                amountToAdd -= FreeCapacity;
                 //if we have a level up we will also get the event of UpdateMax and the MaxCapacity will be directly updated
                 _levelProgress.GainLevel();
             }
