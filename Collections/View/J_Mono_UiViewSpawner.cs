@@ -15,11 +15,13 @@ namespace JReact.UiView.Collections
     {
         #region FIELDS AND PROPERTIES
         //requires a collection to show
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_ReactiveCollection<T> _CollectionToShow { get; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
+        protected abstract J_ReactiveCollection<T> _CollectionToShow { get; }
         //the view prefab
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_Mono_Actor<T> _UiViewPrefab { get; }
         //the tracked elements
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Dictionary<T, J_Mono_Actor<T>> _trackedElements = new Dictionary<T, J_Mono_Actor<T>>();
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
+        private Dictionary<T, J_Mono_Actor<T>> _trackedElements = new Dictionary<T, J_Mono_Actor<T>>();
         #endregion
 
         #region INITIALIZATION
@@ -29,6 +31,7 @@ namespace JReact.UiView.Collections
             //check that everything is as expected
             SanityChecks();
         }
+
         //used to check that every element is valid
         private void SanityChecks()
         {
@@ -43,23 +46,33 @@ namespace JReact.UiView.Collections
         {
             //make sure all the elements are shown
             for (int i = 0; i < _CollectionToShow.Count; i++)
-            { AddView(_CollectionToShow[i]); }
+                AddView(_CollectionToShow[i]);
         }
 
         //add a view on the ui
-        private void AddView(T _elementsToBeShown)
+        private void AddView(T elementsToBeShown)
         {
             //if the view is already shown we skip this
-            if (_trackedElements.ContainsKey(_elementsToBeShown)) return;
+            if (WantToShowElement(elementsToBeShown)) return;
             //otherwise we setup the view
             //first we instantiate the view on this transform, that should be a layout group
             var newUiView = Instantiate(_UiViewPrefab, transform);
             //then we initiate the uiView with the element to be shown
-            newUiView.UpdateElement(_elementsToBeShown);
+            newUiView.UpdateElement(elementsToBeShown);
             //we add the element to the dictionary
-            _trackedElements[_elementsToBeShown] = newUiView;
+            _trackedElements[elementsToBeShown] = newUiView;
             //add further adjustments here
-            AddedView(_elementsToBeShown);
+            AddedView(elementsToBeShown);
+        }
+
+        protected virtual bool WantToShowElement(T elementsToBeShown)
+        {
+            if (_trackedElements.ContainsKey(elementsToBeShown))
+            {
+                JConsole.Warning($"{name} has already the {elementsToBeShown.ToString()}");
+                return false;
+            }
+            return true;
         }
 
         //an helper method if we want to apply further elements
@@ -78,15 +91,15 @@ namespace JReact.UiView.Collections
         #region LISTENERS
         //start and stop tracking on enable
         private void OnEnable()
-        { 
+        {
             SetupViews();
-            _CollectionToShow.SubscribeToCollectionAdd(AddView); 
-            _CollectionToShow.SubscribeToCollectionRemove(RemoveView); 
+            _CollectionToShow.SubscribeToCollectionAdd(AddView);
+            _CollectionToShow.SubscribeToCollectionRemove(RemoveView);
         }
 
         private void OnDisable()
         {
-            _CollectionToShow.UnSubscribeToCollectionAdd(AddView); 
+            _CollectionToShow.UnSubscribeToCollectionAdd(AddView);
             _CollectionToShow.UnSubscribeToCollectionRemove(RemoveView);
         }
         #endregion

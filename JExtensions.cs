@@ -110,27 +110,31 @@ namespace JReact
         //reset 
         public static void ResetAll(ICollection<iResettable> collection)
         {
-            foreach (var element in collection) { element.ResetThis(); }
+            foreach (var element in collection) element.ResetThis();
         }
         #endregion
 
         #region SCRIPTABLE OBJECTS
         //a way to set the names of scriptable object
-        public static void SetName(this ScriptableObject itemToRename, string newName)
-        {
-            itemToRename.name = newName + ScriptableObjectSuffix;
-        }
+        public static void SetName(this ScriptableObject item, string newName) { item.name = newName + ScriptableObjectSuffix; }
         #endregion
 
         #region TRANSFORMS
         //used to clear a transform from all of its children
         public static void ClearTransform(this Transform transform)
         {
-            foreach (Transform child in transform) { GameObject.Destroy(child.gameObject); }
+            foreach (Transform child in transform) GameObject.Destroy(child.gameObject);
         }
         #endregion
 
         #region GAMEOBJECTS
+        /// <summary>
+        /// checks if the elements is a prefab or a scene game object
+        /// </summary>
+        /// <param name="a_Object">the element to check</param>
+        /// <returns>true if this is a prefab, false if this is a gameobject</returns>
+        public static bool IsPrefab(this GameObject a_Object) { return a_Object.scene.rootCount == 0; }
+
         /// <summary>
         /// a method to check if a gameobject has a component
         /// </summary>
@@ -167,7 +171,7 @@ namespace JReact
         {
             Assert.IsTrue(range.x <= range.y,
                           $"The y value of the given range needs to be higher than x. X = {range.x}, Y = {range.y}");
-            return Random.Range(range.x, range.y);
+            return UnityEngine.Random.Range(range.x, range.y);
         }
 
         /// <summary>
@@ -193,7 +197,7 @@ namespace JReact
             Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into integer. Returning 0.");
             return 0;
         }
-        
+
         //converts a string into float
         public static float ToFloat(this string stringToConvert)
         {
@@ -201,10 +205,10 @@ namespace JReact
             if (float.TryParse(stringToConvert, out var valueToReturn)) return valueToReturn;
 
             //otherwise send a warning and return 0
-            Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into integer. Returning 0.");
-            return 0;
+            Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into float. Returning 0f.");
+            return 0f;
         }
-        
+
         /// <summary>
         /// this is used to encode a string into a hex string
         /// </summary>
