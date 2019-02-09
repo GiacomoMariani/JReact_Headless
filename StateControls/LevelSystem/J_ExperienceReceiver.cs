@@ -77,14 +77,14 @@ namespace JReact.StateControl.LevelSystem
         /// grants an amount of experience to the player
         /// </summary>
         /// <param name="amountToAdd">the amount to be given</param>
-        public bool Grant(int amountToAdd)
+        public int Grant(int amountToAdd)
         {
             if (_debug)
                 JConsole.Log($"{name} Granted Experience: {amountToAdd}. Current: {CurrentAmount}. For next Level: {MaxCapacity}",
                              JLogTags.LevelSystem, this);
 
             // --------------- CHECKERS --------------- //
-            if (!CanAdd(amountToAdd)) return false;
+            if (!CanAdd(amountToAdd)) return -1;
 
             // --------------- KEEP ADDING UNTIL WE HAVE EXPERIENCE--------------- //
             //recursively add experience
@@ -94,7 +94,7 @@ namespace JReact.StateControl.LevelSystem
                 if (!_CanGainExperience)
                 {
                     CurrentAmount = _levelProgress.CurrentLevelInfo.ExperienceNeeded;
-                    return true;
+                    return -1;
                 }
 
                 amountToAdd -= FreeCapacity;
@@ -104,7 +104,7 @@ namespace JReact.StateControl.LevelSystem
 
             CurrentAmount = amountToAdd;
 
-            return true;
+            return 0;
         }
 
         //checks if the command is valid and sends some log if not

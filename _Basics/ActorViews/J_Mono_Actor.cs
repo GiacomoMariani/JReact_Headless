@@ -41,6 +41,7 @@ namespace JReact
         /// <param name="element">the element to be injected</param>
         public void UpdateElement(T element)
         {
+            if (_actorElement != null) RemovePreviousActor(_actorElement);
             //store the product
             _actorElement = element;
             SanityChecks();
@@ -51,6 +52,9 @@ namespace JReact
             //apply further data
             SpecificInitialization(element);
         }
+
+        //if we need to deinitialize the previous actor
+        protected virtual void RemovePreviousActor(T actorElement) { }
 
         //if we want to add further adjustments when we update the element
         protected virtual void SpecificInitialization(T element) { }

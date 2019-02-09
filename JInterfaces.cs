@@ -13,7 +13,7 @@
     public interface iStackable : iObservable<int>
     {
         int CurrentAmount { get; }
-        bool Grant(int amount);
+        int Grant(int amount);
     }
 
     public interface iSelectable<out T> where T : class

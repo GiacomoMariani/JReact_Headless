@@ -117,7 +117,7 @@ namespace JReact
         #region SCRIPTABLE OBJECTS
         //a way to set the names of scriptable object
         public static void SetName(this ScriptableObject item, string newName) { item.name = newName + ScriptableObjectSuffix; }
-        #endregion
+        #endregion SCRIPTABLE OBJECTS
 
         #region TRANSFORMS
         //used to clear a transform from all of its children
@@ -125,7 +125,22 @@ namespace JReact
         {
             foreach (Transform child in transform) GameObject.Destroy(child.gameObject);
         }
-        #endregion
+        #endregion TRANSFORMS
+
+        #region RECT TRANSFORM
+        /// <summary>
+        /// make this transform as large as the parent
+        /// </summary>
+        public static void FitParent(this RectTransform rectTransform)
+        {
+            Assert.IsTrue(rectTransform.GetComponentInParent<RectTransform>(),
+                          $"{rectTransform.name} parent ({rectTransform.parent.name}) is not a valid");
+            rectTransform.anchorMin = JConstants.VectorZero;
+            rectTransform.anchorMax = JConstants.VectorOne;
+            rectTransform.offsetMin = JConstants.VectorZero;
+            rectTransform.offsetMax = JConstants.VectorOne;
+        }
+        #endregion RECT TRANSFORM
 
         #region GAMEOBJECTS
         /// <summary>
@@ -159,7 +174,7 @@ namespace JReact
                               $"The class requested is of a parent class. Weapon {gameObjectToCheck}, class found {elementSearched[0].GetType()}, class requested {component.GetElementType()}. Player {gameObjectToCheck.transform.root.gameObject}");
             }
         }
-        #endregion
+        #endregion GAMEOBJECTS
 
         #region VECTORS
         /// <summary>
@@ -226,7 +241,7 @@ namespace JReact
 
             return sb.ToString();
         }
-        #endregion
+        #endregion STRING
 
         #region DATE TIME
         /// <summary>

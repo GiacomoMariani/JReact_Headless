@@ -28,7 +28,7 @@ namespace JReact
             {
                 if (!CanSetValue(value))
                 {
-                    JConsole.Error($"{CurrentState}Cannot set value {value}.", JLogTags.Fillable, this);
+                    JConsole.Error($"{CurrentState} Cannot set value {value}.", JLogTags.Fillable, this);
                     return;
                 }
 
@@ -45,7 +45,7 @@ namespace JReact
             {
                 if (!CanSetMinCapacity(value))
                 {
-                    JConsole.Error($"{CurrentState}Cannot set min capacity {value}.", JLogTags.Fillable, this);
+                    JConsole.Error($"{CurrentState} Cannot set min capacity {value}.", JLogTags.Fillable, this);
                     return;
                 }
 
@@ -63,7 +63,7 @@ namespace JReact
             {
                 if (!CanSetMaxCapacity(value))
                 {
-                    JConsole.Error($"{CurrentState}Cannot set max capacity {value}.", JLogTags.Fillable, this);
+                    JConsole.Error($"{CurrentState} Cannot set max capacity {value}.", JLogTags.Fillable, this);
                     return;
                 }
 
@@ -77,28 +77,68 @@ namespace JReact
         #endregion
 
         #region COMMANDS
-        public static J_Fillable CreateInstance(int amount, int max, int min)
+        public static J_Fillable CreateInstance(int max, int amount = 0, int min = 0)
         {
             var fillable                                    = CreateInstance<J_Fillable>();
             fillable._startAmount = fillable._currentAmount = amount;
-            fillable._startMin    = fillable._minCapacity   = amount;
-            fillable._startMax    = fillable._maxCapacity   = amount;
+            fillable._startMin    = fillable._minCapacity   = min;
+            fillable._startMax    = fillable._maxCapacity   = max;
             fillable.ResetThis();
             return fillable;
         }
 
-        public bool Grant(int amount)
+        /// <summary>
+        /// grants an amount and returns the remaining if any
+        /// </summary>
+        /// <param name="amount">the amount to add</param>
+        /// <returns>the remaining, -1 is considered error</returns>
+        public int Grant(int amount)
         {
+            if (amount <= 0)
+            {
+                JConsole.Error($"{name} Grant receive only positive amount (use remove). Received {amount}", JLogTags.Fillable, this);
+                return -1;
+            }
+
             JConsole.Log($"{CurrentState} => Granted Amount: {amount}.", JLogTags.Fillable, this);
 
             if (!CanAdd(amount))
             {
-                JConsole.Error($"{CurrentState} invalid amount {amount}. Cancel command.", JLogTags.Fillable, this);
-                return false;
+                JConsole.Warning($"{CurrentState} invalid amount for grant {amount}. Setting Max.", JLogTags.Fillable, this);
+                int remaining = CurrentAmount + amount - MaxCapacity;
+                CurrentAmount = MaxCapacity;
+                return remaining;
             }
 
             CurrentAmount += amount;
-            return true;
+            return 0;
+        }
+
+        /// <summary>
+        /// removes an amount and returns the remaining if any
+        /// </summary>
+        /// <param name="amount">the amount to remove</param>
+        /// <returns>the remaining, -1 is considered error</returns>
+        public int Remove(int amount)
+        {
+            if (amount <= 0)
+            {
+                JConsole.Error($"{name} Remove receive only positive amount. Received {amount}", JLogTags.Fillable, this);
+                return -1;
+            }
+
+            JConsole.Log($"{CurrentState} => Removed Amount: {amount}.", JLogTags.Fillable, this);
+
+            if (!HasEnough(amount))
+            {
+                JConsole.Warning($"{CurrentState} invalid amount for remove {amount}. Setting Min.", JLogTags.Fillable, this);
+                int remaining = amount - (CurrentAmount + MinCapacity);
+                CurrentAmount = MinCapacity;
+                return remaining;
+            }
+
+            CurrentAmount -= amount;
+            return 0;
         }
 
         public void SetMax(int max) { MaxCapacity                 = max; }
@@ -113,6 +153,13 @@ namespace JReact
         /// <param name="amount">the amount we want to add</param>
         /// <returns>returns true if the request is valid</returns>
         public bool CanAdd(int amount) { return (CurrentAmount + amount) <= MaxCapacity; }
+
+        /// <summary>
+        /// checks if there's enough value
+        /// </summary>
+        /// <param name="amount">the amount we want to remove</param>
+        /// <returns>returns true if we have anough/returns>
+        public bool HasEnough(int amount) { return CurrentAmount >= amount; }
 
         public bool CanSetMaxCapacity(int maxToSet) { return CurrentAmount <= maxToSet    && MinCapacity <= maxToSet; }
         public bool CanSetMinCapacity(int minToSet) { return CurrentAmount >= minToSet    && MaxCapacity >= minToSet; }
@@ -139,7 +186,7 @@ namespace JReact
         {
             Assert.IsTrue(value <= max, $"{name} has a current value {value} higher than max {max}");
             Assert.IsTrue(value >= min, $"{name} has a current value {value} lower than min {min}");
-            Assert.IsTrue(min <= max, $"{name} has a min {min} higher than max {max}");
+            Assert.IsTrue(min   <= max, $"{name} has a min {min} higher than max {max}");
         }
 
         protected virtual void OnDisable() { ResetThis(); }
