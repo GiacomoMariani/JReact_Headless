@@ -17,7 +17,7 @@ namespace JReact.TimeProgress
         private event JGenericDelegate<J_Progress> OnProgressComplete;
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Timer _timer;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_GenericCounter _timer;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Identifier _identifier;
         public J_Identifier Identifier => _identifier;
 
@@ -139,13 +139,13 @@ namespace JReact.TimeProgress
 
         #region COUNT AND COMPLETION
         //add the time for each tick
-        private void AddTimePerTick(float secondsFromCounter)
+        private void AddTimePerTick(float tickDeltaTime)
         {
             //stop if this is not active
             if (Paused) return;
 
             //add the time to the time passed
-            CountSeconds(secondsFromCounter);
+            CountSeconds(tickDeltaTime);
 
             //stop if we reached the end
             if (SecondsFromStart >= _timeRequiredInSeconds) ProgressComplete();
