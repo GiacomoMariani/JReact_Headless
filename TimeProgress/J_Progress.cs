@@ -75,7 +75,7 @@ namespace JReact.TimeProgress
 
             // --------------- SETUP --------------- //
             _timeRequiredInSeconds = (int) secondsToComplete;
-            if (!_timer.IsRunning)
+            if (!_timer.IsActive)
             {
                 JConsole.Warning($"{_timer.name} on {name} was not running. Force Start.", JLogTags.TimeProgress, this);
                 _timer.Activate();

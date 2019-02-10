@@ -54,7 +54,7 @@
         int Grant(int amount);
         int Remove(int amount);
     }
-    
+
     public interface iFillable : iStackable
     {
         int MaxCapacity { get; }
@@ -62,7 +62,7 @@
         void SubscribeToMaxCapacity(JGenericDelegate<int> action);
         void UnSubscribeToMaxCapacity(JGenericDelegate<int> action);
     }
-    
+
     public interface iTask
     {
         string Name { get; }
@@ -82,5 +82,11 @@
     {
         float GetAxis(string axisId);
         float GetAxisRaw(string axisId);
+    }
+
+    public interface iTestable
+    {
+        void RunTest();
+        void StopTest();
     }
 }

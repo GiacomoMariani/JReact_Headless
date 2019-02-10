@@ -31,7 +31,7 @@ namespace JReact.TimeProgress
         protected override IEnumerator<float> CountOneTick()
         {
             //stop if requested
-            if (!IsRunning) yield break;
+            if (!IsActive) yield break;
 
             //count the time before the tick
             var realTimePassed = 0f;
@@ -47,7 +47,7 @@ namespace JReact.TimeProgress
             //Debug.Log("We've been waiting for " + realTimePassed + " for a tick of " + _tickLengthInSeconds);
 
             //do not send the event if not required anymore
-            if (!IsRunning) yield break;
+            if (!IsActive) yield break;
 
             //the event send the time passed
             SendTickEvent(realTimePassed);

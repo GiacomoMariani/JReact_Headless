@@ -20,7 +20,6 @@ namespace JReact.TimeProgress
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected int _objectId = -1;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _destroyAtDisable = false;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; } = false;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float ThisDeltaTime { get; private set; }
         #endregion
 
@@ -47,7 +46,6 @@ namespace JReact.TimeProgress
             if (!SanityChecks()) return;
             //complete the setup
             _objectId = GetInstanceID();
-            IsRunning = true;
             //starts counting
             Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_TimerTag);
         }
@@ -58,16 +56,13 @@ namespace JReact.TimeProgress
             base.End();
             JConsole.Log($"{name} stops counting", JLogTags.TimeProgress, this);
             Timing.KillCoroutines(_objectId, JCoroutineTags.COROUTINE_TimerTag);
-            IsRunning = false;
         }
         #endregion
 
         #region INITIALIZATION
-        //make sure this is setup correctly
+        //make sure this is setup correctly, used in subclasses
         protected virtual bool SanityChecks()
         {
-            Assert.IsFalse(IsRunning, $"{name} is already ticking. Cancel command");
-            if (IsRunning) return false;
             return true;
         }
         #endregion
@@ -87,7 +82,7 @@ namespace JReact.TimeProgress
         #region SUBSCRIBERS
         public void Subscribe(JGenericDelegate<float> action)
         {
-            if (!IsRunning) Activate();
+            if (!IsActive) Activate();
             OnTick += action;
         }
 
@@ -97,11 +92,9 @@ namespace JReact.TimeProgress
         #endregion
 
         #region DISABLE AND RESET
-        private void OnDisable() { ResetThis(); }
-
-        public virtual void ResetThis()
+        public override void ResetThis()
         {
-            if (IsRunning) End();
+            base.ResetThis();
             if (_destroyAtDisable) Destroy(this);
         }
         #endregion

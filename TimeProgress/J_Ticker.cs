@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Assertions;
+using Assert = UnityEngine.Assertions.Assert;
 
 namespace JReact.TimeProgress
 {
@@ -30,7 +30,7 @@ namespace JReact.TimeProgress
         protected override IEnumerator<float> CountOneTick()
         {
             //stop if requested
-            if (!IsRunning) yield break;
+            if (!IsActive) yield break;
 
             //count the time before the tick
             var beforeTickTime = Time.time;
@@ -43,7 +43,7 @@ namespace JReact.TimeProgress
             var realTimePassed = afterTickTime - beforeTickTime;
 
             //do not send the event if not required anymore
-            if (!IsRunning) yield break;
+            if (!IsActive) yield break;
 
             //the event send the tick counted
             SendTickEvent(realTimePassed);
