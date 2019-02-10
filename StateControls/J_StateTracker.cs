@@ -9,7 +9,7 @@ namespace JReact.StateControl
     /// used to track the flow of events to move back to a previous state
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Game States/J State Tracker")]
-    public class J_StateTracker : ScriptableObject, iActivable
+    public class J_StateTracker : J_State, iActivable
     {
         #region VALUES AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField, Required, AssetsOnly] private J_SimpleStateControl _stateControl;
@@ -31,8 +31,9 @@ namespace JReact.StateControl
         #endregion
 
         #region INITIALIZATION AND LISTENERS
-        public void Activate()
+        public override void Activate()
         {
+            base.Activate();
             SanityChecks();
             InitThis();
         }
@@ -50,6 +51,14 @@ namespace JReact.StateControl
             if (IsActive) return;
             _stateControl.Subscribe(ChangeState);
             IsActive = true;
+        }
+
+        public override void End()
+        {
+            base.End();
+            _previousStates.Clear();
+            _stateControl.UnSubscribe(ChangeState);
+            IsActive = false;
         }
         #endregion
 
@@ -86,18 +95,6 @@ namespace JReact.StateControl
             if (_previousStates.Count > 0) return false;
             JConsole.Warning($"Currently there are no previous states on {name}. Aborting command.", JLogTags.State, this);
             return true;
-        }
-        #endregion
-
-        #region DISABLE AND RESET
-        protected virtual void OnDisable() { ResetThis(); }
-
-        public void ResetThis()
-        {
-            if (!IsActive) return;
-            _previousStates.Clear();
-            _stateControl.UnSubscribe(ChangeState);
-            IsActive = false;
         }
         #endregion
     }

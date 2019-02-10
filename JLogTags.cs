@@ -9,7 +9,7 @@ namespace JReact
         public const string Collection = "-Collection-";
         public const string TutorialTag = "-Tutorial-";
         public const string CameraTag = "-Camera-";
-        public const string State = "-DebugState-";
+        public const string State = "-State-";
         public const string Reset = "-Reset-";
         public const string SceneManager = "-SceneManager-";
         public const string TimeProgress = "-Time-";

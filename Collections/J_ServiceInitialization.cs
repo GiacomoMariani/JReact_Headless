@@ -57,12 +57,13 @@ namespace JReact.Collections
         public override void End()
         {
             base.End();
-            JConsole.Log($"{name} initialization complete for {_services.Length} events", JLogTags.Collection, this);
+            JConsole.Log($"{name} task completed for {_services.Length} services", JLogTags.Collection, this);
         }
 
         public override void ResetThis()
         {
             base.ResetThis();
+            JConsole.Log($"{name} resets for {_services.Length} services", JLogTags.Collection, this);
             for (int i = 0; i < _services.Length; i++)
                 _services[i].ResetThis();
         }

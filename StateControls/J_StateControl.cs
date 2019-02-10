@@ -21,7 +21,7 @@ using UnityEngine.Assertions;
 
 namespace JReact.StateControl
 {
-    public class J_StateControl<T> : ScriptableObject, iActivable
+    public class J_StateControl<T> : J_State
         where T : J_State
     {
         #region FIELDS AND PROPERTIES
@@ -66,9 +66,6 @@ namespace JReact.StateControl
                 CurrentState.Activate();
             }
         }
-
-        //check if this state control has been initialized
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
         #endregion FIELDS AND PROPERTIES
 
         #region INSTANTIATION
@@ -87,22 +84,30 @@ namespace JReact.StateControl
         }
         #endregion INSTANTIATION
 
-        #region INITIALIZATION
+        #region ACTIVATION
         /// <summary>
         /// sets the first state of the game
         /// </summary>
-        public virtual void Activate()
+        public override void Activate()
         {
-            Assert.IsFalse(IsActive, $"{name} was already active. stop command.");
-            if(IsActive) return;
-            IsActive = true;
+            base.Activate();
             Assert.IsNotNull(_firstState, $"Please set a first state to validate the controls on: {name}");
             SetStateSanityChecks(_firstState);
             _currentState = _firstState;
             _firstState.Activate();
             JConsole.Log($"Initialization completed on {name} with {_validStates.Length} states.", JLogTags.State, this);
         }
-        #endregion INITIALIZATION
+
+        /// <summary>
+        /// resets the state control, called also OnDisable
+        /// </summary>
+        public override void End()
+        {
+            base.End(); 
+            if(CurrentState != null) CurrentState.End();
+            _currentState = null;
+        }
+        #endregion ACTIVATION
 
         #region MAIN CONTROL
         /// <summary>
@@ -126,6 +131,7 @@ namespace JReact.StateControl
 
         private void SetStateSanityChecks(T stateToSet)
         {
+            Assert.IsNotNull(stateToSet, $"{name} is trying to set a null state");
             Assert.IsTrue(Array.IndexOf(_validStates, stateToSet) > -1,
                           $"The state {stateToSet} is not in the of valid states of {name}. List{_validStates.PrintAll()}.");
         }
@@ -154,23 +160,5 @@ namespace JReact.StateControl
 
         public void UnSubscribe(StateTransition actionToSend) { OnStateTransition -= actionToSend; }
         #endregion SUBSCRIBE METHODS
-
-        #region DISABLE AND RESET
-        /// <summary>
-        /// reset methods set OnDisable, as for Unity Scriptable objects
-        /// </summary>
-        protected virtual void OnDisable() { ResetThis(); }
-
-        /// <summary>
-        /// we reset the initialization and we remove the current state using the field instead of the property
-        /// </summary>
-        public virtual void ResetThis()
-        {
-            if(!IsActive) return;
-            if(CurrentState != null) CurrentState.End();
-            _currentState = null;
-            IsActive      = false;
-        }
-        #endregion DISABLE AND RESET
     }
 }
