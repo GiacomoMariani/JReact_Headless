@@ -17,7 +17,7 @@ namespace JReact.StateControl.LevelSystem
         [BoxGroup("State", true, true, 0), SerializeField, AssetsOnly, Required] private J_LevelProgression _levelProgress;
 
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private int _currentExperience;
-        public int CurrentAmount
+        public int CurrentValue
         {
             get => _currentExperience;
             private set
@@ -31,7 +31,7 @@ namespace JReact.StateControl.LevelSystem
             => _levelProgress.CurrentLevelInfo.ExperienceNeeded;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private bool _CanGainExperience
             => !_levelProgress.MaxLevelReached;
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => MaxCapacity - CurrentAmount;
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => MaxCapacity - CurrentValue;
 
         [BoxGroup("Debug", true, true, 1000), SerializeField] private bool _debug = false;
         #endregion
@@ -57,7 +57,7 @@ namespace JReact.StateControl.LevelSystem
             SanityChecks();
 
             IsActive      = true;
-            CurrentAmount = 0;
+            CurrentValue = 0;
 
             _levelProgress.Subscribe(LevelUpdate);
         }
@@ -67,7 +67,7 @@ namespace JReact.StateControl.LevelSystem
         private void LevelUpdate(J_LevelState previousLevel, J_LevelState currentLevel)
         {
             OnMaxChanged?.Invoke(currentLevel.ExperienceNeeded);
-            CurrentAmount = 0;
+            CurrentValue = 0;
         }
         #endregion
 
@@ -80,7 +80,7 @@ namespace JReact.StateControl.LevelSystem
         public int Grant(int amountToAdd)
         {
             if (_debug)
-                JConsole.Log($"{name} Granted Experience: {amountToAdd}. Current: {CurrentAmount}. For next Level: {MaxCapacity}",
+                JConsole.Log($"{name} Granted Experience: {amountToAdd}. Current: {CurrentValue}. For next Level: {MaxCapacity}",
                              JLogTags.LevelSystem, this);
 
             // --------------- CHECKERS --------------- //
@@ -93,7 +93,7 @@ namespace JReact.StateControl.LevelSystem
                 // --------------- STOP AT MAX --------------- //
                 if (!_CanGainExperience)
                 {
-                    CurrentAmount = _levelProgress.CurrentLevelInfo.ExperienceNeeded;
+                    CurrentValue = _levelProgress.CurrentLevelInfo.ExperienceNeeded;
                     return -1;
                 }
 
@@ -102,9 +102,15 @@ namespace JReact.StateControl.LevelSystem
                 _levelProgress.GainLevel();
             }
 
-            CurrentAmount = amountToAdd;
+            CurrentValue = amountToAdd;
 
             return 0;
+        }
+
+        public int Remove(int amount)
+        {
+            JConsole.Error($"{name} cannot be removed", JLogTags.LevelSystem, this);
+            return -1;
         }
 
         //checks if the command is valid and sends some log if not

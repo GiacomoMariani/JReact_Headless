@@ -15,7 +15,6 @@ namespace JReact.Conditions.Tasks
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required]
         private J_Collection_DormantTasks[] _alldDormantCollections;
 
-
         public void ResetThis()
         {
             for (int i = 0; i < _allChunks.Length; i++)

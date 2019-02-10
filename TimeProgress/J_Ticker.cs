@@ -9,7 +9,7 @@ namespace JReact.TimeProgress
     /// <summary>
     /// the time counter
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Time/Delayed Tick")]
+    [CreateAssetMenu(menuName = "Reactive/Time Progress/Delayed Tick")]
     public class J_Ticker : J_GenericCounter
     {
         #region FIELDS AND PROPERTIES
@@ -32,15 +32,21 @@ namespace JReact.TimeProgress
             //stop if requested
             if (!IsRunning) yield break;
 
-            //wait the amount of desired ticks
+            //count the time before the tick
+            var beforeTickTime = Time.time;
+            //wait the tick
             for (int i = 0; i < _tickInterval; i++)
                 yield return Timing.WaitForOneFrame;
+            //count the time after the tick
+            var afterTickTime = Time.time;
+            //calculate the real passed time
+            var realTimePassed = afterTickTime - beforeTickTime;
 
             //do not send the event if not required anymore
             if (!IsRunning) yield break;
 
             //the event send the tick counted
-            SendTickEvent(_tickInterval);
+            SendTickEvent(realTimePassed);
 
             //move ahead to the next tick
             Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_TimerTag);

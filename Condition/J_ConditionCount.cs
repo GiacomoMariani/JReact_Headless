@@ -19,7 +19,7 @@ namespace JReact.Conditions
 
         protected override void StartCheckingCondition()
         {
-            UpdateCondition(_stackable.CurrentAmount);
+            UpdateCondition(_stackable.CurrentValue);
             _stackable.Subscribe(UpdateCondition);
         }
 

@@ -21,7 +21,7 @@ namespace JReact
 
         private int _currentAmount;
         [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly]
-        public int CurrentAmount
+        public int CurrentValue
         {
             get => _currentAmount;
             private set
@@ -72,8 +72,8 @@ namespace JReact
             }
         }
 
-        public int FreeCapacity => MaxCapacity - CurrentAmount;
-        private string CurrentState => $"{name}. Min {MinCapacity} - Max {MaxCapacity} - Current {CurrentAmount}";
+        public int FreeCapacity => MaxCapacity - CurrentValue;
+        private string CurrentState => $"{name}. Min {MinCapacity} - Max {MaxCapacity} - Current {CurrentValue}";
         #endregion
 
         #region COMMANDS
@@ -105,12 +105,12 @@ namespace JReact
             if (!CanAdd(amount))
             {
                 JConsole.Warning($"{CurrentState} invalid amount for grant {amount}. Setting Max.", JLogTags.Fillable, this);
-                int remaining = CurrentAmount + amount - MaxCapacity;
-                CurrentAmount = MaxCapacity;
+                int remaining = CurrentValue + amount - MaxCapacity;
+                CurrentValue = MaxCapacity;
                 return remaining;
             }
 
-            CurrentAmount += amount;
+            CurrentValue += amount;
             return 0;
         }
 
@@ -132,18 +132,18 @@ namespace JReact
             if (!HasEnough(amount))
             {
                 JConsole.Warning($"{CurrentState} invalid amount for remove {amount}. Setting Min.", JLogTags.Fillable, this);
-                int remaining = amount - (CurrentAmount + MinCapacity);
-                CurrentAmount = MinCapacity;
+                int remaining = amount - (CurrentValue + MinCapacity);
+                CurrentValue = MinCapacity;
                 return remaining;
             }
 
-            CurrentAmount -= amount;
+            CurrentValue -= amount;
             return 0;
         }
 
         public void SetMax(int max) { MaxCapacity                 = max; }
         public void SetMin(int min) { MinCapacity                 = min; }
-        public void SetCurrentAmount(int current) { CurrentAmount = current; }
+        public void SetCurrentAmount(int current) { CurrentValue = current; }
         #endregion
 
         #region PUBLIC CHECKS
@@ -152,17 +152,17 @@ namespace JReact
         /// </summary>
         /// <param name="amount">the amount we want to add</param>
         /// <returns>returns true if the request is valid</returns>
-        public bool CanAdd(int amount) { return (CurrentAmount + amount) <= MaxCapacity; }
+        public bool CanAdd(int amount) { return (CurrentValue + amount) <= MaxCapacity; }
 
         /// <summary>
         /// checks if there's enough value
         /// </summary>
         /// <param name="amount">the amount we want to remove</param>
         /// <returns>returns true if we have anough/returns>
-        public bool HasEnough(int amount) { return CurrentAmount >= amount; }
+        public bool HasEnough(int amount) { return CurrentValue >= amount; }
 
-        public bool CanSetMaxCapacity(int maxToSet) { return CurrentAmount <= maxToSet    && MinCapacity <= maxToSet; }
-        public bool CanSetMinCapacity(int minToSet) { return CurrentAmount >= minToSet    && MaxCapacity >= minToSet; }
+        public bool CanSetMaxCapacity(int maxToSet) { return CurrentValue <= maxToSet    && MinCapacity <= maxToSet; }
+        public bool CanSetMinCapacity(int minToSet) { return CurrentValue >= minToSet    && MaxCapacity >= minToSet; }
         public bool CanSetValue(int value) { return value                  >= MinCapacity && value       <= MaxCapacity; }
         #endregion
 
@@ -179,7 +179,7 @@ namespace JReact
             _currentAmount = _startAmount;
             _maxCapacity   = _startMax;
             _minCapacity   = _startMin;
-            SanityChecks(CurrentAmount, MinCapacity, MaxCapacity);
+            SanityChecks(CurrentValue, MinCapacity, MaxCapacity);
         }
 
         private void SanityChecks(int value, int min, int max)

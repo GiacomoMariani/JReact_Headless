@@ -9,7 +9,7 @@ namespace JReact.TimeProgress
     /// <summary>
     /// a time counter that counts seconds
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Time/Timer")]
+    [CreateAssetMenu(menuName = "Reactive/Time Progress/Timer")]
     public class J_Timer : J_GenericCounter
     {
         #region FIELDS AND PROPERTIES
@@ -34,13 +34,15 @@ namespace JReact.TimeProgress
             if (!IsRunning) yield break;
 
             //count the time before the tick
-            var beforeTickTime = Time.time;
+            var realTimePassed = 0f;
+
             //wait the tick
-            yield return Timing.WaitForSeconds(_tickLengthInSeconds);
-            //count the time after the tick
-            var afterTickTime = Time.time;
-            //calculate the real passed time
-            var realTimePassed = afterTickTime - beforeTickTime;
+            while (realTimePassed < _tickLengthInSeconds)
+            {
+                yield return Timing.WaitForOneFrame;
+                realTimePassed += Time.deltaTime;
+            }
+
             //remove the  comment below to check time if required
             //Debug.Log("We've been waiting for " + realTimePassed + " for a tick of " + _tickLengthInSeconds);
 

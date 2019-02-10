@@ -7,7 +7,7 @@ namespace JReact.TimeProgress
     /// <summary>
     /// this is an event connected to a time
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Time/Progress Event")]
+    [CreateAssetMenu(menuName = "Reactive/Time Progress/Progress Event")]
     public class J_Progress : ScriptableObject, iObservable<J_Progress>, iResettable
     {
         #region VALUES AND PROPERTIES
@@ -78,7 +78,7 @@ namespace JReact.TimeProgress
             if (!_timer.IsRunning)
             {
                 JConsole.Warning($"{_timer.name} on {name} was not running. Force Start.", JLogTags.TimeProgress, this);
-                _timer.StartCount();
+                _timer.Activate();
             }
 
             // --------------- RUN --------------- //

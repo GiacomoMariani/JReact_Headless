@@ -20,13 +20,19 @@ namespace JReact.UiView.Collections
         #endregion
 
         #region INITIALIZATION
-        private void Awake() { SanityChecks(); }
+        private void Awake()
+        {
+            SanityChecks();
+            InitThis();
+        }
 
         protected virtual void SanityChecks()
         {
             Assert.IsNotNull(_PrefabActor, $"{gameObject.name} requires a _PrefabActor");
             Assert.IsNotNull(_Collection, $"{gameObject.name} requires a _Collection");
         }
+
+        protected virtual void InitThis() { }
         #endregion
 
         #region VIEW UPDATER

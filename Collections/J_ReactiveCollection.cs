@@ -135,12 +135,12 @@ namespace JReact.Collections
 
         public void Insert(int index, T item)
         {
-            Assert.IsNotNull(_thisCollection, $"{name} Collection not initialized");
-            Assert.IsTrue(item != null, $"{name} Null elements are not valid");
-            RemoveAt(index);
-            _thisCollection.Insert(index, item);
-            WhatHappensOnAdd(item);
-            OnAddToCollection?.Invoke(item);
+            for (int i = index; i < Count; i++)
+            {
+                var next = _thisCollection[i];
+                Replace(i, item);
+                item = next;
+            }
         }
 
         public void RemoveAt(int index)
@@ -150,7 +150,17 @@ namespace JReact.Collections
             Remove(item);
         }
 
-        public T this[int index] { get => _thisCollection[index]; set => Insert(index, value); }
+        public T this[int index] { get => _thisCollection[index]; set => Replace(index, value); }
+
+        private void Replace(int index, T item)
+        {
+            Assert.IsNotNull(_thisCollection, $"{name} Collection not initialized");
+            Assert.IsTrue(item != null, $"{name} Null elements are not valid");
+            RemoveAt(index);
+            _thisCollection.Insert(index, item);
+            WhatHappensOnAdd(item);
+            OnAddToCollection?.Invoke(item);
+        }
         #endregion
     }
 }

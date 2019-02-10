@@ -4,9 +4,9 @@ using UnityEngine;
 namespace JReact
 {
     /// <summary>
-    /// this is the base reactive element, that can be be registered to, so the subscriber will be able to track its changes
+    /// this is the base reactive item, that can be be registered to, so the subscriber will be able to track its changes
     /// </summary>
-    public class J_ReactiveElement<T> : ScriptableObject, iResettable, iObservable<T>
+    public class J_ReactiveItem<T> : ScriptableObject, iResettable, iObservableValue<T>
     {
         private event JGenericDelegate<T> OnPropertyChange;
 

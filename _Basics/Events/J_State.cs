@@ -21,7 +21,7 @@ namespace JReact
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public string Name => name;
 
-        public static J_State CreateInstance(string nameToSet)
+        public static J_State CreateState(string nameToSet)
         {
             var state = CreateInstance<J_State>();
             state.name = nameToSet;

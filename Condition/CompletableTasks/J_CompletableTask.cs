@@ -8,7 +8,7 @@ namespace JReact.Conditions.Tasks
     /// <summary>
     /// A task is a condition that might be completed
     /// </summary>
-    public abstract class J_CompletableTask : J_ReactiveCondition
+    public class J_CompletableTask : J_ReactiveCondition, iObservable<J_CompletableTask>
     {
         #region FIELDS AND PROPERTIES
         private JGenericDelegate<J_CompletableTask> OnComplete;
@@ -46,14 +46,15 @@ namespace JReact.Conditions.Tasks
         }
         #endregion
 
-        public static J_CompletableTask CreateInstance<T>(J_TaskChunk chunk = null, J_ReactiveCondition start = null, J_ReactiveCondition complete= null, J_ReactiveCondition dormant= null)
+        public static J_CompletableTask CreateTask<T>(J_TaskChunk chunk = null, J_ReactiveCondition start = null,
+                                                          J_ReactiveCondition complete = null, J_ReactiveCondition dormant = null)
             where T : J_CompletableTask
         {
             var task = CreateInstance<T>();
-            task._startTrigger = start;
-            task._dormantTrigger = dormant;
+            task._startTrigger    = start;
+            task._dormantTrigger  = dormant;
             task._completeTrigger = complete;
-            if(chunk != null) task.InjectChunk(chunk);
+            if (chunk != null) task.InjectChunk(chunk);
             return task;
         }
 
@@ -203,8 +204,12 @@ namespace JReact.Conditions.Tasks
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToComplete(JGenericDelegate<J_CompletableTask> actionToAdd) { OnComplete += actionToAdd; }
-        public void UnSubscribeToComplete(JGenericDelegate<J_CompletableTask> actionToRemove) { OnComplete -= actionToRemove; }
+        public void SubscribeToComplete(JGenericDelegate<J_CompletableTask> action) { Subscribe(action); }
+        public void UnSubscribeToComplete(JGenericDelegate<J_CompletableTask> action) { UnSubscribe(action); }
+
+        public void Subscribe(JGenericDelegate<J_CompletableTask> action) { OnComplete += action; }
+
+        public void UnSubscribe(JGenericDelegate<J_CompletableTask> action) { OnComplete -= action; }
         #endregion
     }
 

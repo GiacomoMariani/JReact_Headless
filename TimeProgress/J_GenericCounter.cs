@@ -9,7 +9,7 @@ namespace JReact.TimeProgress
     /// <summary>
     /// a generic timer
     /// </summary>
-    public abstract class J_GenericCounter : ScriptableObject, iObservable<float>, iResettable, iDeltaTime
+    public abstract class J_GenericCounter : J_State, iObservable<float>, iResettable, iDeltaTime
     {
         #region FIELDS AND PROPERTIES
         protected event JGenericDelegate<float> OnTick;
@@ -21,8 +21,7 @@ namespace JReact.TimeProgress
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected int _objectId = -1;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _destroyAtDisable = false;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; } = false;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]public float ThisDeltaTime { get; private set; }
-
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float ThisDeltaTime { get; private set; }
         #endregion
 
         #region COMMANDS
@@ -35,13 +34,14 @@ namespace JReact.TimeProgress
         {
             var timer = CreateInstance<T>();
             timer._destroyAtDisable = destroyAtDisable;
-            timer.StartCount();
+            timer.Activate();
             return timer;
         }
 
         //starts the counter
-        public void StartCount()
+        public override void Activate()
         {
+            base.Activate();
             //make sure everything is setup correctly and starts the counting
             JConsole.Log($"{name} starts counting", JLogTags.TimeProgress, this);
             if (!SanityChecks()) return;
@@ -53,8 +53,9 @@ namespace JReact.TimeProgress
         }
 
         //stops the timer
-        public void StopCount()
+        public override void End()
         {
+            base.End();
             JConsole.Log($"{name} stops counting", JLogTags.TimeProgress, this);
             Timing.KillCoroutines(_objectId, JCoroutineTags.COROUTINE_TimerTag);
             IsRunning = false;
@@ -79,17 +80,20 @@ namespace JReact.TimeProgress
         protected void SendTickEvent(float tickValue)
         {
             ThisDeltaTime = tickValue;
-            OnTick?.Invoke(tickValue); }
+            OnTick?.Invoke(tickValue);
+        }
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<float> actionToSend)
+        public void Subscribe(JGenericDelegate<float> action)
         {
-            if (!IsRunning) StartCount();
-            OnTick += actionToSend;
+            if (!IsRunning) Activate();
+            OnTick += action;
         }
 
-        public void UnSubscribe(JGenericDelegate<float> actionToSend) { OnTick -= actionToSend; }
+        public void UnSubscribe(JGenericDelegate<float> action) { OnTick -= action; }
+        public void SubscribeToCounter(JGenericDelegate<float> action) { Subscribe(action); }
+        public void UnSubscribeToCounter(JGenericDelegate<float> action) { UnSubscribe(action); }
         #endregion
 
         #region DISABLE AND RESET
@@ -97,7 +101,7 @@ namespace JReact.TimeProgress
 
         public virtual void ResetThis()
         {
-            if (IsRunning) StopCount();
+            if (IsRunning) End();
             if (_destroyAtDisable) Destroy(this);
         }
         #endregion
