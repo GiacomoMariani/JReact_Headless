@@ -13,7 +13,7 @@ namespace JReact.TimeProgress.Pause
     /// <summary>
     /// calculates and handle pause (could be used also with J_Mono_OutOfFocusPause)
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Time/Pause Event")]
+    [CreateAssetMenu(menuName = "Reactive/Time Progress/Pause Event")]
     public class J_PauseEvent : ScriptableObject
     {
         #region VALUES AND PROPERTIES

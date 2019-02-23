@@ -12,7 +12,7 @@ namespace JReact.Conditions
     {
         #region FIELDS AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _passOnEnter = true;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State[] _validStates;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Service[] _validStates;
         #endregion
 
         #region INITIALIZE AND RESET

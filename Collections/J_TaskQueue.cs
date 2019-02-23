@@ -10,7 +10,7 @@ namespace JReact.Collections
     /// handles tasks in a given order
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Collection/Task Queue")]
-    public class J_TaskQueue : J_State, IEnumerable<iTask>
+    public class J_TaskQueue : J_Service, IEnumerable<iTask>
     {
         #region FIELDS AND PROPERTIS
         public const string NoTask = "QueueFree_NoTask";

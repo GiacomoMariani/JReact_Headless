@@ -26,7 +26,7 @@ namespace JReact.StateControl
         protected J_SimpleStateControl _mainStateControl;
 
         //when we want to see this
-        [BoxGroup("Controls", true, true, 0), SerializeField] protected J_State[] _validStates;
+        [BoxGroup("Controls", true, true, 0), SerializeField] protected J_Service[] _validStates;
 
         //to check the activation of this element
         private bool _isActive;
@@ -60,7 +60,7 @@ namespace JReact.StateControl
 
         #region LISTENERS
         //update this if the next state is contained here
-        protected virtual void StateChange(J_State previousState, J_State nextState)
+        protected virtual void StateChange(J_Service previousState, J_Service nextState)
         {
             IsActive = Array.IndexOf(_validStates, nextState) > -1;
         }

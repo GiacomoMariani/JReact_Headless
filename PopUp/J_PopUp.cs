@@ -7,7 +7,7 @@ namespace JReact.PopUp
     /// a state that sends a pop up
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/PopUp/Reactive Pop Up")]
-    public class J_PopUp : J_State
+    public class J_PopUp : J_Service
     {
         #region VALUES AND PROPERTIES
         // --------------- CONSTANTS --------------- //

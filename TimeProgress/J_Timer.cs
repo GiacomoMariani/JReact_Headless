@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 namespace JReact.TimeProgress
 {
     /// <summary>
-    /// a time counter that counts seconds
+    /// a counter ticking at time intervals
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Time Progress/Timer")]
     public class J_Timer : J_GenericCounter

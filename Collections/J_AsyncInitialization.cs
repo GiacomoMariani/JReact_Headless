@@ -8,12 +8,12 @@ namespace JReact.Collections
     /// used to set an order of initialization
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Collection/Async Initialization")]
-    public class J_AsyncInitialization : J_State
+    public class J_AsyncInitialization : J_Service
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State[] _orderedStates;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Service[] _orderedStates;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_TaskQueue _queue;
 
-        public static J_AsyncInitialization CreateInstance(J_State[] statesToInitialize)
+        public static J_AsyncInitialization CreateInstance(J_Service[] statesToInitialize)
         {
             var ordered = CreateInstance<J_AsyncInitialization>();
             ordered._orderedStates = statesToInitialize;

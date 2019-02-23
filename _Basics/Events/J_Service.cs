@@ -11,8 +11,7 @@ namespace JReact
     /// => if this is used as a STATE something external should call Activate and End
     /// => if this is used as a TASK the external may call Activate, but End should be call internally
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Game States/Reactive State")]
-    public class J_State : J_Event, iStateObservable, iActivable
+    public class J_Service : J_Event, iStateObservable, iActivable
     {
         //the main event to set the new state
         private event JAction OnExitEvent;
@@ -21,9 +20,9 @@ namespace JReact
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public string Name => name;
 
-        public static J_State CreateState(string nameToSet)
+        public static J_Service CreateState(string nameToSet)
         {
-            var state = CreateInstance<J_State>();
+            var state = CreateInstance<J_Service>();
             state.name = nameToSet;
             return state;
         }

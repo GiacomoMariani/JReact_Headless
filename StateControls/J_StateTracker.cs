@@ -9,7 +9,7 @@ namespace JReact.StateControl
     /// used to track the flow of events to move back to a previous state
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Game States/J State Tracker")]
-    public class J_StateTracker : J_State, iActivable
+    public class J_StateTracker : J_Service
     {
         #region VALUES AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField, Required, AssetsOnly] private J_SimpleStateControl _stateControl;
@@ -26,8 +26,6 @@ namespace JReact.StateControl
             }
         }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private List<J_State> _previousStates = new List<J_State>();
-        
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
         #endregion
 
         #region INITIALIZATION AND LISTENERS
@@ -35,30 +33,16 @@ namespace JReact.StateControl
         {
             base.Activate();
             SanityChecks();
-            InitThis();
-        }
-        
-        private void SanityChecks()
-        {
-            Assert.IsNotNull(_stateControl, $"{name} needs a state control.");
-            Assert.IsFalse(IsActive, $"{name} already started, it should not start again.");
+            _stateControl.Subscribe(ChangeState);
         }
 
-        //used to initialize this element
-        private void InitThis()
-        {
-            //ignore if already tracking
-            if (IsActive) return;
-            _stateControl.Subscribe(ChangeState);
-            IsActive = true;
-        }
+        private void SanityChecks() { Assert.IsNotNull(_stateControl, $"{name} needs a state control."); }
 
         public override void End()
         {
             base.End();
             _previousStates.Clear();
             _stateControl.UnSubscribe(ChangeState);
-            IsActive = false;
         }
         #endregion
 

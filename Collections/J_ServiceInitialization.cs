@@ -5,12 +5,12 @@ using UnityEngine.Assertions;
 namespace JReact.Collections
 {
     [CreateAssetMenu(menuName = "Reactive/Collection/Initialization")]
-    public class J_ServiceInitialization : J_State
+    public class J_ServiceInitialization : J_Service
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State[] _services;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Service[] _services;
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _initializing = true;
 
-        public static J_ServiceInitialization CreateInstance(J_State[] statesToInitialize)
+        public static J_ServiceInitialization CreateInstance(J_Service[] statesToInitialize)
         {
             var ordered = CreateInstance<J_ServiceInitialization>();
             ordered._services = statesToInitialize;

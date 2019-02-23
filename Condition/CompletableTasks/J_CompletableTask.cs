@@ -1,7 +1,9 @@
+using System.Runtime.CompilerServices;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 namespace JReact.Conditions.Tasks
 {
@@ -11,7 +13,7 @@ namespace JReact.Conditions.Tasks
     public class J_CompletableTask : J_ReactiveCondition, iObservable<J_CompletableTask>
     {
         #region FIELDS AND PROPERTIES
-        private JGenericDelegate<J_CompletableTask> OnComplete;
+        private JGenericDelegate<J_CompletableTask> OnTaskUpdate;
         // --------------- TRIGGERS --------------- //
         [InfoBox("Null => Auto Start"), BoxGroup("Setup - Triggers", true, true, -15), SerializeField, AssetsOnly]
         private J_ReactiveCondition _startTrigger;
@@ -21,19 +23,20 @@ namespace JReact.Conditions.Tasks
         private J_ReactiveCondition _completeTrigger;
 
         // --------------- EVENTS --------------- //
-        [BoxGroup("Setup - Events", true, true, -10), SerializeField] private JUnityEvent _unityEvents_AtActivation;
-        [BoxGroup("Setup - Events", true, true, -10), SerializeField] private JUnityEvent _unityEvents_AtDormant;
-        [BoxGroup("Setup - Events", true, true, -10), SerializeField] private JUnityEvent _unityEvents_AtComplete;
+        [BoxGroup("Setup - Events", true, true, -10), SerializeField] private JUnityEvent _unityEvents_AtActivation
+            = new JUnityEvent();
+        [BoxGroup("Setup - Events", true, true, -10), SerializeField] private JUnityEvent _unityEvents_AtDormant
+            = new JUnityEvent();
+        [BoxGroup("Setup - Events", true, true, -10), SerializeField] private JUnityEvent _unityEvents_AtComplete
+            = new JUnityEvent();
         // --------------- BEHAVIOUR --------------- //
         [BoxGroup("Setup - Behaviour", true, true, -5), SerializeField] private bool _reactivateIfDormant = true;
         [BoxGroup("Setup - Behaviour", true, true, -5), SerializeField] private bool _requiresOneActivation = false;
         [BoxGroup("Setup - Behaviour", true, true, -5), SerializeField] private float _activationDelay = 0f;
 
         // --------------- STATE --------------- //
-        [BoxGroup("State", true, true, 25), ShowInInspector, ReadOnly] protected J_TaskChunk _chunk;
         [BoxGroup("State", true, true, 25), ShowInInspector, ReadOnly] private bool _activatedOnce = false;
-        [BoxGroup("State", true, true, 25), ShowInInspector, ReadOnly] private J_Collection_DormantTasks _Dormants => _chunk.Dormants;
-        [BoxGroup("State", true, true, 25), ShowInInspector, ReadOnly] private TaskState _state = TaskState.WaitStartCondition;
+        [BoxGroup("State", true, true, 25), ShowInInspector, ReadOnly] private TaskState _state = TaskState.NotInitialized;
         public TaskState State
         {
             get => _state;
@@ -41,26 +44,28 @@ namespace JReact.Conditions.Tasks
             {
                 JConsole.Log($"{name} enters {value}", JLogTags.Task, this);
                 _state = value;
-                if (State == TaskState.Complete) OnComplete?.Invoke(this);
+                OnTaskUpdate?.Invoke(this);
             }
         }
         #endregion
 
-        public static J_CompletableTask CreateTask<T>(J_TaskChunk chunk = null, J_ReactiveCondition start = null,
-                                                          J_ReactiveCondition complete = null, J_ReactiveCondition dormant = null)
+        #region IMPLEMENTORS
+        public static J_CompletableTask CreateTask<T>(J_ReactiveCondition start, J_ReactiveCondition complete,
+                                                      J_ReactiveCondition dormant = null, bool autoReactivate = true,
+                                                      bool required = false)
             where T : J_CompletableTask
         {
             var task = CreateInstance<T>();
-            task._startTrigger    = start;
-            task._dormantTrigger  = dormant;
-            task._completeTrigger = complete;
-            if (chunk != null) task.InjectChunk(chunk);
+            task._startTrigger          = start;
+            task._dormantTrigger        = dormant;
+            task._completeTrigger       = complete;
+            task._reactivateIfDormant   = autoReactivate;
+            task._requiresOneActivation = required;
             return task;
         }
+        #endregion
 
-        #region STARTERS
-        internal void InjectChunk(J_TaskChunk chunk) { _chunk = chunk; }
-
+        #region ACTIVATORS
         // launch the tasks. wait for triggers otherwise we directly start
         protected override void StartCheckingCondition()
         {
@@ -108,8 +113,8 @@ namespace JReact.Conditions.Tasks
         private void ConfirmActivation()
         {
             State = TaskState.ActivationWaiting;
-            if (_Dormants.Contains(this)) RemoveFromDormants();
-            Timing.CallDelayed(_activationDelay, TryActivating);
+            if (_activationDelay > 0f) Timing.CallDelayed(_activationDelay, TryActivating);
+            else TryActivating();
         }
 
         private void TryActivating()
@@ -147,8 +152,14 @@ namespace JReact.Conditions.Tasks
         private void ConfirmDormant()
         {
             SetDormant();
-            AddToDormants();
             State = TaskState.Dormant;
+        }
+
+        internal void ReactivateTask()
+        {
+            Assert.IsTrue(State == TaskState.Dormant, $"{name} - State {State} is not valid to be reactivated");
+            if (ActivationValid()) ConfirmActivation();
+            else State = TaskState.WaitStartCondition;
         }
         #endregion
 
@@ -164,7 +175,6 @@ namespace JReact.Conditions.Tasks
             if (State == TaskState.NotInitialized) return;
             if (_requiresOneActivation && !_activatedOnce) return;
             StopCheckingCondition();
-            if (_Dormants.Contains(this)) RemoveFromDormants();
             CompleteTutorialStep();
             CurrentValue = true;
             State        = TaskState.Complete;
@@ -176,27 +186,6 @@ namespace JReact.Conditions.Tasks
         private bool CompleteReady() { return _completeTrigger == null || _completeTrigger.CurrentValue; }
         #endregion
 
-        #region DORMANT STATE AND ACTIVATION
-        internal void ReactivateTask()
-        {
-            Assert.IsTrue(State == TaskState.Dormant, $"{name} - State {State} is not valid to be reactivated");
-            if (ActivationValid()) ConfirmActivation();
-            else State = TaskState.WaitStartCondition;
-        }
-
-        private void AddToDormants()
-        {
-            Assert.IsTrue(!_Dormants.Contains(this), $"{name} is dormant already {_Dormants.name}");
-            _Dormants.Add(this);
-        }
-
-        private void RemoveFromDormants()
-        {
-            Assert.IsTrue(_Dormants.Contains(this), $"{name} is not yet dormant {_Dormants.name}");
-            _Dormants.Remove(this);
-        }
-        #endregion
-
         #region ABSTRACT IMPLEMENTATION
         protected virtual void RunTask() { _unityEvents_AtActivation.Invoke(); }
         protected virtual void SetDormant() { _unityEvents_AtDormant.Invoke(); }
@@ -204,12 +193,10 @@ namespace JReact.Conditions.Tasks
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToComplete(JGenericDelegate<J_CompletableTask> action) { Subscribe(action); }
-        public void UnSubscribeToComplete(JGenericDelegate<J_CompletableTask> action) { UnSubscribe(action); }
-
-        public void Subscribe(JGenericDelegate<J_CompletableTask> action) { OnComplete += action; }
-
-        public void UnSubscribe(JGenericDelegate<J_CompletableTask> action) { OnComplete -= action; }
+        public void SubscribeToTaskChange(JGenericDelegate<J_CompletableTask> action) { Subscribe(action); }
+        public void UnSubscribeToTaskChange(JGenericDelegate<J_CompletableTask> action) { UnSubscribe(action); }
+        public void Subscribe(JGenericDelegate<J_CompletableTask> action) { OnTaskUpdate   += action; }
+        public void UnSubscribe(JGenericDelegate<J_CompletableTask> action) { OnTaskUpdate -= action; }
         #endregion
     }
 

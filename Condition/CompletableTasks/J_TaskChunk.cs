@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using JReact.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -10,44 +9,52 @@ namespace JReact.Conditions.Tasks
     /// contains multiple tasks related to a single goal, such as a mission
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Task/Task Chunk")]
-    public class J_TaskChunk : J_State
+    public class J_TaskChunk : J_Service, iObservable<J_TaskChunk>
     {
         #region FIELDS AND PROPERTIES
-        private JGenericDelegate<J_TaskChunk> OnComplete;
+        private JGenericDelegate<J_TaskChunk> OnStateChange;
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_CompletableTask[] _tasks;
-        [InfoBox("Null => Cannot enqueue"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly]
-        private J_TaskQueue _taskQueue;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Collection_DormantTasks _dormants;
-        internal J_Collection_DormantTasks Dormants => _dormants;
 
         // --------------- STATE --------------- //
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] public ChunkState State { get; private set; } =
-            ChunkState.NotStarted;
         [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] public string Title => name;
-        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private List<J_CompletableTask> _activeTasks = new List<J_CompletableTask>();
+        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly]
+        private List<J_CompletableTask> _activeTasks = new List<J_CompletableTask>();
+        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private ChunkState _state =
+            ChunkState.NotStarted;
+        [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] public ChunkState State
+        {
+            get => _state;
+            private set
+            {
+                _state = value;
+                OnStateChange?.Invoke(this);
+                JConsole.Log($"{name} enter state: {State}", JLogTags.Task, this);
+            }
+        }
         #endregion
 
-        #region SANITY CHECKS
+        #region GENERATORS AND CHECKS
+        public static J_TaskChunk CreateChunk(J_CompletableTask[] tasks, J_Collection_DormantTasks dormants, string nameSet = "Chunk")
+        {
+            var chunk = CreateInstance<J_TaskChunk>();
+            chunk._tasks    = tasks;
+            chunk._dormants = dormants;
+            chunk.SanityChecks();
+            chunk.name = nameSet;
+            return chunk;
+        }
+
         private void SanityChecks()
         {
             Assert.IsNotNull(_tasks, $"({name}) requires a _tutorialSteps");
             Assert.IsTrue(_tasks.Length > 0, $"({name}) needs at least one item for _tutorialSteps");
-            Assert.IsNotNull(Dormants, $"{name} requires a Dormants");
+            Assert.IsNotNull(_dormants, $"{name} requires a _dormants");
         }
         #endregion
 
         #region COMMANDS
-        /// <summary>
-        /// launch the tasks with a queue
-        /// </summary>
-        public void EnqueueTask()
-        {
-            Assert.IsNotNull(_taskQueue, $"{name} requires a _taskQueue");
-            if (_taskQueue.Contains(this)) return;
-            _taskQueue.ProcessTask(this);
-        }
-
         /// <summary>
         /// launch this task chunk
         /// </summary>
@@ -62,21 +69,20 @@ namespace JReact.Conditions.Tasks
             // --------------- INITIALIZE --------------- //
             for (int i = 0; i < _tasks.Length; i++)
             {
-                _tasks[i].InjectChunk(this);
-                _tasks[i].SubscribeToComplete(StepCompleted);
-                _tasks[i].Activate();
-                _activeTasks.Add(_tasks[i]);
+                var nextTask = _tasks[i];
+                nextTask.SubscribeToTaskChange(StepCompleted);
+                if (!nextTask.IsActive) nextTask.Activate();
+                _activeTasks.Add(nextTask);
+                if (_dormants != null) _dormants.TrackTask(nextTask);
             }
-
-            //raise start event
-            base.Activate();
         }
 
         //remove the task when completed
         private void StepCompleted(J_CompletableTask completedTask)
         {
+            if (completedTask.State != TaskState.Complete) return;
             // --------------- REMOVAL --------------- //
-            completedTask.UnSubscribeToComplete(StepCompleted);
+            completedTask.UnSubscribeToTaskChange(StepCompleted);
             completedTask.End();
             _activeTasks.Remove(completedTask);
 
@@ -85,7 +91,6 @@ namespace JReact.Conditions.Tasks
             if (_activeTasks.Count > 0) return;
             JConsole.Log($"{name} CHUNK COMPLETE--------------", JLogTags.Task, this);
             State = ChunkState.Completed;
-            OnComplete?.Invoke(this);
             End();
         }
 
@@ -96,8 +101,10 @@ namespace JReact.Conditions.Tasks
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToComplete(JGenericDelegate<J_TaskChunk> actionToAdd) { OnComplete      += actionToAdd; }
-        public void UnSubscribeToComplete(JGenericDelegate<J_TaskChunk> actionToRemove) { OnComplete -= actionToRemove; }
+        public void Subscribe(JGenericDelegate<J_TaskChunk> action) { OnStateChange   += action; }
+        public void UnSubscribe(JGenericDelegate<J_TaskChunk> action) { OnStateChange -= action; }
+        public void SubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { Subscribe(action); }
+        public void UnSubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { UnSubscribe(action); }
         #endregion
 
         #region DISABLE AND RESET
@@ -111,7 +118,7 @@ namespace JReact.Conditions.Tasks
             foreach (var step in _activeTasks)
             {
                 step.ResetThis();
-                step.UnSubscribeToComplete(StepCompleted);
+                step.UnSubscribeToTaskChange(StepCompleted);
             }
 
             _activeTasks.Clear();

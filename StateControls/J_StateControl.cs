@@ -21,7 +21,7 @@ using UnityEngine.Assertions;
 
 namespace JReact.StateControl
 {
-    public class J_StateControl<T> : J_State
+    public class J_StateControl<T> : J_Service
         where T : J_State
     {
         #region FIELDS AND PROPERTIES

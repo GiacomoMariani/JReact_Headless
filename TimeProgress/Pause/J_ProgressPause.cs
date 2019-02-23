@@ -7,7 +7,7 @@ namespace JReact.TimeProgress.Pause
     /// <summary>
     /// a progress event with a pause
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Time/Progress With Pause")]
+    [CreateAssetMenu(menuName = "Reactive/Time Progress/Progress With Pause")]
     public class J_ProgressPause : J_Progress
     {
         #region FIELDS AND PROPERTIES
