@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace JReact
 {
@@ -9,7 +11,7 @@ namespace JReact
     {
         #region MAIN LOGGERS
         /// <summary>
-        /// this message display a message in the console
+        /// displays a message in the console
         /// </summary>
         /// <param name="message">the message to be logged</param>
         /// <param name="context"> the related context</param>
@@ -17,15 +19,15 @@ namespace JReact
         public static void Log(string message, string consoleTag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.Log($"{consoleTag} {message}", context);
+            Debug.Log($"{DateTime.Now:[HH:mm:ss]} {consoleTag} {message}", context);
 #endif
 #if !UNITY_EDITOR
-			Debug.Log(consoleTag + message);
+			Debug.Log(DateTime.Now.ToString("[HH:mm:ss]") + "[" + consoleTag + "] - " + message);
 #endif
         }
 
         /// <summary>
-        /// this message display a warning in the console, it may differ based on the platform
+        /// displays a warning in the console, it may differ based on the platform
         /// </summary>
         /// <param name="message">the message to be logged</param>
         /// <param name="context"> the related context</param>
@@ -33,15 +35,15 @@ namespace JReact
         public static void Warning(string message, string consoleTag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.LogWarning($"{consoleTag} {message}", context);
+            Debug.LogWarning($"{DateTime.Now:[HH:mm:ss]} {consoleTag} {message}", context);
 #endif
 #if !UNITY_EDITOR
-			Debug.LogWarning(consoleTag + message);
+			Debug.LogWarning(DateTime.Now.ToString("[HH:mm:ss]") + "[" + consoleTag + "] - " + message);
 #endif
         }
 
         /// <summary>
-        /// this message display an error in the console, it may differ based on the platform
+        /// displays an error in the console, it may differ based on the platform
         /// </summary>
         /// <param name="message">the message to be logged</param>
         /// <param name="context"> the related context</param>
@@ -49,10 +51,28 @@ namespace JReact
         public static void Error(string message, string consoleTag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.LogError($"{consoleTag} {message}", context);
+            Debug.LogError($"{DateTime.Now:[HH:mm:ss]} {consoleTag} {message}", context);
 #endif
 #if !UNITY_EDITOR
-			Debug.LogWarning(message);
+			Debug.LogError(DateTime.Now.ToString("[HH:mm:ss]") + "[" + consoleTag + "] - " + message);
+#endif
+        }
+        
+        /// <summary>
+        /// an error message with a breacn
+        /// </summary>
+        /// <param name="message">the message to be logged</param>
+        /// <param name="context"> the related context</param>
+        /// <param name="consoleTag">a tag useful for console pro</param>
+        public static void Break(string message, string consoleTag = "", Object context = null)
+        {
+#if UNITY_EDITOR
+            Debug.LogError($"{DateTime.Now:[HH:mm:ss]} {consoleTag} {message}", context);
+            Debug.Break();
+#endif
+#if !UNITY_EDITOR
+			Debug.LogError(DateTime.Now.ToString("[HH:mm:ss]") + "[" + consoleTag + "] - " + message);
+            Debug.Break();
 #endif
         }
         #endregion
@@ -78,13 +98,6 @@ namespace JReact
         /// <param name="message">A comment of description.</param>
         /// <param name="context"> the related context</param>
         public static void QuickLog(string message, Object context = null) { Log(message, JLogTags.QuickLogTag, context); }
-
-        /// <summary>
-        /// this is used to display important messages on the console
-        /// </summary>
-        /// <param name="message">the message we want to display</param>
-        /// <param name="context"> the related context</param>
-        public static void ImportantLog(string message, Object context = null) { Log(message, JLogTags.HighLogTag, context); }
         #endregion
     }
 }
