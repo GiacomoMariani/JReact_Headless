@@ -21,6 +21,11 @@
     {
         void ResetThis();
     }
+    
+    public interface iDestroyable
+    {
+        void DestroyThis();
+    }
 
     public interface iActivable : iResettable
     {
@@ -40,8 +45,8 @@
 
     public interface iObservable<T>
     {
-        void Subscribe(JGenericDelegate<T> action);
-        void UnSubscribe(JGenericDelegate<T> action);
+        void SubscribeToWindChange(JGenericDelegate<T> action);
+        void UnSubscribeToWindChange(JGenericDelegate<T> action);
     }
 
     public interface iObservableValue<T> : iObservable<T>

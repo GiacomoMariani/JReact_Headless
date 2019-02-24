@@ -50,8 +50,8 @@ namespace JReact.Selection
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<T> actionToAdd) { OnSelect += actionToAdd; }
-        public void UnSubscribe(JGenericDelegate<T> actionToRemove) { OnSelect -= actionToRemove; }
+        public void SubscribeToWindChange(JGenericDelegate<T> actionToAdd) { OnSelect += actionToAdd; }
+        public void UnSubscribeToWindChange(JGenericDelegate<T> actionToRemove) { OnSelect -= actionToRemove; }
         #endregion
     }
 }

@@ -84,7 +84,7 @@ namespace JReact.TimeProgress
             // --------------- RUN --------------- //
             IsRunning = true;
             StartEvent();
-            _timer.Subscribe(AddTimePerTick);
+            _timer.SubscribeToWindChange(AddTimePerTick);
         }
 
         /// <summary>
@@ -171,8 +171,8 @@ namespace JReact.TimeProgress
         public void SubscribeToStart(JGenericDelegate<J_Progress> actionToSend) { OnProgressStart   += actionToSend; }
         public void UnSubscribeToStart(JGenericDelegate<J_Progress> actionToSend) { OnProgressStart -= actionToSend; }
 
-        public void Subscribe(JGenericDelegate<J_Progress> actionToSend) { OnProgressTick   += actionToSend; }
-        public void UnSubscribe(JGenericDelegate<J_Progress> actionToSend) { OnProgressTick -= actionToSend; }
+        public void SubscribeToWindChange(JGenericDelegate<J_Progress> actionToSend) { OnProgressTick   += actionToSend; }
+        public void UnSubscribeToWindChange(JGenericDelegate<J_Progress> actionToSend) { OnProgressTick -= actionToSend; }
 
         public void SubscribeToComplete(JGenericDelegate<J_Progress> actionToSend) { OnProgressComplete   += actionToSend; }
         public void UnSubscribeToComplete(JGenericDelegate<J_Progress> actionToSend) { OnProgressComplete -= actionToSend; }
@@ -199,7 +199,7 @@ namespace JReact.TimeProgress
 
         private void StopTrackingTime()
         {
-            _timer.UnSubscribe(AddTimePerTick);
+            _timer.UnSubscribeToWindChange(AddTimePerTick);
             IsRunning = false;
         }
 

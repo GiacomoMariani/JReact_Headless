@@ -167,8 +167,8 @@ namespace JReact
         #endregion
 
         #region SUBSCRIBERS AND LISTENERS
-        public virtual void Subscribe(JGenericDelegate<int> actionToSend) { OnValueChange               += actionToSend; }
-        public virtual void UnSubscribe(JGenericDelegate<int> actionToSend) { OnValueChange             -= actionToSend; }
+        public virtual void SubscribeToWindChange(JGenericDelegate<int> actionToSend) { OnValueChange               += actionToSend; }
+        public virtual void UnSubscribeToWindChange(JGenericDelegate<int> actionToSend) { OnValueChange             -= actionToSend; }
         public virtual void SubscribeToMaxCapacity(JGenericDelegate<int> actionToSend) { OnMaxChanged   += actionToSend; }
         public virtual void UnSubscribeToMaxCapacity(JGenericDelegate<int> actionToSend) { OnMaxChanged -= actionToSend; }
         public virtual void SubscribeToMinCapacity(JGenericDelegate<int> actionToSend) { OnMinChanged   += actionToSend; }

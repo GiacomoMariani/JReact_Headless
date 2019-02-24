@@ -1,9 +1,7 @@
-using System.Runtime.CompilerServices;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Events;
 
 namespace JReact.Conditions.Tasks
 {
@@ -193,10 +191,10 @@ namespace JReact.Conditions.Tasks
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToTaskChange(JGenericDelegate<J_CompletableTask> action) { Subscribe(action); }
-        public void UnSubscribeToTaskChange(JGenericDelegate<J_CompletableTask> action) { UnSubscribe(action); }
-        public void Subscribe(JGenericDelegate<J_CompletableTask> action) { OnTaskUpdate   += action; }
-        public void UnSubscribe(JGenericDelegate<J_CompletableTask> action) { OnTaskUpdate -= action; }
+        public void SubscribeToTaskChange(JGenericDelegate<J_CompletableTask> action) { SubscribeToWindChange(action); }
+        public void UnSubscribeToTaskChange(JGenericDelegate<J_CompletableTask> action) { UnSubscribeToWindChange(action); }
+        public void SubscribeToWindChange(JGenericDelegate<J_CompletableTask> action) { OnTaskUpdate   += action; }
+        public void UnSubscribeToWindChange(JGenericDelegate<J_CompletableTask> action) { OnTaskUpdate -= action; }
         #endregion
     }
 

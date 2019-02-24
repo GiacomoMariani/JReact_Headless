@@ -10,12 +10,13 @@ namespace JReact.Pool
     /// implements a pool of monobehaviours
     /// like explained http://www.gameprogrammingpatterns.com/object-pool.html
     /// </summary>
-    public abstract class J_Pool<T> : ScriptableObject
+    public abstract class J_Pool<T> : J_Service
         where T : J_PoolItem_Mono<T>
     {
         #region VALUES AND PROPERTIES
         // --------------- STATE --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private T _prefabItem;
+        //the prefabs are an array to differentiate them. Also an array of one can be used if we want always the same
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private T[] _prefabItem;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_TransformGenerator _parentTransform;
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _startingItems = 50;
         //set this to true if we want to disable items when they get back to pool
@@ -24,24 +25,29 @@ namespace JReact.Pool
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T _firstItem;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _initializationComplete = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private JGenericDelegate<T> _initAction;
         #endregion
 
         #region INITIALIZATION
         /// <summary>
-        /// initialize the pool
+        /// adds an action to be sent to the elements to be initiated
         /// </summary>
-        /// <param name="itemSetupAction">an action to perform to the items during creation</param>
-        public void InitPool(JGenericDelegate<T> itemSetupAction = null)
+        /// <param name="itemSetupAction">the action we want to set for the pool items</param>
+        public void AddSetupForItems(JGenericDelegate<T> itemSetupAction) { _initAction = itemSetupAction; }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// activates the pool
+        /// </summary>
+        public override void Activate()
         {
+            base.Activate();
             // --------------- CHECKS --------------- //
             SanityChecks();
-            if (_initializationComplete) return;
             // --------------- SETUP --------------- //
-            _initializationComplete = true;
-            _instanceId             = GetInstanceID();
+            _instanceId = GetInstanceID();
             // --------------- START RECURSION --------------- //
-            Timing.RunCoroutine(Populate(_startingItems, itemSetupAction), Segment.SlowUpdate, _instanceId,
+            Timing.RunCoroutine(Populate(_startingItems, _initAction), Segment.SlowUpdate, _instanceId,
                                 JCoroutineTags.COROUTINE_PoolTag);
         }
 
@@ -51,7 +57,6 @@ namespace JReact.Pool
             Assert.IsNotNull(_parentTransform, $"{name} requires an element for _parentTransform");
             Assert.IsNotNull(_prefabItem, $"{name} requires an element for _prefab");
             Assert.IsTrue(_startingItems > 0, $"{name} requires a positive number for the pool items");
-            Assert.IsFalse(_initializationComplete, $"The pool {name} made of {typeof(T)} has already been initialized");
         }
 
         //populates the pool
@@ -73,7 +78,7 @@ namespace JReact.Pool
         #region PRIVATE COMMANDS
         private T AddItemIntoPool()
         {
-            var poolItem = Instantiate(_prefabItem, _parentTransform.ThisTransform);
+            var poolItem = Instantiate(_prefabItem.GetRandomElement(), _parentTransform.ThisTransform);
             poolItem.InjectPoolOwner(this);
             PlaceInPool(poolItem);
             return poolItem;
@@ -88,7 +93,7 @@ namespace JReact.Pool
             if (_disableItemInPool && itemToPool.gameObject.activeSelf) itemToPool.gameObject.SetActive(false);
 
             //replace the first item
-            itemToPool.SetNext(_firstItem);
+            itemToPool.ConnectWithPool(_firstItem);
             _firstItem = itemToPool;
 
             //a sanity check to avoid a common bug
@@ -104,7 +109,7 @@ namespace JReact.Pool
         public T GetElementFromPool()
         {
             //initialize, if required
-            if (!_initializationComplete) InitPool();
+            if (!IsActive) Activate();
 
             //check if the first element in the pool is missing, otherwise add one
             if (_firstItem == null) AddItemIntoPool();
@@ -112,13 +117,9 @@ namespace JReact.Pool
             //update the elements and return the next one 
             var element = _firstItem;
             _firstItem = element.NextItemInPool;
+            element.GetFromPool();
             return element;
         }
-        #endregion
-
-        #region DISABLE AND RESET
-        protected virtual void OnDisable() { ResetThis(); }
-        private void ResetThis() { _initializationComplete = false; }
         #endregion
     }
 }

@@ -13,10 +13,8 @@ namespace JReact
     /// </summary>
     public class J_Service : J_Event, iStateObservable, iActivable
     {
-        //the main event to set the new state
         private event JAction OnExitEvent;
 
-        //to check if this state is active
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public string Name => name;
 
@@ -27,7 +25,10 @@ namespace JReact
             return state;
         }
         
-        //raise event also activate the state
+        /// <summary>
+        /// activates the service
+        /// </summary>
+        [ButtonGroup("Commands", 200), Button("Activate", ButtonSizes.Medium)]
         public override void Activate()
         {
             Assert.IsFalse(IsActive, $"{name} was already active");
@@ -36,8 +37,10 @@ namespace JReact
             base.Activate();
         }
 
-        //this is the property we want to track
-        [ButtonGroup("State trigger", 200), Button("Raise Exit Event", ButtonSizes.Medium)]
+        /// <summary>
+        /// ends the service
+        /// </summary>
+        [ButtonGroup("Commands", 200), Button("End", ButtonSizes.Medium)]
         public virtual void End()
         {
             Assert.IsTrue(IsActive, $"{name} was not active");
@@ -46,7 +49,6 @@ namespace JReact
             OnExitEvent?.Invoke();
         }
 
-        //a way to subscribe and unsubscribe to the exit event
         public void SubscribeToEnd(JAction actionToSend) { OnExitEvent   += actionToSend; }
         public void UnSubscribeToEnd(JAction actionToSend) { OnExitEvent -= actionToSend; }
 

@@ -3,9 +3,11 @@ using UnityEngine;
 
 namespace JReact
 {
-    //this struct represent the borders of the gameboard
-    [System.Serializable]
-    public struct GameBorders
+    /// <summary>
+    /// used to set game borders
+    /// </summary>
+    [CreateAssetMenu(menuName = "Reactive/Basics/Game Borders", fileName = "GameBorders")]
+    public class J_GameBorders : ScriptableObject
     {
         [BoxGroup("Border", true, true, 10), SerializeField]
         public float UpBorder;

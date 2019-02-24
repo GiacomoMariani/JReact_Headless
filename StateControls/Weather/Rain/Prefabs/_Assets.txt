@@ -1,0 +1,2 @@
+PARTICLES:
+- Rain Prefab From FX Mega Pack https://assetstore.unity.com/packages/vfx/particles/spells/fx-mega-pack-8933

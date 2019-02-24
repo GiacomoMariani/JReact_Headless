@@ -20,7 +20,7 @@ namespace JReact.StateControl
             }
         }
         //the desired state
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Service _stateToActivate;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State _stateToActivate;
         #endregion
 
         //open or close the views as requested

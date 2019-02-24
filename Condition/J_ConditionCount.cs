@@ -20,10 +20,10 @@ namespace JReact.Conditions
         protected override void StartCheckingCondition()
         {
             UpdateCondition(_stackable.CurrentValue);
-            _stackable.Subscribe(UpdateCondition);
+            _stackable.SubscribeToWindChange(UpdateCondition);
         }
 
-        protected override void StopCheckingCondition() { _stackable.UnSubscribe(UpdateCondition); }
+        protected override void StopCheckingCondition() { _stackable.UnSubscribeToWindChange(UpdateCondition); }
 
         protected virtual void UpdateCondition(int currentAmount)
         {

@@ -133,8 +133,8 @@ namespace JReact.StateControl.LevelSystem
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<int> action) { OnGain                      += action; }
-        public void UnSubscribe(JGenericDelegate<int> action) { OnGain                    -= action; }
+        public void SubscribeToWindChange(JGenericDelegate<int> action) { OnGain                      += action; }
+        public void UnSubscribeToWindChange(JGenericDelegate<int> action) { OnGain                    -= action; }
         public void SubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged   += action; }
         public void UnSubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged -= action; }
         #endregion

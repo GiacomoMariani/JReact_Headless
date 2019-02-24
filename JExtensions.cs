@@ -25,7 +25,12 @@ namespace JReact
         #endregion
 
         #region FLOAT
-        //used to convert a float value into time string
+        /// <summary>
+        /// converts a float value into time string
+        /// </summary>
+        /// <param name="valueToConvert">the time in seconds</param>
+        /// <param name="withFormat">if we want this formatted</param>
+        /// <returns>the string time format</returns>
         public static string ToTimeString(this float valueToConvert, bool withFormat = true)
         {
             //get the time span from the value
@@ -50,6 +55,18 @@ namespace JReact
                                                    : MinutesSecondsWithoutFormat, time.Minutes, time.Seconds);
             //returns the given string
             return timeWithFormat;
+        }
+
+        /// <summary>
+        /// the float will be used as a chance
+        /// </summary>
+        /// <param name="chance">the desired float should be between 0f and 1f</param>
+        /// <returns>returns true if the chance happens</returns>
+        public static bool ChanceHit(this float chance)
+        {
+            Assert.IsTrue(chance > 0, $"{chance} is lower or equal to 0. So it will always be false");
+            Assert.IsTrue(chance < 1f, $"{chance} is higher or equal to 1. So it will always be  true");
+            return UnityEngine.Random.Range(0, 1f) < chance;
         }
         #endregion
 
@@ -99,12 +116,12 @@ namespace JReact
 
         public static void SubscribeToAll<T>(this ICollection<iObservable<T>> collection, JGenericDelegate<T> actionToPerform)
         {
-            foreach (var element in collection) { element.Subscribe(actionToPerform); }
+            foreach (var element in collection) { element.SubscribeToWindChange(actionToPerform); }
         }
 
         public static void UnSubscribeToAll<T>(this ICollection<iObservable<T>> collection, JGenericDelegate<T> actionToPerform)
         {
-            foreach (var element in collection) { element.UnSubscribe(actionToPerform); }
+            foreach (var element in collection) { element.UnSubscribeToWindChange(actionToPerform); }
         }
 
         //reset 
@@ -198,6 +215,28 @@ namespace JReact
             Assert.IsTrue(rangeInt.x <= rangeInt.y,
                           $"The y value of the given range needs to be higher than x. X = {rangeInt.x}, Y = {rangeInt.y}");
             return UnityEngine.Random.Range(rangeInt.x, rangeInt.y);
+        }
+
+        public static Direction GetDirection(this Vector2 force)
+        {
+            // --------------- STOPPED WIND --------------- //
+            //if the wind is at 0 it is stopped
+            if (Math.Abs(force.x) < JConstants.GeneralFloatTolerance &&
+                Math.Abs(force.y) < JConstants.GeneralFloatTolerance) return Direction.None;
+
+            //find if the top most intensity is vertical or horizontal
+            // --------------- HORIZONTAL --------------- //
+            if (Mathf.Abs(force.x) > Mathf.Abs(force.y))
+            {
+                return force.x >= 0
+                           ? Direction.Right
+                           : Direction.Left;
+            }
+
+            // --------------- VERTICAL --------------- //
+            return force.y >= 0
+                       ? Direction.Up
+                       : Direction.Down;
         }
         #endregion
 

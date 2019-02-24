@@ -26,7 +26,7 @@ namespace JReact.StateControl
         protected J_SimpleStateControl _mainStateControl;
 
         //when we want to see this
-        [BoxGroup("Controls", true, true, 0), SerializeField] protected J_Service[] _validStates;
+        [BoxGroup("Controls", true, true, 0), SerializeField] protected J_State[] _validStates;
 
         //to check the activation of this element
         private bool _isActive;

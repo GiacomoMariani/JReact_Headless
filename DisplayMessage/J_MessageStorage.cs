@@ -24,7 +24,7 @@ namespace JReact.ScreenMessage
         {
             if (messageControls != null) _sender = messageControls;
             if (!ValidStart()) return;
-            _sender.Subscribe(AddMessage);
+            _sender.SubscribeToWindChange(AddMessage);
         }
 
         private bool ValidStart()
@@ -47,7 +47,7 @@ namespace JReact.ScreenMessage
         public void DeInitialize()
         {
             Assert.IsTrue(_isRunning, $"{name} is not running. Cannot deinitialize");
-            _sender.UnSubscribe(AddMessage);
+            _sender.UnSubscribeToWindChange(AddMessage);
             _messages.Clear();
         }
         #endregion

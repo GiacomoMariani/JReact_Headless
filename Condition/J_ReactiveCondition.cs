@@ -41,17 +41,17 @@ namespace JReact.Conditions
         }
 
         //helpers to make this more readable
-        public void SubscribeToCondition(JGenericDelegate<bool> action) { Subscribe(action); }
+        public void SubscribeToCondition(JGenericDelegate<bool> action) { SubscribeToWindChange(action); }
 
-        public void UnSubscribeToCondition(JGenericDelegate<bool> action) { UnSubscribe(action); }
+        public void UnSubscribeToCondition(JGenericDelegate<bool> action) { UnSubscribeToWindChange(action); }
 
-        public void Subscribe(JGenericDelegate<bool> action)
+        public void SubscribeToWindChange(JGenericDelegate<bool> action)
         {
             if (!IsActive) Activate();
-            _condition.Subscribe(action);
+            _condition.SubscribeToWindChange(action);
         }
 
-        public void UnSubscribe(JGenericDelegate<bool> action) { _condition.UnSubscribe(action); }
+        public void UnSubscribeToWindChange(JGenericDelegate<bool> action) { _condition.UnSubscribeToWindChange(action); }
 
         #region OPERATORS
         public static bool operator true(J_ReactiveCondition item) { return item.CurrentValue; }

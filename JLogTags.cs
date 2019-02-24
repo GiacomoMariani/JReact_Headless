@@ -24,5 +24,6 @@ namespace JReact
         public const string Conditions = "-Conditions-";
         public const string LevelSystem = "-LevelSystem-";
         public const string Fillable = "-Fillable-";
+        public const string Weather = "-Weather-";
     }
 }

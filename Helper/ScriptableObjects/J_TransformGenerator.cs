@@ -6,7 +6,7 @@ namespace JReact
     /// <summary>
     /// helper to create a transform
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Basics/Transform Creator")]
+    [CreateAssetMenu(menuName = "Reactive/Basics/Transform Creator", fileName = "Transformis")]
     public class J_TransformGenerator : ScriptableObject
     {
         #region FIELDS AND PROPERTIES

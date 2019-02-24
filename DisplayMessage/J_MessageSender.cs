@@ -47,8 +47,8 @@ namespace JReact.ScreenMessage
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<JMessage> actionToAdd) { OnPublish      += actionToAdd; }
-        public void UnSubscribe(JGenericDelegate<JMessage> actionToRemove) { OnPublish -= actionToRemove; }
+        public void SubscribeToWindChange(JGenericDelegate<JMessage> actionToAdd) { OnPublish      += actionToAdd; }
+        public void UnSubscribeToWindChange(JGenericDelegate<JMessage> actionToRemove) { OnPublish -= actionToRemove; }
         #endregion
 
         #region TEST

@@ -80,15 +80,15 @@ namespace JReact.TimeProgress
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<float> action)
+        public void SubscribeToWindChange(JGenericDelegate<float> action)
         {
             if (!IsActive) Activate();
             OnTick += action;
         }
 
-        public void UnSubscribe(JGenericDelegate<float> action) { OnTick -= action; }
-        public void SubscribeToCounter(JGenericDelegate<float> action) { Subscribe(action); }
-        public void UnSubscribeToCounter(JGenericDelegate<float> action) { UnSubscribe(action); }
+        public void UnSubscribeToWindChange(JGenericDelegate<float> action) { OnTick -= action; }
+        public void SubscribeToCounter(JGenericDelegate<float> action) { SubscribeToWindChange(action); }
+        public void UnSubscribeToCounter(JGenericDelegate<float> action) { UnSubscribeToWindChange(action); }
         #endregion
 
         #region DISABLE AND RESET

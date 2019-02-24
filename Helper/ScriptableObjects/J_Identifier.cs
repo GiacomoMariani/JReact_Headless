@@ -5,6 +5,6 @@ namespace JReact
     /// <summary>
     ///a ScriptableObject used as identifier
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Simple Identifier")]
+    [CreateAssetMenu(menuName = "Reactive/Basics/Simple Identifier")]
     public class J_Identifier : ScriptableObject { }
 }

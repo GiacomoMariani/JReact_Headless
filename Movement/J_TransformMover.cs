@@ -34,10 +34,10 @@ namespace JReact.Movement
             }
         }
         //the current position of the mover, used also to move it
-        [BoxGroup("Mover", true, true, 0), ReadOnly] protected virtual Vector2 _CurrentPosition
+        [BoxGroup("Mover", true, true, 0), ReadOnly] public virtual Vector2 CurrentPosition
         {
             get => _ThisTransform.position;
-            set => _ThisTransform.position = value;
+            protected set => _ThisTransform.position = value;
         }
 
         //movement speed
@@ -45,7 +45,7 @@ namespace JReact.Movement
         //movement direction
         [BoxGroup("Move State", true, true, 5), ShowInInspector] public Vector2 MoveDirection { get; private set; } = new Vector2();
         //a bool to track movement
-        [BoxGroup("Move State", true, true, 5) , ReadOnly] public bool IsMoving { get; private set; } = false;
+        [BoxGroup("Move State", true, true, 5), ReadOnly] public bool IsMoving { get; private set; } = false;
         #endregion
 
         #region DIRECTION MOVEMENT - NORMALIZED
@@ -91,9 +91,9 @@ namespace JReact.Movement
             //stop the moving if requested
             if (!IsMoving) yield break;
             //move the transform on the given direction
-            _CurrentPosition += (MoveDirection * MoveSpeed * Time.deltaTime);
+            CurrentPosition += (MoveDirection * MoveSpeed * Time.deltaTime);
             //send the event
-            OnMove?.Invoke(_CurrentPosition);
+            OnMove?.Invoke(CurrentPosition);
             //wait one frame, then run again
             yield return Timing.WaitForOneFrame;
             Timing.RunCoroutine(DirectionMove().CancelWith(gameObject), Segment.FixedUpdate, _TransformId, COROUTINE_MoveTransform);
@@ -146,10 +146,10 @@ namespace JReact.Movement
         /// <param name="timeToReach">the time to reach</param>
         public void MoveFromToPosition(Vector2 start, Vector2 end, float timeToReach)
         {
-            _CurrentPosition = start;
+            CurrentPosition = start;
             MoveTransformToPosition(end, timeToReach);
         }
-        
+
         /// <summary>
         /// used to move a given transform on a specific point within a specific time
         /// </summary>
@@ -170,16 +170,16 @@ namespace JReact.Movement
             //the time passed for this current step
             var elapsedTime = 0f;
             //the starting position is the position of the transform at start
-            Vector2 startingPos = _CurrentPosition;
+            Vector2 startingPos = CurrentPosition;
             //keep moving until we reach the time
             while (elapsedTime < timeToReach)
             {
                 //moving with a lerp
-                _CurrentPosition = Vector2.Lerp(startingPos, positionToReach, (elapsedTime / timeToReach));
+                CurrentPosition = Vector2.Lerp(startingPos, positionToReach, (elapsedTime / timeToReach));
                 //adding the elapsed time
                 elapsedTime += Time.deltaTime;
                 //send the event
-                OnMove?.Invoke(_CurrentPosition);
+                OnMove?.Invoke(CurrentPosition);
                 //wait a frame
                 yield return Timing.WaitForOneFrame;
             }
@@ -187,7 +187,7 @@ namespace JReact.Movement
             //stop moving at the end
             IsMoving = false;
             //send the event for the fixed position reached
-            OnFixedPositionReached?.Invoke(_CurrentPosition);
+            OnFixedPositionReached?.Invoke(CurrentPosition);
         }
         #endregion
 
