@@ -9,20 +9,33 @@ namespace JReact
     /// </summary>
     public static class JConsole
     {
+        #region MESSAGE FORMATTING
+        //format the message
+        private static string Format(string message, string tag)
+        {
+#if UNITY_EDITOR
+            return $"{DateTime.Now:[HH:mm:ss]}-[{tag}] {message}";
+#endif
+#if !UNITY_EDITOR
+			return (DateTime.Now.ToString("[HH:mm:ss]") + "-[" + tag + "]" + message);
+#endif
+        }
+        #endregion
+    
         #region MAIN LOGGERS
         /// <summary>
         /// displays a message in the console
         /// </summary>
         /// <param name="message">the message to be logged</param>
         /// <param name="context"> the related context</param>
-        /// <param name="consoleTag">a tag useful for console pro</param>
-        public static void Log(string message, string consoleTag = "", Object context = null)
+        /// <param name="tag">a tag useful for console pro</param>
+        public static void Log(string message, string tag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.Log($"{DateTime.Now:[HH:mm:ss]} {consoleTag} {message}", context);
+            Debug.Log(Format(message, tag), context);
 #endif
 #if !UNITY_EDITOR
-			Debug.Log(DateTime.Now.ToString("[HH:mm:ss]") + "[" + consoleTag + "] - " + message);
+			Debug.Log(Format(message, tag));
 #endif
         }
 
@@ -31,14 +44,14 @@ namespace JReact
         /// </summary>
         /// <param name="message">the message to be logged</param>
         /// <param name="context"> the related context</param>
-        /// <param name="consoleTag">a tag useful for console pro</param>
-        public static void Warning(string message, string consoleTag = "", Object context = null)
+        /// <param name="tag">a tag useful for console pro</param>
+        public static void Warning(string message, string tag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.LogWarning($"{DateTime.Now:[HH:mm:ss]} {consoleTag} {message}", context);
+            Debug.LogWarning(Format(message, tag), context);
 #endif
 #if !UNITY_EDITOR
-			Debug.LogWarning(DateTime.Now.ToString("[HH:mm:ss]") + "[" + consoleTag + "] - " + message);
+			Debug.LogWarning(Format(message, tag));
 #endif
         }
 
@@ -47,14 +60,14 @@ namespace JReact
         /// </summary>
         /// <param name="message">the message to be logged</param>
         /// <param name="context"> the related context</param>
-        /// <param name="consoleTag">a tag useful for console pro</param>
-        public static void Error(string message, string consoleTag = "", Object context = null)
+        /// <param name="tag">a tag useful for console pro</param>
+        public static void Error(string message, string tag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.LogError($"{DateTime.Now:[HH:mm:ss]} {consoleTag} {message}", context);
+            Debug.LogError(Format(message, tag), context);
 #endif
 #if !UNITY_EDITOR
-			Debug.LogError(DateTime.Now.ToString("[HH:mm:ss]") + "[" + consoleTag + "] - " + message);
+			Debug.LogError(Format(message, tag));
 #endif
         }
         
@@ -63,15 +76,15 @@ namespace JReact
         /// </summary>
         /// <param name="message">the message to be logged</param>
         /// <param name="context"> the related context</param>
-        /// <param name="consoleTag">a tag useful for console pro</param>
-        public static void Break(string message, string consoleTag = "", Object context = null)
+        /// <param name="tag">a tag useful for console pro</param>
+        public static void Break(string message, string tag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            Debug.LogError($"{DateTime.Now:[HH:mm:ss]} {consoleTag} {message}", context);
+            Debug.LogError(Format(message, tag), context);
             Debug.Break();
 #endif
 #if !UNITY_EDITOR
-			Debug.LogError(DateTime.Now.ToString("[HH:mm:ss]") + "[" + consoleTag + "] - " + message);
+			Debug.LogError(Format(message, tag));
             Debug.Break();
 #endif
         }
