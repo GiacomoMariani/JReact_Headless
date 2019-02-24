@@ -68,7 +68,17 @@ namespace JReact
             Assert.IsTrue(chance < 1f, $"{chance} is higher or equal to 1. So it will always be  true");
             return UnityEngine.Random.Range(0, 1f) < chance;
         }
-        #endregion
+        #endregion FLOAT
+
+        #region ARRAYS
+        /// <summary>
+        /// checks if an array contains a given item
+        /// </summary>
+        /// <param name="array">the array to check</param>
+        /// <param name="itemToCheck">the item we want to find</param>
+        /// <returns>returns true if the array contains the item</returns>
+        public static bool ArrayContains<T>(this T[] array, T itemToCheck) { return Array.IndexOf(array, itemToCheck) > -1; }
+        #endregion ARRAYS
 
         #region COLLECTIONS
         /// <summary>
@@ -129,7 +139,7 @@ namespace JReact
         {
             foreach (var element in collection) element.ResetThis();
         }
-        #endregion
+        #endregion COLLECTIONS
 
         #region SCRIPTABLE OBJECTS
         //a way to set the names of scriptable object

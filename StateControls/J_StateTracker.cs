@@ -48,10 +48,10 @@ namespace JReact.StateControl
 
         #region STATE CHANGE PROCESSING
         //called when the state change
-        private void ChangeState(J_State previousState, J_State nextState) { AppendStateToPrevious(previousState); }
+        private void ChangeState((J_State previous, J_State current) transition) { AppendToPrevious(transition.previous); }
 
         //used to stacking the states
-        private void AppendStateToPrevious(J_State oldState)
+        private void AppendToPrevious(J_State oldState)
         {
             //if we reached the max states remove the first
             if (_previousStates.Count >= _maxStatesToTrack) _previousStates.RemoveAt(0);

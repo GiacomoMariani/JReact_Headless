@@ -64,9 +64,9 @@ namespace JReact.StateControl.LevelSystem
 
         private void SanityChecks() { Assert.IsNotNull(_levelProgress, $"{name} requires a _levelProgress"); }
 
-        private void LevelUpdate(J_LevelState previousLevel, J_LevelState currentLevel)
+        private void LevelUpdate((J_LevelState previous, J_LevelState current) transition)
         {
-            OnMaxChanged?.Invoke(currentLevel.ExperienceNeeded);
+            OnMaxChanged?.Invoke(transition.current.ExperienceNeeded);
             CurrentValue = 0;
         }
         #endregion

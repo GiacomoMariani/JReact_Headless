@@ -27,7 +27,7 @@ namespace JReact.ScreenMessage
         private void TrySettingThisElement(JMessage messageSent)
         {
             //publish only desired messages
-            if (Array.IndexOf(_desiredTypes, messageSent.MessageId) != -1) 
+            if (_desiredTypes.ArrayContains(messageSent.MessageId)) 
                 UpdateElement(messageSent);
         }
         #endregion

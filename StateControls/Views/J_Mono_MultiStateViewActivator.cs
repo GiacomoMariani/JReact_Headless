@@ -46,10 +46,7 @@ namespace JReact.StateControl
         #endregion
 
         #region INITIALIZATION
-        private void Awake()
-        {
-            SanityChecks();
-        }
+        private void Awake() { SanityChecks(); }
 
         protected virtual void SanityChecks()
         {
@@ -60,15 +57,15 @@ namespace JReact.StateControl
 
         #region LISTENERS
         //update this if the next state is contained here
-        protected virtual void StateChange(J_Service previousState, J_Service nextState)
+        protected virtual void StateChange((J_State previous, J_State current) transition)
         {
-            IsActive = Array.IndexOf(_validStates, nextState) > -1;
+            IsActive = _validStates.ArrayContains(transition.current);
         }
 
         //start and stop listening to events
         protected virtual void OnEnable()
         {
-            StateChange(null, _mainStateControl.CurrentState);
+            StateChange((null, _mainStateControl.CurrentState));
             _mainStateControl.Subscribe(StateChange);
         }
 

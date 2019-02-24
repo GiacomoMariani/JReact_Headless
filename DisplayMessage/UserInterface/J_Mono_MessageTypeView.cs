@@ -12,7 +12,7 @@ namespace JReact.ScreenMessage
         #region FIELDS AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageId[] _validMessages;
         [BoxGroup("Setup", true, true, 0), SerializeField, Required] private GameObject[] _views;
-        
+
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _disableWhenPrinting;
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _enableWhenPrinting;
 
@@ -24,7 +24,7 @@ namespace JReact.ScreenMessage
         protected override void ActorUpdate(JMessage element)
         {
             //check if this is a valid view and activate views accordingly
-            var isValid = (Array.IndexOf(_validMessages, element.MessageId) != -1) && ValidPrinterState();
+            var isValid = _validMessages.ArrayContains(element.MessageId) && ValidPrinterState();
             ShowViews(isValid);
         }
 

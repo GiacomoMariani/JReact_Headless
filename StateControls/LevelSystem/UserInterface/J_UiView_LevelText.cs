@@ -20,12 +20,12 @@ namespace JReact.StateControl.LevelSystem
             Assert.IsNotNull(_levelControl, $"{name} requires a levelControl");
         }
 
-        private void UpdateText(J_LevelState previous, J_LevelState current) { SetText(current.ToString()); }
+        private void UpdateText((J_LevelState previous, J_LevelState current) transition) { SetText(transition.current.ToString()); }
 
         #region LISTENERS
         private void OnEnable()
         {
-            UpdateText(null, _levelControl.CurrentLevelInfo);
+            SetText(_levelControl.CurrentLevelInfo.ToString());
             _levelControl.Subscribe(UpdateText);
         }
 

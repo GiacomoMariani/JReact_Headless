@@ -26,9 +26,7 @@ namespace JReact.StateControl
     {
         #region FIELDS AND PROPERTIES
         // --------------- MAIN EVENTS AND DELEGATES --------------- //
-        //this is the event that tracks the transition from one state to one other
-        public delegate void StateTransition(T previousState, T nextState);
-        private event StateTransition OnStateTransition;
+        private event JGenericDelegate<(T previous, T current)> OnStateTransition;
 
         // --------------- VALID STATES --------------- //
         /* These are used just a sanity check, to make sure we are implementing the correct states */
@@ -103,8 +101,8 @@ namespace JReact.StateControl
         /// </summary>
         public override void End()
         {
-            base.End(); 
-            if(CurrentState != null) CurrentState.End();
+            base.End();
+            if (CurrentState != null) CurrentState.End();
             _currentState = null;
         }
         #endregion ACTIVATION
@@ -125,14 +123,15 @@ namespace JReact.StateControl
                          JLogTags.State, this);
 
             // --------------- COMMAND PROCESSING --------------- //
+            var previous = CurrentState;
             CurrentState = stateToSet;
-            OnStateTransition?.Invoke(CurrentState, stateToSet);
+            OnStateTransition?.Invoke((previous, stateToSet));
         }
 
         private void SetStateSanityChecks(T stateToSet)
         {
             Assert.IsNotNull(stateToSet, $"{name} is trying to set a null state");
-            Assert.IsTrue(Array.IndexOf(_validStates, stateToSet) > -1,
+            Assert.IsTrue(_validStates.ArrayContains(stateToSet),
                           $"The state {stateToSet} is not in the of valid states of {name}. List{_validStates.PrintAll()}.");
         }
 
@@ -152,13 +151,13 @@ namespace JReact.StateControl
 
         #region SUBSCRIBE METHODS
         //the following methods are used to subscribe/register to the transition event. they act like the observer pattern
-        public void Subscribe(StateTransition actionToSend)
+        public void Subscribe(JGenericDelegate<(T previousState, T nextState)> action)
         {
             if (!IsActive) Activate();
-            OnStateTransition += actionToSend;
+            OnStateTransition += action;
         }
 
-        public void UnSubscribe(StateTransition actionToSend) { OnStateTransition -= actionToSend; }
+        public void UnSubscribe(JGenericDelegate<(T previousState, T nextState)> action) { OnStateTransition -= action; }
         #endregion SUBSCRIBE METHODS
     }
 }
