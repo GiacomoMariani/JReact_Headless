@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace JReact.TimeProgress
 {
@@ -19,7 +18,7 @@ namespace JReact.TimeProgress
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected int _objectId = -1;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _destroyAtDisable = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected bool _destroyAtDisable;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float ThisDeltaTime { get; private set; }
         #endregion
 
@@ -28,43 +27,48 @@ namespace JReact.TimeProgress
         /// creates a new counter and starts counting
         /// </summary>
         /// <returns>the new counter created</returns>
-        public static T CreateNewTimer<T>(bool destroyAtDisable = true)
+        internal static T CreateCounter<T>(Segment desiredSegment = Segment.Update, bool destroyAtDisable = true,
+                                           bool autoStart = false)
             where T : J_GenericCounter
         {
-            var timer = CreateInstance<T>();
-            timer._destroyAtDisable = destroyAtDisable;
-            timer.Activate();
-            return timer;
+            var counter = CreateInstance<T>();
+            counter._destroyAtDisable = destroyAtDisable;
+            counter._desiredSegment   = desiredSegment;
+            if (autoStart) counter.Activate();
+            return counter;
         }
 
-        //starts the counter
-        public override void Activate()
+        /// <inheritdoc />
+        /// <summary>
+        /// starts the counter
+        /// </summary>
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             //make sure everything is setup correctly and starts the counting
             JConsole.Log($"{name} starts counting", JLogTags.TimeProgress, this);
             if (!SanityChecks()) return;
             //complete the setup
             _objectId = GetInstanceID();
             //starts counting
-            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_TimerTag);
+            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_CounterTag);
         }
 
-        //stops the timer
-        public override void End()
+        /// <inheritdoc />
+        /// <summary>
+        /// stops the timer
+        /// </summary>
+        protected override void EndThis()
         {
-            base.End();
             JConsole.Log($"{name} stops counting", JLogTags.TimeProgress, this);
-            Timing.KillCoroutines(_objectId, JCoroutineTags.COROUTINE_TimerTag);
+            Timing.KillCoroutines(_objectId, JCoroutineTags.COROUTINE_CounterTag);
+            base.EndThis();
         }
         #endregion
 
         #region INITIALIZATION
         //make sure this is setup correctly, used in subclasses
-        protected virtual bool SanityChecks()
-        {
-            return true;
-        }
+        protected virtual bool SanityChecks() => true;
         #endregion
 
         #region COUNTING
@@ -80,15 +84,15 @@ namespace JReact.TimeProgress
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToWindChange(JGenericDelegate<float> action)
+        public void Subscribe(JGenericDelegate<float> action)
         {
             if (!IsActive) Activate();
             OnTick += action;
         }
 
-        public void UnSubscribeToWindChange(JGenericDelegate<float> action) { OnTick -= action; }
-        public void SubscribeToCounter(JGenericDelegate<float> action) { SubscribeToWindChange(action); }
-        public void UnSubscribeToCounter(JGenericDelegate<float> action) { UnSubscribeToWindChange(action); }
+        public void UnSubscribe(JGenericDelegate<float> action) { OnTick -= action; }
+        public void SubscribeToCounter(JGenericDelegate<float> action) { Subscribe(action); }
+        public void UnSubscribeToCounter(JGenericDelegate<float> action) { UnSubscribe(action); }
         #endregion
 
         #region DISABLE AND RESET

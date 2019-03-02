@@ -11,11 +11,11 @@ namespace JReact
     {
         #region FIELDS AND PROPERTIES
         public event JActivationDelegate OnActivation;
-        
+
         //the views we want to activate
         [BoxGroup("Views", true, true, -50), SerializeField, Required] private GameObject[] _views;
         //to decide if we want to start them as active
-        [BoxGroup("Views", true, true, -50), SerializeField] protected bool _startsActive = false;
+        [BoxGroup("Views", true, true, -50), SerializeField] protected bool _startsActive;
         #endregion
 
         #region INITIALIZATION
@@ -29,10 +29,7 @@ namespace JReact
         }
 
         //used to check that every element is valid
-        protected virtual void SanityChecks()
-        {
-            Assert.IsTrue(_views.Length > 0, $"{gameObject.name} requires at least one view");
-        }
+        protected virtual void SanityChecks() { Assert.IsTrue(_views.Length > 0, $"{gameObject.name} requires at least one view"); }
 
         //used to initialize this element
         protected virtual void InitThis() { ActivateView(_startsActive); }
@@ -62,8 +59,8 @@ namespace JReact
 
         #region TEMPLATES
         //if we want to add further actions to the view
-        protected virtual void ActivateThis(GameObject viewToActivate) { }
-        protected virtual void DeActivateThis(GameObject viewToActivate) { }
+        protected virtual void ActivateThis(GameObject viewToActivate) {}
+        protected virtual void DeActivateThis(GameObject viewToActivate) {}
         #endregion
     }
 }

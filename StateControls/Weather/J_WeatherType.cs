@@ -23,16 +23,16 @@ namespace JReact.StateControl.Weather
         //used to show the next time of change
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private float _intervalDuration;
 
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             _unityEvents_AtStart?.Invoke();
         }
 
-        public override void End()
+        protected override void EndThis()
         {
-            base.End(); 
             _unityEvents_AtEnd?.Invoke();
+            base.EndThis();
         }
 
         /// <summary>

@@ -29,13 +29,14 @@ namespace JReact.Collections
             Activate();
         }
 
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             if (_initializing)
                 JConsole.Log($"{name} initialize with {_services.Length} services", JLogTags.Collection, this);
             else
                 JConsole.Log($"{name} de initialize with {_services.Length} services", JLogTags.Collection, this);
+
             SanityChecks();
 
             //process all states
@@ -54,9 +55,9 @@ namespace JReact.Collections
             Assert.IsTrue(_services.Length > 0, $"{name} has nothing to initialize");
         }
 
-        public override void End()
+        protected override void EndThis()
         {
-            base.End();
+            base.EndThis();
             JConsole.Log($"{name} task completed for {_services.Length} services", JLogTags.Collection, this);
         }
 

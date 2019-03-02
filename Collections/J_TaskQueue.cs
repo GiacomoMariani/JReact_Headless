@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -25,7 +24,7 @@ namespace JReact.Collections
         #endregion
 
         #region COMMANDS
-        public static J_TaskQueue CreateInstance() { return CreateInstance<J_TaskQueue>(); }
+        public static J_TaskQueue CreateInstance() => CreateInstance<J_TaskQueue>();
 
         public void ProcessTask(iTask taskToProcess)
         {
@@ -93,11 +92,11 @@ namespace JReact.Collections
         #endregion
 
         #region QUEUE CLASS
-        public IEnumerator<iTask> GetEnumerator() { return _taskQueue.GetEnumerator(); }
+        public IEnumerator<iTask> GetEnumerator() => _taskQueue.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public int Count => _taskQueue.Count;
-        public bool Contains(iTask state) { return _taskQueue.Contains(state); }
+        public bool Contains(iTask state) => _taskQueue.Contains(state);
         #endregion
     }
 }

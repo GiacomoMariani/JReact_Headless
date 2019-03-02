@@ -1,5 +1,6 @@
 using System;
 using JReact.Collections;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace JReact.Conditions.Tasks
@@ -10,15 +11,14 @@ namespace JReact.Conditions.Tasks
     [CreateAssetMenu(menuName = "Reactive/Task/Dormant Task")]
     public class J_Collection_DormantTasks : J_ReactiveCollection<J_CompletableTask>
     {
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool HasDormants => _thisCollection.Count > 0;
+
         internal void TrackTask(J_CompletableTask task) { task.SubscribeToTaskChange(CheckTask); }
 
         private void CheckTask(J_CompletableTask task)
         {
             switch (task.State)
             {
-                case TaskState.WaitStartCondition: break;
-                case TaskState.Active:             break;
-
                 //add this to dormant at the correct state
                 case TaskState.Dormant:
                     if (!Contains(task)) Add(task);
@@ -31,6 +31,8 @@ namespace JReact.Conditions.Tasks
                     if (Contains(task)) Remove(task);
                     break;
 
+                case TaskState.WaitStartCondition:
+                case TaskState.Active:
                 case TaskState.ActivationWaiting:
                     if (Contains(task)) Remove(task);
                     break;
@@ -38,12 +40,13 @@ namespace JReact.Conditions.Tasks
             }
         }
 
-
         /// <summary>
         /// reactivates the tasks
         /// </summary>
         public void ReactivateAll()
         {
+            if (!HasDormants) return;
+
             for (int i = 0; i < Count; i++)
                 _thisCollection[i].ReactivateTask();
 

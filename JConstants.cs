@@ -14,6 +14,6 @@ namespace JReact
         public const float SecondsInMinute = 60f;
 
         public static Vector2 VectorZero = new Vector2(0f, 0f);
-        public static Vector2 VectorOne = new Vector2(1f, 1f);
+        public static Vector2 VectorOne = new Vector2(1f,  1f);
     }
 }

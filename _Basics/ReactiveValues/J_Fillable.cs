@@ -7,6 +7,7 @@ namespace JReact
     /// <summary>
     /// acts as a container with a min and max value
     /// </summary>
+    [CreateAssetMenu(menuName = "Reactive/Basics/Fillable", fileName = "Fillable")]
     public class J_Fillable : ScriptableObject, iResettable, iFillable
     {
         #region FIELDS AND PROPERTIES
@@ -15,16 +16,15 @@ namespace JReact
         private event JGenericDelegate<int> OnMinChanged;
 
         //optionally set a starting value
-        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startAmount = 0;
-        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startMax = 0;
-        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startMin = 0;
+        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startAmount;
+        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startMax;
+        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startMin;
 
         private int _currentAmount;
-        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly]
-        public int CurrentValue
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int CurrentValue
         {
             get => _currentAmount;
-            private set
+            set
             {
                 if (!CanSetValue(value))
                 {
@@ -36,12 +36,11 @@ namespace JReact
                 OnValueChange?.Invoke(value);
             }
         }
-        private int _minCapacity;
-        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly]
-        public int MinCapacity
+        private int _min;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Min
         {
-            get => _minCapacity;
-            private set
+            get => _min;
+            set
             {
                 if (!CanSetMinCapacity(value))
                 {
@@ -49,17 +48,16 @@ namespace JReact
                     return;
                 }
 
-                _minCapacity = value;
+                _min = value;
                 OnMinChanged?.Invoke(value);
             }
         }
 
-        private int _maxCapacity;
-        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly]
-        public int MaxCapacity
+        private int _max;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Max
         {
-            get => _maxCapacity;
-            private set
+            get => _max;
+            set
             {
                 if (!CanSetMaxCapacity(value))
                 {
@@ -67,13 +65,13 @@ namespace JReact
                     return;
                 }
 
-                _maxCapacity = value;
+                _max = value;
                 OnMaxChanged?.Invoke(value);
             }
         }
 
-        public int FreeCapacity => MaxCapacity - CurrentValue;
-        private string CurrentState => $"{name}. Min {MinCapacity} - Max {MaxCapacity} - Current {CurrentValue}";
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => Max - CurrentValue;
+        private string CurrentState => $"{name}. Min {Min} - Max {Max} - Current {CurrentValue}";
         #endregion
 
         #region COMMANDS
@@ -81,8 +79,8 @@ namespace JReact
         {
             var fillable                                    = CreateInstance<J_Fillable>();
             fillable._startAmount = fillable._currentAmount = amount;
-            fillable._startMin    = fillable._minCapacity   = min;
-            fillable._startMax    = fillable._maxCapacity   = max;
+            fillable._startMin    = fillable._min           = min;
+            fillable._startMax    = fillable._max           = max;
             fillable.ResetThis();
             return fillable;
         }
@@ -105,8 +103,8 @@ namespace JReact
             if (!CanAdd(amount))
             {
                 JConsole.Warning($"{CurrentState} invalid amount for grant {amount}. Setting Max.", JLogTags.Fillable, this);
-                int remaining = CurrentValue + amount - MaxCapacity;
-                CurrentValue = MaxCapacity;
+                int remaining = CurrentValue + amount - Max;
+                CurrentValue = Max;
                 return remaining;
             }
 
@@ -132,18 +130,14 @@ namespace JReact
             if (!HasEnough(amount))
             {
                 JConsole.Warning($"{CurrentState} invalid amount for remove {amount}. Setting Min.", JLogTags.Fillable, this);
-                int remaining = amount - (CurrentValue + MinCapacity);
-                CurrentValue = MinCapacity;
+                int remaining = amount - (CurrentValue + Min);
+                CurrentValue = Min;
                 return remaining;
             }
 
             CurrentValue -= amount;
             return 0;
         }
-
-        public void SetMax(int max) { MaxCapacity                 = max; }
-        public void SetMin(int min) { MinCapacity                 = min; }
-        public void SetCurrentAmount(int current) { CurrentValue = current; }
         #endregion
 
         #region PUBLIC CHECKS
@@ -152,44 +146,53 @@ namespace JReact
         /// </summary>
         /// <param name="amount">the amount we want to add</param>
         /// <returns>returns true if the request is valid</returns>
-        public bool CanAdd(int amount) { return (CurrentValue + amount) <= MaxCapacity; }
+        public bool CanAdd(int amount) => CurrentValue + amount <= Max;
 
         /// <summary>
         /// checks if there's enough value
         /// </summary>
         /// <param name="amount">the amount we want to remove</param>
         /// <returns>returns true if we have anough/returns>
-        public bool HasEnough(int amount) { return CurrentValue >= amount; }
+        public bool HasEnough(int amount) => CurrentValue >= amount;
 
-        public bool CanSetMaxCapacity(int maxToSet) { return CurrentValue <= maxToSet    && MinCapacity <= maxToSet; }
-        public bool CanSetMinCapacity(int minToSet) { return CurrentValue >= minToSet    && MaxCapacity >= minToSet; }
-        public bool CanSetValue(int value) { return value                  >= MinCapacity && value       <= MaxCapacity; }
+        public bool CanSetMaxCapacity(int maxToSet) => CurrentValue <= maxToSet && Min   <= maxToSet;
+        public bool CanSetMinCapacity(int minToSet) => CurrentValue >= minToSet && Max   >= minToSet;
+        public bool CanSetValue(int value) => value                 >= Min      && value <= Max;
         #endregion
 
         #region SUBSCRIBERS AND LISTENERS
-        public virtual void SubscribeToWindChange(JGenericDelegate<int> actionToSend) { OnValueChange               += actionToSend; }
-        public virtual void UnSubscribeToWindChange(JGenericDelegate<int> actionToSend) { OnValueChange             -= actionToSend; }
-        public virtual void SubscribeToMaxCapacity(JGenericDelegate<int> actionToSend) { OnMaxChanged   += actionToSend; }
-        public virtual void UnSubscribeToMaxCapacity(JGenericDelegate<int> actionToSend) { OnMaxChanged -= actionToSend; }
-        public virtual void SubscribeToMinCapacity(JGenericDelegate<int> actionToSend) { OnMinChanged   += actionToSend; }
-        public virtual void UnSubscribeToMinCapacity(JGenericDelegate<int> actionToSend) { OnMinChanged -= actionToSend; }
+        public virtual void Subscribe(JGenericDelegate<int> action) { OnValueChange   += action; }
+        public virtual void UnSubscribe(JGenericDelegate<int> action) { OnValueChange -= action; }
+
+        public virtual void SubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged   += action; }
+        public virtual void UnSubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged -= action; }
+
+        public virtual void SubscribeToMinCapacity(JGenericDelegate<int> action) { OnMinChanged   += action; }
+        public virtual void UnSubscribeToMinCapacity(JGenericDelegate<int> action) { OnMinChanged -= action; }
 
         public virtual void ResetThis()
         {
             _currentAmount = _startAmount;
-            _maxCapacity   = _startMax;
-            _minCapacity   = _startMin;
-            SanityChecks(CurrentValue, MinCapacity, MaxCapacity);
+            _max           = _startMax;
+            _min           = _startMin;
+            SanityChecks();
         }
 
-        private void SanityChecks(int value, int min, int max)
+        public bool SanityChecks()
         {
-            Assert.IsTrue(value <= max, $"{name} has a current value {value} higher than max {max}");
-            Assert.IsTrue(value >= min, $"{name} has a current value {value} lower than min {min}");
-            Assert.IsTrue(min   <= max, $"{name} has a min {min} higher than max {max}");
+            Assert.IsTrue(CurrentValue <= Max, $"{name} has a current value {CurrentValue} higher than max {Max}");
+            Assert.IsTrue(CurrentValue >= Min, $"{name} has a current value {CurrentValue} lower than min {Min}");
+            Assert.IsTrue(Min          <= Max, $"{name} has a min {Min} higher than max {Max}");
+            if (CurrentValue > Max) return false;
+            if (CurrentValue < Min) return false;
+            if (Min          > Max) return false;
+
+            return true;
         }
 
         protected virtual void OnDisable() { ResetThis(); }
+
+        private void OnValidate() { ResetThis(); }
         #endregion
     }
 }

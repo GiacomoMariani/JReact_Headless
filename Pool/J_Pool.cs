@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
-using UnityEngine.Assertions;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace JReact.Pool
 {
@@ -35,13 +35,9 @@ namespace JReact.Pool
         /// <param name="itemSetupAction">the action we want to set for the pool items</param>
         public void AddSetupForItems(JGenericDelegate<T> itemSetupAction) { _initAction = itemSetupAction; }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// activates the pool
-        /// </summary>
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             // --------------- CHECKS --------------- //
             SanityChecks();
             // --------------- SETUP --------------- //
@@ -55,7 +51,7 @@ namespace JReact.Pool
         private void SanityChecks()
         {
             Assert.IsNotNull(_parentTransform, $"{name} requires an element for _parentTransform");
-            Assert.IsNotNull(_prefabItem, $"{name} requires an element for _prefab");
+            Assert.IsNotNull(_prefabItem,      $"{name} requires an element for _prefab");
             Assert.IsTrue(_startingItems > 0, $"{name} requires a positive number for the pool items");
         }
 
@@ -63,7 +59,7 @@ namespace JReact.Pool
         private IEnumerator<float> Populate(int remainingObjects, JGenericDelegate<T> itemSetupAction)
         {
             // --------------- ITEM CREATION --------------- //
-            var itemToAdd = AddItemIntoPool();
+            T itemToAdd = AddItemIntoPool();
             if (itemSetupAction != null) itemSetupAction(itemToAdd);
             yield return Timing.WaitForOneFrame;
 
@@ -78,7 +74,7 @@ namespace JReact.Pool
         #region PRIVATE COMMANDS
         private T AddItemIntoPool()
         {
-            var poolItem = Instantiate(_prefabItem.GetRandomElement(), _parentTransform.ThisTransform);
+            T poolItem = Instantiate(_prefabItem.GetRandomElement(), _parentTransform.ThisTransform);
             poolItem.InjectPoolOwner(this);
             PlaceInPool(poolItem);
             return poolItem;
@@ -115,7 +111,7 @@ namespace JReact.Pool
             if (_firstItem == null) AddItemIntoPool();
 
             //update the elements and return the next one 
-            var element = _firstItem;
+            T element = _firstItem;
             _firstItem = element.NextItemInPool;
             element.GetFromPool();
             return element;

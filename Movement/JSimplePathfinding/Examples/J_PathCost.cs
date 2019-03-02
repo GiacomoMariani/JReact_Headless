@@ -26,6 +26,7 @@ namespace JReact.Pathfinding
             if (!(nodeA.Coordinates.x == nodeB.Coordinates.x ||
                   nodeA.Coordinates.y == nodeB.Coordinates.y))
                 cost *= PATHWEIGHT_Diagonal;
+
             return cost;
         }
     }

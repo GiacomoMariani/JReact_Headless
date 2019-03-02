@@ -11,10 +11,9 @@ namespace JReact
         private event JGenericDelegate<T> OnPropertyChange;
 
         //optionally set a starting value
-        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected T _startValue = default(T);
+        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected T _startValue;
         protected T _currentValue;
-        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly]
-        public virtual T CurrentValue
+        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly] public virtual T CurrentValue
         {
             get => _currentValue;
             set
@@ -24,8 +23,8 @@ namespace JReact
             }
         }
         #region SUBSCRIBERS AND LISTENERS
-        public virtual void SubscribeToWindChange(JGenericDelegate<T> actionToSend) { OnPropertyChange   += actionToSend; }
-        public virtual void UnSubscribeToWindChange(JGenericDelegate<T> actionToSend) { OnPropertyChange -= actionToSend; }
+        public virtual void Subscribe(JGenericDelegate<T> actionToSend) { OnPropertyChange   += actionToSend; }
+        public virtual void UnSubscribe(JGenericDelegate<T> actionToSend) { OnPropertyChange -= actionToSend; }
 
         public virtual void ResetThis() { _currentValue = _startValue; }
         protected virtual void OnDisable() { ResetThis(); }

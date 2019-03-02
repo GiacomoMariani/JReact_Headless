@@ -11,46 +11,58 @@ namespace JReact
     /// => if this is used as a STATE something external should call Activate and End
     /// => if this is used as a TASK the external may call Activate, but End should be call internally
     /// </summary>
-    public class J_Service : J_Event, iStateObservable, iActivable
+    public class J_Service : ScriptableObject, iStateObservable, iActivable
     {
-        private event JAction OnExitEvent;
+        private event JAction OnEnter;
+        private event JAction OnExit;
 
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public string Name => name;
 
-        public static J_Service CreateState(string nameToSet)
+        public static J_Service CreateService(string nameToSet)
         {
             var state = CreateInstance<J_Service>();
             state.name = nameToSet;
             return state;
         }
-        
+
         /// <summary>
         /// activates the service
         /// </summary>
         [ButtonGroup("Commands", 200), Button("Activate", ButtonSizes.Medium)]
-        public override void Activate()
+        public bool Activate()
         {
-            Assert.IsFalse(IsActive, $"{name} was already active");
-            if (IsActive) return;
+            Assert.IsFalse(IsActive, $"{name} was already active. Cancel command.");
+            if (IsActive) return false;
             IsActive = true;
-            base.Activate();
+            ActivateThis();
+            return true;
         }
+
+        //the specific implementation of activate
+        protected virtual void ActivateThis() { OnEnter?.Invoke(); }
 
         /// <summary>
         /// ends the service
         /// </summary>
         [ButtonGroup("Commands", 200), Button("End", ButtonSizes.Medium)]
-        public virtual void End()
+        public virtual bool End()
         {
-            Assert.IsTrue(IsActive, $"{name} was not active");
-            if (!IsActive) return;
+            Assert.IsTrue(IsActive, $"{name} was not active. Cancel command.");
+            if (!IsActive) return false;
+            EndThis();
             IsActive = false;
-            OnExitEvent?.Invoke();
+            return true;
         }
 
-        public void SubscribeToEnd(JAction actionToSend) { OnExitEvent   += actionToSend; }
-        public void UnSubscribeToEnd(JAction actionToSend) { OnExitEvent -= actionToSend; }
+        //the specific implementation of activate
+        protected virtual void EndThis() { OnExit?.Invoke(); }
+
+        public void Subscribe(JAction actionToSubscribe) { OnEnter   += actionToSubscribe; }
+        public void UnSubscribe(JAction actionToSubscribe) { OnEnter -= actionToSubscribe; }
+
+        public void SubscribeToEnd(JAction actionToSend) { OnExit   += actionToSend; }
+        public void UnSubscribeToEnd(JAction actionToSend) { OnExit -= actionToSend; }
 
         #region DISABLE AND RESET
         private void OnDisable() { ResetThis(); }

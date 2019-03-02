@@ -14,7 +14,6 @@
  * This script is using Odin Inspector for better visualization on the unity editor.
  */
 
-using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -32,18 +31,17 @@ namespace JReact.StateControl
         /* These are used just a sanity check, to make sure we are implementing the correct states */
 
         //a list of the valid states
-        [Title("Setup", "The elements required to setup this control")]
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required]
+        [Title("Setup", "The elements required to setup this control"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly,
+         Required]
         protected T _firstState;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] protected T[] _validStates;
 
         // --------------- CURRENT SITUATION --------------- //
         /* The following items are used to track the current situation */
 
-        [Title("State", "The current situation")]
+        [Title("State", "The current situation"), FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
         //the current state, with an available getter, to make sure anyone can check it
         //this property is also used to send the main events
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
         private T _currentState;
         public T CurrentState
         {
@@ -86,9 +84,9 @@ namespace JReact.StateControl
         /// <summary>
         /// sets the first state of the game
         /// </summary>
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             Assert.IsNotNull(_firstState, $"Please set a first state to validate the controls on: {name}");
             SetStateSanityChecks(_firstState);
             _currentState = _firstState;
@@ -99,11 +97,11 @@ namespace JReact.StateControl
         /// <summary>
         /// resets the state control, called also OnDisable
         /// </summary>
-        public override void End()
+        protected override void EndThis()
         {
-            base.End();
             if (CurrentState != null) CurrentState.End();
             _currentState = null;
+            base.EndThis();
         }
         #endregion ACTIVATION
 
@@ -123,7 +121,7 @@ namespace JReact.StateControl
                          JLogTags.State, this);
 
             // --------------- COMMAND PROCESSING --------------- //
-            var previous = CurrentState;
+            T previous = CurrentState;
             CurrentState = stateToSet;
             OnStateTransition?.Invoke((previous, stateToSet));
         }
@@ -142,6 +140,7 @@ namespace JReact.StateControl
             {
                 JConsole.Warning($"{name} wants to set {stateToSet.name}, but it is already the current state",
                                  JLogTags.State, this);
+
                 return true;
             }
 

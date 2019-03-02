@@ -1,6 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -42,11 +41,14 @@ namespace JReact.Collections
         /// <summary>
         /// the specific action to be sent when the dictionary is changed
         /// </summary>
-        protected virtual void Internal_UpdateElement(TKey keyToChange, TValue valueToChange) { ThisDictionary[keyToChange] = valueToChange; }
+        protected virtual void Internal_UpdateElement(TKey keyToChange, TValue valueToChange)
+        {
+            ThisDictionary[keyToChange] = valueToChange;
+        }
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<TKey> actionToSend) { OnDictionaryChange += actionToSend; }
+        public void Subscribe(JGenericDelegate<TKey> actionToSend) { OnDictionaryChange   += actionToSend; }
         public void UnSubscribe(JGenericDelegate<TKey> actionToSend) { OnDictionaryChange -= actionToSend; }
         #endregion
 
@@ -54,6 +56,6 @@ namespace JReact.Collections
         //we reset this on disable
         protected virtual void OnDisable() { ResetThis(); }
         public virtual void ResetThis() { ThisDictionary.Clear(); }
-        #endregion       
+        #endregion
     }
 }

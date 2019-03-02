@@ -42,7 +42,7 @@ namespace JReact.StateControl.LevelSystem
         public static J_LevelProgression Create(J_LevelState[] states, bool init = true)
         {
             // --------------- SANITY CHECKS --------------- //
-            Assert.IsNotNull(states, $"Creation requires a states");
+            Assert.IsNotNull(states, "Creation requires a states");
             for (int i = 0; i < states.Length; i++) Assert.IsNotNull(states[i], $"Null state at index {i}");
             var stateControl = CreateInstance<J_LevelProgression>();
 
@@ -51,7 +51,7 @@ namespace JReact.StateControl.LevelSystem
             stateControl._firstState  = states[0];
 
             // --------------- EXPERIENCE --------------- //
-            var experience = J_ExperienceReceiver.Create(stateControl);
+            J_ExperienceReceiver experience = J_ExperienceReceiver.Create(stateControl);
             experience.name         = string.Format(ExperienceSuffix, stateControl.name);
             stateControl.Experience = experience;
 
@@ -61,9 +61,9 @@ namespace JReact.StateControl.LevelSystem
         #endregion INSTANTIATION
 
         #region COMMANDS
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             Assert.IsNotNull(Experience, $"{name} requires Experience");
             _currentLevelIndex = 0;
             PreviousExperience = 0;
@@ -109,6 +109,7 @@ namespace JReact.StateControl.LevelSystem
             // --------------- SET LEVEL --------------- //
             if (callAllEvents) GainLevel(level - 1);
             else _currentLevelIndex = level - 1;
+
             JConsole.Log($"{name} forced to level {CurrentLevel}", JLogTags.LevelSystem, this);
         }
         #endregion
@@ -120,17 +121,17 @@ namespace JReact.StateControl.LevelSystem
             return _validStates[level - 1];
         }
 
-        public int GetExperienceToReach(int level) { return GetLevelData(level).PreviousExperience; }
+        public int GetExperienceToReach(int level) => GetLevelData(level).PreviousExperience;
         #endregion
 
         #region HELPERS AND IMPLEMENTORS
         //used to set all the relevant info into the levels
         private void SetupLevels()
         {
-            var previousLevelExperience = 0;
+            int previousLevelExperience = 0;
             for (int i = 0; i < MaxLevel; i++)
             {
-                var level = GetLevelData(i + 1);
+                J_LevelState level = GetLevelData(i + 1);
                 level.SetPreviousExperience(previousLevelExperience);
                 previousLevelExperience += level.ExperienceNeeded;
                 level.SetMaxLevel(i + 1 == MaxLevel);

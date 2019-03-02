@@ -1,4 +1,3 @@
-using JReact.StateControl;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -30,8 +29,10 @@ namespace JReact.Conditions
         private bool CheckStates(bool wantActive)
         {
             for (int i = 0; i < _validStates.Length; i++)
-                if (_validStates[i].IsActive == wantActive) 
+            {
+                if (_validStates[i].IsActive == wantActive)
                     return true;
+            }
 
             return false;
         }

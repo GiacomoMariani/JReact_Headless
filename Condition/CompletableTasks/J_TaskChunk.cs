@@ -58,9 +58,9 @@ namespace JReact.Conditions.Tasks
         /// <summary>
         /// launch this task chunk
         /// </summary>
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             // --------------- START --------------- //
             JConsole.Log($"{name} CHUNK START--------------", JLogTags.Task, this);
             SanityChecks();
@@ -69,7 +69,7 @@ namespace JReact.Conditions.Tasks
             // --------------- INITIALIZE --------------- //
             for (int i = 0; i < _tasks.Length; i++)
             {
-                var nextTask = _tasks[i];
+                J_CompletableTask nextTask = _tasks[i];
                 nextTask.SubscribeToTaskChange(StepCompleted);
                 if (!nextTask.IsActive) nextTask.Activate();
                 _activeTasks.Add(nextTask);
@@ -101,10 +101,10 @@ namespace JReact.Conditions.Tasks
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToWindChange(JGenericDelegate<J_TaskChunk> action) { OnStateChange   += action; }
-        public void UnSubscribeToWindChange(JGenericDelegate<J_TaskChunk> action) { OnStateChange -= action; }
-        public void SubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { SubscribeToWindChange(action); }
-        public void UnSubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { UnSubscribeToWindChange(action); }
+        public void Subscribe(JGenericDelegate<J_TaskChunk> action) { OnStateChange   += action; }
+        public void UnSubscribe(JGenericDelegate<J_TaskChunk> action) { OnStateChange -= action; }
+        public void SubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { Subscribe(action); }
+        public void UnSubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { UnSubscribe(action); }
         #endregion
 
         #region DISABLE AND RESET
@@ -115,7 +115,7 @@ namespace JReact.Conditions.Tasks
             base.ResetThis();
             if (State == ChunkState.Completed) State = ChunkState.NotStarted;
             if (State != ChunkState.Active) return;
-            foreach (var step in _activeTasks)
+            foreach (J_CompletableTask step in _activeTasks)
             {
                 step.ResetThis();
                 step.UnSubscribeToTaskChange(StepCompleted);

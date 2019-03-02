@@ -22,7 +22,7 @@ namespace JReact.Pool.Roamer
         // --------------- STATIC WIND --------------- //
         [ShowIf("_notRandomWind"), BoxGroup("Setup", true, true, 0), SerializeField]
         private Vector2 _desiredSpeed = new Vector2(0.5f, 5f);
-        
+
         // --------------- RANDOM WIND --------------- //
         //the min and max values for the velocity, the first value
         [ShowIf("_randomWind"), BoxGroup("Setup", true, true, 0), SerializeField]
@@ -36,7 +36,7 @@ namespace JReact.Pool.Roamer
         [ShowIf("_windChangeOverTime", true), BoxGroup("Setup", true, true, 0), SerializeField]
         private Vector2 _secondsBeforeChange = new Vector2(0f, 15f);
         [ShowIf("_windChangeOverTime", true), BoxGroup("Setup", true, true, 0), SerializeField]
-        private bool _additiveChange = false;
+        private bool _additiveChange;
 
         // --------------- STATE AND BOOKKEEPING --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Vector2 _windSpeed = new Vector2(5f, 50f);
@@ -52,14 +52,15 @@ namespace JReact.Pool.Roamer
         /// <summary>
         /// winds start flowing
         /// </summary>
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             _instanceId = GetInstanceID();
             //set the speed
             //calculates a random wind if requested
             if (_randomWind) SetRandomSpeed();
             else SetFixedSpeed();
+
             //stop if no change is required
             if (!_windChangeOverTime) return;
             //keep changing
@@ -70,9 +71,9 @@ namespace JReact.Pool.Roamer
         /// <summary>
         /// wind stops flowing
         /// </summary>
-        public override void End()
+        protected override void EndThis()
         {
-            base.End();
+            base.EndThis();
             Timing.KillCoroutines(_instanceId, COROUTINE_WindTag);
             //remove the speed
             _windSpeed.x = 0;
@@ -94,9 +95,11 @@ namespace JReact.Pool.Roamer
             //horizontal (additive adds the value instead of just setting it)
             if (_additiveChange) _windSpeed.x += _horizontalForceRange.GetRandomValue();
             else _windSpeed.x                 =  _horizontalForceRange.GetRandomValue();
+
             //vertical (additive adds the value instead of just setting it)
             if (_additiveChange) _windSpeed.y += _verticalForceRange.GetRandomValue();
             else _windSpeed.y                 =  _verticalForceRange.GetRandomValue();
+
             //event 
             OnWindChange?.Invoke(WindSpeed);
         }
@@ -118,8 +121,6 @@ namespace JReact.Pool.Roamer
         #region SUBSCRIBERS
         public void Subscribe(JGenericDelegate<Vector2> actionToAdd) { OnWindChange      += actionToAdd; }
         public void UnSubscribe(JGenericDelegate<Vector2> actionToRemove) { OnWindChange -= actionToRemove; }
-        public void SubscribeToWindChange(JGenericDelegate<Vector2> actionToAdd) { Subscribe(actionToAdd); }
-        public void UnSubscribeToWindChange(JGenericDelegate<Vector2> actionToRemove) { UnSubscribe(actionToRemove); }
         #endregion
     }
 }

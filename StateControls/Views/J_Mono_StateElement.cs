@@ -17,7 +17,7 @@ namespace JReact.StateControl
             SanityChecks();
         }
 
-        protected virtual void InitThis() { }
+        protected virtual void InitThis() {}
 
         protected virtual void SanityChecks() { Assert.IsNotNull(_state, $"{gameObject.name} requires a _state"); }
 

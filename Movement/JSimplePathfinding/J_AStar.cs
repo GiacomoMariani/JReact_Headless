@@ -1,7 +1,7 @@
-﻿using Priority_Queue;
-using Sirenix.OdinInspector;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Priority_Queue;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -37,7 +37,7 @@ namespace JReact.Pathfinding
         private List<T> _resultPath = new List<T>();
 
         // --------------- DEBUG --------------- //
-        [BoxGroup("Debug", true, true, 100), SerializeField] private bool _debug = false;
+        [BoxGroup("Debug", true, true, 100), SerializeField] private bool _debug;
         #endregion
 
         #region PATHFINDING ALGORITHM
@@ -49,21 +49,21 @@ namespace JReact.Pathfinding
         /// <param name="getCost">used to calculate costs, such as J_PatchCost.CalculateNodeDistance</param>
         /// <param name="isAccessible">to check if a node is accessible</param>
         /// <param name="callback">the action set at the end of the calculation</param>
-        public void CalculatePath(T start, T goal, Func<T,T,float> getCost, Func<T, bool> isAccessible, Action<List<T>> callback)
+        public void CalculatePath(T start, T goal, Func<T, T, float> getCost, Func<T, bool> isAccessible, Action<List<T>> callback)
         {
-            var path = Internal_CalculatePath(start, goal, getCost, isAccessible);
+            List<T> path = Internal_CalculatePath(start, goal, getCost, isAccessible);
             callback(path);
         }
 
         //calculates the path
-        private List<T> Internal_CalculatePath(T startNode, T goalNode, Func<T,T,float> getCost, Func<T, bool> isAccessible)
+        private List<T> Internal_CalculatePath(T startNode, T goalNode, Func<T, T, float> getCost, Func<T, bool> isAccessible)
         {
             if (_debug)
                 JConsole.Log($"{name} calculates from {startNode.Coordinates} to {goalNode.Coordinates}",
                              JLogTags.Pathfind, this);
 
             // --------------- SETTING UP THE CALCULATION --------------- //
-            var goalReached = false;
+            bool goalReached = false;
             ResetCollections();
             //starting distance is 0
             _realCost[startNode] = 0;
@@ -77,7 +77,7 @@ namespace JReact.Pathfinding
             while (_openList.Count > 0)
             {
                 //get the first node on the list
-                var currentNode = _openList.Dequeue();
+                T currentNode = _openList.Dequeue();
                 //if this is the goal we reached the end of the path
                 if (currentNode == goalNode)
                 {
@@ -89,20 +89,21 @@ namespace JReact.Pathfinding
                 _exploredNodes.Add(currentNode);
 
                 //the check all the neighbours
-                var neighbours = _pathGrid.GetNeighboursOf(currentNode);
-                for (var i = 0; i < neighbours.Count; i++)
+                List<T> neighbours = _pathGrid.GetNeighboursOf(currentNode);
+                for (int i = 0; i < neighbours.Count; i++)
                 {
-                    var neighbour = neighbours[i];
+                    T neighbour = neighbours[i];
                     // --------------- ACCESSIBILITY --------------- //
                     //ignore inaccessible
                     if (!isAccessible(neighbour)) continue;
 
                     // --------------- SCORE CALCULATION --------------- //
                     //get the node cost from the current path 
-                    var tentativeScore = _realCost[currentNode] + getCost(currentNode, neighbour);
+                    float tentativeScore = _realCost[currentNode] + getCost(currentNode, neighbour);
                     //ignore if we have already a better path until here
                     if (_realCost.ContainsKey(neighbour) &&
-                        tentativeScore >= _realCost[neighbour]) { continue; }
+                        tentativeScore >= _realCost[neighbour])
+                        continue;
 
                     // --------------- REPLACEMENT --------------- //
                     //set the new cost
@@ -110,7 +111,8 @@ namespace JReact.Pathfinding
                     //recalculate the heuristic cost
                     _heuristicCost[neighbour] = _realCost[neighbour] +
                                                 _heuristics.EstimateCost(neighbour.Coordinates,
-                                                                                  goalNode.Coordinates);
+                                                                         goalNode.Coordinates);
+
                     //set the parent node
                     _parentNodes[neighbour] = currentNode;
 
@@ -124,6 +126,7 @@ namespace JReact.Pathfinding
             if (_debug)
                 JConsole.Log($"{name} Path from {startNode.Coordinates} to {goalNode.Coordinates}. Found: {goalReached}. Explored {_exploredNodes.Count} nodes.",
                              JLogTags.Input, this);
+
             if (_debug && !goalReached)
                 JConsole.Log($"{name} No path Found. Nodes Explored {_exploredNodes.PrintAll()}", JLogTags.Input, this);
 
@@ -133,7 +136,7 @@ namespace JReact.Pathfinding
                 return null;
 
             //calculates the path backward
-            var path = RecalculatePath(goalNode, startNode);
+            List<T> path = RecalculatePath(goalNode, startNode);
 
             return path;
         }

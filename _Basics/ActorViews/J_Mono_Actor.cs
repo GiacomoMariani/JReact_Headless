@@ -14,24 +14,21 @@ namespace JReact
         #region FIELDS AND PROPERTIES
         //sets the actor directly or by injection
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] protected T _actorElement;
-        
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _initCompleted = false;
+
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _initCompleted;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iUpdater<T>[] _relatedElements;
         #endregion
 
         #region INITIALIZATION
         //if we require any check on the derived class
-        protected virtual void SanityChecks() { }
+        protected virtual void SanityChecks() {}
 
         //used to initialize this element, instead of using the awake
         protected virtual void InitThis()
         {
-            //ignore if already initialized
             if (_initCompleted) return;
-            //inject the element in the views
             _relatedElements = GetComponentsInChildren<iUpdater<T>>(true);
-            //set this as initialized
-            _initCompleted = true;
+            _initCompleted   = true;
         }
         #endregion
 
@@ -42,22 +39,18 @@ namespace JReact
         public void UpdateElement(T element)
         {
             if (_actorElement != null) RemovePreviousActor(_actorElement);
-            //store the product
             _actorElement = element;
             SanityChecks();
-            //make sure this is initialized
             if (!_initCompleted) InitThis();
-            //update the views
             UpdateAllViews(element);
-            //apply further data
             SpecificInitialization(element);
         }
 
         //if we need to deinitialize the previous actor
-        protected virtual void RemovePreviousActor(T actorElement) { }
+        protected virtual void RemovePreviousActor(T actorElement) {}
 
         //if we want to add further adjustments when we update the element
-        protected virtual void SpecificInitialization(T element) { }
+        protected virtual void SpecificInitialization(T element) {}
 
         //update all the views with the request
         protected virtual void UpdateAllViews(T element)

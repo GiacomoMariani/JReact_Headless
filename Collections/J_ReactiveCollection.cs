@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections;
-using Sirenix.OdinInspector;
+﻿using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -85,15 +84,15 @@ namespace JReact.Collections
 
         #region VIRTUAL FURTHER IMPLEMENTATION
         //an helper method to be applied if required
-        protected virtual void ElementRemoved(T elementToRemove) { }
+        protected virtual void ElementRemoved(T elementToRemove) {}
 
         //an helper method to be applied if required
-        protected virtual void WhatHappensOnAdd(T elementToAdd) { }
+        protected virtual void WhatHappensOnAdd(T elementToAdd) {}
         #endregion
 
         #region GETTERS
         //used to check if this contains a given item
-        public virtual bool Contains(T elementToCheck) { return _thisCollection.Contains(elementToCheck); }
+        public virtual bool Contains(T elementToCheck) => _thisCollection.Contains(elementToCheck);
         #endregion
 
         #region SUBSCRIBERS
@@ -127,17 +126,17 @@ namespace JReact.Collections
 
         public bool IsReadOnly => false;
 
-        public IEnumerator<T> GetEnumerator() { return _thisCollection.GetEnumerator(); }
+        public IEnumerator<T> GetEnumerator() => _thisCollection.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public int IndexOf(T item) { return _thisCollection.IndexOf(item); }
+        public int IndexOf(T item) => _thisCollection.IndexOf(item);
 
         public void Insert(int index, T item)
         {
             for (int i = index; i < Count; i++)
             {
-                var next = _thisCollection[i];
+                T next = _thisCollection[i];
                 Replace(i, item);
                 item = next;
             }
@@ -146,7 +145,7 @@ namespace JReact.Collections
         public void RemoveAt(int index)
         {
             Assert.IsTrue(index < Count, $"{name} has not the given index {index}. List length = {Count}");
-            var item = _thisCollection[index];
+            T item = _thisCollection[index];
             Remove(item);
         }
 

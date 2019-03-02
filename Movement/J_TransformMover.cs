@@ -1,6 +1,6 @@
-﻿using MEC;
+﻿using System.Collections.Generic;
+using MEC;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace JReact.Movement
@@ -22,7 +22,7 @@ namespace JReact.Movement
         private const int INT_StartID = -1;
 
         //the reference to the transform
-        [BoxGroup("Mover", true, true, 0), ReadOnly] protected Transform _ThisTransform => this.transform;
+        [BoxGroup("Mover", true, true, 0), ReadOnly] protected Transform _ThisTransform => transform;
         //the id of the mover, it starts at -1, and then get identified
         [BoxGroup("Mover", true, true, 0), ReadOnly] private int _transformId = INT_StartID;
         [BoxGroup("Mover", true, true, 0), ReadOnly] private int _TransformId
@@ -43,9 +43,9 @@ namespace JReact.Movement
         //movement speed
         [BoxGroup("Move State", true, true, 5), ShowInInspector] public float MoveSpeed { get; private set; } = 1f;
         //movement direction
-        [BoxGroup("Move State", true, true, 5), ShowInInspector] public Vector2 MoveDirection { get; private set; } = new Vector2();
+        [BoxGroup("Move State", true, true, 5), ShowInInspector] public Vector2 MoveDirection { get; private set; }
         //a bool to track movement
-        [BoxGroup("Move State", true, true, 5), ReadOnly] public bool IsMoving { get; private set; } = false;
+        [BoxGroup("Move State", true, true, 5), ReadOnly] public bool IsMoving { get; private set; }
         #endregion
 
         #region DIRECTION MOVEMENT - NORMALIZED
@@ -91,7 +91,7 @@ namespace JReact.Movement
             //stop the moving if requested
             if (!IsMoving) yield break;
             //move the transform on the given direction
-            CurrentPosition += (MoveDirection * MoveSpeed * Time.deltaTime);
+            CurrentPosition += MoveDirection * MoveSpeed * Time.deltaTime;
             //send the event
             OnMove?.Invoke(CurrentPosition);
             //wait one frame, then run again
@@ -168,14 +168,14 @@ namespace JReact.Movement
             //start moving
             IsMoving = true;
             //the time passed for this current step
-            var elapsedTime = 0f;
+            float elapsedTime = 0f;
             //the starting position is the position of the transform at start
             Vector2 startingPos = CurrentPosition;
             //keep moving until we reach the time
             while (elapsedTime < timeToReach)
             {
                 //moving with a lerp
-                CurrentPosition = Vector2.Lerp(startingPos, positionToReach, (elapsedTime / timeToReach));
+                CurrentPosition = Vector2.Lerp(startingPos, positionToReach, elapsedTime / timeToReach);
                 //adding the elapsed time
                 elapsedTime += Time.deltaTime;
                 //send the event
