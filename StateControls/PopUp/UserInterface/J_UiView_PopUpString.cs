@@ -1,6 +1,6 @@
 using JReact.UiView;
 
-namespace JReact.PopUp
+namespace JReact.StateControl.PopUp
 {
     /// <summary>
     /// just an helper to show strings on the pop up

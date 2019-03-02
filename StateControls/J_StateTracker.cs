@@ -28,20 +28,20 @@ namespace JReact.StateControl
         #endregion
 
         #region INITIALIZATION AND LISTENERS
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             SanityChecks();
             _stateControl.Subscribe(ChangeState);
         }
 
         private void SanityChecks() { Assert.IsNotNull(_stateControl, $"{name} needs a state control."); }
 
-        public override void End()
+        protected override void EndThis()
         {
-            base.End();
             _previousStates.Clear();
             _stateControl.UnSubscribe(ChangeState);
+            base.EndThis();
         }
         #endregion
 

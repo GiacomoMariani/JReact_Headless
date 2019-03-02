@@ -2,7 +2,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace JReact.PopUp
+namespace JReact.StateControl.PopUp
 {
     //this is used by a pop up command
     public class J_UiView_PopUpButton : J_UiView_ButtonElement
@@ -12,14 +12,17 @@ namespace JReact.PopUp
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_PopUp _popUp;
         [BoxGroup("Setup", true, true, 0), SerializeField] private PopUpButtonType _buttonType;
 
-        // --------------- STATE and BOOKEEPING --------------- //
+        // --------------- STATE and BOOK KEEPING --------------- //
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private JUnityEvent _commandAction
         {
             get
             {
-                if (_buttonType == PopUpButtonType.Confirm) return _popUp.Confirm;
-                if (_buttonType == PopUpButtonType.Deny) return _popUp.Deny;
-                return null;
+                switch (_buttonType)
+                {
+                    case PopUpButtonType.Confirm: return _popUp.Confirm;
+                    case PopUpButtonType.Deny:    return _popUp.Deny;
+                    default:                      return null;
+                }
             }
         }
 

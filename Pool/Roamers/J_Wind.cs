@@ -52,9 +52,9 @@ namespace JReact.Pool.Roamer
         /// <summary>
         /// winds start flowing
         /// </summary>
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             _instanceId = GetInstanceID();
             //set the speed
             //calculates a random wind if requested
@@ -71,9 +71,9 @@ namespace JReact.Pool.Roamer
         /// <summary>
         /// wind stops flowing
         /// </summary>
-        public override void End()
+        protected override void EndThis()
         {
-            base.End();
+            base.EndThis();
             Timing.KillCoroutines(_instanceId, COROUTINE_WindTag);
             //remove the speed
             _windSpeed.x = 0;

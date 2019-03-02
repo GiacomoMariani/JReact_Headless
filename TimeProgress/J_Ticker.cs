@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
@@ -17,6 +18,21 @@ namespace JReact.TimeProgress
         #endregion
 
         #region INITIALIZATION
+        /// <summary>
+        /// creates a new ticker and starts counting
+        /// </summary>
+        /// <returns>the new ticker created</returns>
+        public static J_Ticker CreateTicker(int framePerTick, Segment desiredSegment = Segment.Update, bool destroyAtDisable = true)
+        {
+            if (framePerTick <= 0)
+                throw new ArgumentOutOfRangeException($"Cannot create a timer with negative seconds. Received {framePerTick}");
+
+            var ticker = J_GenericCounter.CreateCounter<J_Ticker>(desiredSegment, destroyAtDisable);
+            ticker._tickInterval = framePerTick;
+            ticker.Activate();
+            return ticker;
+        }
+
         //make sure this is setup correctly
         protected override bool SanityChecks()
         {
@@ -50,7 +66,7 @@ namespace JReact.TimeProgress
             SendTickEvent(realTimePassed);
 
             //move ahead to the next tick
-            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_TimerTag);
+            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_CounterTag);
         }
         #endregion
     }

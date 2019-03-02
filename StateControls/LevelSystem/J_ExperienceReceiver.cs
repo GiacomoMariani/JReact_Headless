@@ -46,12 +46,12 @@ namespace JReact.StateControl.LevelSystem
         #endregion
 
         #region TRACK METHODS
-        public void Activate()
+        public bool Activate()
         {
             if (IsActive)
             {
                 JConsole.Warning($"{name} is tracking already. Cancel command.", JLogTags.LevelSystem, this);
-                return;
+                return false;
             }
 
             SanityChecks();
@@ -60,6 +60,7 @@ namespace JReact.StateControl.LevelSystem
             CurrentValue = 0;
 
             _levelProgress.Subscribe(LevelUpdate);
+            return true;
         }
 
         private void SanityChecks() { Assert.IsNotNull(_levelProgress, $"{name} requires a _levelProgress"); }

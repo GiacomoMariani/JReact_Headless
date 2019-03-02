@@ -10,6 +10,6 @@ namespace JReact.SceneControls
     {
         [BoxGroup("Quit Event", true, true, 0), SerializeField, AssetsOnly, Required]
         private J_Event _applicationQuitting;
-        private void OnApplicationQuit() { _applicationQuitting.Activate(); }
+        private void OnApplicationQuit() { _applicationQuitting.RaiseEvent(); }
     }
 }

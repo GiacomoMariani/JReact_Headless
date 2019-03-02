@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -18,6 +19,21 @@ namespace JReact.TimeProgress
         #endregion
 
         #region INITIALIZATION
+        /// <summary>
+        /// creates a new timer and starts counting
+        /// </summary>
+        /// <returns>the new counter created</returns>
+        public static J_Timer CreateTimer(float secondsPerTick, Segment desiredSegment = Segment.Update, bool destroyAtDisable = true)
+        {
+            if (secondsPerTick <= 0)
+                throw new ArgumentOutOfRangeException($"Cannot create a timer with negative seconds. Received {secondsPerTick}");
+
+            var timer = J_GenericCounter.CreateCounter<J_Timer>(desiredSegment, destroyAtDisable);
+            timer._tickLengthInSeconds = secondsPerTick;
+            timer.Activate();
+            return timer;
+        }
+
         //make sure this is setup correctly
         protected override bool SanityChecks()
         {
@@ -53,7 +69,7 @@ namespace JReact.TimeProgress
             SendTickEvent(realTimePassed);
 
             //move ahead to the next tick
-            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_TimerTag);
+            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_CounterTag);
         }
         #endregion
     }

@@ -1,19 +1,25 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace JReact.PopUp
+namespace JReact.StateControl.PopUp
 {
     /// <summary>
     /// a state that sends a pop up
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/PopUp/Reactive Pop Up")]
-    public class J_PopUp : J_Service
+    public class J_PopUp : J_State
     {
         #region VALUES AND PROPERTIES
         // --------------- CONSTANTS --------------- //
         private const string DefaultTitle = "Pop-Up";
         private const string DefaultConfirmText = "Confirm";
         private const string DefaultDenyText = "Cancel";
+
+        // --------------- STATE - OPTIONAL --------------- //
+        [InfoBox("Null => no connection with state"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly]
+        private J_SimpleStateControl _stateControl;
+        [InfoBox("Required if we have state control"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly]
+        private J_State _exitState;
 
         // --------------- CONTENT --------------- //
         //J_Mono_ReactiveStringText might be used to display this
@@ -34,26 +40,38 @@ namespace JReact.PopUp
             _title.CurrentValue   = title;
         }
 
-        public void SetupConfirmButton(JUnityEvent confirmAction, string confirmText = DefaultConfirmText)
+        public void SetupConfirmButton(JUnityEvent confirmAction, string confirmText = DefaultConfirmText, bool exitAfter = true)
         {
-            Confirm                         = confirmAction;
+            Confirm = confirmAction;
+            if (exitAfter) Confirm.AddListener(Close);
             _confirmButtonText.CurrentValue = confirmText;
         }
 
-        public void SetupDenyButton(JUnityEvent confirmAction, string confirmText = DefaultConfirmText)
+        public void SetupDenyButton(JUnityEvent denyAction, string confirmText = DefaultConfirmText, bool exitAfter = true)
         {
-            Deny                         = confirmAction;
+            Deny = denyAction;
+            if (exitAfter) Confirm.AddListener(Close);
             _denyButtonText.CurrentValue = confirmText;
         }
         #endregion
 
         #region OPEN AND CLOSE
         public void Open() { Activate(); }
+
         public void Close() { End(); }
 
-        public override void End()
+        protected override void ActivateThis()
         {
-            base.End();
+            base.ActivateThis();
+            if (_stateControl != null) _stateControl.SetNewState(this);
+        }
+
+        protected override void EndThis()
+        {
+            base.EndThis();
+            if (_stateControl              != null &&
+                _stateControl.CurrentState == this) _stateControl.SetNewState(_exitState);
+
             ResetThis();
         }
         #endregion
@@ -68,8 +86,17 @@ namespace JReact.PopUp
             _denyButtonText.CurrentValue    = DefaultDenyText;
             _message.ResetThis();
             //actions
-            Confirm = null;
-            Deny    = null;
+            if (Confirm != null)
+            {
+                Confirm.RemoveAllListeners();
+                Confirm = null;
+            }
+
+            if (Deny != null)
+            {
+                Deny.RemoveAllListeners();
+                Deny = null;
+            }
         }
 
         private void OnDisable() { ResetThis(); }

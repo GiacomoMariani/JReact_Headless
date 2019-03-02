@@ -30,7 +30,7 @@
     public interface iActivable : iResettable
     {
         bool IsActive { get; }
-        void Activate();
+        bool Activate();
     }
 
     public interface iObservable
@@ -72,7 +72,7 @@
     {
         string Name { get; }
         bool IsActive { get; }
-        void Activate();
+        bool Activate();
         void SubscribeToEnd(JAction action);
         void UnSubscribeToEnd(JAction action);
     }

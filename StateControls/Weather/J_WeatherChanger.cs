@@ -26,9 +26,9 @@ namespace JReact.StateControl.Weather
         #endregion
 
         #region COMMANDS
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             Assert.IsNotNull(_weatherStateControl, $"{name} requires a _weatherStateControl");
             _instanceId = GetInstanceID();
 
@@ -45,12 +45,12 @@ namespace JReact.StateControl.Weather
                 _allWeatherWeights += _allWeathers[i].Weight;
         }
 
-        public override void End()
+        protected override void EndThis()
         {
-            base.End();
             Timing.KillCoroutines(_instanceId, COROUTINE_WeatherMainTag);
             _weatherStateControl.CurrentState.End();
             _weatherStateControl.ResetThis();
+            base.EndThis();
         }
         #endregion
 

@@ -22,9 +22,9 @@ namespace JReact.Conditions
             return condition;
         }
 
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             if (_condition == null) _condition = CreateInstance<J_ReactiveBool>();
             CurrentValue = false;
             StartCheckingCondition();
@@ -33,10 +33,10 @@ namespace JReact.Conditions
         protected abstract void StartCheckingCondition();
         protected abstract void StopCheckingCondition();
 
-        public override void End()
+        protected override void EndThis()
         {
-            base.End();
             StopCheckingCondition();
+            base.EndThis();
         }
 
         //helpers to make this more readable

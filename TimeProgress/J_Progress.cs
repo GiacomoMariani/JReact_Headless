@@ -39,7 +39,7 @@ namespace JReact.TimeProgress
             where T : J_Progress
         {
             var progress                     = CreateInstance<T>();
-            if (createTimer) progress._timer = J_GenericCounter.CreateNewTimer<J_Timer>();
+            if (createTimer) progress._timer = J_GenericCounter.CreateCounter<J_Timer>();
             return progress;
         }
 

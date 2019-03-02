@@ -44,11 +44,11 @@ namespace JReact.TimeProgress
         /// start the loop
         /// </summary>
         [BoxGroup("Debug", true, true, 100), Button("Start Looping", ButtonSizes.Medium)]
-        public void Activate()
+        public bool Activate()
         {
             //avoid multiple loops
             Assert.IsFalse(IsActive, $"{gameObject.name} is already looping and cannot start again. Cancel command.");
-            if (IsActive) return;
+            if (IsActive) return false;
 
             // --------------- START --------------- //
             JConsole.Log($"Loop starts on {gameObject.name}", JLogTags.TimeProgress, this);
@@ -59,6 +59,7 @@ namespace JReact.TimeProgress
             Assert.IsTrue(!_progressEvent.IsRunning, $"{gameObject.name} loop progress -{_progressEvent.name}- was already running.");
             _progressEvent.SubscribeToComplete(TriggerThisLoop);
             _progressEvent.StartProgress(_intervalInSeconds);
+            return true;
         }
 
         //invoke events and loop again

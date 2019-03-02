@@ -21,9 +21,9 @@ namespace JReact.Collections
             return ordered;
         }
 
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             JConsole.Log($"{name} initialize for {_orderedStates.Length} states", JLogTags.Collection, this);
             SanityChecks();
 
@@ -50,7 +50,7 @@ namespace JReact.Collections
             End();
         }
 
-        public override void End()
+        protected override void EndThis()
         {
             base.End();
             JConsole.Log($"{name} initialization complete for {_orderedStates.Length} states", JLogTags.Collection, this);

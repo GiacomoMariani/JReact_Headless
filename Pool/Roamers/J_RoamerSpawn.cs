@@ -40,9 +40,9 @@ namespace JReact.Pool.Roamer
         /// <summary>
         ///  starts spawning roamers
         /// </summary>
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             SanityChecks();
             _instanceId = GetInstanceID();
             Timing.RunCoroutine(RoamersSpawn(), Segment.LateUpdate, _instanceId, COROUTINE_RoamerSpawnTag);
@@ -54,15 +54,11 @@ namespace JReact.Pool.Roamer
             Assert.IsNotNull(_borders,    $"{name} requires a _borders");
         }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// stops spawning roamers
-        /// </summary>
-        public override void End()
+        protected override void EndThis()
         {
-            base.End();
             Timing.KillCoroutines(_instanceId, COROUTINE_RoamerSpawnTag);
             ClearRoamers();
+            base.EndThis();
         }
 
         private void ClearRoamers()

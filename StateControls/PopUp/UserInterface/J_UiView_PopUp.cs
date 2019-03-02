@@ -1,6 +1,4 @@
-﻿using JReact.StateControl;
-
-namespace JReact.PopUp
+﻿namespace JReact.StateControl.PopUp
 {
     /// <summary>
     /// just a friendly way to access the views of the pop up

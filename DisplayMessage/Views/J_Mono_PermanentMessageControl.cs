@@ -60,7 +60,7 @@ namespace JReact.ScreenMessage
             }
 
             ShowViews(false);
-            _onMessageComplete.Activate();
+            _onMessageComplete.RaiseEvent();
         }
 
         //a short blink before the next message

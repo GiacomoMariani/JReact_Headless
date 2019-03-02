@@ -58,9 +58,9 @@ namespace JReact.Conditions.Tasks
         /// <summary>
         /// launch this task chunk
         /// </summary>
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             // --------------- START --------------- //
             JConsole.Log($"{name} CHUNK START--------------", JLogTags.Task, this);
             SanityChecks();

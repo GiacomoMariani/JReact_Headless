@@ -61,9 +61,9 @@ namespace JReact.StateControl.LevelSystem
         #endregion INSTANTIATION
 
         #region COMMANDS
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             Assert.IsNotNull(Experience, $"{name} requires Experience");
             _currentLevelIndex = 0;
             PreviousExperience = 0;

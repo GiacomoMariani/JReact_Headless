@@ -9,7 +9,7 @@ namespace JReact
         //scene
         public const string COROUTINE_SceneChangerTag = "J_SceneChangerTag";
         //the timer counter
-        public const string COROUTINE_TimerTag = "J_TimerExclusive";
+        public const string COROUTINE_CounterTag = "J_CounterExclusive";
         //the mover agent for pathfinding
         public const string COROUTINE_MoverAgent = "J_MoverAgent";
         //cursor

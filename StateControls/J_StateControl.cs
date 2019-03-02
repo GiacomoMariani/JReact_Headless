@@ -84,9 +84,9 @@ namespace JReact.StateControl
         /// <summary>
         /// sets the first state of the game
         /// </summary>
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             Assert.IsNotNull(_firstState, $"Please set a first state to validate the controls on: {name}");
             SetStateSanityChecks(_firstState);
             _currentState = _firstState;
@@ -97,11 +97,11 @@ namespace JReact.StateControl
         /// <summary>
         /// resets the state control, called also OnDisable
         /// </summary>
-        public override void End()
+        protected override void EndThis()
         {
-            base.End();
             if (CurrentState != null) CurrentState.End();
             _currentState = null;
+            base.EndThis();
         }
         #endregion ACTIVATION
 

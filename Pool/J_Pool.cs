@@ -35,13 +35,9 @@ namespace JReact.Pool
         /// <param name="itemSetupAction">the action we want to set for the pool items</param>
         public void AddSetupForItems(JGenericDelegate<T> itemSetupAction) { _initAction = itemSetupAction; }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// activates the pool
-        /// </summary>
-        public override void Activate()
+        protected override void ActivateThis()
         {
-            base.Activate();
+            base.ActivateThis();
             // --------------- CHECKS --------------- //
             SanityChecks();
             // --------------- SETUP --------------- //
