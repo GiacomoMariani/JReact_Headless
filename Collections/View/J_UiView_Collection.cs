@@ -36,12 +36,14 @@ namespace JReact.UiView.Collections
         #endregion
 
         #region VIEW UPDATER
-        protected virtual void SetupViews()
+        protected virtual void OpenThis()
         {
             //make sure all the elements are shown
             for (int i = 0; i < _Collection.Count; i++)
                 Add(_Collection[i]);
         }
+
+        protected virtual void CloseThis() { }
 
         private void Add(T item)
         {
@@ -57,16 +59,7 @@ namespace JReact.UiView.Collections
         }
 
         //used to decide if we want to hide some element
-        protected virtual bool WantToShowElement(T item)
-        {
-            if (_trackedElements.ContainsKey(item))
-            {
-                JConsole.Warning($"{name} has already the {item.ToString()}", JLogTags.Collection, this);
-                return false;
-            }
-
-            return true;
-        }
+        protected virtual bool WantToShowElement(T item) { return !_trackedElements.ContainsKey(item); }
 
         //an helper method if we want to apply further elements
         protected virtual void AddedView(T itemAdded) { }
@@ -85,7 +78,7 @@ namespace JReact.UiView.Collections
         #region LISTENERS
         private void OnEnable()
         {
-            SetupViews();
+            OpenThis();
             _Collection.SubscribeToCollectionAdd(Add);
             _Collection.SubscribeToCollectionRemove(Remove);
         }
@@ -94,6 +87,7 @@ namespace JReact.UiView.Collections
         {
             _Collection.UnSubscribeToCollectionAdd(Add);
             _Collection.UnSubscribeToCollectionRemove(Remove);
+            CloseThis();
         }
         #endregion
     }

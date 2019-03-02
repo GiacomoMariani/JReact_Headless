@@ -28,13 +28,13 @@ namespace JReact.TimeProgress
             base.InitThis();
             ThisText.text = _progressEvent == null
                                 ? null
-                                : _progressEvent.RemainingSeconds.ToTimeString();
+                                : _progressEvent.RemainingSeconds.SecondsToString();
         }
 
         //sets the time if the progress is running
-        protected override void ProgressStart(J_Progress progress) { ThisText.text = progress.RemainingSeconds.ToTimeString(); }
+        protected override void ProgressStart(J_Progress progress) { ThisText.text = progress.RemainingSeconds.SecondsToString(); }
 
-        protected override void ProgressUpdate(J_Progress progress) { ThisText.text = progress.RemainingSeconds.ToTimeString(); }
+        protected override void ProgressUpdate(J_Progress progress) { ThisText.text = progress.RemainingSeconds.SecondsToString(); }
 
         protected override void ProgressComplete(J_Progress progress) { ThisText.text = null; }
         #endregion

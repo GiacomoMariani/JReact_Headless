@@ -39,13 +39,7 @@ namespace JReact.ScreenMessage
             InitThis();
         }
 
-        private void InitThis()
-        {
-            //injection
-            var elementThatRequireThis = GetComponentsInChildren<iInitiator<J_Mono_MessagePrinter>>(true);
-            for (int i = 0; i < elementThatRequireThis.Length; i++)
-                elementThatRequireThis[i].InjectThis(this);
-        }
+        private void InitThis() { this.InjectToChildren(); }
 
         private void SanityChecks() { Assert.IsNotNull(_stringMessage, $"({gameObject.name}) needs an element for _currentMessage"); }
         #endregion
@@ -75,6 +69,7 @@ namespace JReact.ScreenMessage
                 _stringMessage.CurrentValue += messageToPrint[i];
                 yield return Timing.WaitForSeconds(_secondsForType);
             }
+
             //finish printing
             IsPrinting = false;
         }

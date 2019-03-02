@@ -101,10 +101,10 @@ namespace JReact.Conditions.Tasks
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToWindChange(JGenericDelegate<J_TaskChunk> action) { OnStateChange   += action; }
-        public void UnSubscribeToWindChange(JGenericDelegate<J_TaskChunk> action) { OnStateChange -= action; }
-        public void SubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { SubscribeToWindChange(action); }
-        public void UnSubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { UnSubscribeToWindChange(action); }
+        public void Subscribe(JGenericDelegate<J_TaskChunk> action) { OnStateChange   += action; }
+        public void UnSubscribe(JGenericDelegate<J_TaskChunk> action) { OnStateChange -= action; }
+        public void SubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { Subscribe(action); }
+        public void UnSubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { UnSubscribe(action); }
         #endregion
 
         #region DISABLE AND RESET

@@ -68,7 +68,7 @@ namespace JReact.Pool.Roamer
             if (lifeTimeMins > 0)
                 Timing.RunCoroutine(Timeout(lifeTimeMins * JConstants.SecondsInMinute).CancelWith(gameObject),
                                     Segment.SlowUpdate, _instanceId, COROUTINE_Timeout);
-            _windControl.SubscribeToWindChange(FollowWind);
+            _windControl.Subscribe(FollowWind);
         }
 
         //moves the roamer
@@ -145,7 +145,7 @@ namespace JReact.Pool.Roamer
         {
             gameObject.SetActive(false);
             TransformMover.StopMoveTransform();
-            if (_windControl    != null) _windControl.UnSubscribeToWindChange(FollowWind);
+            if (_windControl    != null) _windControl.UnSubscribe(FollowWind);
             if (_transformMover != null) _transformMover.UnSubscribeToMovement(CheckIfOut);
         }
         #endregion

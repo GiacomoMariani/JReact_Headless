@@ -31,7 +31,7 @@ namespace JReact.Selection
         private void TrackSelection()
         {
             if (_ThisSelector.Selected != null) UpdateElement(_ThisSelector.Selected);
-            _ThisSelector.SubscribeToWindChange(SelectionUpdate);
+            _ThisSelector.Subscribe(SelectionUpdate);
         }
         #endregion
 
@@ -44,7 +44,7 @@ namespace JReact.Selection
         }
         #endregion
 
-        protected virtual void ResetThis() { _ThisSelector.UnSubscribeToWindChange(SelectionUpdate); }
+        protected virtual void ResetThis() { _ThisSelector.UnSubscribe(SelectionUpdate); }
         protected virtual void OnDestroy() { ResetThis(); }
     }
 }

@@ -109,10 +109,10 @@ namespace JReact.Collections
             OnRemoveToCollection -= actionToRegister;
         }
 
-        public void SubscribeToCollectionAdd(JGenericDelegate<T> actionToRegister) { OnAddToCollection   += actionToRegister; }
+        public void SubscribeToCollectionAdd(JGenericDelegate<T>   actionToRegister) { OnAddToCollection += actionToRegister; }
         public void UnSubscribeToCollectionAdd(JGenericDelegate<T> actionToRegister) { OnAddToCollection -= actionToRegister; }
 
-        public void SubscribeToCollectionRemove(JGenericDelegate<T> actionToRegister) { OnRemoveToCollection   += actionToRegister; }
+        public void SubscribeToCollectionRemove(JGenericDelegate<T>   actionToRegister) { OnRemoveToCollection += actionToRegister; }
         public void UnSubscribeToCollectionRemove(JGenericDelegate<T> actionToRegister) { OnRemoveToCollection -= actionToRegister; }
         #endregion
 

@@ -26,11 +26,8 @@ namespace JReact
         //used to initialize this element, instead of using the awake
         protected virtual void InitThis()
         {
-            //ignore if already initialized
             if (_initCompleted) return;
-            //inject the element in the views
             _relatedElements = GetComponentsInChildren<iUpdater<T>>(true);
-            //set this as initialized
             _initCompleted = true;
         }
         #endregion
@@ -42,14 +39,10 @@ namespace JReact
         public void UpdateElement(T element)
         {
             if (_actorElement != null) RemovePreviousActor(_actorElement);
-            //store the product
             _actorElement = element;
             SanityChecks();
-            //make sure this is initialized
             if (!_initCompleted) InitThis();
-            //update the views
             UpdateAllViews(element);
-            //apply further data
             SpecificInitialization(element);
         }
 

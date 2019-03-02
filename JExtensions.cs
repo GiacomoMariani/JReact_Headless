@@ -13,48 +13,20 @@ namespace JReact
     {
         #region CONSTANT VALUES
         private const string ScriptableObjectSuffix = "_ScriptableObject";
-
-        private const string DaysHoursMinutesSeconds = "{0:D2}d:{1:D2}h:{2:D2}m:{3:D2}s";
-        private const string HoursMinutesSeconds = "{0:D2}h:{1:D2}m:{2:D2}s";
-        private const string MinutesSeconds = "{0:D2}m:{1:D2}s";
-        private const string Seconds = "{0:D2}s";
-
-        private const string DaysHoursMinutesSecondsWithoutFormat = "{0:D2}:{1:D2}:{2:D2}:{3:D2}";
-        private const string HoursMinutesSecondsWithoutFormat = "{0:D2}:{1:D2}:{2:D2}";
-        private const string MinutesSecondsWithoutFormat = "{0:D2}:{1:D2}";
         #endregion
 
         #region FLOAT
         /// <summary>
         /// converts a float value into time string
         /// </summary>
-        /// <param name="valueToConvert">the time in seconds</param>
+        /// <param name="seconds">the time in seconds</param>
         /// <param name="withFormat">if we want this formatted</param>
         /// <returns>the string time format</returns>
-        public static string ToTimeString(this float valueToConvert, bool withFormat = true)
+        public static string SecondsToString(this float seconds, bool withFormat = true)
         {
-            //get the time span from the value
-            TimeSpan time = TimeSpan.FromSeconds(valueToConvert);
-            //initiate the string
-            string timeWithFormat = "";
-            //TIME WITH DAY
-            if (time.Days > 0)
-                timeWithFormat = string.Format(withFormat
-                                                   ? DaysHoursMinutesSeconds
-                                                   : DaysHoursMinutesSecondsWithoutFormat, time.Days, time.Hours, time.Minutes,
-                                               time.Seconds);
-            //TIME WITH HOURS
-            else if (time.Hours > 0)
-                timeWithFormat = string.Format(withFormat
-                                                   ? HoursMinutesSeconds
-                                                   : HoursMinutesSecondsWithoutFormat, time.Hours, time.Minutes, time.Seconds);
-            //TIME WITH MINUTES
-            else
-                timeWithFormat = string.Format(withFormat
-                                                   ? MinutesSeconds
-                                                   : MinutesSecondsWithoutFormat, time.Minutes, time.Seconds);
-            //returns the given string
-            return timeWithFormat;
+            var time = TimeSpan.FromSeconds(seconds);
+            //backslash tells that colon is not the part of format, it just a character that we want in output
+            return time.ToString(@"dd\:hh\:mm\:ss\:fff");
         }
 
         /// <summary>
@@ -126,12 +98,12 @@ namespace JReact
 
         public static void SubscribeToAll<T>(this ICollection<iObservable<T>> collection, JGenericDelegate<T> actionToPerform)
         {
-            foreach (var element in collection) { element.SubscribeToWindChange(actionToPerform); }
+            foreach (var element in collection) { element.Subscribe(actionToPerform); }
         }
 
         public static void UnSubscribeToAll<T>(this ICollection<iObservable<T>> collection, JGenericDelegate<T> actionToPerform)
         {
-            foreach (var element in collection) { element.UnSubscribeToWindChange(actionToPerform); }
+            foreach (var element in collection) { element.UnSubscribe(actionToPerform); }
         }
 
         //reset 
@@ -147,7 +119,9 @@ namespace JReact
         #endregion SCRIPTABLE OBJECTS
 
         #region TRANSFORMS
-        //used to clear a transform from all of its children
+        /// <summary>
+        /// removes all children of a transform
+        /// </summary>
         public static void ClearTransform(this Transform transform)
         {
             foreach (Transform child in transform) GameObject.Destroy(child.gameObject);
@@ -169,7 +143,33 @@ namespace JReact
         }
         #endregion RECT TRANSFORM
 
-        #region GAMEOBJECTS
+        #region COMPONENT
+        /// <summary>
+        /// inject directly the element
+        /// </summary>
+        /// <param name="component">must be a component to inject the element</param>
+        /// <param name="alsoDisabled">injects also in disabled children</param>
+        public static void InjectToChildren<T>(this T component, bool alsoDisabled = true)
+            where T : Component
+        {
+            component.InjectElementToChildren(component, alsoDisabled);
+        }
+
+        /// <summary>
+        /// inject an element into all children
+        /// </summary>
+        /// <param name="component">the component with children requiring injection</param>
+        /// <param name="element">the element to inject</param>
+        /// <param name="alsoDisabled">injects also in disabled children</param>
+        public static void InjectElementToChildren<T>(this Component component, T element, bool alsoDisabled = true)
+        {
+            var elementThatRequireThis = component.GetComponentsInChildren<iInitiator<T>>(alsoDisabled);
+            for (int i = 0; i < elementThatRequireThis.Length; i++)
+                elementThatRequireThis[i].InjectThis(element);
+        }
+        #endregion COMPONENT
+
+        #region GAMEOBJECT
         /// <summary>
         /// checks if the elements is a prefab or a scene game object
         /// </summary>
@@ -201,7 +201,7 @@ namespace JReact
                               $"The class requested is of a parent class. Weapon {gameObjectToCheck}, class found {elementSearched[0].GetType()}, class requested {component.GetElementType()}. Player {gameObjectToCheck.transform.root.gameObject}");
             }
         }
-        #endregion GAMEOBJECTS
+        #endregion GAMEOBJECT
 
         #region VECTORS
         /// <summary>
@@ -248,7 +248,7 @@ namespace JReact
                        ? Direction.Up
                        : Direction.Down;
         }
-        #endregion
+        #endregion VECTORS
 
         #region STRING
         //converts a string into int

@@ -24,8 +24,8 @@ namespace JReact
             }
         }
         #region SUBSCRIBERS AND LISTENERS
-        public virtual void SubscribeToWindChange(JGenericDelegate<T> actionToSend) { OnPropertyChange   += actionToSend; }
-        public virtual void UnSubscribeToWindChange(JGenericDelegate<T> actionToSend) { OnPropertyChange -= actionToSend; }
+        public virtual void Subscribe(JGenericDelegate<T> actionToSend) { OnPropertyChange   += actionToSend; }
+        public virtual void UnSubscribe(JGenericDelegate<T> actionToSend) { OnPropertyChange -= actionToSend; }
 
         public virtual void ResetThis() { _currentValue = _startValue; }
         protected virtual void OnDisable() { ResetThis(); }

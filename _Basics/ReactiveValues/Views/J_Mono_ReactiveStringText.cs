@@ -16,10 +16,10 @@ namespace JReact.UiView
         private void OnEnable()
         {
             SetText(_stringScreenMessage.CurrentValue);
-            _stringScreenMessage.SubscribeToWindChange(SetText);
+            _stringScreenMessage.Subscribe(SetText);
         }
 
-        private void OnDisable() { _stringScreenMessage.UnSubscribeToWindChange(SetText); }
+        private void OnDisable() { _stringScreenMessage.UnSubscribe(SetText); }
         #endregion
     }
 }

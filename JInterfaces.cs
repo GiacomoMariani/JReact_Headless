@@ -45,8 +45,8 @@
 
     public interface iObservable<T>
     {
-        void SubscribeToWindChange(JGenericDelegate<T> action);
-        void UnSubscribeToWindChange(JGenericDelegate<T> action);
+        void Subscribe(JGenericDelegate<T> action);
+        void UnSubscribe(JGenericDelegate<T> action);
     }
 
     public interface iObservableValue<T> : iObservable<T>
@@ -62,7 +62,7 @@
 
     public interface iFillable : iStackable
     {
-        int MaxCapacity { get; }
+        int Max { get; }
         int FreeCapacity { get; }
         void SubscribeToMaxCapacity(JGenericDelegate<int> action);
         void UnSubscribeToMaxCapacity(JGenericDelegate<int> action);

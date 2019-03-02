@@ -118,8 +118,6 @@ namespace JReact.Pool.Roamer
         #region SUBSCRIBERS
         public void Subscribe(JGenericDelegate<Vector2> actionToAdd) { OnWindChange      += actionToAdd; }
         public void UnSubscribe(JGenericDelegate<Vector2> actionToRemove) { OnWindChange -= actionToRemove; }
-        public void SubscribeToWindChange(JGenericDelegate<Vector2> actionToAdd) { Subscribe(actionToAdd); }
-        public void UnSubscribeToWindChange(JGenericDelegate<Vector2> actionToRemove) { UnSubscribe(actionToRemove); }
         #endregion
     }
 }

@@ -27,11 +27,11 @@ namespace JReact.StateControl.LevelSystem
             }
         }
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int MaxCapacity
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int Max
             => _levelProgress.CurrentLevelInfo.ExperienceNeeded;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private bool _CanGainExperience
             => !_levelProgress.MaxLevelReached;
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => MaxCapacity - CurrentValue;
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => Max - CurrentValue;
 
         [BoxGroup("Debug", true, true, 1000), SerializeField] private bool _debug = false;
         #endregion
@@ -80,7 +80,7 @@ namespace JReact.StateControl.LevelSystem
         public int Grant(int amountToAdd)
         {
             if (_debug)
-                JConsole.Log($"{name} Granted Experience: {amountToAdd}. Current: {CurrentValue}. For next Level: {MaxCapacity}",
+                JConsole.Log($"{name} Granted Experience: {amountToAdd}. Current: {CurrentValue}. For next Level: {Max}",
                              JLogTags.LevelSystem, this);
 
             // --------------- CHECKERS --------------- //
@@ -116,9 +116,9 @@ namespace JReact.StateControl.LevelSystem
         //checks if the command is valid and sends some log if not
         private bool CanAdd(int amountToAdd)
         {
-            Assert.IsTrue(MaxCapacity > 0,
-                          $"{name} max experience needs to be higher than 0 for {_levelProgress.CurrentLevelInfo.name}. Value {MaxCapacity}");
-            if (MaxCapacity <= 0) return false;
+            Assert.IsTrue(Max > 0,
+                          $"{name} max experience needs to be higher than 0 for {_levelProgress.CurrentLevelInfo.name}. Value {Max}");
+            if (Max <= 0) return false;
             Assert.IsTrue(amountToAdd > 0, $"{name} requires a positive value. Value: {amountToAdd}");
             if (amountToAdd <= 0) return false;
             if (!_CanGainExperience)
@@ -133,8 +133,8 @@ namespace JReact.StateControl.LevelSystem
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToWindChange(JGenericDelegate<int> action) { OnGain                      += action; }
-        public void UnSubscribeToWindChange(JGenericDelegate<int> action) { OnGain                    -= action; }
+        public void Subscribe(JGenericDelegate<int> action) { OnGain                      += action; }
+        public void UnSubscribe(JGenericDelegate<int> action) { OnGain                    -= action; }
         public void SubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged   += action; }
         public void UnSubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged -= action; }
         #endregion

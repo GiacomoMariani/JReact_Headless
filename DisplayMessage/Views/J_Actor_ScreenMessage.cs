@@ -36,10 +36,10 @@ namespace JReact.ScreenMessage
         protected override void OnEnable()
         {
             base.OnEnable();
-            _sender.SubscribeToWindChange(TrySettingThisElement);
+            _sender.Subscribe(TrySettingThisElement);
         }
 
-        protected virtual void OnDisable() { _sender.UnSubscribeToWindChange(TrySettingThisElement); }
+        protected virtual void OnDisable() { _sender.UnSubscribe(TrySettingThisElement); }
         #endregion
     }
 }
