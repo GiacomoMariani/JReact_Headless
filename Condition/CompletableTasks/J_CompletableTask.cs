@@ -29,11 +29,11 @@ namespace JReact.Conditions.Tasks
             = new JUnityEvent();
         // --------------- BEHAVIOUR --------------- //
         [BoxGroup("Setup - Behaviour", true, true, -5), SerializeField] private bool _reactivateIfDormant = true;
-        [BoxGroup("Setup - Behaviour", true, true, -5), SerializeField] private bool _requiresOneActivation = false;
-        [BoxGroup("Setup - Behaviour", true, true, -5), SerializeField] private float _activationDelay = 0f;
+        [BoxGroup("Setup - Behaviour", true, true, -5), SerializeField] private bool _requiresOneActivation;
+        [BoxGroup("Setup - Behaviour", true, true, -5), SerializeField] private float _activationDelay;
 
         // --------------- STATE --------------- //
-        [BoxGroup("State", true, true, 25), ShowInInspector, ReadOnly] private bool _activatedOnce = false;
+        [BoxGroup("State", true, true, 25), ShowInInspector, ReadOnly] private bool _activatedOnce;
         [BoxGroup("State", true, true, 25), ShowInInspector, ReadOnly] private TaskState _state = TaskState.NotInitialized;
         public TaskState State
         {
@@ -78,6 +78,7 @@ namespace JReact.Conditions.Tasks
 
             if (State == TaskState.Active ||
                 State == TaskState.ActivationWaiting) return;
+
             if (_startTrigger   != null) _startTrigger.SubscribeToCondition(TriggerStart);
             if (_dormantTrigger != null) _dormantTrigger.SubscribeToCondition(TriggerDormant);
         }
@@ -102,9 +103,11 @@ namespace JReact.Conditions.Tasks
             if (State == TaskState.Active   ||
                 State == TaskState.Complete ||
                 State == TaskState.ActivationWaiting) return;
+
             //a trigger start can be valid if we want to reactivate the task
             if (State == TaskState.Dormant &&
                 !_reactivateIfDormant) return;
+
             ConfirmActivation();
         }
 
@@ -144,6 +147,7 @@ namespace JReact.Conditions.Tasks
             if (!item) return;
             if (State != TaskState.Active &&
                 State != TaskState.ActivationWaiting) return;
+
             ConfirmDormant();
         }
 
@@ -180,8 +184,8 @@ namespace JReact.Conditions.Tasks
         #endregion
 
         #region CHECKS
-        private bool ActivationValid() { return _startTrigger  == null || _startTrigger.CurrentValue; }
-        private bool CompleteReady() { return _completeTrigger == null || _completeTrigger.CurrentValue; }
+        private bool ActivationValid() => _startTrigger  == null || _startTrigger.CurrentValue;
+        private bool CompleteReady() => _completeTrigger == null || _completeTrigger.CurrentValue;
         #endregion
 
         #region ABSTRACT IMPLEMENTATION
@@ -201,11 +205,6 @@ namespace JReact.Conditions.Tasks
     //the states related to this tutorial
     public enum TaskState
     {
-        NotInitialized = -100,
-        WaitStartCondition = 0,
-        ActivationWaiting = 50,
-        Active = 100,
-        Dormant = 200,
-        Complete = 300
+        NotInitialized = -100, WaitStartCondition = 0, ActivationWaiting = 50, Active = 100, Dormant = 200, Complete = 300
     }
 }

@@ -18,7 +18,14 @@ namespace JReact.UiView
         [BoxGroup("View", true, true, 5), ReadOnly] protected abstract string _DragSortingLayer { get; }
         //the canvas related to this image
         [BoxGroup("View", true, true, 5), ReadOnly] private Canvas _thisCanvas;
-        protected Canvas ThisCanvas { get { if (_thisCanvas == null) _thisCanvas = GetComponent<Canvas>(); return _thisCanvas; } }
+        protected Canvas ThisCanvas
+        {
+            get
+            {
+                if (_thisCanvas == null) _thisCanvas = GetComponent<Canvas>();
+                return _thisCanvas;
+            }
+        }
         //reference to the canvas scaler for a proper delta adjustment
         [BoxGroup("View", true, true, 5), ReadOnly] private CanvasScaler _canvasScaler;
         private CanvasScaler CanvasScaler
@@ -31,18 +38,19 @@ namespace JReact.UiView
             }
         }
 
-
         private CanvasScaler RetrieveParent(Transform parentTransform)
         {
             //if we have no parent we have an error
-            if (parentTransform.parent == null) throw new MissingComponentException("We have not found any element with the given component: CanvasScaler");
+            if (parentTransform.parent == null)
+                throw new MissingComponentException("We have not found any element with the given component: CanvasScaler");
 
             //check if we found the requested component
-            CanvasScaler element = parentTransform.GetComponent<CanvasScaler>();
+            var element = parentTransform.GetComponent<CanvasScaler>();
             //if so return it
             if (element != null) return element;
             //otherwise keep searching
-            else return RetrieveParent(parentTransform.parent);
+
+            return RetrieveParent(parentTransform.parent);
         }
 
         #region INITIALIZATION
@@ -50,9 +58,9 @@ namespace JReact.UiView
         protected override void InitThis()
         {
             base.InitThis();
-            _defaultPosition = ThisImage.rectTransform.localPosition;
+            _defaultPosition     = ThisImage.rectTransform.localPosition;
             _defaultSortingLayer = GetComponent<Canvas>().sortingLayerName;
-            IsActive = true;
+            IsActive             = true;
         }
 
         //the sanity checks
@@ -62,8 +70,13 @@ namespace JReact.UiView
             //the building image view needs not to stop raycast, to make sure we 
             //can check what's behind it also when dragging the image
             var canvasControl = GetComponent<CanvasGroup>();
-            Assert.IsNotNull(canvasControl, "The image view of a building needs a canvas control to allow drag on this gameobject: " + gameObject.name);
-            Assert.IsFalse(canvasControl.interactable || canvasControl.blocksRaycasts, "The canvas control needs not to block raycast to allow drag on this gameobject: " + gameObject.name);
+            Assert.IsNotNull(canvasControl,
+                             "The image view of a building needs a canvas control to allow drag on this gameobject: " +
+                             gameObject.name);
+
+            Assert.IsFalse(canvasControl.interactable || canvasControl.blocksRaycasts,
+                           "The canvas control needs not to block raycast to allow drag on this gameobject: " + gameObject.name);
+
             Assert.IsNotNull(ThisCanvas, "The image view needs a canvas to control the sorting layer: " + gameObject.name);
         }
         #endregion
@@ -82,18 +95,18 @@ namespace JReact.UiView
         {
             //getting reference and current resolution
             Vector2 referenceResolution = CanvasScaler.referenceResolution;
-            Vector2 currentResolution = new Vector2(Screen.width, Screen.height);
+            var     currentResolution   = new Vector2(Screen.width, Screen.height);
 
             //set the value based on the canvas scaler elements
-            float widthRatio = currentResolution.x / referenceResolution.x;
+            float widthRatio  = currentResolution.x / referenceResolution.x;
             float heightRatio = currentResolution.y / referenceResolution.y;
-            float ratio = Mathf.Lerp(widthRatio, heightRatio, CanvasScaler.matchWidthOrHeight);
+            float ratio       = Mathf.Lerp(widthRatio, heightRatio, CanvasScaler.matchWidthOrHeight);
 
             //calculating the delta from the raw and ratio
-            var adjustedDelta = rawDelta / ratio;
+            Vector2 adjustedDelta = rawDelta / ratio;
 
             //setting the new position
-            var nextPosition = (Vector2)ThisImage.rectTransform.localPosition + adjustedDelta;
+            Vector2 nextPosition = (Vector2) ThisImage.rectTransform.localPosition + adjustedDelta;
             ThisImage.rectTransform.localPosition = nextPosition;
         }
 
@@ -108,9 +121,9 @@ namespace JReact.UiView
         public virtual void ResetPosition()
         {
             ThisImage.rectTransform.localPosition = _defaultPosition;
-            ThisCanvas.sortingLayerName = _defaultSortingLayer;
-            ThisCanvas.overrideSorting = false;
-            IsActive = true;
+            ThisCanvas.sortingLayerName           = _defaultSortingLayer;
+            ThisCanvas.overrideSorting            = false;
+            IsActive                              = true;
         }
         #endregion
 

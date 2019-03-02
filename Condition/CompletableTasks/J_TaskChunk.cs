@@ -69,7 +69,7 @@ namespace JReact.Conditions.Tasks
             // --------------- INITIALIZE --------------- //
             for (int i = 0; i < _tasks.Length; i++)
             {
-                var nextTask = _tasks[i];
+                J_CompletableTask nextTask = _tasks[i];
                 nextTask.SubscribeToTaskChange(StepCompleted);
                 if (!nextTask.IsActive) nextTask.Activate();
                 _activeTasks.Add(nextTask);
@@ -115,7 +115,7 @@ namespace JReact.Conditions.Tasks
             base.ResetThis();
             if (State == ChunkState.Completed) State = ChunkState.NotStarted;
             if (State != ChunkState.Active) return;
-            foreach (var step in _activeTasks)
+            foreach (J_CompletableTask step in _activeTasks)
             {
                 step.ResetThis();
                 step.UnSubscribeToTaskChange(StepCompleted);

@@ -40,7 +40,6 @@ namespace JReact.Conditions.Tasks
             }
         }
 
-
         /// <summary>
         /// reactivates the tasks
         /// </summary>

@@ -14,7 +14,13 @@ namespace JReact.UiView
         //reference to the text
         [BoxGroup("Base", true, true, -5), ReadOnly, ShowInInspector] private TextMeshProUGUI _thisText;
         protected TextMeshProUGUI ThisText
-        { get { if (_thisText == null) _thisText = GetComponent<TextMeshProUGUI>(); return _thisText; } }
+        {
+            get
+            {
+                if (_thisText == null) _thisText = GetComponent<TextMeshProUGUI>();
+                return _thisText;
+            }
+        }
 
         #region INITIALIZATION
         private void Awake()
@@ -23,20 +29,17 @@ namespace JReact.UiView
             SanityChecks();
         }
 
-        protected virtual void InitThis() { }
+        protected virtual void InitThis() {}
 
-        protected virtual void SanityChecks()
-        { Assert.IsNotNull(ThisText, "Requires a TextMeshProUGUI: " + gameObject); }
+        protected virtual void SanityChecks() { Assert.IsNotNull(ThisText, "Requires a TextMeshProUGUI: " + gameObject); }
         #endregion
 
         #region COMMANDS
         //the main element to be implemented
-        protected virtual void SetText(string text)
-        { ThisText.text = text; }
+        protected virtual void SetText(string text) { ThisText.text = text; }
 
         //set the color of the text
-        protected virtual void SetColor(Color color)
-        { ThisText.color = color; }
+        protected virtual void SetColor(Color color) { ThisText.color = color; }
         #endregion
     }
 }

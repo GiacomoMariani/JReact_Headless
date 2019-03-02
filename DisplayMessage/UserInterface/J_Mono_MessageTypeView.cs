@@ -1,4 +1,3 @@
-using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -24,7 +23,7 @@ namespace JReact.ScreenMessage
         protected override void ActorUpdate(JMessage element)
         {
             //check if this is a valid view and activate views accordingly
-            var isValid = _validMessages.ArrayContains(element.MessageId) && ValidPrinterState();
+            bool isValid = _validMessages.ArrayContains(element.MessageId) && ValidPrinterState();
             ShowViews(isValid);
         }
 
@@ -46,6 +45,7 @@ namespace JReact.ScreenMessage
             //ignore if we do not require the print effect
             if (!_disableWhenPrinting &&
                 !_enableWhenPrinting) return;
+
             //set the print controls
             _printer = printEffect;
             //update the state

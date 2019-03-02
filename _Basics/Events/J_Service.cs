@@ -1,5 +1,4 @@
 ﻿using Sirenix.OdinInspector;
-using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace JReact
@@ -15,7 +14,7 @@ namespace JReact
     {
         private event JAction OnExitEvent;
 
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public string Name => name;
 
         public static J_Service CreateState(string nameToSet)
@@ -24,7 +23,7 @@ namespace JReact
             state.name = nameToSet;
             return state;
         }
-        
+
         /// <summary>
         /// activates the service
         /// </summary>

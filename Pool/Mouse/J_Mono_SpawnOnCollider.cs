@@ -11,12 +11,11 @@ namespace JReact
     public class J_Mono_SpawnOnCollider : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         #region FIELDS AND VALUES
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required]
-        private J_Pool_SpecialEffects _effectsPool;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Pool_SpecialEffects _effectsPool;
         [BoxGroup("Setup", true, true, 0), SerializeField, Required] private Camera _mainCamera;
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _spawnOnEnter;
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _spawnOnExit;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Quaternion _particleRotation = new Quaternion();
+        [BoxGroup("Setup", true, true, 0), SerializeField] private Quaternion _particleRotation;
         #endregion
 
         #region EVENT STARTERS
@@ -33,7 +32,7 @@ namespace JReact
 
         #region HELPER
         //this method is used to get the mouse current position
-        private Vector3 GetMousePosition() { return _mainCamera.ScreenToWorldPoint(Input.mousePosition); }
+        private Vector3 GetMousePosition() => _mainCamera.ScreenToWorldPoint(Input.mousePosition);
         #endregion
 
         #region PARTICLE SPAWNERS

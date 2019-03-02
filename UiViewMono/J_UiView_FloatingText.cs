@@ -23,7 +23,7 @@ namespace JReact.UiView
             SetColor(color);
 
             //calculating the final position
-            var finalPosition = (Vector2) transform.localPosition + direction;
+            Vector2 finalPosition = (Vector2) transform.localPosition + direction;
 
             //setup the transition
             transform.DOLocalMove(finalPosition, timeOfAppearance).SetEase(easeType);

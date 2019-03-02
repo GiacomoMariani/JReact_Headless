@@ -13,7 +13,13 @@ namespace JReact.TimeProgress
         //the views related to this progress
         [BoxGroup("Setup", true, true, 0), SerializeField, Required] private J_Mono_ViewActivator _view;
         private J_Mono_ViewActivator ThisView
-        { get { if (_view == null) _view = GetComponent<J_Mono_ViewActivator>(); return _view; } }
+        {
+            get
+            {
+                if (_view == null) _view = GetComponent<J_Mono_ViewActivator>();
+                return _view;
+            }
+        }
         #endregion
 
         #region ABSTRACT IMPLEMENTATION
@@ -21,7 +27,7 @@ namespace JReact.TimeProgress
 
         protected override void ProgressStart(J_Progress progress) { ThisView.ActivateView(true); }
 
-        protected override void ProgressUpdate(J_Progress progress) { }
+        protected override void ProgressUpdate(J_Progress progress) {}
 
         protected override void ViewEnabled(J_Progress progress)
         {

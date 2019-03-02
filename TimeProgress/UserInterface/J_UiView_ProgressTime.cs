@@ -22,7 +22,6 @@ namespace JReact.TimeProgress
         #endregion
 
         #region ABSTRACT IMPLEMENTATION
-
         protected override void InitThis()
         {
             base.InitThis();

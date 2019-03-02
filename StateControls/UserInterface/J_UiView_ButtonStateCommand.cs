@@ -30,6 +30,6 @@ namespace JReact.StateControl
         }
 
         //the button cannot be used if the player is alread in this state
-        protected override bool CheckFurtherConditions() { return _mainStateControl.CurrentState != _desiredState; }
+        protected override bool CheckFurtherConditions() => _mainStateControl.CurrentState != _desiredState;
     }
 }

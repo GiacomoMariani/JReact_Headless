@@ -50,7 +50,6 @@ namespace JReact.ScreenMessage
                 _views[i].SetActive(isActive);
         }
 
-
         //finish printing or close this 
         private void TryCheckNext()
         {
@@ -87,7 +86,6 @@ namespace JReact.ScreenMessage
             _checkNextEvent.Subscribe(TryCheckNext);
             _resetPrinterEvent.Subscribe(ResetPrinter);
         }
-
 
         protected override void OnDisable()
         {

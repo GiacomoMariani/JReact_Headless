@@ -12,22 +12,22 @@ namespace JReact.OdinDrawers
         protected override void DrawPropertyLayout(GUIContent label)
         {
             //get the value and draw the element
-            J_ReactiveBool value = this.ValueEntry.SmartValue;
+            J_ReactiveBool value = ValueEntry.SmartValue;
 
             //just shows the empty field if the SO is missing
             if (value == null)
             {
-                this.CallNextDrawer(label);
+                CallNextDrawer(label);
                 return;
             }
 
-            var rect = EditorGUILayout.GetControlRect();
+            Rect rect = EditorGUILayout.GetControlRect();
             //NAME
             GUI.Label(rect.AlignLeft(100f), label);
             //VALUE
             value.CurrentValue = EditorGUI.Toggle(rect.AlignCenter(20f), value.CurrentValue);
             //REFERENCE
-            this.ValueEntry.SmartValue =
+            ValueEntry.SmartValue =
                 (J_ReactiveBool) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveBool), false);
         }
     }
@@ -37,22 +37,22 @@ namespace JReact.OdinDrawers
         protected override void DrawPropertyLayout(GUIContent label)
         {
             //get the value and draw the element
-            J_ReactiveInt value = this.ValueEntry.SmartValue;
+            J_ReactiveInt value = ValueEntry.SmartValue;
 
             //just shows the empty field if the SO is missing
             if (value == null)
             {
-                this.CallNextDrawer(label);
+                CallNextDrawer(label);
                 return;
             }
 
-            var rect = EditorGUILayout.GetControlRect();
+            Rect rect = EditorGUILayout.GetControlRect();
             //NAME
             GUI.Label(rect.AlignLeft(100f), label);
             //VALUE
             value.CurrentValue = SirenixEditorFields.IntField(rect.AlignCenter(200f), value.CurrentValue);
             //REFERENCE
-            this.ValueEntry.SmartValue =
+            ValueEntry.SmartValue =
                 (J_ReactiveInt) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveBool), false);
         }
     }
@@ -62,22 +62,22 @@ namespace JReact.OdinDrawers
         protected override void DrawPropertyLayout(GUIContent label)
         {
             //get the value and draw the element
-            J_ReactiveFloat value = this.ValueEntry.SmartValue;
+            J_ReactiveFloat value = ValueEntry.SmartValue;
 
             //just shows the empty field if the SO is missing
             if (value == null)
             {
-                this.CallNextDrawer(label);
+                CallNextDrawer(label);
                 return;
             }
 
-            var rect = EditorGUILayout.GetControlRect();
+            Rect rect = EditorGUILayout.GetControlRect();
             //NAME
             GUI.Label(rect.AlignLeft(100f), label);
             //VALUE
             value.CurrentValue = SirenixEditorFields.FloatField(rect.AlignCenter(200f), value.CurrentValue);
             //REFERENCE
-            this.ValueEntry.SmartValue =
+            ValueEntry.SmartValue =
                 (J_ReactiveFloat) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveBool), false);
         }
     }
@@ -87,21 +87,21 @@ namespace JReact.OdinDrawers
         protected override void DrawPropertyLayout(GUIContent label)
         {
             //get the value and draw the element
-            J_ReactiveString value = this.ValueEntry.SmartValue;
+            J_ReactiveString value = ValueEntry.SmartValue;
 
             //just shows the empty field if the SO is missing
             if (value == null)
             {
-                this.CallNextDrawer(label);
+                CallNextDrawer(label);
                 return;
             }
 
-            var rect = EditorGUILayout.GetControlRect();
+            Rect rect = EditorGUILayout.GetControlRect();
             //NAME
             GUI.Label(rect.AlignLeft(100f), label);
 
             //REFERENCE
-            this.ValueEntry.SmartValue =
+            ValueEntry.SmartValue =
                 (J_ReactiveString) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveBool), false);
 
             rect = EditorGUILayout.GetControlRect(false, 50f);

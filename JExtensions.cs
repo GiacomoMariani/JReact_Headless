@@ -24,7 +24,7 @@ namespace JReact
         /// <returns>the string time format</returns>
         public static string SecondsToString(this float seconds, bool withFormat = true)
         {
-            var time = TimeSpan.FromSeconds(seconds);
+            TimeSpan time = TimeSpan.FromSeconds(seconds);
             //backslash tells that colon is not the part of format, it just a character that we want in output
             return time.ToString(@"dd\:hh\:mm\:ss\:fff");
         }
@@ -36,9 +36,9 @@ namespace JReact
         /// <returns>returns true if the chance happens</returns>
         public static bool ChanceHit(this float chance)
         {
-            Assert.IsTrue(chance > 0, $"{chance} is lower or equal to 0. So it will always be false");
+            Assert.IsTrue(chance > 0,  $"{chance} is lower or equal to 0. So it will always be false");
             Assert.IsTrue(chance < 1f, $"{chance} is higher or equal to 1. So it will always be  true");
-            return UnityEngine.Random.Range(0, 1f) < chance;
+            return Random.Range(0, 1f) < chance;
         }
         #endregion FLOAT
 
@@ -49,7 +49,7 @@ namespace JReact
         /// <param name="array">the array to check</param>
         /// <param name="itemToCheck">the item we want to find</param>
         /// <returns>returns true if the array contains the item</returns>
-        public static bool ArrayContains<T>(this T[] array, T itemToCheck) { return Array.IndexOf(array, itemToCheck) > -1; }
+        public static bool ArrayContains<T>(this T[] array, T itemToCheck) => Array.IndexOf(array, itemToCheck) > -1;
         #endregion ARRAYS
 
         #region COLLECTIONS
@@ -61,8 +61,8 @@ namespace JReact
         /// <returns>returns the collection as a string</returns>
         public static string PrintAll<T>(this ICollection<T> collection)
         {
-            string printedElements = "Elements: - ";
-            foreach (var element in collection) { printedElements += (element + " - "); }
+            string printedElements                            = "Elements: - ";
+            foreach (T element in collection) printedElements += element + " - ";
 
             return printedElements;
         }
@@ -73,10 +73,7 @@ namespace JReact
         /// <param name="collection">the sequence to check</param>
         /// <typeparam name="T">the type of element in the collection</typeparam>
         /// <returns>returns a random element</returns>
-        public static T GetRandomElement<T>(this ICollection<T> collection)
-        {
-            return collection.ElementAt(Random.Range(0, collection.Count));
-        }
+        public static T GetRandomElement<T>(this ICollection<T> collection) => collection.ElementAt(Random.Range(0, collection.Count));
 
         /// <summary>
         /// get a random element in the collection
@@ -87,29 +84,29 @@ namespace JReact
         public static void SubscribeToAll<T>(this ICollection<T> collection, JAction actionToPerform)
             where T : iObservable
         {
-            foreach (var element in collection) { element.Subscribe(actionToPerform); }
+            foreach (T element in collection) element.Subscribe(actionToPerform);
         }
 
         public static void UnSubscribeToAll<T>(this ICollection<T> collection, JAction actionToPerform)
             where T : iObservable
         {
-            foreach (var element in collection) { element.UnSubscribe(actionToPerform); }
+            foreach (T element in collection) element.UnSubscribe(actionToPerform);
         }
 
         public static void SubscribeToAll<T>(this ICollection<iObservable<T>> collection, JGenericDelegate<T> actionToPerform)
         {
-            foreach (var element in collection) { element.Subscribe(actionToPerform); }
+            foreach (iObservable<T> element in collection) element.Subscribe(actionToPerform);
         }
 
         public static void UnSubscribeToAll<T>(this ICollection<iObservable<T>> collection, JGenericDelegate<T> actionToPerform)
         {
-            foreach (var element in collection) { element.UnSubscribe(actionToPerform); }
+            foreach (iObservable<T> element in collection) element.UnSubscribe(actionToPerform);
         }
 
         //reset 
         public static void ResetAll(ICollection<iResettable> collection)
         {
-            foreach (var element in collection) element.ResetThis();
+            foreach (iResettable element in collection) element.ResetThis();
         }
         #endregion COLLECTIONS
 
@@ -136,6 +133,7 @@ namespace JReact
         {
             Assert.IsTrue(rectTransform.GetComponentInParent<RectTransform>(),
                           $"{rectTransform.name} parent ({rectTransform.parent.name}) is not a valid");
+
             rectTransform.anchorMin = JConstants.VectorZero;
             rectTransform.anchorMax = JConstants.VectorOne;
             rectTransform.offsetMin = JConstants.VectorZero;
@@ -163,7 +161,7 @@ namespace JReact
         /// <param name="alsoDisabled">injects also in disabled children</param>
         public static void InjectElementToChildren<T>(this Component component, T element, bool alsoDisabled = true)
         {
-            var elementThatRequireThis = component.GetComponentsInChildren<iInitiator<T>>(alsoDisabled);
+            iInitiator<T>[] elementThatRequireThis = component.GetComponentsInChildren<iInitiator<T>>(alsoDisabled);
             for (int i = 0; i < elementThatRequireThis.Length; i++)
                 elementThatRequireThis[i].InjectThis(element);
         }
@@ -175,7 +173,7 @@ namespace JReact
         /// </summary>
         /// <param name="a_Object">the element to check</param>
         /// <returns>true if this is a prefab, false if this is a gameobject</returns>
-        public static bool IsPrefab(this GameObject a_Object) { return a_Object.scene.rootCount == 0; }
+        public static bool IsPrefab(this GameObject a_Object) => a_Object.scene.rootCount == 0;
 
         /// <summary>
         /// a method to check if a gameobject has a component
@@ -185,7 +183,7 @@ namespace JReact
         public static void CheckComponent(this GameObject gameObjectToCheck, Type component)
         {
             //check one component ont he weapon
-            var elementSearched = gameObjectToCheck.GetComponents(component);
+            Component[] elementSearched = gameObjectToCheck.GetComponents(component);
 
             //check if we have at least a component
             Assert.IsFalse(elementSearched.Length == 0,
@@ -194,12 +192,11 @@ namespace JReact
             //check that we have just one component
             Assert.IsFalse(elementSearched.Length > 1,
                            $"There are too many components of {component} on {gameObjectToCheck.name}");
+
             //check that the component is of the specified class
             if (elementSearched.Length > 0)
-            {
                 Assert.IsTrue(elementSearched[0].GetType() == component.GetElementType(),
                               $"The class requested is of a parent class. Weapon {gameObjectToCheck}, class found {elementSearched[0].GetType()}, class requested {component.GetElementType()}. Player {gameObjectToCheck.transform.root.gameObject}");
-            }
         }
         #endregion GAMEOBJECT
 
@@ -213,7 +210,8 @@ namespace JReact
         {
             Assert.IsTrue(range.x <= range.y,
                           $"The y value of the given range needs to be higher than x. X = {range.x}, Y = {range.y}");
-            return UnityEngine.Random.Range(range.x, range.y);
+
+            return Random.Range(range.x, range.y);
         }
 
         /// <summary>
@@ -224,7 +222,8 @@ namespace JReact
         {
             Assert.IsTrue(rangeInt.x <= rangeInt.y,
                           $"The y value of the given range needs to be higher than x. X = {rangeInt.x}, Y = {rangeInt.y}");
-            return UnityEngine.Random.Range(rangeInt.x, rangeInt.y);
+
+            return Random.Range(rangeInt.x, rangeInt.y);
         }
 
         public static Direction GetDirection(this Vector2 force)
@@ -237,11 +236,9 @@ namespace JReact
             //find if the top most intensity is vertical or horizontal
             // --------------- HORIZONTAL --------------- //
             if (Mathf.Abs(force.x) > Mathf.Abs(force.y))
-            {
                 return force.x >= 0
                            ? Direction.Right
                            : Direction.Left;
-            }
 
             // --------------- VERTICAL --------------- //
             return force.y >= 0
@@ -255,7 +252,7 @@ namespace JReact
         public static int ToInt(this string stringToConvert)
         {
             //try getting the value
-            if (int.TryParse(stringToConvert, out var valueToReturn)) return valueToReturn;
+            if (int.TryParse(stringToConvert, out int valueToReturn)) return valueToReturn;
 
             //otherwise send a warning and return 0
             Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into integer. Returning 0.");
@@ -266,7 +263,7 @@ namespace JReact
         public static float ToFloat(this string stringToConvert)
         {
             //try getting the value
-            if (float.TryParse(stringToConvert, out var valueToReturn)) return valueToReturn;
+            if (float.TryParse(stringToConvert, out float valueToReturn)) return valueToReturn;
 
             //otherwise send a warning and return 0
             Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into float. Returning 0f.");
@@ -282,11 +279,8 @@ namespace JReact
         {
             var sb = new StringBuilder();
 
-            var bytes = Encoding.Unicode.GetBytes(str);
-            foreach (var t in bytes)
-            {
-                sb.Append(t.ToString("X2"));
-            }
+            byte[] bytes = Encoding.Unicode.GetBytes(str);
+            foreach (byte t in bytes) sb.Append(t.ToString("X2"));
 
             return sb.ToString();
         }
@@ -302,7 +296,7 @@ namespace JReact
         public static double CalculateSecondsFrom(this DateTime currentTime, DateTime previousTime)
         {
             //calculate the time passed
-            var passedTime = currentTime.Subtract(previousTime);
+            TimeSpan passedTime = currentTime.Subtract(previousTime);
             //return the seconds passed
             return passedTime.TotalSeconds;
         }
@@ -314,8 +308,8 @@ namespace JReact
         /// <returns>the unix time, converted</returns>
         public static int GetUnixTimeStamp(this DateTime dateTime)
         {
-            DateTime epochStart = new DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
-            var      unixTime   = (int) (dateTime - epochStart).TotalSeconds;
+            var epochStart = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            int unixTime   = (int) (dateTime - epochStart).TotalSeconds;
             JConsole.Log($"Current time unix = {unixTime}");
             return unixTime;
         }
@@ -332,10 +326,11 @@ namespace JReact
             //sanity check
             Assert.IsTrue(transparency >= 0f && transparency <= 1.0f,
                           $"The transparency to be set on {spriteRenderer.gameObject.name} should be between 0 and 1. Received value: {transparency}");
+
             //clamp the value
             transparency = Mathf.Clamp(transparency, 0f, 1f);
             //get the color
-            var fullColor = spriteRenderer.color;
+            Color fullColor = spriteRenderer.color;
             //set the color with transparency
             spriteRenderer.color = new Color(fullColor.r, fullColor.g, fullColor.b, transparency);
         }
@@ -350,10 +345,11 @@ namespace JReact
             //sanity check
             Assert.IsTrue(transparency >= 0f && transparency <= 1.0f,
                           $"The transparency to be set on {image.gameObject.name} should be between 0 and 1. Received value: {transparency}");
+
             //clamp the value
             transparency = Mathf.Clamp(transparency, 0f, 1f);
             //get the color
-            var fullColor = image.color;
+            Color fullColor = image.color;
             //set the color with transparency
             image.color = new Color(fullColor.r, fullColor.g, fullColor.b, transparency);
         }

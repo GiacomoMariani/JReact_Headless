@@ -24,7 +24,7 @@ namespace JReact.TimeProgress
 
         #region BUTTON COMMAND
         //to add further conditions when requested
-        protected virtual bool CanBePressed() { return true; }
+        protected virtual bool CanBePressed() => true;
 
         //used to press the button
         private void TryPressButton()
@@ -37,7 +37,7 @@ namespace JReact.TimeProgress
         //activate when the progress is running
         protected override void ProgressStart(J_Progress progress) { ThisButton.interactable = true; }
 
-        protected override void ProgressUpdate(J_Progress progress) { }
+        protected override void ProgressUpdate(J_Progress progress) {}
 
         //deactivate when the progress is not running
         protected override void ProgressComplete(J_Progress progress) { ThisButton.interactable = false; }

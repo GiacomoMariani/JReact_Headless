@@ -7,6 +7,5 @@ namespace JReact.PopUp
     /// </summary>
     public class J_UiView_PopUpString : J_Mono_ReactiveStringText
     {
-        
     }
 }

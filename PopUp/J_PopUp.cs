@@ -63,13 +63,13 @@ namespace JReact.PopUp
         {
             base.ResetThis();
             //strings
-            _title.CurrentValue   = DefaultTitle;
+            _title.CurrentValue             = DefaultTitle;
             _confirmButtonText.CurrentValue = DefaultConfirmText;
-            _denyButtonText.CurrentValue = DefaultDenyText;
+            _denyButtonText.CurrentValue    = DefaultDenyText;
             _message.ResetThis();
             //actions
             Confirm = null;
-            Deny = null;
+            Deny    = null;
         }
 
         private void OnDisable() { ResetThis(); }

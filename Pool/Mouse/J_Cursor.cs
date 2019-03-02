@@ -22,14 +22,13 @@ namespace JReact.Pool.SpecialEffect
         private GameObject _defaultCursor;
         [BoxGroup("Setup - Cursor", true, true, 0), SerializeField] private GameObject[] _customCursors;
 
-        [BoxGroup("Setup - Effect", true, true, 5), SerializeField, AssetsOnly]
-        private J_Pool_SpecialEffects _effect;
+        [BoxGroup("Setup - Effect", true, true, 5), SerializeField, AssetsOnly] private J_Pool_SpecialEffects _effect;
         [BoxGroup("Setup - Effect", true, true, 5), SerializeField, Range(0.5f, 15f)]
         private float _interval = 1f;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 15), ReadOnly, ShowInInspector] private Camera _mainCamera;
-        [FoldoutGroup("State", false, 15), ReadOnly, ShowInInspector] private bool _activeCursor = false;
+        [FoldoutGroup("State", false, 15), ReadOnly, ShowInInspector] private bool _activeCursor;
         [FoldoutGroup("State", false, 15), ReadOnly, ShowInInspector] private GameObject _currentCursor;
         public GameObject CurrentCursor
         {
@@ -45,7 +44,7 @@ namespace JReact.Pool.SpecialEffect
         [FoldoutGroup("State - Cursor", false, 20), ReadOnly, ShowInInspector] private GameObject _cursorView;
         [FoldoutGroup("State - Cursor", false, 20), ReadOnly, ShowInInspector] private GameObject[] _customCursorViews;
 
-        [FoldoutGroup("State - Effects", false, 25), ReadOnly, ShowInInspector] private bool _activeEffect = false;
+        [FoldoutGroup("State - Effects", false, 25), ReadOnly, ShowInInspector] private bool _activeEffect;
         #endregion
 
         #region STARTUP
@@ -183,6 +182,7 @@ namespace JReact.Pool.SpecialEffect
 
         #region DISABLE AND RESET
         private void OnDisable() { ResetThis(); }
+
         public void ResetThis()
         {
             DisableMouseCursor();

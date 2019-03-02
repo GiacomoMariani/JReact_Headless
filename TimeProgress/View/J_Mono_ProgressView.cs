@@ -16,7 +16,7 @@ namespace JReact.TimeProgress
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Identifier _progressId;
 
         //tracking elements
-        [BoxGroup("State", true, true, 5), ReadOnly, SerializeField] private bool _isTracking = false;
+        [BoxGroup("State", true, true, 5), ReadOnly, SerializeField] private bool _isTracking;
         #endregion
 
         #region INITIALIZATION
@@ -26,9 +26,9 @@ namespace JReact.TimeProgress
             SanityChecks();
         }
 
-        protected virtual void InitThis() { }
+        protected virtual void InitThis() {}
 
-        protected virtual void SanityChecks() { }
+        protected virtual void SanityChecks() {}
         #endregion
 
         #region INJECTION
@@ -57,10 +57,10 @@ namespace JReact.TimeProgress
         {
             // --------------- SETUP --------------- //
             Assert.IsFalse(_isTracking, $"{gameObject.name} wants to track {_progressEvent.name}, but it is already tracking");
-            if(_isTracking) StopTracking();
+            if (_isTracking) StopTracking();
             _isTracking = true;
             ViewEnabled(_progressEvent);
-            
+
             // --------------- SUBSCRIBING --------------- //
             _progressEvent.SubscribeToStart(ProgressStart);
             _progressEvent.Subscribe(ProgressUpdate);
@@ -93,10 +93,9 @@ namespace JReact.TimeProgress
         /// triggered at progress complete
         /// </summary>
         protected abstract void ProgressComplete(J_Progress progress);
-        
-        
-        protected virtual void ViewEnabled(J_Progress progress){}
-        protected virtual void ViewDisabled(J_Progress progress) { }
+
+        protected virtual void ViewEnabled(J_Progress progress) {}
+        protected virtual void ViewDisabled(J_Progress progress) {}
         #endregion
 
         #region LISTENERS
@@ -104,9 +103,8 @@ namespace JReact.TimeProgress
         private void OnEnable()
         {
             if (_progressEvent != null) StartTracking();
-            
         }
-        
+
         private void OnDisable() { StopTracking(); }
         #endregion
     }

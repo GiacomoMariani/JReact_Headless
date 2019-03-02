@@ -31,7 +31,7 @@ namespace JReact.StateControl.Weather
 
         public override void End()
         {
-            base.End(); 
+            base.End();
             _unityEvents_AtEnd?.Invoke();
         }
 

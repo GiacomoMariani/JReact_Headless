@@ -10,7 +10,7 @@ namespace JReact.JRandom
     [CreateAssetMenu(menuName = "Reactive/Random/Float")]
     public class J_Random_Float : ScriptableObject
     {
-        [BoxGroup("Range", true, true, 0), SerializeField] private float _min = 0f;
+        [BoxGroup("Range", true, true, 0), SerializeField] private float _min;
         [BoxGroup("Range", true, true, 0), SerializeField] private float _max = 1f;
 
         public static J_Random_Float CreateRandomFloat(float min, float max)
@@ -20,7 +20,7 @@ namespace JReact.JRandom
             randomCreator._max = max;
             return randomCreator;
         }
-        
+
         public float GetRandomValue()
         {
             Assert.IsTrue(_max >= _min, $"{name} the minimum range ({_min}) should be lower or equal maximum {_max}");

@@ -1,5 +1,4 @@
-﻿using Sirenix.OdinInspector;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace JReact.Currency
 {
@@ -19,8 +18,8 @@ namespace JReact.Currency
         /// <returns></returns>
         public bool GrantReward(int amount, Transform sender = null)
         {
-            var rewardSuccess = TrySendReward(amount, sender);
-            
+            bool rewardSuccess = TrySendReward(amount, sender);
+
             if (!rewardSuccess) OnRewardFail?.Invoke(this);
             else OnRewardGranted?.Invoke(this);
 
@@ -30,10 +29,10 @@ namespace JReact.Currency
         protected abstract bool TrySendReward(int amount, Transform sender);
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<J_Reward<T>> actionToAdd) { OnRewardGranted += actionToAdd; }
+        public void Subscribe(JGenericDelegate<J_Reward<T>> actionToAdd) { OnRewardGranted      += actionToAdd; }
         public void UnSubscribe(JGenericDelegate<J_Reward<T>> actionToRemove) { OnRewardGranted -= actionToRemove; }
 
-        public void SubscribeToFail(JGenericDelegate<J_Reward<T>> actionToAdd) { OnRewardFail += actionToAdd; }
+        public void SubscribeToFail(JGenericDelegate<J_Reward<T>> actionToAdd) { OnRewardFail      += actionToAdd; }
         public void UnSubscribeToFail(JGenericDelegate<J_Reward<T>> actionToRemove) { OnRewardFail -= actionToRemove; }
         #endregion
     }

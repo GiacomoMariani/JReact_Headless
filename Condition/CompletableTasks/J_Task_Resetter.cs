@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace JReact.Conditions.Tasks
@@ -18,8 +16,10 @@ namespace JReact.Conditions.Tasks
         public void ResetThis()
         {
             for (int i = 0; i < _allChunks.Length; i++)
+            {
                 if (_allChunks[i].State == ChunkState.Active)
                     _allChunks[i].ResetThis();
+            }
 
             for (int i = 0; i < _alldDormantCollections.Length; i++)
                 _alldDormantCollections[i].ResetThis();

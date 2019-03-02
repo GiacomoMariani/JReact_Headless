@@ -21,7 +21,7 @@ namespace JReact.Pathfinding
         {
             // --------------- STEP 1 ADD THE KEY IF REQUIRED --------------- //
             if (!_nodeGrid.ContainsKey(node))
-                _nodeGrid[node] = new List<T>() { nodeConnected };
+                _nodeGrid[node] = new List<T> { nodeConnected };
 
             // --------------- STEP 2 ADD IF NOT ALREADY NEIGHBOUR--------------- //
             else if (!_nodeGrid[node].Contains(nodeConnected))
@@ -29,6 +29,6 @@ namespace JReact.Pathfinding
         }
 
         //used to get the neighbours of a given node
-        internal List<T> GetNeighboursOf(T node) { return _nodeGrid[node]; }
+        internal List<T> GetNeighboursOf(T node) => _nodeGrid[node];
     }
 }

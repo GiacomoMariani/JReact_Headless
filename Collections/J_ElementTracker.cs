@@ -19,7 +19,7 @@ namespace JReact.Collections
         /// </summary>
         /// <param name="elementNameKey">the name of the desired element</param>
         /// <returns></returns>
-        public bool HasElement(string elementNameKey) { return ThisDictionary.ContainsKey(elementNameKey); }
+        public bool HasElement(string elementNameKey) => ThisDictionary.ContainsKey(elementNameKey);
 
         /// <summary>
         /// the main method to retrieve the element from its name

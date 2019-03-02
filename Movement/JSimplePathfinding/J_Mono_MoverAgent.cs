@@ -1,7 +1,7 @@
-﻿using MEC;
-using Sirenix.OdinInspector;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using JReact.Movement;
+using MEC;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -30,12 +30,15 @@ namespace JReact.Pathfinding
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_PathfindQueue<T> _pathQueue;
 
         // --------------- STATE --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsMoving { get; private set; } = false;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _doingStep = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsMoving { get; private set; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _doingStep;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public T CurrentNode { get; private set; }
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
-        protected virtual Vector2 _CurrentPosition { get => transform.position; set => transform.position = value; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected virtual Vector2 _CurrentPosition
+        {
+            get => transform.position;
+            set => transform.position = value;
+        }
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_TransformMover _mover;
         private J_TransformMover Mover
@@ -49,7 +52,7 @@ namespace JReact.Pathfinding
 
         // --------------- DEBUG --------------- //
         //debug elements
-        [BoxGroup("Debug", true, true, 100), SerializeField] private bool _debug = false;
+        [BoxGroup("Debug", true, true, 100), SerializeField] private bool _debug;
         #endregion
 
         #region MOVE COMMANDS
@@ -83,6 +86,7 @@ namespace JReact.Pathfinding
             if (_debug)
                 JConsole.Log($"{gameObject.name} moving from {start.Coordinates} to {goal.Coordinates}",
                              JLogTags.Pathfind, this);
+
             _pathQueue.FindPath(start, goal, J_PathCost.CalculateNodeDistance, CanAccessNode, StartMovement);
         }
 
@@ -111,8 +115,6 @@ namespace JReact.Pathfinding
 
             // --------------- LOOP --------------- //
             if (path != null)
-            {
-                //keep moving until the end
                 for (int i = 0; i < path.Count - 1; i++)
                 {
                     // --------------- STEP START --------------- //
@@ -127,7 +129,6 @@ namespace JReact.Pathfinding
                     CurrentNode = path[i + 1];
                     yield return Timing.WaitUntilFalse(GetDoingAStep);
                 }
-            }
 
             // --------------- STOP MOVING --------------- //
             IsMoving = false;
@@ -139,7 +140,7 @@ namespace JReact.Pathfinding
         #endregion
 
         #region HELPER
-        private bool GetDoingAStep() { return _doingStep; }
+        private bool GetDoingAStep() => _doingStep;
         #endregion
 
         #region SUBSCRIBERS

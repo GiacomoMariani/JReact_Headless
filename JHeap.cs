@@ -3,7 +3,10 @@
 namespace JReact.Utilities
 {
     //an interface to implement heaps
-    public interface iHeapElement<T> : IComparable<T> { int indexInHeap { get; set; } }
+    public interface iHeapElement<T> : IComparable<T>
+    {
+        int indexInHeap { get; set; }
+    }
 
     /// <summary>
     /// this class implements a heap, a collection of elements in a given order
@@ -15,19 +18,15 @@ namespace JReact.Utilities
         //the collection of items in the current heap
         private T[] _collection;
         //the count of items in the current heap
-        private int _heapSize = 0;
-        public int Count { get { return _heapSize; } }
+        private int _heapSize;
+        public int Count => _heapSize;
 
         /// <summary>
         /// used to check if the heap contains a given element
         /// </summary>
         /// <param name="element">the element to be checked</param>
         /// <returns>returns true if the element is inside the heap</returns>
-        public bool Contains(T element)
-        {
-            //we can check the item from its index and see if it is the same found in the collection
-            return Equals(_collection[element.indexInHeap], element);
-        }
+        public bool Contains(T element) => Equals(_collection[element.indexInHeap], element);
         #endregion
 
         #region COMMANDS
@@ -35,7 +34,7 @@ namespace JReact.Utilities
         /// the constructor creates the base array, given an amount of nodes
         /// </summary>
         /// <param name="maxHeapSize">this is the maximum number of given nodes</param>
-        public JHeap(int maxHeapSize) { _collection = new T[maxHeapSize]; }
+        public JHeap(int maxHeapSize) => _collection = new T[maxHeapSize];
 
         /// <summary>
         /// used to add an item into the heap
@@ -64,7 +63,7 @@ namespace JReact.Utilities
             //update the count
             _heapSize--;
             //updates the collection with the new element
-            _collection[0] = _collection[_heapSize];
+            _collection[0]             = _collection[_heapSize];
             _collection[0].indexInHeap = 0;
             //sort all the other elements down
             Heapify(_collection[0]);
@@ -82,9 +81,8 @@ namespace JReact.Utilities
         // this method is used to sort down one element
         private void Heapify(T element)
         {
-
             //find the index of the borders
-            int leftIndex = element.indexInHeap * 2 + 1;
+            int leftIndex  = element.indexInHeap * 2 + 1;
             int rightIndex = element.indexInHeap * 2 + 2;
             //stop if the index on the left is above the max index
             if (leftIndex >= _heapSize) return;
@@ -94,11 +92,8 @@ namespace JReact.Utilities
 
             //check if we can change the current index with the one on the left
             if (rightIndex < _heapSize)
-            {
-                //updates the swap index if the element on the left is higher than the one on the right
                 if (_collection[leftIndex].CompareTo(_collection[rightIndex]) < 0)
-                { largest = rightIndex; }
-            }
+                    largest = rightIndex;
 
             //stop if we run out of elements
             if (element.CompareTo(_collection[largest]) >= 0) return;

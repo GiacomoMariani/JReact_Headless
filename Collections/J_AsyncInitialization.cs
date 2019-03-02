@@ -17,10 +17,10 @@ namespace JReact.Collections
         {
             var ordered = CreateInstance<J_AsyncInitialization>();
             ordered._orderedStates = statesToInitialize;
-            ordered._queue = J_TaskQueue.CreateInstance();
+            ordered._queue         = J_TaskQueue.CreateInstance();
             return ordered;
         }
-        
+
         public override void Activate()
         {
             base.Activate();
@@ -38,7 +38,7 @@ namespace JReact.Collections
 
         private void SanityChecks()
         {
-            Assert.IsNotNull(_queue, $"{name} requires a _queue");
+            Assert.IsNotNull(_queue,         $"{name} requires a _queue");
             Assert.IsNotNull(_orderedStates, $"{name} requires a _orderedStates");
             Assert.IsTrue(_orderedStates.Length > 0, $"{name} has nothing to initialize");
         }

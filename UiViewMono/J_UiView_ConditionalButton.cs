@@ -13,8 +13,7 @@ namespace JReact.UiView
         //what we want to send
         [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _unityEventToSend;
         //the possible condition to cancel the commands
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required]
-        private J_ReactiveBool[] _commandConditions;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveBool[] _commandConditions;
         //if we want to show the disabled button
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _showDisabledButton = true;
         #endregion
@@ -45,7 +44,7 @@ namespace JReact.UiView
         }
 
         //used to implement further conditions if required
-        protected virtual bool CheckFurtherConditions() { return true; }
+        protected virtual bool CheckFurtherConditions() => true;
         #endregion
 
         #region LISTENERS & INTERACTION

@@ -21,7 +21,7 @@ namespace JReact
 #endif
         }
         #endregion
-    
+
         #region MAIN LOGGERS
         /// <summary>
         /// displays a message in the console
@@ -70,7 +70,7 @@ namespace JReact
 			Debug.LogError(Format(message, tag));
 #endif
         }
-        
+
         /// <summary>
         /// an error message with a breacn
         /// </summary>

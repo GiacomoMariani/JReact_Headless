@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace JReact.Pathfinding
@@ -39,18 +37,13 @@ namespace JReact.Pathfinding
         /// the euclidean estimate
         /// </summary>
         private float EuclideanEstimate(Vector2 startPosition, Vector2 goalPosition)
-        {
-            return Mathf.Sqrt(Mathf.Pow(startPosition.x - goalPosition.x, 2) +
-                              Mathf.Pow(startPosition.y - goalPosition.y, 2));
-        }
+            => Mathf.Sqrt(Mathf.Pow(startPosition.x - goalPosition.x, 2) +
+                          Mathf.Pow(startPosition.y - goalPosition.y, 2));
 
         /// <summary>
         /// the manhattan estimate
         /// </summary>
-        private float ManhattanEstimate(Vector2 startPosition, Vector2 goalPosition)
-        {
-            return (Mathf.Abs(startPosition.x - goalPosition.x) +
-                    Mathf.Abs(startPosition.y - goalPosition.y));
-        }
+        private float ManhattanEstimate(Vector2 startPosition, Vector2 goalPosition) => Mathf.Abs(startPosition.x - goalPosition.x) +
+                                                                                        Mathf.Abs(startPosition.y - goalPosition.y);
     }
 }

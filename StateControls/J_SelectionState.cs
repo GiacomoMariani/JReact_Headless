@@ -8,13 +8,13 @@ namespace JReact.StateControl
     /// this class represent a simple state that contains also a selected item
     /// </summary>
     /// <typeparam name="T">the type of selected object we want</typeparam>
-    public abstract class J_SelectionState<T> : J_State 
+    public abstract class J_SelectionState<T> : J_State
         where T : class
     {
         #region VALUES AND PROPERTIES
         //reference to the main control using the selection
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private  J_SimpleStateControl _stateControl;
-        
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_SimpleStateControl _stateControl;
+
         //the state to be sent on deselection
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State _deselectionState;
         //we add this if we want to deselect the element when we move out of the state (without deselecting)

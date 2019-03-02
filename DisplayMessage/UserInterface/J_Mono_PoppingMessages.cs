@@ -38,13 +38,14 @@ namespace JReact.ScreenMessage
         protected override void ActorUpdate(JMessage messageSent)
         {
             //instantiate a new message
-            var messageObject = Instantiate(_floatingPrefab, transform);
+            J_UiView_FloatingText messageObject = Instantiate(_floatingPrefab, transform);
             //setup the message 
             messageObject.PublishThisMessage(messageSent.MessageContent, _color, _direction, _secondsToComplete, _messageEase);
             //send it to the dictionary
             _messageDictionary.Add((messageSent, messageObject));
             //wait before removal if this is not a permanent message
-            Timing.RunCoroutine(WaitThenRemove((messageSent, messageObject)), Segment.FixedUpdate, GetInstanceID(), COROUTINE_PoppingMessagesTag);
+            Timing.RunCoroutine(WaitThenRemove((messageSent, messageObject)), Segment.FixedUpdate, GetInstanceID(),
+                                COROUTINE_PoppingMessagesTag);
         }
 
         //wait the amount of seconds, then remove the message
@@ -58,11 +59,12 @@ namespace JReact.ScreenMessage
         //used to remove one object
         private void RemoveOneMessage((JMessage, J_UiView_FloatingText) messageTuple)
         {
-            var messageView = messageTuple.Item2;
+            J_UiView_FloatingText messageView = messageTuple.Item2;
             _messageDictionary.Remove(messageTuple);
             //destroy the message
             Assert.IsNotNull(messageView,
                              $"{gameObject.name} something already destroyed the view of the message {messageTuple.Item1.MessageContent}");
+
             Destroy(messageView.gameObject);
         }
         #endregion

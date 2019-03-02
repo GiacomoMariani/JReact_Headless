@@ -25,7 +25,7 @@ namespace JReact.CloudBuild
             _manifest = (TextAsset) Resources.Load(ManifestNameTxt);
             Assert.IsNotNull(_manifest, $"Retrieved no manifest file from resource file: {ManifestNameTxt}");
             _manifestDictionary = JsonUtility.FromJson<Dictionary<string, object>>(_manifest.text);
-            Assert.IsNotNull(_manifestDictionary, $"no Dictionary found for manifest");
+            Assert.IsNotNull(_manifestDictionary, "no Dictionary found for manifest");
         }
 
         //gets a key
@@ -50,13 +50,13 @@ namespace JReact.CloudBuild
             if (_manifest == null) GetManifest();
             if (_manifest == null) return;
 
-
             JConsole.Log($"Build Manifest with {_manifestDictionary.Count} kvp", JLogTags.Build);
-            foreach (var kvp in _manifestDictionary)
+            foreach (KeyValuePair<string, object> kvp in _manifestDictionary)
             {
-                var value = (kvp.Value != null)
-                                ? kvp.Value.ToString()
-                                : "";
+                string value = kvp.Value != null
+                                   ? kvp.Value.ToString()
+                                   : "";
+
                 JConsole.Log($"Key: {kvp.Key}, Value: {value}", JLogTags.Build);
             }
         }

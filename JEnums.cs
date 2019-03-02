@@ -1,18 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace JReact
+﻿namespace JReact
 {
     //the direction, borders
-    public enum Direction
-    {
-        Up,
-        Right,
-        Down,
-        Left,
-        None
-    }
+    public enum Direction { Up, Right, Down, Left, None }
     //the type of conditions
     public enum OperatorType { And, Or }
 

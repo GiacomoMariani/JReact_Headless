@@ -15,19 +15,19 @@ namespace JReact.OdinDrawers
         protected override void DrawPropertyLayout(GUIContent label)
         {
             //get the value and draw the element
-            J_Fillable value = this.ValueEntry.SmartValue;
+            J_Fillable value = ValueEntry.SmartValue;
 
             //just shows the empty field if the SO is missing
             if (value == null)
             {
-                this.CallNextDrawer(label);
+                CallNextDrawer(label);
                 return;
             }
 
             //BOX START
             SirenixEditorGUI.BeginBox();
             // --------------- LINE 1 - Reference to the SO --------------- //
-            this.CallNextDrawer(label);
+            CallNextDrawer(label);
 
             // --------------- LINE 2 - LABELS AND CURRENT --------------- //
             Rect rect = EditorGUILayout.GetControlRect();
@@ -41,6 +41,7 @@ namespace JReact.OdinDrawers
             value.CurrentValue =
                 (int) SirenixEditorFields.SegmentedProgressBarField(rect.AlignCenterX(rect.width - 80f * 2 - 4), value.CurrentValue,
                                                                     value.Min, value.Max);
+
             value.Max = SirenixEditorFields.IntField(rect.AlignRight(80f), value.Max);
 
             // --------------- LINE 4 - ERROR IF SOMETHING IS NOT SET PROPERLY--------------- //

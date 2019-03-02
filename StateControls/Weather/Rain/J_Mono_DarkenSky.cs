@@ -1,8 +1,8 @@
-﻿using DG.Tweening;
+﻿using System.Collections.Generic;
+using DG.Tweening;
+using JReact.Sound;
 using MEC;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
-using JReact.Sound;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -29,7 +29,7 @@ namespace JReact.StateControl.Weather
 
         // --------------- SKY SETUP --------------- //
         [BoxGroup("Setup - Sky", true, true, 0), SerializeField, Range(0.00f, 0.25f)]
-        private float _clearAlpha = 0.0f;
+        private float _clearAlpha;
         [BoxGroup("Setup - Sky", true, true, 0), SerializeField, Range(0.25f, 0.99f)]
         private float _darkAlpha = .5f;
         [BoxGroup("Setup - Sky", true, true, 0), SerializeField] private float _secondsToGetDark = 1.0f;
@@ -55,7 +55,7 @@ namespace JReact.StateControl.Weather
         protected override void SanityChecks()
         {
             base.SanityChecks();
-            Assert.IsNotNull(DarkSky, $"{gameObject.name} requires a _darkSky");
+            Assert.IsNotNull(DarkSky,       $"{gameObject.name} requires a _darkSky");
             Assert.IsNotNull(_soundControl, $"{gameObject.name} requires a _soundControl");
             Assert.IsTrue(DarkSky.color.a <= 0.01,
                           $"{gameObject.name}- the alpha of the image {DarkSky.gameObject.name} should start at 0");
@@ -107,7 +107,6 @@ namespace JReact.StateControl.Weather
             _thunderTween = DarkSky.DOFade(_darkAlpha, _secondsToGetDark).SetEase<Tween>(_thunderCurve);
         }
         #endregion
-
 
         #region ABSTRACT IMPLEMENTATION
         protected override void EnterState() { DarkenSky(); }

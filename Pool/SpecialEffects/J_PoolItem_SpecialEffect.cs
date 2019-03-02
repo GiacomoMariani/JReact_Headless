@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
-using UnityEngine;
-using UnityEngine.Events;
 
 namespace JReact.Pool.SpecialEffect
 {
@@ -25,7 +23,7 @@ namespace JReact.Pool.SpecialEffect
         }
 
         protected virtual void InitThis() { _instanceId = GetInstanceID(); }
-        protected virtual void SanityChecks() { }
+        protected virtual void SanityChecks() {}
         #endregion
 
         #region ACTICATION AND DEACTIVATION
@@ -39,7 +37,6 @@ namespace JReact.Pool.SpecialEffect
             TriggerThisEffect();
             OnActivation?.Invoke(this);
         }
-
 
         /// <summary>
         /// an helper method if we want to time this effect

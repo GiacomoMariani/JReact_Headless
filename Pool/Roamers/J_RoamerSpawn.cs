@@ -23,10 +23,10 @@ namespace JReact.Pool.Roamer
         [BoxGroup("Setup", true, true, 0), SerializeField] private J_RoamerPool _roamerPool;
 
         // --------------- ROAMER SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private float _adjustmentOnZ = 0;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _secondsForSpawn = new Vector2(10f, 30f);
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _roamerSpeedRange = new Vector2(0.5f, 10);
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _raomerScale = new Vector2(1f, 1f);
+        [BoxGroup("Setup", true, true, 0), SerializeField] private float _adjustmentOnZ;
+        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _secondsForSpawn = new Vector2(10f,      30f);
+        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _roamerSpeedRange = new Vector2(0.5f,    10);
+        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _raomerScale = new Vector2(1f,           1f);
         [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _roamerLifetimeMinutes = new Vector2(1f, 1f);
 
         // --------------- STATE AND BOOK KEEPING --------------- //
@@ -51,7 +51,7 @@ namespace JReact.Pool.Roamer
         private void SanityChecks()
         {
             Assert.IsNotNull(_roamerPool, $"{name} requires a _roamerPool");
-            Assert.IsNotNull(_borders, $"{name} requires a _borders");
+            Assert.IsNotNull(_borders,    $"{name} requires a _borders");
         }
 
         /// <inheritdoc />
@@ -68,8 +68,10 @@ namespace JReact.Pool.Roamer
         private void ClearRoamers()
         {
             for (int i = 0; i < _roamers.Count; i++)
+            {
                 if (_roamers[i] != null)
                     _roamers[i].DestroyThis();
+            }
 
             _roamers.Clear();
         }
@@ -87,12 +89,13 @@ namespace JReact.Pool.Roamer
 
             // --------------- ROAMER CREATION --------------- //
             //instantiate a roamer, on the given position
-            var roamer = _roamerPool.GetElementFromPool();
+            J_Mono_Roamer roamer = _roamerPool.GetElementFromPool();
             roamer.transform.position = positionOfSpawn;
             if (!roamer.gameObject.activeSelf) roamer.gameObject.SetActive(true);
             //injecting the wind and the start speed
             roamer.Setup(_windControl, _borders, _roamerSpeedRange.GetRandomValue(), _raomerScale.GetRandomValue(),
-                              _roamerLifetimeMinutes.GetRandomValue());
+                         _roamerLifetimeMinutes.GetRandomValue());
+
             // --------------- WAIT --------------- //
             //wait then spawn again
             yield return Timing.WaitForSeconds(_secondsForSpawn.GetRandomValue());
@@ -127,8 +130,8 @@ namespace JReact.Pool.Roamer
             }
         }
 
-        private float RandomHorizontalPosition() { return Random.Range(_borders.LeftBorder, _borders.RightBorder); }
-        private float RandomVerticalPosition() { return Random.Range(_borders.DownBorder, _borders.UpBorder); }
+        private float RandomHorizontalPosition() => Random.Range(_borders.LeftBorder, _borders.RightBorder);
+        private float RandomVerticalPosition() => Random.Range(_borders.DownBorder,   _borders.UpBorder);
         #endregion
     }
 }

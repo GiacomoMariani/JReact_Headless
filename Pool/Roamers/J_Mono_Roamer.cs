@@ -68,6 +68,7 @@ namespace JReact.Pool.Roamer
             if (lifeTimeMins > 0)
                 Timing.RunCoroutine(Timeout(lifeTimeMins * JConstants.SecondsInMinute).CancelWith(gameObject),
                                     Segment.SlowUpdate, _instanceId, COROUTINE_Timeout);
+
             _windControl.Subscribe(FollowWind);
         }
 
@@ -82,9 +83,9 @@ namespace JReact.Pool.Roamer
         private void FollowWind(Vector2 windSpeed)
         {
             //calculate adaption time
-            var adaptionTime = _adaptionTimeRange.GetRandomValue();
+            float adaptionTime = _adaptionTimeRange.GetRandomValue();
             //calculate the new speed
-            var newSpeed = windSpeed * _speedMultiplier;
+            Vector2 newSpeed = windSpeed * _speedMultiplier;
             //we run the move coroutine giving it a layer and a tag
             Timing.RunCoroutine(UpdateDirection(newSpeed, adaptionTime).CancelWith(gameObject),
                                 Segment.FixedUpdate, _instanceId, COROUTINE_Adjust);
@@ -94,14 +95,14 @@ namespace JReact.Pool.Roamer
         private IEnumerator<float> UpdateDirection(Vector2 newDirection, float timeToChange)
         {
             //the time passed for this current step
-            var elapsedTime = 0f;
+            float elapsedTime = 0f;
             //the starting position is the position of the transform at start
-            var startingPos = _transformMover.MoveDirection;
+            Vector2 startingPos = _transformMover.MoveDirection;
             //keep moving until we reach the time
             while (elapsedTime < timeToChange)
             {
                 //moving with a lerp
-                var currentDirection = Vector3.Lerp(startingPos, newDirection, elapsedTime / timeToChange);
+                Vector3 currentDirection = Vector3.Lerp(startingPos, newDirection, elapsedTime / timeToChange);
                 //set the new direction on the control
                 _transformMover.SetFixedDirection(currentDirection);
                 //adding the elapsed time
@@ -118,13 +119,10 @@ namespace JReact.Pool.Roamer
         }
 
         //check if we are out of the borders
-        private bool OutOfBorders(Vector2 positionToCheck, J_GameBorders borders)
-        {
-            return (positionToCheck.x > borders.RightBorder ||
-                    positionToCheck.x < borders.LeftBorder  ||
-                    positionToCheck.y > borders.UpBorder    ||
-                    positionToCheck.y < borders.DownBorder);
-        }
+        private bool OutOfBorders(Vector2 positionToCheck, J_GameBorders borders) => positionToCheck.x > borders.RightBorder ||
+                                                                                     positionToCheck.x < borders.LeftBorder  ||
+                                                                                     positionToCheck.y > borders.UpBorder    ||
+                                                                                     positionToCheck.y < borders.DownBorder;
         #endregion
 
         #region TIMEOUT AND DESTROY COMMANDS

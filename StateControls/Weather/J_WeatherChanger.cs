@@ -1,6 +1,6 @@
-﻿using MEC;
+﻿using System.Collections.Generic;
+using MEC;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -21,7 +21,7 @@ namespace JReact.StateControl.Weather
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_WeatherStates _weatherStateControl;
 
         // --------------- STATE --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _allWeatherWeights = 0;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _allWeatherWeights;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
         #endregion
 

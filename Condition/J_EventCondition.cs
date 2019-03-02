@@ -15,7 +15,7 @@ namespace JReact.Conditions
         //these events set the condition to false
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Event[] _falseEvents;
         //used to auto reset after a check
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _autoReset = false;
+        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _autoReset;
         #endregion
 
         #region INITIALIZE AND RESET

@@ -34,7 +34,7 @@ namespace JReact.TimeProgress
             if (!IsActive) yield break;
 
             //count the time before the tick
-            var realTimePassed = 0f;
+            float realTimePassed = 0f;
 
             //wait the tick
             while (realTimePassed < _tickLengthInSeconds)

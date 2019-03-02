@@ -16,13 +16,12 @@ namespace JReact
         private event JGenericDelegate<int> OnMinChanged;
 
         //optionally set a starting value
-        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startAmount = 0;
-        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startMax    = 0;
-        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startMin    = 0;
+        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startAmount;
+        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startMax;
+        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startMin;
 
         private int _currentAmount;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
-        public int CurrentValue
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int CurrentValue
         {
             get => _currentAmount;
             set
@@ -38,8 +37,7 @@ namespace JReact
             }
         }
         private int _min;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
-        public int Min
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Min
         {
             get => _min;
             set
@@ -56,8 +54,7 @@ namespace JReact
         }
 
         private int _max;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
-        public int Max
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Max
         {
             get => _max;
             set
@@ -74,8 +71,7 @@ namespace JReact
         }
 
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => Max - CurrentValue;
-        private string CurrentState
-            => $"{name}. Min {Min} - Max {Max} - Current {CurrentValue}";
+        private string CurrentState => $"{name}. Min {Min} - Max {Max} - Current {CurrentValue}";
         #endregion
 
         #region COMMANDS
@@ -150,28 +146,28 @@ namespace JReact
         /// </summary>
         /// <param name="amount">the amount we want to add</param>
         /// <returns>returns true if the request is valid</returns>
-        public bool CanAdd(int amount) { return (CurrentValue + amount) <= Max; }
+        public bool CanAdd(int amount) => CurrentValue + amount <= Max;
 
         /// <summary>
         /// checks if there's enough value
         /// </summary>
         /// <param name="amount">the amount we want to remove</param>
         /// <returns>returns true if we have anough/returns>
-        public bool HasEnough(int amount) { return CurrentValue >= amount; }
+        public bool HasEnough(int amount) => CurrentValue >= amount;
 
-        public bool CanSetMaxCapacity(int maxToSet) { return CurrentValue <= maxToSet && Min   <= maxToSet; }
-        public bool CanSetMinCapacity(int minToSet) { return CurrentValue >= minToSet && Max   >= minToSet; }
-        public bool CanSetValue(int       value)    { return value        >= Min      && value <= Max; }
+        public bool CanSetMaxCapacity(int maxToSet) => CurrentValue <= maxToSet && Min   <= maxToSet;
+        public bool CanSetMinCapacity(int minToSet) => CurrentValue >= minToSet && Max   >= minToSet;
+        public bool CanSetValue(int value) => value                 >= Min      && value <= Max;
         #endregion
 
         #region SUBSCRIBERS AND LISTENERS
-        public virtual void Subscribe(JGenericDelegate<int>   action) { OnValueChange += action; }
+        public virtual void Subscribe(JGenericDelegate<int> action) { OnValueChange   += action; }
         public virtual void UnSubscribe(JGenericDelegate<int> action) { OnValueChange -= action; }
 
-        public virtual void SubscribeToMaxCapacity(JGenericDelegate<int>   action) { OnMaxChanged += action; }
+        public virtual void SubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged   += action; }
         public virtual void UnSubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged -= action; }
 
-        public virtual void SubscribeToMinCapacity(JGenericDelegate<int>   action) { OnMinChanged += action; }
+        public virtual void SubscribeToMinCapacity(JGenericDelegate<int> action) { OnMinChanged   += action; }
         public virtual void UnSubscribeToMinCapacity(JGenericDelegate<int> action) { OnMinChanged -= action; }
 
         public virtual void ResetThis()

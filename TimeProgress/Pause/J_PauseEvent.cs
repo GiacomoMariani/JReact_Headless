@@ -1,5 +1,5 @@
-﻿using Sirenix.OdinInspector;
-using System;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace JReact.TimeProgress.Pause
@@ -23,8 +23,8 @@ namespace JReact.TimeProgress.Pause
 
         // --------------- VALUES --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected int _startTimeUnix;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected int _timeOffline = 0;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected bool _isPaused = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected int _timeOffline;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected bool _isPaused;
         internal bool IsPaused => _isPaused;
         #endregion
 
@@ -87,7 +87,7 @@ namespace JReact.TimeProgress.Pause
         /// calculates the current time
         /// </summary>
         /// <returns>returns the date from the system</returns>
-        protected virtual DateTime GetCurrentDate() { return DateTime.UtcNow; }
+        protected virtual DateTime GetCurrentDate() => DateTime.UtcNow;
 
         /// <summary>
         /// calculates the time at the start of pause, by default it gets it from the system
@@ -114,7 +114,7 @@ namespace JReact.TimeProgress.Pause
         protected virtual void ResetThis()
         {
             _startTimeUnix = 0;
-            _isPaused    = false;
+            _isPaused      = false;
         }
         #endregion
     }

@@ -20,7 +20,9 @@ namespace JReact
         }
 
         protected virtual void SanityChecks()
-        { Assert.IsNotNull(_stateEvent, $"This object ({gameObject.name}) needs an element for the value _stateEvent"); }
+        {
+            Assert.IsNotNull(_stateEvent, $"This object ({gameObject.name}) needs an element for the value _stateEvent");
+        }
 
         protected virtual void InitThis() { _stateEvent.Subscribe(CallEvent); }
         #endregion

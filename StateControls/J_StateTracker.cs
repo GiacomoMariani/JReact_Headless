@@ -16,8 +16,7 @@ namespace JReact.StateControl
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxStatesToTrack = 5;
 
         //used to get the previous state
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
-        public J_State PreviousState
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public J_State PreviousState
         {
             get
             {

@@ -18,7 +18,7 @@ namespace JReact.StateControl
         /// </summary>
         /// <param name="selectedItem"></param>
         protected abstract void SelectionUpdate(iSelectable<T> selectedItem);
-        
+
         /// <summary>
         /// what happens when player exit the selection
         /// </summary>

@@ -37,7 +37,7 @@ namespace JReact.Selection
         public void Select(T item) { Selected = item; }
 
         /// any logic to be applied on the selected item
-        protected virtual void ActOnSelection(T item) { }
+        protected virtual void ActOnSelection(T item) {}
 
         /// <summary>
         /// deselects the selected item
@@ -50,7 +50,7 @@ namespace JReact.Selection
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<T> actionToAdd) { OnSelect += actionToAdd; }
+        public void Subscribe(JGenericDelegate<T> actionToAdd) { OnSelect      += actionToAdd; }
         public void UnSubscribe(JGenericDelegate<T> actionToRemove) { OnSelect -= actionToRemove; }
         #endregion
     }

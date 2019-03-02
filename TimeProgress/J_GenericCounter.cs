@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace JReact.TimeProgress
 {
@@ -19,7 +18,7 @@ namespace JReact.TimeProgress
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected int _objectId = -1;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _destroyAtDisable = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _destroyAtDisable;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float ThisDeltaTime { get; private set; }
         #endregion
 
@@ -61,10 +60,7 @@ namespace JReact.TimeProgress
 
         #region INITIALIZATION
         //make sure this is setup correctly, used in subclasses
-        protected virtual bool SanityChecks()
-        {
-            return true;
-        }
+        protected virtual bool SanityChecks() => true;
         #endregion
 
         #region COUNTING

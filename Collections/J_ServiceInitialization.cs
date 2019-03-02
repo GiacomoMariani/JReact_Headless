@@ -36,6 +36,7 @@ namespace JReact.Collections
                 JConsole.Log($"{name} initialize with {_services.Length} services", JLogTags.Collection, this);
             else
                 JConsole.Log($"{name} de initialize with {_services.Length} services", JLogTags.Collection, this);
+
             SanityChecks();
 
             //process all states

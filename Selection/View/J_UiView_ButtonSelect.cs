@@ -35,7 +35,7 @@ namespace JReact.Selection
         }
 
         protected virtual void SanityChecks() { Assert.IsNotNull(ThisButton, $"{gameObject.name} requires a Button"); }
-        protected virtual void InitThis() { }
+        protected virtual void InitThis() {}
         private void ButtonCommand() { _ThisSelector.Select(_actorElement); }
 
         #region LISTENERS

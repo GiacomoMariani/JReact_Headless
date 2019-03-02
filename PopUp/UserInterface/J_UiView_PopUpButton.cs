@@ -17,12 +17,12 @@ namespace JReact.PopUp
         {
             get
             {
-                if (_buttonType      == PopUpButtonType.Confirm) return _popUp.Confirm;
-                else if (_buttonType == PopUpButtonType.Deny) return _popUp.Deny;
-                else return null;
+                if (_buttonType == PopUpButtonType.Confirm) return _popUp.Confirm;
+                if (_buttonType == PopUpButtonType.Deny) return _popUp.Deny;
+                return null;
             }
         }
-        
+
         // --------------- METHODS --------------- //
         protected override void ButtonCommand() { _commandAction?.Invoke(); }
     }

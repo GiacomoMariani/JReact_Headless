@@ -18,7 +18,7 @@ namespace JReact.Pool
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] internal T NextItemInPool { get; private set; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_Pool<T> _poolOwner;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _inPool = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _inPool;
         #endregion
 
         #region POOL METHODS

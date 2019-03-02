@@ -33,7 +33,7 @@ namespace JReact
             if (!AllParentsValid()) return null;
 
             // --------------- CREATION WITH NAME --------------- //
-            var transformToSpawn = new GameObject(name).transform;
+            Transform transformToSpawn = new GameObject(name).transform;
 
             // --------------- PARENTING --------------- //
             if (Parent != null) transformToSpawn.SetParent(Parent.ThisTransform);
@@ -45,7 +45,7 @@ namespace JReact
         //used to avoid a circular parenting
         private bool AllParentsValid()
         {
-            var currentCheck = Parent;
+            J_TransformGenerator currentCheck = Parent;
             while (currentCheck != null)
             {
                 if (currentCheck != this)

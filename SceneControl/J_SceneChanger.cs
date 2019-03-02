@@ -1,6 +1,6 @@
-﻿using MEC;
+﻿using System.Collections.Generic;
+using MEC;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,7 +17,7 @@ namespace JReact.SceneControls
         private event JFloatDelegate OnLoadProgress;
 
         //to make sure we save one first scene
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isInitialized = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isInitialized;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Scene _currentScene;
         public Scene CurrentScene { get => _currentScene; private set => _currentScene = value; }
         #endregion
@@ -54,7 +54,7 @@ namespace JReact.SceneControls
         {
             // The Application loads the Scene in the background as the current Scene runs.
             // This is particularly good for creating loading screens.
-            var asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
             SceneManager.activeSceneChanged += SceneChanged;
 
             // Wait until the asynchronous scene fully loads
@@ -71,6 +71,7 @@ namespace JReact.SceneControls
         {
             JConsole.Log($"{name} changed from scene -{oldScene.name}- to scene -{newScene.name}-",
                          JLogTags.SceneManager, this);
+
             SceneManager.activeSceneChanged -= SceneChanged;
             CurrentScene                    =  newScene;
             OnSceneChange?.Invoke(oldScene, newScene);

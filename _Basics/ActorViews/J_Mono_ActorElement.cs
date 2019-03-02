@@ -27,15 +27,24 @@ namespace JReact
         #region ABSTRACT IMPLEMENTATION
         //change and remove actor methods
         protected abstract void ActorUpdate(T element);
-        protected virtual void ActorIsRemoved(T element) { }
+        protected virtual void ActorIsRemoved(T element) {}
         #endregion
 
         #region UNITY EVENTS
-        protected virtual void OnEnable() { if (_actorElement != null) ActorUpdate(_actorElement); }
-        protected virtual void OnDisable() { if (_actorElement != null) ActorIsRemoved(_actorElement); }
-        protected virtual void OnDestroy() { if (_actorElement != null) ActorIsRemoved(_actorElement); }
+        protected virtual void OnEnable()
+        {
+            if (_actorElement != null) ActorUpdate(_actorElement);
+        }
+
+        protected virtual void OnDisable()
+        {
+            if (_actorElement != null) ActorIsRemoved(_actorElement);
+        }
+
+        protected virtual void OnDestroy()
+        {
+            if (_actorElement != null) ActorIsRemoved(_actorElement);
+        }
         #endregion
     }
 }
-
-

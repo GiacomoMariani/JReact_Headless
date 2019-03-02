@@ -24,14 +24,14 @@ namespace JReact.TimeProgress
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _timeRequiredInSeconds;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public virtual float SecondsFromStart { get; private set; }
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool Paused { get; private set; } = false;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; } = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool Paused { get; private set; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; }
 
         // --------------- BOOK KEEPING --------------- //
-        [BoxGroup("Book Keeping", true, true, 10), ReadOnly, ShowInInspector]
-        public float ProgressPercentage => SecondsFromStart / _timeRequiredInSeconds;
-        [BoxGroup("Book Keeping", true, true, 10), ReadOnly, ShowInInspector]
-        public float RemainingSeconds => _timeRequiredInSeconds - SecondsFromStart;
+        [BoxGroup("Book Keeping", true, true, 10), ReadOnly, ShowInInspector] public float ProgressPercentage
+            => SecondsFromStart / _timeRequiredInSeconds;
+        [BoxGroup("Book Keeping", true, true, 10), ReadOnly, ShowInInspector] public float RemainingSeconds
+            => _timeRequiredInSeconds - SecondsFromStart;
         #endregion
 
         #region SETUP METHODS
@@ -49,6 +49,7 @@ namespace JReact.TimeProgress
             if (_identifier != null)
                 JConsole.Warning($"{name} has already an identifier ({_identifier.name}. Cannot set {identifier.name})",
                                  JLogTags.TimeProgress, this);
+
             if (_identifier == null) _identifier = identifier;
         }
 
@@ -58,6 +59,7 @@ namespace JReact.TimeProgress
             if (_timer != null)
                 JConsole.Warning($"{name} has already a timer ({_timer.name}. Cannot set {timer.name})",
                                  JLogTags.TimeProgress, this);
+
             if (_timer == null) _timer = timer;
         }
         #endregion
@@ -118,6 +120,7 @@ namespace JReact.TimeProgress
             Assert.IsNotNull(_timer, $"{name} has not timer. Command canceled.");
             Assert.IsTrue(secondsToComplete > 0,
                           $"{name} requires positive secondsToComplete. Received: {secondsToComplete}.Command canceled.");
+
             Assert.IsFalse(IsRunning, $"{name} is already started. Command canceled.");
             return secondsToComplete > 0 && !IsRunning && _timer != null;
         }

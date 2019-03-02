@@ -11,10 +11,9 @@ namespace JReact
         private event JGenericDelegate<T> OnPropertyChange;
 
         //optionally set a starting value
-        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected T _startValue = default(T);
+        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected T _startValue;
         protected T _currentValue;
-        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly]
-        public virtual T CurrentValue
+        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly] public virtual T CurrentValue
         {
             get => _currentValue;
             set

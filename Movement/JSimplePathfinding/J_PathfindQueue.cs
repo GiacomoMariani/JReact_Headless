@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
-using System;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace JReact.Pathfinding
 {
@@ -16,10 +16,9 @@ namespace JReact.Pathfinding
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_AStar<T> _algorithm;
 
         // --------------- STATE --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
-        private Queue<PathRequest> _pathQueue = new Queue<PathRequest>();
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<PathRequest> _pathQueue = new Queue<PathRequest>();
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private PathRequest _current;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isProcessing = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isProcessing;
         #endregion
 
         #region PATHFIND METHODS
@@ -39,7 +38,7 @@ namespace JReact.Pathfinding
         }
 
         //start or enqueue the request
-        void TryFindNext()
+        private void TryFindNext()
         {
             //stop if still processing or if we have no further elements to search
             if (_isProcessing || _pathQueue.Count <= 0) return;
@@ -49,9 +48,8 @@ namespace JReact.Pathfinding
             _algorithm.CalculatePath(_current.start, _current.goal, _current.getCost, _current.isAccessible, CompleteRequest);
         }
 
-
         //sends when the request is complete
-        void CompleteRequest(List<T> path)
+        private void CompleteRequest(List<T> path)
         {
             _isProcessing = false;
             _current.callback(path);
@@ -61,8 +59,8 @@ namespace JReact.Pathfinding
 
         #region PATH REQUEST
         //a request for the path
-        [System.Serializable]
-        struct PathRequest
+        [Serializable]
+        private struct PathRequest
         {
             public T start;
             public T goal;
@@ -83,6 +81,7 @@ namespace JReact.Pathfinding
 
         #region DISABLE AND RESET
         protected virtual void OnDisable() { ResetThis(); }
+
         private void ResetThis()
         {
             _pathQueue.Clear();

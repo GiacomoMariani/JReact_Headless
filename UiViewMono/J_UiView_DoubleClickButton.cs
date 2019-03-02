@@ -10,8 +10,7 @@ namespace JReact.UiView
     {
         #region FIELDS AND PROPERTIES
         //the time span to accept the interval
-        [BoxGroup("State", true, true, 5), SerializeField, Range(0.1f, 3.0f)]
-        private float _maxIntervalBetweenPress = 2.0f;
+        [BoxGroup("State", true, true, 5), SerializeField, Range(0.1f, 3.0f)] private float _maxIntervalBetweenPress = 2.0f;
 
         //the last pressed time
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private float _lastTapTime;
@@ -51,7 +50,7 @@ namespace JReact.UiView
         /// <summary>
         /// this is used if we want to apply somethin at the first press
         /// </summary>
-        protected virtual void FirstPress() { }
+        protected virtual void FirstPress() {}
         #endregion
     }
 }

@@ -14,7 +14,7 @@ namespace JReact
         public void RunAllTests()
         {
             _testables = GetComponentsInChildren<iTestable>();
-            foreach (var test in _testables)
+            foreach (iTestable test in _testables)
                 test.RunTest();
         }
 
@@ -22,7 +22,7 @@ namespace JReact
         public void StopAllTests()
         {
             _testables = GetComponentsInChildren<iTestable>();
-            foreach (var test in _testables)
+            foreach (iTestable test in _testables)
                 test.StopTest();
         }
     }

@@ -14,19 +14,23 @@ namespace JReact.UiView
         #region FIELDS AND PROPERTIES
         //reference to the text
         private Image _thisImage;
-        [BoxGroup("Base", true, true, -5), ReadOnly]
-        protected Image ThisImage
-        { get { if (_thisImage == null) _thisImage = GetComponent<Image>(); return _thisImage; } }
+        [BoxGroup("Base", true, true, -5), ReadOnly] protected Image ThisImage
+        {
+            get
+            {
+                if (_thisImage == null) _thisImage = GetComponent<Image>();
+                return _thisImage;
+            }
+        }
 
         //a reference to activate and deactivate the image
         private bool _isActive;
-        [BoxGroup("Base", true, true, -5), ReadOnly]
-        public bool IsActive
+        [BoxGroup("Base", true, true, -5), ReadOnly] public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             protected set
             {
-                _isActive = value;
+                _isActive         = value;
                 ThisImage.enabled = value;
             }
         }
@@ -39,7 +43,7 @@ namespace JReact.UiView
             SanityChecks();
         }
 
-        protected virtual void InitThis() { }
+        protected virtual void InitThis() {}
         protected virtual void SanityChecks() { Assert.IsNotNull(ThisImage, "Requires a TextMeshProUGUI: " + gameObject); }
         #endregion
 

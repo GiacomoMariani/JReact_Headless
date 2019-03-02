@@ -1,4 +1,3 @@
-using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -27,7 +26,7 @@ namespace JReact.ScreenMessage
         private void TrySettingThisElement(JMessage messageSent)
         {
             //publish only desired messages
-            if (_desiredTypes.ArrayContains(messageSent.MessageId)) 
+            if (_desiredTypes.ArrayContains(messageSent.MessageId))
                 UpdateElement(messageSent);
         }
         #endregion

@@ -18,7 +18,7 @@ namespace JReact.StateControl.LevelSystem
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int PreviousExperience { get; private set; }
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int TotalExperienceNeeded
             => PreviousExperience + ExperienceNeeded;
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public bool IsMaxLevel { get; private set; } = false;
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public bool IsMaxLevel { get; private set; }
 
         private void SanityCheck() { Assert.IsTrue(ExperienceNeeded > 0, "One level experience is not positive. Level: " + name); }
 

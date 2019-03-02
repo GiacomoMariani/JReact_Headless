@@ -16,7 +16,7 @@ namespace JReact.ScreenMessage
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageId _defaultIdentifier;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private JMessage _message;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _currentId = 0;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _currentId;
         #endregion
 
         #region MAIN COMMAND - SEND

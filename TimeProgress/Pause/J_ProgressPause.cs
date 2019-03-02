@@ -38,6 +38,7 @@ namespace JReact.TimeProgress.Pause
         {
             if (_pauseEvent.IsPaused &&
                 !Paused) SetPause(true);
+
             _pauseEvent.SubscribeToPauseStart(Pause);
             _pauseEvent.SubscribeToPauseEnd(UnPause);
         }

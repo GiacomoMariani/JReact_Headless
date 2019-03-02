@@ -20,7 +20,7 @@ namespace JReact.ScreenMessage
         [BoxGroup("Setup", true, true, 0), SerializeField, Range(0.01f, 0.5f)] private float _secondsForType = 0.1f;
 
         // --------------- STATE --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isPrinting = false;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isPrinting;
         public bool IsPrinting
         {
             get => _isPrinting;
@@ -58,7 +58,7 @@ namespace JReact.ScreenMessage
         private IEnumerator<float> PrintCurrent(JMessage message)
         {
             //store and validate the message
-            var messageToPrint = message.MessageContent;
+            string messageToPrint = message.MessageContent;
             if (string.IsNullOrEmpty(messageToPrint)) yield break;
             //reset the print string
             _stringMessage.ResetThis();

@@ -26,14 +26,14 @@ namespace JReact.StateControl.LevelSystem
                 OnGain?.Invoke(_currentExperience);
             }
         }
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public bool IsActive { get; private set; } = false;
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public bool IsActive { get; private set; }
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int Max
             => _levelProgress.CurrentLevelInfo.ExperienceNeeded;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private bool _CanGainExperience
             => !_levelProgress.MaxLevelReached;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => Max - CurrentValue;
 
-        [BoxGroup("Debug", true, true, 1000), SerializeField] private bool _debug = false;
+        [BoxGroup("Debug", true, true, 1000), SerializeField] private bool _debug;
         #endregion
 
         #region CREATION
@@ -56,7 +56,7 @@ namespace JReact.StateControl.LevelSystem
 
             SanityChecks();
 
-            IsActive      = true;
+            IsActive     = true;
             CurrentValue = 0;
 
             _levelProgress.Subscribe(LevelUpdate);
@@ -71,7 +71,6 @@ namespace JReact.StateControl.LevelSystem
         }
         #endregion
 
-        
         #region EXPERIENCE PROGRESS
         /// <summary>
         /// grants an amount of experience to the player
@@ -118,6 +117,7 @@ namespace JReact.StateControl.LevelSystem
         {
             Assert.IsTrue(Max > 0,
                           $"{name} max experience needs to be higher than 0 for {_levelProgress.CurrentLevelInfo.name}. Value {Max}");
+
             if (Max <= 0) return false;
             Assert.IsTrue(amountToAdd > 0, $"{name} requires a positive value. Value: {amountToAdd}");
             if (amountToAdd <= 0) return false;

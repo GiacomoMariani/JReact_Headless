@@ -1,6 +1,6 @@
-﻿using Sirenix.OdinInspector;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using JReact.Collections;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -29,10 +29,10 @@ namespace JReact.UiView.Collections
         protected virtual void SanityChecks()
         {
             Assert.IsNotNull(_PrefabActor, $"{gameObject.name} requires a _PrefabActor");
-            Assert.IsNotNull(_Collection, $"{gameObject.name} requires a _Collection");
+            Assert.IsNotNull(_Collection,  $"{gameObject.name} requires a _Collection");
         }
 
-        protected virtual void InitThis() { }
+        protected virtual void InitThis() {}
         #endregion
 
         #region VIEW UPDATER
@@ -43,7 +43,7 @@ namespace JReact.UiView.Collections
                 Add(_Collection[i]);
         }
 
-        protected virtual void CloseThis() { }
+        protected virtual void CloseThis() {}
 
         private void Add(T item)
         {
@@ -51,7 +51,7 @@ namespace JReact.UiView.Collections
             if (!WantToShowElement(item)) return;
             // --------------- VIEW CREATION --------------- //
             //Instantiate => updated => track on dictionary
-            var newUiView = Instantiate(_PrefabActor, transform);
+            J_Mono_Actor<T> newUiView = Instantiate(_PrefabActor, transform);
             newUiView.UpdateElement(item);
             _trackedElements[item] = newUiView;
             //add further adjustments here
@@ -59,10 +59,10 @@ namespace JReact.UiView.Collections
         }
 
         //used to decide if we want to hide some element
-        protected virtual bool WantToShowElement(T item) { return !_trackedElements.ContainsKey(item); }
+        protected virtual bool WantToShowElement(T item) => !_trackedElements.ContainsKey(item);
 
         //an helper method if we want to apply further elements
-        protected virtual void AddedView(T itemAdded) { }
+        protected virtual void AddedView(T itemAdded) {}
 
         private void Remove(T itemRemoved)
         {
@@ -72,7 +72,7 @@ namespace JReact.UiView.Collections
         }
 
         //further adjustments if we want to remove a view
-        protected virtual void RemovedView(T itemRemoved) { }
+        protected virtual void RemovedView(T itemRemoved) {}
         #endregion
 
         #region LISTENERS

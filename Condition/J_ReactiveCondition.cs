@@ -1,7 +1,4 @@
-using System;
 using Sirenix.OdinInspector;
-using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace JReact.Conditions
 {
@@ -10,10 +7,12 @@ namespace JReact.Conditions
     /// </summary>
     public abstract class J_ReactiveCondition : J_Service, iObservableValue<bool>
     {
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
-        private J_ReactiveBool _condition;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
-        public bool CurrentValue { get => _condition.CurrentValue; set => _condition.CurrentValue = value; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_ReactiveBool _condition;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool CurrentValue
+        {
+            get => _condition.CurrentValue;
+            set => _condition.CurrentValue = value;
+        }
 
         public static T CreateCondition<T>()
             where T : J_ReactiveCondition
@@ -54,8 +53,8 @@ namespace JReact.Conditions
         public void UnSubscribe(JGenericDelegate<bool> action) { _condition.UnSubscribe(action); }
 
         #region OPERATORS
-        public static bool operator true(J_ReactiveCondition item) { return item.CurrentValue; }
-        public static bool operator false(J_ReactiveCondition item) { return !item.CurrentValue; }
+        public static bool operator true(J_ReactiveCondition item) => item.CurrentValue;
+        public static bool operator false(J_ReactiveCondition item) => !item.CurrentValue;
         #endregion
     }
 }

@@ -54,7 +54,7 @@ namespace JReact.TimeProgress
             JConsole.Log($"Loop starts on {gameObject.name}", JLogTags.TimeProgress, this);
             IsActive = true;
             _unityEvents_AtStart.Invoke();
-            
+
             // --------------- PROGRESS SET --------------- //
             Assert.IsTrue(!_progressEvent.IsRunning, $"{gameObject.name} loop progress -{_progressEvent.name}- was already running.");
             _progressEvent.SubscribeToComplete(TriggerThisLoop);

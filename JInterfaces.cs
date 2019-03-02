@@ -21,7 +21,7 @@
     {
         void ResetThis();
     }
-    
+
     public interface iDestroyable
     {
         void DestroyThis();

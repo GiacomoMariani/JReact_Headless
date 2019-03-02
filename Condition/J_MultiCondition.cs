@@ -40,7 +40,7 @@ namespace JReact.Conditions
         //checks AND conditions
         private void AndOperator()
         {
-            CurrentValue = RequiresAllCondition(_trueConditions, true) &&
+            CurrentValue = RequiresAllCondition(_trueConditions,  true) &&
                            RequiresAllCondition(_falseConditions, false);
         }
 
@@ -48,8 +48,10 @@ namespace JReact.Conditions
         {
             //check all true
             for (int i = 0; i < collectionToCheck.Length; i++)
+            {
                 if (collectionToCheck[i].CurrentValue != expectedValue)
                     return false;
+            }
 
             return true;
         }
@@ -58,7 +60,7 @@ namespace JReact.Conditions
         #region OR
         private void OrOperator()
         {
-            CurrentValue = RequiresOneCondition(_trueConditions, true) ||
+            CurrentValue = RequiresOneCondition(_trueConditions,  true) ||
                            RequiresOneCondition(_falseConditions, false);
         }
 
@@ -67,8 +69,10 @@ namespace JReact.Conditions
         {
             //check all true
             for (int i = 0; i < collectionToCheck.Length; i++)
+            {
                 if (collectionToCheck[i].CurrentValue == expectedValue)
                     return true;
+            }
 
             return false;
         }

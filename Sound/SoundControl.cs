@@ -10,4 +10,3 @@ namespace JReact.Sound
         public abstract void PlaySound(string sound);
     }
 }
-

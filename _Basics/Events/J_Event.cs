@@ -13,8 +13,7 @@ namespace JReact
         private event JAction OnEnter;
 
         //this is the property we want to track
-        [ButtonGroup("Commands", 200), Button("Activate", ButtonSizes.Medium)]
-        public virtual void Activate() { OnEnter?.Invoke(); }
+        [ButtonGroup("Commands", 200), Button("Activate", ButtonSizes.Medium)] public virtual void Activate() { OnEnter?.Invoke(); }
 
         //a way to subscribe and unsubscribe to this event
         public void Subscribe(JAction actionToSubscribe) { OnEnter   += actionToSubscribe; }

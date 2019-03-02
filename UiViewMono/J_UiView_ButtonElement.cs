@@ -21,7 +21,7 @@ namespace JReact.UiView
                 return _thisButton;
             }
         }
-        
+
         #region INITIALIZATION
         //initialization
         private void Awake()
@@ -31,7 +31,7 @@ namespace JReact.UiView
         }
 
         //element used for initialization
-        protected virtual void InitThis() { }
+        protected virtual void InitThis() {}
 
         //sanity checks
         protected virtual void SanityChecks() { Assert.IsNotNull(ThisButton, "Requires a Button: " + gameObject); }
@@ -39,7 +39,7 @@ namespace JReact.UiView
 
         #region PRECHECKS
         //this is used in case we want to apply any condition, as default it is true
-        protected virtual bool CanBePressed() { return true; }
+        protected virtual bool CanBePressed() => true;
 
         //try pressing the button, send the command if the button can be pressed
         private void TryPressButton()

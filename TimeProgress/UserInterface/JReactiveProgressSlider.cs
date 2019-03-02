@@ -29,6 +29,7 @@ namespace JReact.TimeProgress
             //setting the base values
             Assert.IsTrue(Math.Abs(ThisSlider.minValue) < JConstants.GeneralFloatTolerance,
                           "Slider min value must be 0");
+
             Assert.IsTrue(Math.Abs(ThisSlider.maxValue - 1.0f) < JConstants.GeneralFloatTolerance,
                           "Slider max value must be 1");
         }

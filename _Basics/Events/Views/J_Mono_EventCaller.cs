@@ -13,8 +13,7 @@ namespace JReact
     {
         #region FIELD AND PROPERTIES
         //the possible condition to cancel the event
-        [BoxGroup("Setup", true, true, 5), SerializeField, AssetsOnly]
-        private J_ReactiveBool[] _conditions;
+        [BoxGroup("Setup", true, true, 5), SerializeField, AssetsOnly] private J_ReactiveBool[] _conditions;
         //if we desire to launch this at startup
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _launchAtAwake;
         //the events where we want to send this
