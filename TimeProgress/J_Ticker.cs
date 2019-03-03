@@ -10,7 +10,7 @@ namespace JReact.TimeProgress
     /// <summary>
     /// the time counter
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Time Progress/Delayed Tick")]
+    [CreateAssetMenu(menuName = "Reactive/Time Progress/Delayed Tick", fileName = "Ticker")]
     public class J_Ticker : J_GenericCounter
     {
         #region FIELDS AND PROPERTIES
@@ -22,14 +22,15 @@ namespace JReact.TimeProgress
         /// creates a new ticker and starts counting
         /// </summary>
         /// <returns>the new ticker created</returns>
-        public static J_Ticker CreateTicker(int framePerTick, Segment desiredSegment = Segment.Update, bool destroyAtDisable = true)
+        public static J_Ticker CreateTicker(int framePerTick, Segment desiredSegment = Segment.Update, bool autoStart = true,
+                                            bool destroyAtDisable = true)
         {
             if (framePerTick <= 0)
                 throw new ArgumentOutOfRangeException($"Cannot create a timer with negative seconds. Received {framePerTick}");
 
             var ticker = J_GenericCounter.CreateCounter<J_Ticker>(desiredSegment, destroyAtDisable);
             ticker._tickInterval = framePerTick;
-            ticker.Activate();
+            if (autoStart) ticker.Activate();
             return ticker;
         }
 

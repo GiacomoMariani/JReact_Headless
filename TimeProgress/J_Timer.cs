@@ -10,7 +10,7 @@ namespace JReact.TimeProgress
     /// <summary>
     /// a counter ticking at time intervals
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Time Progress/Timer")]
+    [CreateAssetMenu(menuName = "Reactive/Time Progress/Timer", fileName = "Timer")]
     public class J_Timer : J_GenericCounter
     {
         #region FIELDS AND PROPERTIES
@@ -23,14 +23,15 @@ namespace JReact.TimeProgress
         /// creates a new timer and starts counting
         /// </summary>
         /// <returns>the new counter created</returns>
-        public static J_Timer CreateTimer(float secondsPerTick, Segment desiredSegment = Segment.Update, bool destroyAtDisable = true)
+        public static J_Timer CreateTimer(float secondsPerTick, Segment desiredSegment = Segment.Update, bool autoStart = true,
+                                          bool destroyAtDisable = true)
         {
             if (secondsPerTick <= 0)
                 throw new ArgumentOutOfRangeException($"Cannot create a timer with negative seconds. Received {secondsPerTick}");
 
-            var timer = J_GenericCounter.CreateCounter<J_Timer>(desiredSegment, destroyAtDisable);
+            var timer = CreateCounter<J_Timer>(desiredSegment, destroyAtDisable);
             timer._tickLengthInSeconds = secondsPerTick;
-            timer.Activate();
+            if (autoStart) timer.Activate();
             return timer;
         }
 
