@@ -157,6 +157,9 @@ namespace JReact.StateControl
         }
 
         public void UnSubscribe(JGenericDelegate<(T previousState, T nextState)> action) { OnStateTransition -= action; }
+
+        public void SubscribeToStateChange(JGenericDelegate<(T previousState, T nextState)> action) => Subscribe(action);
+        public void UnSubscribeToStateChange(JGenericDelegate<(T previousState, T nextState)> action) => UnSubscribe(action);
         #endregion SUBSCRIBE METHODS
     }
 }

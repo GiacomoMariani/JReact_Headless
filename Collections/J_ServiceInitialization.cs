@@ -8,7 +8,8 @@ namespace JReact.Collections
     public class J_ServiceInitialization : J_Service
     {
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Service[] _services;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _initializing = true;
+        
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _initializing = true;
 
         public static J_ServiceInitialization CreateInstance(J_Service[] statesToInitialize)
         {

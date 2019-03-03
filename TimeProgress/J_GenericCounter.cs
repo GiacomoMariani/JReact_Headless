@@ -27,14 +27,12 @@ namespace JReact.TimeProgress
         /// creates a new counter and starts counting
         /// </summary>
         /// <returns>the new counter created</returns>
-        internal static T CreateCounter<T>(Segment desiredSegment = Segment.Update, bool destroyAtDisable = true,
-                                           bool autoStart = false)
+        internal static T CreateCounter<T>(Segment desiredSegment = Segment.Update, bool destroyAtDisable = true)
             where T : J_GenericCounter
         {
             var counter = CreateInstance<T>();
             counter._destroyAtDisable = destroyAtDisable;
             counter._desiredSegment   = desiredSegment;
-            if (autoStart) counter.Activate();
             return counter;
         }
 
