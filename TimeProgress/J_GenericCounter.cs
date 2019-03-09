@@ -17,8 +17,7 @@ namespace JReact.TimeProgress
         [BoxGroup("Setup", true, true, 0), SerializeField] protected Segment _desiredSegment = Segment.Update;
 
         // --------------- STATE --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected int _objectId = -1;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected bool _destroyAtDisable;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _objectId = -1;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float ThisDeltaTime { get; private set; }
         #endregion
 
@@ -27,12 +26,11 @@ namespace JReact.TimeProgress
         /// creates a new counter and starts counting
         /// </summary>
         /// <returns>the new counter created</returns>
-        internal static T CreateCounter<T>(Segment desiredSegment = Segment.Update, bool destroyAtDisable = true)
+        internal static T CreateCounter<T>(Segment desiredSegment = Segment.Update)
             where T : J_GenericCounter
         {
             var counter = CreateInstance<T>();
-            counter._destroyAtDisable = destroyAtDisable;
-            counter._desiredSegment   = desiredSegment;
+            counter._desiredSegment = desiredSegment;
             return counter;
         }
 
@@ -49,7 +47,7 @@ namespace JReact.TimeProgress
             //complete the setup
             _objectId = GetInstanceID();
             //starts counting
-            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_CounterTag);
+            Tick();
         }
 
         /// <inheritdoc />
@@ -70,6 +68,8 @@ namespace JReact.TimeProgress
         #endregion
 
         #region COUNTING
+        protected void Tick() { Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_CounterTag); }
+
         //this counts a single tick
         protected abstract IEnumerator<float> CountOneTick();
 
@@ -91,14 +91,6 @@ namespace JReact.TimeProgress
         public void UnSubscribe(JGenericDelegate<float> action) { OnTick -= action; }
         public void SubscribeToCounter(JGenericDelegate<float> action) { Subscribe(action); }
         public void UnSubscribeToCounter(JGenericDelegate<float> action) { UnSubscribe(action); }
-        #endregion
-
-        #region DISABLE AND RESET
-        public override void ResetThis()
-        {
-            base.ResetThis();
-            if (_destroyAtDisable) Destroy(this);
-        }
         #endregion
     }
 }

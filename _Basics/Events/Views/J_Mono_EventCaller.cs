@@ -17,9 +17,9 @@ namespace JReact
         //if we desire to launch this at startup
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _launchAtAwake;
         //the events where we want to send this
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event[] _stateEvent;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event[] _event;
         //what we want to send
-        [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _unityEventToSend;
+        [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _actions;
         #endregion
 
         #region INITIALIZATION
@@ -30,7 +30,7 @@ namespace JReact
             //call the event at startup if requested
             if (_launchAtAwake) CallEvent();
             //subscribe to the following events
-            _stateEvent.SubscribeToAll(CallEvent);
+            _event.SubscribeToAll(CallEvent);
         }
         #endregion
 
@@ -49,11 +49,11 @@ namespace JReact
             }
 
             //STEP 2 - if conditions are met send the event
-            _unityEventToSend.Invoke();
+            _actions.Invoke();
         }
 
         #region LISTENERS
-        private void OnDestroy() { _stateEvent.UnSubscribeToAll(CallEvent); }
+        private void OnDestroy() { _event.UnSubscribeToAll(CallEvent); }
         #endregion
     }
 }
