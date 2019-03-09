@@ -79,14 +79,14 @@ namespace JReact.UiView.Collections
         private void OnEnable()
         {
             OpenThis();
-            _Collection.SubscribeToCollectionAdd(Add);
-            _Collection.SubscribeToCollectionRemove(Remove);
+            _Collection.SubscribeToAdd(Add);
+            _Collection.SubscribeToRemove(Remove);
         }
 
         private void OnDisable()
         {
-            _Collection.UnSubscribeToCollectionAdd(Add);
-            _Collection.UnSubscribeToCollectionRemove(Remove);
+            _Collection.UnSubscribeToAdd(Add);
+            _Collection.UnSubscribeToRemove(Remove);
             CloseThis();
         }
         #endregion

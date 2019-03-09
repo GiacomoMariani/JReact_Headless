@@ -14,7 +14,7 @@ namespace JReact
         public const string SceneManager = "-SceneManager-";
         public const string TimeProgress = "-Time-";
         public const string Task = "-Task-";
-        public const string UiView = "-Ui View-";
+        public const string UiView = "-UiView-";
         public const string SceneView = "-Scene View-";
         public const string Pathfind = "-JPathfind-";
         public const string Input = "-Input-";
