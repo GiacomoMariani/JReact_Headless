@@ -22,13 +22,12 @@ namespace JReact.TimeProgress
         /// creates a new ticker and starts counting
         /// </summary>
         /// <returns>the new ticker created</returns>
-        public static J_Ticker CreateTicker(int framePerTick, Segment desiredSegment = Segment.Update, bool autoStart = true,
-                                            bool destroyAtDisable = true)
+        public static J_Ticker CreateTicker(int framePerTick, Segment desiredSegment = Segment.Update, bool autoStart = true)
         {
             if (framePerTick <= 0)
                 throw new ArgumentOutOfRangeException($"Cannot create a timer with negative seconds. Received {framePerTick}");
 
-            var ticker = J_GenericCounter.CreateCounter<J_Ticker>(desiredSegment, destroyAtDisable);
+            var ticker = J_GenericCounter.CreateCounter<J_Ticker>(desiredSegment);
             ticker._tickInterval = framePerTick;
             if (autoStart) ticker.Activate();
             return ticker;
@@ -66,8 +65,8 @@ namespace JReact.TimeProgress
             //the event send the tick counted
             SendTickEvent(realTimePassed);
 
-            //move ahead to the next tick
-            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_CounterTag);
+            //tick again
+            Tick();
         }
         #endregion
     }

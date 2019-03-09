@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 namespace JReact.TimeProgress
 {
     /// <summary>
-    /// this is an event connected to a time
+    /// a progress, related to time
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Time Progress/Progress Event")]
     public class J_Progress : ScriptableObject, iObservable<J_Progress>, iResettable
@@ -17,13 +17,13 @@ namespace JReact.TimeProgress
         private event JGenericDelegate<J_Progress> OnProgressComplete;
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_GenericCounter _timer;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_GenericCounter _counter;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Identifier _identifier;
         public J_Identifier Identifier => _identifier;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _timeRequiredInSeconds;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public virtual float SecondsFromStart { get; private set; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float SecondsFromStart { get; private set; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool Paused { get; private set; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsRunning { get; private set; }
 
@@ -35,11 +35,12 @@ namespace JReact.TimeProgress
         #endregion
 
         #region SETUP METHODS
-        public static T InstantiateProgress<T>(bool createTimer = true)
+        public static T CreateProgress<T>(J_GenericCounter counter = null)
             where T : J_Progress
         {
-            var progress                     = CreateInstance<T>();
-            if (createTimer) progress._timer = J_GenericCounter.CreateCounter<J_Timer>();
+            var progress                 = CreateInstance<T>();
+            if (counter == null) counter = J_Ticker.CreateTicker(1);
+            progress._counter = counter;
             return progress;
         }
 
@@ -51,16 +52,6 @@ namespace JReact.TimeProgress
                                  JLogTags.TimeProgress, this);
 
             if (_identifier == null) _identifier = identifier;
-        }
-
-        //make sure we have a valid timer
-        public void SetTimer(J_Timer timer)
-        {
-            if (_timer != null)
-                JConsole.Warning($"{name} has already a timer ({_timer.name}. Cannot set {timer.name})",
-                                 JLogTags.TimeProgress, this);
-
-            if (_timer == null) _timer = timer;
         }
         #endregion
 
@@ -77,16 +68,16 @@ namespace JReact.TimeProgress
 
             // --------------- SETUP --------------- //
             _timeRequiredInSeconds = (int) secondsToComplete;
-            if (!_timer.IsActive)
+            if (!_counter.IsActive)
             {
-                JConsole.Warning($"{_timer.name} on {name} was not running. Force Start.", JLogTags.TimeProgress, this);
-                _timer.Activate();
+                JConsole.Warning($"{_counter.name} on {name} was not running. Force Start.", JLogTags.TimeProgress, this);
+                _counter.Activate();
             }
 
             // --------------- RUN --------------- //
             IsRunning = true;
             StartEvent();
-            _timer.Subscribe(AddTimePerTick);
+            _counter.Subscribe(AddTimePerTick);
         }
 
         /// <summary>
@@ -117,12 +108,12 @@ namespace JReact.TimeProgress
         //make sure all the fields are correct
         private bool SanityChecks(float secondsToComplete)
         {
-            Assert.IsNotNull(_timer, $"{name} has not timer. Command canceled.");
+            Assert.IsNotNull(_counter, $"{name} has not counter. Command canceled.");
             Assert.IsTrue(secondsToComplete > 0,
                           $"{name} requires positive secondsToComplete. Received: {secondsToComplete}.Command canceled.");
 
             Assert.IsFalse(IsRunning, $"{name} is already started. Command canceled.");
-            return secondsToComplete > 0 && !IsRunning && _timer != null;
+            return secondsToComplete > 0 && !IsRunning && _counter != null;
         }
         #endregion
 
@@ -165,6 +156,7 @@ namespace JReact.TimeProgress
         private void ProgressComplete()
         {
             Assert.IsTrue(IsRunning, $"{name} only running progress may complete");
+            SecondsFromStart = _timeRequiredInSeconds;
             StopTrackingTime();
             CompleteEvent();
         }
@@ -202,7 +194,7 @@ namespace JReact.TimeProgress
 
         private void StopTrackingTime()
         {
-            _timer.UnSubscribe(AddTimePerTick);
+            _counter.UnSubscribe(AddTimePerTick);
             IsRunning = false;
         }
 

@@ -23,13 +23,12 @@ namespace JReact.TimeProgress
         /// creates a new timer and starts counting
         /// </summary>
         /// <returns>the new counter created</returns>
-        public static J_Timer CreateTimer(float secondsPerTick, Segment desiredSegment = Segment.Update, bool autoStart = true,
-                                          bool destroyAtDisable = true)
+        public static J_Timer CreateTimer(float secondsPerTick, Segment desiredSegment = Segment.Update, bool autoStart = true)
         {
             if (secondsPerTick <= 0)
                 throw new ArgumentOutOfRangeException($"Cannot create a timer with negative seconds. Received {secondsPerTick}");
 
-            var timer = CreateCounter<J_Timer>(desiredSegment, destroyAtDisable);
+            var timer = CreateCounter<J_Timer>(desiredSegment);
             timer._tickLengthInSeconds = secondsPerTick;
             if (autoStart) timer.Activate();
             return timer;
@@ -69,8 +68,8 @@ namespace JReact.TimeProgress
             //the event send the time passed
             SendTickEvent(realTimePassed);
 
-            //move ahead to the next tick
-            Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_CounterTag);
+            //tick again
+            Tick();
         }
         #endregion
     }

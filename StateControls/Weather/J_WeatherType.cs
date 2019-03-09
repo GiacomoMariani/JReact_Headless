@@ -4,7 +4,7 @@ using UnityEngine;
 namespace JReact.StateControl.Weather
 {
     /// <summary>
-    /// this class represent one possible weather
+    /// this class represent one possible weather, like rainy or sunny
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Weather/Weather Type")]
     public class J_WeatherType : J_State

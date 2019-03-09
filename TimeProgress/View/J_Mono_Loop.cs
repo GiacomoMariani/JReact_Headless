@@ -35,7 +35,7 @@ namespace JReact.TimeProgress
         private void ProgressSafeChecks()
         {
             if (_progressEvent == null)
-                _progressEvent = J_Progress.InstantiateProgress<J_Progress>();
+                _progressEvent = J_Progress.CreateProgress<J_Progress>();
         }
         #endregion
 
