@@ -67,14 +67,18 @@ namespace JReact.Conditions.Tasks
             State = ChunkState.Active;
 
             // --------------- INITIALIZE --------------- //
+            //first setup all the tasks
             for (int i = 0; i < _tasks.Length; i++)
             {
                 J_CompletableTask nextTask = _tasks[i];
-                nextTask.SubscribeToTaskChange(StepCompleted);
-                if (!nextTask.IsActive) nextTask.Activate();
                 _activeTasks.Add(nextTask);
+                nextTask.SubscribeToTaskChange(StepCompleted);
                 if (_dormants != null) _dormants.TrackTask(nextTask);
             }
+            
+            //then run them all
+            for (int i = 0; i < _tasks.Length; i++)
+                if (!_tasks[i].IsActive) _tasks[i].Activate();
         }
 
         //remove the task when completed

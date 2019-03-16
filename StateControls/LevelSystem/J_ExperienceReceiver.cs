@@ -46,12 +46,12 @@ namespace JReact.StateControl.LevelSystem
         #endregion
 
         #region TRACK METHODS
-        public bool Activate()
+        public void Activate()
         {
             if (IsActive)
             {
                 JConsole.Warning($"{name} is tracking already. Cancel command.", JLogTags.LevelSystem, this);
-                return false;
+                return;
             }
 
             SanityChecks();
@@ -60,7 +60,6 @@ namespace JReact.StateControl.LevelSystem
             CurrentValue = 0;
 
             _levelProgress.Subscribe(LevelUpdate);
-            return true;
         }
 
         private void SanityChecks() { Assert.IsNotNull(_levelProgress, $"{name} requires a _levelProgress"); }
@@ -131,6 +130,18 @@ namespace JReact.StateControl.LevelSystem
 
             return true;
         }
+        
+        public void End()
+        {
+            if (!IsActive)
+            {
+                JConsole.Warning($"{name} is not tracking. Cancel command.", JLogTags.LevelSystem, this);
+                return;
+            }
+
+            _levelProgress.UnSubscribe(LevelUpdate);
+            IsActive = false;
+        }
         #endregion
 
         #region SUBSCRIBERS
@@ -146,17 +157,7 @@ namespace JReact.StateControl.LevelSystem
             if (!IsActive) ResetThis();
         }
 
-        public void ResetThis()
-        {
-            if (!IsActive)
-            {
-                JConsole.Warning($"{name} is not tracking. Cancel command.", JLogTags.LevelSystem, this);
-                return;
-            }
-
-            _levelProgress.UnSubscribe(LevelUpdate);
-            IsActive = false;
-        }
+        public void ResetThis() {if (IsActive) End(); }
         #endregion
     }
 }

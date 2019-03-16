@@ -10,7 +10,11 @@ namespace JReact.Conditions
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_ReactiveBool _condition;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool CurrentValue
         {
-            get => _condition.CurrentValue;
+            get
+            {
+                UpdateCondition();
+                return _condition.CurrentValue;
+            }
             set => _condition.CurrentValue = value;
         }
 
@@ -33,6 +37,9 @@ namespace JReact.Conditions
         protected abstract void StartCheckingCondition();
         protected abstract void StopCheckingCondition();
 
+        //used to update the condition before checking it
+        protected virtual void UpdateCondition() { }
+        
         protected override void EndThis()
         {
             StopCheckingCondition();

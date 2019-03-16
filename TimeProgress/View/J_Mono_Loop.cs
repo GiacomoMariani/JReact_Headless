@@ -44,11 +44,11 @@ namespace JReact.TimeProgress
         /// start the loop
         /// </summary>
         [BoxGroup("Debug", true, true, 100), Button("Start Looping", ButtonSizes.Medium)]
-        public bool Activate()
+        public void Activate()
         {
             //avoid multiple loops
             Assert.IsFalse(IsActive, $"{gameObject.name} is already looping and cannot start again. Cancel command.");
-            if (IsActive) return false;
+            if (IsActive) return;
 
             // --------------- START --------------- //
             JConsole.Log($"Loop starts on {gameObject.name}", JLogTags.TimeProgress, this);
@@ -59,7 +59,6 @@ namespace JReact.TimeProgress
             Assert.IsTrue(!_progressEvent.IsRunning, $"{gameObject.name} loop progress -{_progressEvent.name}- was already running.");
             _progressEvent.SubscribeToComplete(TriggerThisLoop);
             _progressEvent.StartProgress(_intervalInSeconds);
-            return true;
         }
 
         //invoke events and loop again
@@ -73,7 +72,7 @@ namespace JReact.TimeProgress
         /// stop the loop
         /// </summary>
         [BoxGroup("Test", true, true, 100), Button("Stop Looping", ButtonSizes.Medium)]
-        public void StopLoop()
+        public void End()
         {
             //avoid stop non active loop
             Assert.IsTrue(IsActive, $"{gameObject.name} was not looping. Cancel command.");
@@ -91,8 +90,8 @@ namespace JReact.TimeProgress
 
         #region LISTENERS
         //stop on destroy
-        private void OnDestroy() { StopLoop(); }
+        private void OnDestroy() { End(); }
         #endregion
-        public void ResetThis() { StopLoop(); }
+        public void ResetThis() { End(); }
     }
 }

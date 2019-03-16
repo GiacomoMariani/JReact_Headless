@@ -57,8 +57,10 @@ namespace JReact.Collections
             //send the task and wait for the next
             JConsole.Log($"{name} running task {taskToProcess.Name}", JLogTags.Task, this);
             _currentTask = taskToProcess;
-            taskToProcess.SubscribeToEnd(CheckNext);
             taskToProcess.Activate();
+            //if the task is not active it is already completed, otherwise wait for completion
+            if (!taskToProcess.IsActive) CheckNext();
+            else taskToProcess.SubscribeToEnd(CheckNext);
         }
 
         private void EnqueueTask(iTask taskToProcess)

@@ -30,6 +30,12 @@ namespace JReact.Conditions
         }
         #endregion
 
+        protected override void UpdateCondition()
+        {
+            base.UpdateCondition();
+            ConditionsCheck(false);
+        }
+
         private void ConditionsCheck(bool item)
         {
             if (_operator == OperatorType.And) AndOperator();

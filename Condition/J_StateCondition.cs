@@ -17,14 +17,18 @@ namespace JReact.Conditions
         #region INITIALIZE AND RESET
         protected override void StartCheckingCondition()
         {
-            StateUpdate();
+            UpdateCondition();
             StartTrackStates();
         }
 
         protected override void StopCheckingCondition() { StopTrackStates(); }
         #endregion
 
-        private void StateUpdate() { CurrentValue = CheckStates(_passOnEnter); }
+        protected override void UpdateCondition()
+        {
+            base.UpdateCondition();
+            CurrentValue = CheckStates(_passOnEnter);
+        }
 
         private bool CheckStates(bool wantActive)
         {
@@ -40,16 +44,16 @@ namespace JReact.Conditions
         #region TRACKERS
         private void StartTrackStates()
         {
-            _validStates.SubscribeToAll(StateUpdate);
+            _validStates.SubscribeToAll(UpdateCondition);
             for (int i = 0; i < _validStates.Length; i++)
-                _validStates[i].SubscribeToEnd(StateUpdate);
+                _validStates[i].SubscribeToEnd(UpdateCondition);
         }
 
         private void StopTrackStates()
         {
-            _validStates.UnSubscribeToAll(StateUpdate);
+            _validStates.UnSubscribeToAll(UpdateCondition);
             for (int i = 0; i < _validStates.Length; i++)
-                _validStates[i].UnSubscribeToEnd(StateUpdate);
+                _validStates[i].UnSubscribeToEnd(UpdateCondition);
         }
         #endregion
     }
