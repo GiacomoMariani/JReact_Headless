@@ -11,14 +11,13 @@ namespace JReact.Collections
     public abstract class J_ReactiveArray<T> : J_Service
         where T : class
     {
-        #region EVENT AND DELEGATES
+        #region VALUES AND PROPERTIES
+        // --------------- EVENTS --------------- //
         private event JGenericDelegate<T> OnAdd;
         private event JGenericDelegate<T> OnRemove;
-        #endregion
 
-        #region VALUES AND PROPERTIES
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private int _length = 50;
+        [BoxGroup("Setup", true, true, 0), SerializeField] private int _length = 50;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected T[] _thisArray;
@@ -40,7 +39,7 @@ namespace JReact.Collections
         /// add the element and returns the index
         /// </summary>
         /// <param name="item">the item to add</param>
-        /// <returns>the index where this is added</returns>
+        /// <returns>the index where this is added, or -1 if the array is full</returns>
         public int Add(T item)
         {
             
@@ -82,19 +81,16 @@ namespace JReact.Collections
             return -1;
         }
 
-        /// <summary>
-        /// reset the array
-        /// </summary>
-        public override void ResetThis()
+        protected override void EndThis()
         {
-            base.ResetThis();
+            base.EndThis();
             for (int i = 0; i < _length; i++) RemoveAt(i);
         }
 
         /// <summary>
         /// process all the non null elements with an action
         /// </summary>
-        /// <param name="actionToCall">the action we want to send to all the non null items</param>
+        /// <param name="actionToCall">the action we want to send to non null items</param>
         public void ProcessWith(JGenericDelegate<T> actionToCall)
         {
             for (int i = 0; i < Length; i++)
@@ -104,7 +100,7 @@ namespace JReact.Collections
         #endregion
 
         #region VIRTUAL FURTHER IMPLEMENTATION
-        //helper methods to be applied if required
+        //virtual methods to be applied if required
         protected virtual void ElementRemoved(T elementToRemove) {}
         protected virtual void WhatHappensOnAdd(T elementToAdd) {}
         #endregion
@@ -175,10 +171,6 @@ namespace JReact.Collections
 
         public void SubscribeToRemove(JGenericDelegate<T> actionToRegister) { OnRemove   += actionToRegister; }
         public void UnSubscribeToRemove(JGenericDelegate<T> actionToRegister) { OnRemove -= actionToRegister; }
-        #endregion
-
-        #region DISABLE AND RESET
-        protected virtual void OnDisable() { ResetThis(); }
         #endregion
     }
 }

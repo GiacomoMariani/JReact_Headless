@@ -12,29 +12,26 @@ namespace JReact.Collections
     /// <typeparam name="T">the type of this collection</typeparam>
     public abstract class J_ReactiveCollection<T> : ScriptableObject, iResettable, IList<T>, iObservable<T>
     {
-        #region EVENT AND DELEGATES
+        #region VALUES AND PROPERTIES
+        // --------------- EVENTS --------------- //
         private event JGenericDelegate<T> OnAdd;
         private event JGenericDelegate<T> OnRemove;
-        #endregion
-
-        #region VALUES AND PROPERTIES
+        
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected List<T> _thisCollection = new List<T>();
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _thisCollection.Count;
         #endregion
 
         #region MAIN COMMANDS
-        // add an item to the collection
         public void Add(T item)
         {
             Assert.IsNotNull(_thisCollection, $"{name} Collection not initialized");
             Assert.IsTrue(item != null, $"{name} Null elements are not valid");
             _thisCollection.Add(item);
-            //a method to be used on the element changed
+            //a virtual method if we want to add further actions
             WhatHappensOnAdd(item);
             OnAdd?.Invoke(item);
         }
 
-        /// remove an item to the collection
         public bool Remove(T item)
         {
             if (!_thisCollection.Contains(item))
@@ -44,27 +41,25 @@ namespace JReact.Collections
             }
 
             _thisCollection.Remove(item);
-            //a method to be used on the element changed
+            //a virtual method if we want to add further actions
             ElementRemoved(item);
             OnRemove?.Invoke(item);
             return true;
         }
 
-        // reset the list
         public virtual void ResetThis()
         {
             //send the remove events for all the items
             for (int i = 0; i < Count; i++)
                 OnRemove?.Invoke(_thisCollection[i]);
 
-            //just to double check everything is cleared
             _thisCollection.Clear();
         }
 
         /// <summary>
         /// process all the elements in this list with a given action
         /// </summary>
-        /// <param name="actionToCall">the action we want to send to all the elements of this list</param>
+        /// <param name="actionToCall">the action used on all the items</param>
         public void ProcessWith(JGenericDelegate<T> actionToCall)
         {
             for (int i = 0; i < Count; i++)
@@ -73,13 +68,12 @@ namespace JReact.Collections
         #endregion
 
         #region VIRTUAL FURTHER IMPLEMENTATION
-        //helper methods to be applied if required
+        //virtual methods to be applied if required
         protected virtual void ElementRemoved(T elementToRemove) {}
         protected virtual void WhatHappensOnAdd(T elementToAdd) {}
         #endregion
 
         #region GETTERS
-        //checks if this contains a given item
         public virtual bool Contains(T elementToCheck) => _thisCollection.Contains(elementToCheck);
         #endregion
 

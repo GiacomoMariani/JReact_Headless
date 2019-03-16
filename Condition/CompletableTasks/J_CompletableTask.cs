@@ -68,19 +68,28 @@ namespace JReact.Conditions.Tasks
         protected override void StartCheckingCondition()
         {
             Assert.IsFalse(CurrentValue, $"{name} should start as false => not completed");
-            _activatedOnce = false;
-            //start or wait
-            if (ActivationValid()) ConfirmActivation();
-            else WaitingActivation();
 
+            // --------------- TRACKING --------------- //
             //subscribe to all triggers if the task is not started, otherwise only to complete
             if (_completeTrigger != null) _completeTrigger.SubscribeToCondition(TriggerComplete);
+            if (_dormantTrigger  != null) _dormantTrigger.SubscribeToCondition(TriggerDormant);
+            if (_startTrigger != null) _startTrigger.SubscribeToCondition(TriggerStart);
+            
+            // --------------- STARTUP --------------- //
+            State = TaskState.Startup; 
+            if (AlreadyComplete()) return;
+            _activatedOnce = false;
 
-            if (State == TaskState.Active ||
-                State == TaskState.ActivationWaiting) return;
+            // --------------- ACTIVATION --------------- //
+            if (ActivationValid()) ConfirmActivation();
+            else WaitingActivation();
+        }
 
-            if (_startTrigger   != null) _startTrigger.SubscribeToCondition(TriggerStart);
-            if (_dormantTrigger != null) _dormantTrigger.SubscribeToCondition(TriggerDormant);
+        private bool AlreadyComplete()
+        {
+            if (_requiresOneActivation || !CompleteReady()) return false;
+            ConfirmComplete();
+            return true;
         }
 
         //we reset on disable, when the scriptable object goes out of scope
@@ -188,7 +197,7 @@ namespace JReact.Conditions.Tasks
         private bool CompleteReady() => _completeTrigger == null || _completeTrigger.CurrentValue;
         #endregion
 
-        #region ABSTRACT IMPLEMENTATION
+        #region VIRTUAL IMPLEMENTATION
         protected virtual void RunTask() { _unityEvents_AtActivation.Invoke(); }
         protected virtual void SetDormant() { _unityEvents_AtDormant.Invoke(); }
         protected virtual void CompleteTutorialStep() { _unityEvents_AtComplete.Invoke(); }
@@ -205,6 +214,6 @@ namespace JReact.Conditions.Tasks
     //the states related to this tutorial
     public enum TaskState
     {
-        NotInitialized = -100, WaitStartCondition = 0, ActivationWaiting = 50, Active = 100, Dormant = 200, Complete = 300
+        NotInitialized = -100, Startup = -50, WaitStartCondition = 0, ActivationWaiting = 50, Active = 100, Dormant = 200, Complete = 300
     }
 }

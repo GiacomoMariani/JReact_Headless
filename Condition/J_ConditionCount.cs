@@ -19,13 +19,19 @@ namespace JReact.Conditions
 
         protected override void StartCheckingCondition()
         {
-            UpdateCondition(_stackable.CurrentValue);
-            _stackable.Subscribe(UpdateCondition);
+            AmountChanged(_stackable.CurrentValue);
+            _stackable.Subscribe(AmountChanged);
         }
 
-        protected override void StopCheckingCondition() { _stackable.UnSubscribe(UpdateCondition); }
+        protected override void StopCheckingCondition() { _stackable.UnSubscribe(AmountChanged); }
 
-        protected virtual void UpdateCondition(int currentAmount)
+        protected override void UpdateCondition()
+        {
+            base.UpdateCondition();
+            AmountChanged(_stackable.CurrentValue);
+        }
+
+        protected virtual void AmountChanged(int currentAmount)
         {
             switch (_comparison)
             {

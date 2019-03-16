@@ -30,13 +30,16 @@ namespace JReact
         /// activates the service
         /// </summary>
         [ButtonGroup("Commands", 200), Button("Activate", ButtonSizes.Medium)]
-        public bool Activate()
+        public void Activate()
         {
-            Assert.IsFalse(IsActive, $"{name} was already active. Cancel command.");
-            if (IsActive) return false;
+            if (IsActive)
+            {
+                JConsole.Warning($"{name} was already active. Resetting.", JLogTags.Task, this);
+                ResetThis();
+            }
+
             IsActive = true;
             ActivateThis();
-            return true;
         }
 
         //the specific implementation of activate
@@ -46,13 +49,12 @@ namespace JReact
         /// ends the service
         /// </summary>
         [ButtonGroup("Commands", 200), Button("End", ButtonSizes.Medium)]
-        public virtual bool End()
+        public virtual void End()
         {
             Assert.IsTrue(IsActive, $"{name} was not active. Cancel command.");
-            if (!IsActive) return false;
+            if (!IsActive) return;
             EndThis();
             IsActive = false;
-            return true;
         }
 
         //the specific implementation of activate
