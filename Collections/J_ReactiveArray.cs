@@ -42,7 +42,6 @@ namespace JReact.Collections
         /// <returns>the index where this is added, or -1 if the array is full</returns>
         public int Add(T item)
         {
-            
             Assert.IsTrue(item != null, $"{name} Null elements are not valid");
 
             //find the first empty place
@@ -66,7 +65,7 @@ namespace JReact.Collections
         /// <returns>returns the index of the item, or -1 if nothing is found</returns>
         public int Remove(T item)
         {
-            Assert.IsTrue(IsActive, $"{name} has not been initialized");
+            Assert.IsTrue(IsActive,     $"{name} has not been initialized");
             Assert.IsTrue(item != null, $"{name} cannot remove null elements");
             //find the item
             int index = IndexOf(item);
@@ -76,6 +75,7 @@ namespace JReact.Collections
                 RemoveAt(index);
                 return index;
             }
+
             // --------------- REMOVE ERROR --------------- //
             JConsole.Warning($"{name} there is not such item in the array. Item {item}");
             return -1;
@@ -134,6 +134,7 @@ namespace JReact.Collections
                 JConsole.Warning($"{name} wants to remove element at {index}, but it is null. Cancel command");
                 return;
             }
+
             _thisArray[index] = null;
             ElementRemoved(item);
             OnRemove?.Invoke(item);
@@ -143,7 +144,7 @@ namespace JReact.Collections
         {
             Assert.IsTrue(IsActive, $"{name} has not been initialized");
             Assert.IsNotNull(_thisArray, $"{name} Array not initialized");
-            Assert.IsTrue(item  != null,   $"{name} Null elements are not valid");
+            Assert.IsTrue(item  != null,  $"{name} Null elements are not valid");
             Assert.IsTrue(index < Length, $"{name} length is {Length}, not valid index => {index}");
 
             if (_thisArray[index] != null) RemoveAt(index);
@@ -154,23 +155,23 @@ namespace JReact.Collections
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<T> actionToRegister)
+        public void Subscribe(JGenericDelegate<T> action)
         {
-            OnAdd    += actionToRegister;
-            OnRemove += actionToRegister;
+            OnAdd    += action;
+            OnRemove += action;
         }
 
-        public void UnSubscribe(JGenericDelegate<T> actionToRegister)
+        public void UnSubscribe(JGenericDelegate<T> action)
         {
-            OnAdd    -= actionToRegister;
-            OnRemove -= actionToRegister;
+            OnAdd    -= action;
+            OnRemove -= action;
         }
 
-        public void SubscribeToAdd(JGenericDelegate<T> actionToRegister) { OnAdd   += actionToRegister; }
-        public void UnSubscribeToAdd(JGenericDelegate<T> actionToRegister) { OnAdd -= actionToRegister; }
+        public void SubscribeToAdd(JGenericDelegate<T> action) { OnAdd   += action; }
+        public void UnSubscribeToAdd(JGenericDelegate<T> action) { OnAdd -= action; }
 
-        public void SubscribeToRemove(JGenericDelegate<T> actionToRegister) { OnRemove   += actionToRegister; }
-        public void UnSubscribeToRemove(JGenericDelegate<T> actionToRegister) { OnRemove -= actionToRegister; }
+        public void SubscribeToRemove(JGenericDelegate<T> action) { OnRemove   += action; }
+        public void UnSubscribeToRemove(JGenericDelegate<T> action) { OnRemove -= action; }
         #endregion
     }
 }

@@ -1,3 +1,5 @@
+using System;
+using JReact.StateControl;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -11,50 +13,27 @@ namespace JReact.Conditions
     {
         #region FIELDS AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _passOnEnter = true;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Service[] _validStates;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State[] _validStates;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_SimpleStateControl _stateControls;
         #endregion
 
         #region INITIALIZE AND RESET
         protected override void StartCheckingCondition()
         {
-            UpdateCondition();
-            StartTrackStates();
+            StateChange((null, _stateControls.CurrentState));
+            _stateControls.SubscribeToStateChange(StateChange);
         }
 
-        protected override void StopCheckingCondition() { StopTrackStates(); }
+        protected override void StopCheckingCondition() { _stateControls.UnSubscribeToStateChange(StateChange); }
         #endregion
 
-        protected override void UpdateCondition()
+        private void StateChange((J_State previousState, J_State nextState) states)
         {
-            base.UpdateCondition();
-            CurrentValue = CheckStates(_passOnEnter);
+            bool stateValid = Array.IndexOf(_validStates, states.nextState) > -1;
+
+            if (_passOnEnter) CurrentValue = stateValid;
+            else CurrentValue              = !stateValid;
         }
 
-        private bool CheckStates(bool wantActive)
-        {
-            for (int i = 0; i < _validStates.Length; i++)
-            {
-                if (_validStates[i].IsActive == wantActive)
-                    return true;
-            }
-
-            return false;
-        }
-
-        #region TRACKERS
-        private void StartTrackStates()
-        {
-            _validStates.SubscribeToAll(UpdateCondition);
-            for (int i = 0; i < _validStates.Length; i++)
-                _validStates[i].SubscribeToEnd(UpdateCondition);
-        }
-
-        private void StopTrackStates()
-        {
-            _validStates.UnSubscribeToAll(UpdateCondition);
-            for (int i = 0; i < _validStates.Length; i++)
-                _validStates[i].UnSubscribeToEnd(UpdateCondition);
-        }
-        #endregion
     }
 }
