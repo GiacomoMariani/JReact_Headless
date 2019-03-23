@@ -42,7 +42,7 @@ namespace JReact.Collections
 
             _thisCollection.Remove(item);
             //a virtual method if we want to add further actions
-            ElementRemoved(item);
+            WhatHappensOnRemove(item);
             OnRemove?.Invoke(item);
             return true;
         }
@@ -69,7 +69,7 @@ namespace JReact.Collections
 
         #region VIRTUAL FURTHER IMPLEMENTATION
         //virtual methods to be applied if required
-        protected virtual void ElementRemoved(T elementToRemove) {}
+        protected virtual void WhatHappensOnRemove(T elementToRemove) {}
         protected virtual void WhatHappensOnAdd(T elementToAdd) {}
         #endregion
 

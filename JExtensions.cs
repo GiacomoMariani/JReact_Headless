@@ -42,6 +42,18 @@ namespace JReact
         }
         #endregion FLOAT
 
+        #region INT
+
+        /// <summary>
+        /// sums an integer and make sure it circles between some values 
+        /// </summary>
+        /// <param name="element">the element to be changed</param>
+        /// <param name="toAdd">the element we want to add</param>
+        /// <param name="roundMax">the max</param>
+        public static int SumRound(this int element, int toAdd, int roundMax) => (element + toAdd) % roundMax;
+        #endregion INT
+
+        
         #region ARRAYS
         /// <summary>
         /// checks if an array contains a given item
