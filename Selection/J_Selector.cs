@@ -8,22 +8,21 @@ namespace JReact.Selection
     /// </summary>
     /// <typeparam name="T">type of the selectable item</typeparam>
     public abstract class J_Selector<T> : ScriptableObject, iObservable<T>, iResettable
-        where T : class
     {
         #region FIELDS AND PROPERTIES
         private event JGenericDelegate<T> OnSelect;
 
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected T _selected;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T _selected;
         public T Selected
         {
             get => _selected;
-            protected set
+            private set
             {
                 //deselects if required
-                if (_selected != null) Deselect();
+                if (_selected != null) ActOnDeselection(_selected);
                 //set the value
                 _selected = value;
-                if (value != null) ActOnSelection(value);
+                if (_selected != null) ActOnSelection(_selected);
                 //send event
                 OnSelect?.Invoke(value);
             }
@@ -42,7 +41,10 @@ namespace JReact.Selection
         /// <summary>
         /// deselects the selected item
         /// </summary>
-        protected virtual void Deselect() { _selected = null; }
+        public void Deselect() { Selected = default; }
+
+        //any logic to apply on the deselected item
+        protected virtual void ActOnDeselection(T item) {}
 
         #region DISABLE AND RESET
         private void OnDisable() { ResetThis(); }
