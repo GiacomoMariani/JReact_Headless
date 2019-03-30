@@ -7,12 +7,12 @@
         T ThisElement { get; }
     }
 
-    public interface iInitiator<T>
+    public interface iInitiator<in T>
     {
         void InjectThis(T elementToInject);
     }
 
-    public interface iUpdater<T>
+    public interface iUpdater<in T>
     {
         void UpdateThis(T elementToUpdate);
     }

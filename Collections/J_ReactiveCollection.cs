@@ -36,7 +36,7 @@ namespace JReact.Collections
         {
             if (!_thisCollection.Contains(item))
             {
-                JConsole.Warning($"The element {item} is not in the list", JLogTags.Collection, this);
+                JLog.Warning($"The element {item} is not in the list", JLogTags.Collection, this);
                 return false;
             }
 

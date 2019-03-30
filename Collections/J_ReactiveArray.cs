@@ -9,7 +9,6 @@ namespace JReact.Collections
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class J_ReactiveArray<T> : J_Service
-        where T : class
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS --------------- //
@@ -45,7 +44,7 @@ namespace JReact.Collections
             Assert.IsTrue(item != null, $"{name} Null elements are not valid");
 
             //find the first empty place
-            int index = IndexOf(null);
+            int index = IndexOf(default);
             // --------------- ADD CONFIRM --------------- //
             if (index != -1)
             {
@@ -54,7 +53,7 @@ namespace JReact.Collections
             }
 
             // --------------- ADD ERROR --------------- //
-            JConsole.Warning($"{name} array is full. Item {item}");
+            JLog.Warning($"{name} array is full. Item {item}");
             return -1;
         }
 
@@ -77,7 +76,7 @@ namespace JReact.Collections
             }
 
             // --------------- REMOVE ERROR --------------- //
-            JConsole.Warning($"{name} there is not such item in the array. Item {item}");
+            JLog.Warning($"{name} there is not such item in the array. Item {item}");
             return -1;
         }
 
@@ -119,7 +118,7 @@ namespace JReact.Collections
             }
 
             //we reach this point the is not found
-            JConsole.Warning($"{name} item not found: {item}");
+            JLog.Warning($"{name} item not found: {item}");
             return -1;
         }
 
@@ -131,11 +130,11 @@ namespace JReact.Collections
             T item = _thisArray[index];
             if (item == null)
             {
-                JConsole.Warning($"{name} wants to remove element at {index}, but it is null. Cancel command");
+                JLog.Warning($"{name} wants to remove element at {index}, but it is null. Cancel command");
                 return;
             }
 
-            _thisArray[index] = null;
+            _thisArray[index] = default;
             ElementRemoved(item);
             OnRemove?.Invoke(item);
         }

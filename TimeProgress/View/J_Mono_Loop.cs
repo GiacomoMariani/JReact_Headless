@@ -51,7 +51,7 @@ namespace JReact.TimeProgress
             if (IsActive) return;
 
             // --------------- START --------------- //
-            JConsole.Log($"Loop starts on {gameObject.name}", JLogTags.TimeProgress, this);
+            JLog.Log($"Loop starts on {gameObject.name}", JLogTags.TimeProgress, this);
             IsActive = true;
             _unityEvents_AtStart.Invoke();
 
@@ -78,7 +78,7 @@ namespace JReact.TimeProgress
             Assert.IsTrue(IsActive, $"{gameObject.name} was not looping. Cancel command.");
             if (!IsActive) return;
 
-            JConsole.Log($"Loop stops on {gameObject.name}", JLogTags.TimeProgress, this);
+            JLog.Log($"Loop stops on {gameObject.name}", JLogTags.TimeProgress, this);
             Assert.IsTrue(_progressEvent.IsRunning, $"{gameObject.name} loop progress -{_progressEvent.name}- was not running.");
             // --------------- COMPLETE LOOP --------------- //
             _progressEvent.UnSubscribeToComplete(TriggerThisLoop);

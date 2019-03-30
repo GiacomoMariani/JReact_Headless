@@ -17,7 +17,7 @@ namespace JReact
         //if we desire to launch this at startup
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _launchAtAwake;
         //the events where we want to send this
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event[] _event;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_SO_Event[] _event;
         //what we want to send
         [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _actions;
         #endregion
@@ -44,7 +44,7 @@ namespace JReact
             {
                 Assert.IsNotNull(_conditions[i], $"The save condition at index {name} of {i} is null");
                 if (_conditions[i].CurrentValue) continue;
-                JConsole.Log($"{name} - save canceled. Condition not met: {_conditions[i].name}", JLogTags.EventTag, this);
+                JLog.Log($"{name} - save canceled. Condition not met: {_conditions[i].name}", JLogTags.EventTag, this);
                 return;
             }
 

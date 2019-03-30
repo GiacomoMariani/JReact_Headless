@@ -38,7 +38,7 @@ namespace JReact.TimeProgress.Pause
             //ignore if already in pause
             if (IsPaused)
             {
-                JConsole.Warning($"{name} The pause is already active. Can't pause again.", JLogTags.TimeProgress);
+                JLog.Warning($"{name} The pause is already active. Can't pause again.", JLogTags.TimeProgress);
                 return;
             }
 
@@ -51,7 +51,7 @@ namespace JReact.TimeProgress.Pause
         {
             _isPaused = true;
             if (OnPauseStart != null) OnPauseStart();
-            JConsole.Log($"Pause starts at {_startTimeUnix}");
+            JLog.Log($"Pause starts at {_startTimeUnix}");
         }
         #endregion
 
@@ -65,7 +65,7 @@ namespace JReact.TimeProgress.Pause
             //ignore if it was not in pause
             if (!IsPaused)
             {
-                JConsole.Warning($"{name} Pause was not active. Can't stop pause.", JLogTags.TimeProgress);
+                JLog.Warning($"{name} Pause was not active. Can't stop pause.", JLogTags.TimeProgress);
                 return;
             }
 
@@ -77,7 +77,7 @@ namespace JReact.TimeProgress.Pause
         private void EndingPause()
         {
             if (OnPauseEnds != null) OnPauseEnds(_timeOffline);
-            JConsole.Log($"Pause ends at {GetCurrentDate()}. Time passed in pause: {_timeOffline}");
+            JLog.Log($"Pause ends at {GetCurrentDate()}. Time passed in pause: {_timeOffline}");
             ResetThis();
         }
         #endregion

@@ -30,7 +30,7 @@ namespace JReact.Collections
         {
             if (_index < _maxLength)
             {
-                JConsole.Error($"{name} is full with {_index + 1} elements. Cancel push.", JLogTags.Collection, this);
+                JLog.Error($"{name} is full with {_index + 1} elements. Cancel push.", JLogTags.Collection, this);
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace JReact.Collections
         {
             if (_index < 0)
             {
-                JConsole.Error($"{name} is empty. Cancel pop.", JLogTags.Collection, this);
+                JLog.Error($"{name} is empty. Cancel pop.", JLogTags.Collection, this);
                 return default;
             }
 

@@ -28,7 +28,7 @@ namespace JReact
             {
                 if (!CanSetValue(value))
                 {
-                    JConsole.Error($"{CurrentState} Cannot set value {value}.", JLogTags.Fillable, this);
+                    JLog.Error($"{CurrentState} Cannot set value {value}.", JLogTags.Fillable, this);
                     return;
                 }
 
@@ -44,7 +44,7 @@ namespace JReact
             {
                 if (!CanSetMinCapacity(value))
                 {
-                    JConsole.Error($"{CurrentState} Cannot set min capacity {value}.", JLogTags.Fillable, this);
+                    JLog.Error($"{CurrentState} Cannot set min capacity {value}.", JLogTags.Fillable, this);
                     return;
                 }
 
@@ -61,7 +61,7 @@ namespace JReact
             {
                 if (!CanSetMaxCapacity(value))
                 {
-                    JConsole.Error($"{CurrentState} Cannot set max capacity {value}.", JLogTags.Fillable, this);
+                    JLog.Error($"{CurrentState} Cannot set max capacity {value}.", JLogTags.Fillable, this);
                     return;
                 }
 
@@ -94,15 +94,15 @@ namespace JReact
         {
             if (amount <= 0)
             {
-                JConsole.Error($"{name} Grant receive only positive amount (use remove). Received {amount}", JLogTags.Fillable, this);
+                JLog.Error($"{name} Grant receive only positive amount (use remove). Received {amount}", JLogTags.Fillable, this);
                 return -1;
             }
 
-            JConsole.Log($"{CurrentState} => Granted Amount: {amount}.", JLogTags.Fillable, this);
+            JLog.Log($"{CurrentState} => Granted Amount: {amount}.", JLogTags.Fillable, this);
 
             if (!CanAdd(amount))
             {
-                JConsole.Warning($"{CurrentState} invalid amount for grant {amount}. Setting Max.", JLogTags.Fillable, this);
+                JLog.Warning($"{CurrentState} invalid amount for grant {amount}. Setting Max.", JLogTags.Fillable, this);
                 int remaining = CurrentValue + amount - Max;
                 CurrentValue = Max;
                 return remaining;
@@ -121,15 +121,15 @@ namespace JReact
         {
             if (amount <= 0)
             {
-                JConsole.Error($"{name} Remove receive only positive amount. Received {amount}", JLogTags.Fillable, this);
+                JLog.Error($"{name} Remove receive only positive amount. Received {amount}", JLogTags.Fillable, this);
                 return -1;
             }
 
-            JConsole.Log($"{CurrentState} => Removed Amount: {amount}.", JLogTags.Fillable, this);
+            JLog.Log($"{CurrentState} => Removed Amount: {amount}.", JLogTags.Fillable, this);
 
             if (!HasEnough(amount))
             {
-                JConsole.Warning($"{CurrentState} invalid amount for remove {amount}. Setting Min.", JLogTags.Fillable, this);
+                JLog.Warning($"{CurrentState} invalid amount for remove {amount}. Setting Min.", JLogTags.Fillable, this);
                 int remaining = amount - (CurrentValue + Min);
                 CurrentValue = Min;
                 return remaining;

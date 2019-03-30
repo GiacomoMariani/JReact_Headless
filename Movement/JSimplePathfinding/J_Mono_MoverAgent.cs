@@ -84,7 +84,7 @@ namespace JReact.Pathfinding
         private void MoveThisAgent(T start, T goal)
         {
             if (_debug)
-                JConsole.Log($"{gameObject.name} moving from {start.Coordinates} to {goal.Coordinates}",
+                JLog.Log($"{gameObject.name} moving from {start.Coordinates} to {goal.Coordinates}",
                              JLogTags.Pathfind, this);
 
             _pathQueue.FindPath(start, goal, J_PathCost.CalculateNodeDistance, CanAccessNode, StartMovement);

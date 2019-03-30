@@ -8,7 +8,7 @@ namespace JReact.Collections
     /// used to display an array and convert into a dictionary with the name of the array element as key and the array value as value
     /// it can be used to reload the elements
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">the element to track</typeparam>
     public abstract class J_ElementTracker<T> : J_ReactiveDictionary<string, T>
     {
         //the array of buildings we want to have
@@ -19,17 +19,17 @@ namespace JReact.Collections
         /// </summary>
         /// <param name="elementNameKey">the name of the desired element</param>
         /// <returns></returns>
-        public bool HasElement(string elementNameKey) => ThisDictionary.ContainsKey(elementNameKey);
+        public bool HasItem(string elementNameKey) => ThisDictionary.ContainsKey(elementNameKey);
 
         /// <summary>
         /// the main method to retrieve the element from its name
         /// </summary>
-        /// <param name="elementNameKey">the element want to retrieve</param>
+        /// <param name="nameKey">the element want to retrieve</param>
         /// <returns>returns the value requestes</returns>
-        public T GetElementFromName(string elementNameKey)
+        public T GetItemFromName(string nameKey)
         {
-            Assert.IsTrue(ThisDictionary.ContainsKey(elementNameKey), $"Name Key -{elementNameKey}- not found in -{name}-");
-            return ThisDictionary[elementNameKey];
+            Assert.IsTrue(ThisDictionary.ContainsKey(nameKey), $"Name Key -{nameKey}- not found in -{name}-");
+            return ThisDictionary[nameKey];
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace JReact.Collections
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        protected abstract string GetElementName(T p);
+        protected abstract string GetItemName(T p);
 
         #region DISABLE AND RESET
         //we reset this on disable
@@ -48,7 +48,7 @@ namespace JReact.Collections
             //reset this, then add all the required item to the dictionary 
             ResetThis();
             for (int i = 0; i < _elementsToStore.Length; i++)
-                UpdateElement(GetElementName(_elementsToStore[i]), _elementsToStore[i]);
+                UpdateElement(GetItemName(_elementsToStore[i]), _elementsToStore[i]);
         }
         #endregion
     }

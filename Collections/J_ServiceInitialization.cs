@@ -34,9 +34,9 @@ namespace JReact.Collections
         {
             base.ActivateThis();
             if (_initializing)
-                JConsole.Log($"{name} initialize with {_services.Length} services", JLogTags.Collection, this);
+                JLog.Log($"{name} initialize with {_services.Length} services", JLogTags.Collection, this);
             else
-                JConsole.Log($"{name} de initialize with {_services.Length} services", JLogTags.Collection, this);
+                JLog.Log($"{name} de initialize with {_services.Length} services", JLogTags.Collection, this);
 
             SanityChecks();
 
@@ -59,13 +59,13 @@ namespace JReact.Collections
         protected override void EndThis()
         {
             base.EndThis();
-            JConsole.Log($"{name} task completed for {_services.Length} services", JLogTags.Collection, this);
+            JLog.Log($"{name} task completed for {_services.Length} services", JLogTags.Collection, this);
         }
 
         public override void ResetThis()
         {
             base.ResetThis();
-            JConsole.Log($"{name} resets for {_services.Length} services", JLogTags.Collection, this);
+            JLog.Log($"{name} resets for {_services.Length} services", JLogTags.Collection, this);
             for (int i = 0; i < _services.Length; i++)
                 _services[i].ResetThis();
         }

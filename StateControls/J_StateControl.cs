@@ -29,8 +29,6 @@ namespace JReact.StateControl
 
         // --------------- VALID STATES --------------- //
         /* These are used just a sanity check, to make sure we are implementing the correct states */
-
-        //a list of the valid states
         [Title("Setup", "The elements required to setup this control"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly,
          Required]
         protected T _firstState;
@@ -40,8 +38,6 @@ namespace JReact.StateControl
         /* The following items are used to track the current situation */
 
         [Title("State", "The current situation"), FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
-        //the current state, with an available getter, to make sure anyone can check it
-        //this property is also used to send the main events
         private T _currentState;
         public T CurrentState
         {
@@ -65,25 +61,30 @@ namespace JReact.StateControl
         #endregion FIELDS AND PROPERTIES
 
         #region INSTANTIATION
-        /// <summary>
-        /// instantiate a state control system
-        /// </summary>
-        /// <param name="states">the valid states</param>
-        /// <param name="initialize">if we want to initialize it, defaults at true</param>
-        /// <returns>returns a state control system</returns>
-        public static J_StateControl<T> Create(T[] states, bool initialize = true)
+        public static J_StateControl<T> Create(T[] states, T firstState, bool initialize = true)
         {
             var stateControl = CreateInstance<J_StateControl<T>>();
             stateControl._validStates = states;
+            stateControl._firstState  = firstState;
             if (initialize) stateControl.Activate();
             return stateControl;
+        }
+
+        public static J_StateControl<T> FromTemplate(J_StateControl<T> template, bool initialize = true)
+        {
+            int length = template._validStates.Length;
+            var states = new T[length];
+            for (int i = 0; i < length; i++)
+                states[i] = J_State.Copy(template._validStates[i]);
+
+            T firstState = J_State.Copy(template._firstState);
+
+            return Create(states, firstState, initialize);
         }
         #endregion INSTANTIATION
 
         #region ACTIVATION
-        /// <summary>
-        /// sets the first state of the game
-        /// </summary>
+        // sets the first state of the game
         protected override void ActivateThis()
         {
             base.ActivateThis();
@@ -91,12 +92,9 @@ namespace JReact.StateControl
             SetStateSanityChecks(_firstState);
             _currentState = _firstState;
             _firstState.Activate();
-            JConsole.Log($"Initialization completed on {name} with {_validStates.Length} states.", JLogTags.State, this);
+            JLog.Log($"Initialization completed on {name} with {_validStates.Length} states.", JLogTags.State, this);
         }
 
-        /// <summary>
-        /// resets the state control, called also OnDisable
-        /// </summary>
         protected override void EndThis()
         {
             if (CurrentState != null) CurrentState.End();
@@ -117,8 +115,8 @@ namespace JReact.StateControl
             if (StateAlreadySet(stateToSet)) return;
             SetStateSanityChecks(stateToSet);
 
-            JConsole.Log($"{name} from {(CurrentState != null ? CurrentState.name : "null")} to {stateToSet.name}.",
-                         JLogTags.State, this);
+            JLog.Log($"{name} from {(CurrentState != null ? CurrentState.name : "null")} to {stateToSet.name}.",
+                     JLogTags.State, this);
 
             // --------------- COMMAND PROCESSING --------------- //
             T previous = CurrentState;
@@ -136,15 +134,12 @@ namespace JReact.StateControl
         //to avoid setting the same state again
         private bool StateAlreadySet(T stateToSet)
         {
-            if (stateToSet == CurrentState)
-            {
-                JConsole.Warning($"{name} wants to set {stateToSet.name}, but it is already the current state",
-                                 JLogTags.State, this);
+            if (stateToSet != CurrentState) return false;
 
-                return true;
-            }
+            JLog.Warning($"{name} wants to set {stateToSet.name}, but it is already the current state",
+                         JLogTags.State, this);
 
-            return false;
+            return true;
         }
         #endregion MAIN CONTROL
 
