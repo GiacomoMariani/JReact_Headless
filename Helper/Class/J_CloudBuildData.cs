@@ -34,7 +34,7 @@ namespace JReact.CloudBuild
             //key without a value sends a warning
             if (_manifestDictionary.ContainsKey(key))
             {
-                JConsole.Warning($"No key -{key}- found on manifest", JLogTags.Build);
+                JLog.Warning($"No key -{key}- found on manifest", JLogTags.Build);
                 return "";
             }
 
@@ -50,14 +50,14 @@ namespace JReact.CloudBuild
             if (_manifest == null) GetManifest();
             if (_manifest == null) return;
 
-            JConsole.Log($"Build Manifest with {_manifestDictionary.Count} kvp", JLogTags.Build);
+            JLog.Log($"Build Manifest with {_manifestDictionary.Count} kvp", JLogTags.Build);
             foreach (KeyValuePair<string, object> kvp in _manifestDictionary)
             {
                 string value = kvp.Value != null
                                    ? kvp.Value.ToString()
                                    : "";
 
-                JConsole.Log($"Key: {kvp.Key}, Value: {value}", JLogTags.Build);
+                JLog.Log($"Key: {kvp.Key}, Value: {value}", JLogTags.Build);
             }
         }
         #endregion

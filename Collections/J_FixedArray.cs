@@ -64,7 +64,7 @@ namespace JReact.Collections
             }
 
             //we reach this point the is not found
-            JConsole.Warning($"{name} item not found: {item}");
+            JLog.Warning($"{name} item not found: {item}");
             return -1;
         }
 

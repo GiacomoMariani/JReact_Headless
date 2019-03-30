@@ -73,7 +73,7 @@ namespace JReact.StateControl.Weather
             if (_allWeathers        == null ||
                 _allWeathers.Length == 0)
             {
-                JConsole.Warning($"{name} has not available weathers, we cannot change.");
+                JLog.Warning($"{name} has not available weathers, we cannot change.");
                 return;
             }
 
@@ -92,7 +92,7 @@ namespace JReact.StateControl.Weather
                 }
             }
 
-            JConsole.Error($"{name} found no weather");
+            JLog.Error($"{name} found no weather");
         }
         #endregion
 

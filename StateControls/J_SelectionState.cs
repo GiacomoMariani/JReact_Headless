@@ -17,7 +17,7 @@ namespace JReact.StateControl
 
         //the state to be sent on deselection
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State _deselectionState;
-        //we add this if we want to deselect the element when we move out of the state (without deselecting)
+        //if we want to deselect the element when we move out of the state (without deselecting)
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _deselectOnExit = true;
 
         //the selected item
@@ -44,7 +44,7 @@ namespace JReact.StateControl
         /// <param name="itemToSelect">the item to select</param>
         public void SelectThis(iSelectable<T> itemToSelect)
         {
-            JConsole.Log($"{name} is selecting {itemToSelect.NameOfThis}", JLogTags.State, this);
+            JLog.Log($"{name} is selecting {itemToSelect.NameOfThis}", JLogTags.State, this);
             //selecting the element and call the state
             SelectedItem = itemToSelect;
             _stateControl.SetNewState(this);
@@ -56,7 +56,7 @@ namespace JReact.StateControl
         public void Deselect()
         {
             Assert.IsNotNull(SelectedItem, $"{name} is trying to deselect, but nothing is selected");
-            JConsole.Log($"{name} is deselecting element {SelectedItem.NameOfThis}", JLogTags.State, this);
+            JLog.Log($"{name} is deselecting element {SelectedItem.NameOfThis}", JLogTags.State, this);
             SelectedItem = null;
             _stateControl.SetNewState(_deselectionState);
         }

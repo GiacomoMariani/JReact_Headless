@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using Sirenix.Utilities.Editor;
 using UnityEngine;
 
 namespace JReact.StateControl
@@ -8,7 +9,17 @@ namespace JReact.StateControl
     {
         // --------------- EVENTS --------------- //
         [BoxGroup("Setup - Events", true, true, 5), SerializeField] private JUnityEvent _unityEvents_AtStart = new JUnityEvent();
-        [BoxGroup("Setup - Events", true, true, 5), SerializeField] private JUnityEvent _unityEvents_AtEnd = new JUnityEvent();       
+        [BoxGroup("Setup - Events", true, true, 5), SerializeField] private JUnityEvent _unityEvents_AtEnd = new JUnityEvent();
+
+        public static T Copy<T>(T state)
+            where T : J_State
+        {
+            var newState = CreateInstance<T>();
+            newState.name                 = state.name + "_Copy";
+            newState._unityEvents_AtStart = state._unityEvents_AtStart;
+            newState._unityEvents_AtEnd   = state._unityEvents_AtEnd;
+            return newState;
+        }
 
         protected override void ActivateThis()
         {

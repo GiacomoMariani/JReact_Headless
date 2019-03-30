@@ -43,7 +43,6 @@ namespace JReact
         #endregion FLOAT
 
         #region INT
-
         /// <summary>
         /// sums an integer and make sure it circles between some values 
         /// </summary>
@@ -52,7 +51,6 @@ namespace JReact
         /// <param name="roundMax">the max</param>
         public static int SumRound(this int element, int toAdd, int roundMax) => (element + toAdd) % roundMax;
         #endregion INT
-
         
         #region ARRAYS
         /// <summary>
@@ -322,7 +320,7 @@ namespace JReact
         {
             var epochStart = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             int unixTime   = (int) (dateTime - epochStart).TotalSeconds;
-            JConsole.Log($"Current time unix = {unixTime}");
+            JLog.Log($"Current time unix = {unixTime}");
             return unixTime;
         }
         #endregion

@@ -54,7 +54,7 @@ namespace JReact
                     continue;
                 }
 
-                JConsole.Error($"{name} has a circular parent.", JLogTags.SceneView, this);
+                JLog.Error($"{name} has a circular parent.", JLogTags.SceneView, this);
                 return false;
             }
 

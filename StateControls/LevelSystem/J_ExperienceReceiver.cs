@@ -50,7 +50,7 @@ namespace JReact.StateControl.LevelSystem
         {
             if (IsActive)
             {
-                JConsole.Warning($"{name} is tracking already. Cancel command.", JLogTags.LevelSystem, this);
+                JLog.Warning($"{name} is tracking already. Cancel command.", JLogTags.LevelSystem, this);
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace JReact.StateControl.LevelSystem
         public int Grant(int amountToAdd)
         {
             if (_debug)
-                JConsole.Log($"{name} Granted Experience: {amountToAdd}. Current: {CurrentValue}. For next Level: {Max}",
+                JLog.Log($"{name} Granted Experience: {amountToAdd}. Current: {CurrentValue}. For next Level: {Max}",
                              JLogTags.LevelSystem, this);
 
             // --------------- CHECKERS --------------- //
@@ -108,7 +108,7 @@ namespace JReact.StateControl.LevelSystem
 
         public int Remove(int amount)
         {
-            JConsole.Error($"{name} cannot be removed", JLogTags.LevelSystem, this);
+            JLog.Error($"{name} cannot be removed", JLogTags.LevelSystem, this);
             return -1;
         }
 
@@ -124,7 +124,7 @@ namespace JReact.StateControl.LevelSystem
             if (!_CanGainExperience)
             {
                 //the command could be valid reached this point, but a warning could be useful
-                JConsole.Warning($"{name} is max level, cannot grant {amountToAdd} experience");
+                JLog.Warning($"{name} is max level, cannot grant {amountToAdd} experience");
                 return false;
             }
 
@@ -135,7 +135,7 @@ namespace JReact.StateControl.LevelSystem
         {
             if (!IsActive)
             {
-                JConsole.Warning($"{name} is not tracking. Cancel command.", JLogTags.LevelSystem, this);
+                JLog.Warning($"{name} is not tracking. Cancel command.", JLogTags.LevelSystem, this);
                 return;
             }
 

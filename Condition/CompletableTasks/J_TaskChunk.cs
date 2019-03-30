@@ -30,7 +30,7 @@ namespace JReact.Conditions.Tasks
             {
                 _state = value;
                 OnStateChange?.Invoke(this);
-                JConsole.Log($"{name} enter state: {State}", JLogTags.Task, this);
+                JLog.Log($"{name} enter state: {State}", JLogTags.Task, this);
             }
         }
         #endregion
@@ -62,7 +62,7 @@ namespace JReact.Conditions.Tasks
         {
             base.ActivateThis();
             // --------------- START --------------- //
-            JConsole.Log($"{name} CHUNK START--------------", JLogTags.Task, this);
+            JLog.Log($"{name} CHUNK START--------------", JLogTags.Task, this);
             SanityChecks();
             State = ChunkState.Active;
 
@@ -93,7 +93,7 @@ namespace JReact.Conditions.Tasks
             // --------------- CHUNK COMPLETE --------------- //
             //the chunk completes when there are no more active tasks
             if (_activeTasks.Count > 0) return;
-            JConsole.Log($"{name} CHUNK COMPLETE--------------", JLogTags.Task, this);
+            JLog.Log($"{name} CHUNK COMPLETE--------------", JLogTags.Task, this);
             State = ChunkState.Completed;
             End();
         }

@@ -28,7 +28,7 @@ namespace JReact.Collections
 
         public void ProcessTask(iTask taskToProcess)
         {
-            JConsole.Log($"{name} task added. Current tasks: {TotalTasks}", JLogTags.Task, this);
+            JLog.Log($"{name} task added. Current tasks: {TotalTasks}", JLogTags.Task, this);
             //send this task if no task is running, otherwise enqueue it
             if (!IsActive) StartQueueWith(taskToProcess);
             else EnqueueTask(taskToProcess);
@@ -40,13 +40,13 @@ namespace JReact.Collections
         private void StartQueueWith(iTask taskToProcess)
         {
             Activate();
-            JConsole.Log($"{name} Task Queue START with {taskToProcess.Name}", JLogTags.Task, this);
+            JLog.Log($"{name} Task Queue START with {taskToProcess.Name}", JLogTags.Task, this);
             RunTask(taskToProcess);
         }
 
         private void StopQueue(iTask currentTask)
         {
-            JConsole.Log($"{name} Task Queue STOP with {_currentTask.Name}", JLogTags.Task, this);
+            JLog.Log($"{name} Task Queue STOP with {_currentTask.Name}", JLogTags.Task, this);
             End();
         }
         #endregion
@@ -55,7 +55,7 @@ namespace JReact.Collections
         private void RunTask(iTask taskToProcess)
         {
             //send the task and wait for the next
-            JConsole.Log($"{name} running task {taskToProcess.Name}", JLogTags.Task, this);
+            JLog.Log($"{name} running task {taskToProcess.Name}", JLogTags.Task, this);
             _currentTask = taskToProcess;
             taskToProcess.Activate();
             //if the task is not active it is already completed, otherwise wait for completion
@@ -65,7 +65,7 @@ namespace JReact.Collections
 
         private void EnqueueTask(iTask taskToProcess)
         {
-            JConsole.Log($"{name} enqueued {taskToProcess.Name}", JLogTags.Task, this);
+            JLog.Log($"{name} enqueued {taskToProcess.Name}", JLogTags.Task, this);
             _taskQueue.Enqueue(taskToProcess);
         }
 

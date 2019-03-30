@@ -30,7 +30,7 @@ namespace JReact.ScreenMessage
             //use default if no id set
             if (messageId == null) messageId = _defaultIdentifier;
 
-            JConsole.Log($"{name} message id {messageId} = {message}", JLogTags.Message, this);
+            JLog.Log($"{name} message id {messageId} = {message}", JLogTags.Message, this);
             CreateMessage(message, messageId);
 
             //send the message

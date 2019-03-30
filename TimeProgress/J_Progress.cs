@@ -48,7 +48,7 @@ namespace JReact.TimeProgress
         public void SetIdentifier(J_Identifier identifier)
         {
             if (_identifier != null)
-                JConsole.Warning($"{name} has already an identifier ({_identifier.name}. Cannot set {identifier.name})",
+                JLog.Warning($"{name} has already an identifier ({_identifier.name}. Cannot set {identifier.name})",
                                  JLogTags.TimeProgress, this);
 
             if (_identifier == null) _identifier = identifier;
@@ -70,7 +70,7 @@ namespace JReact.TimeProgress
             _timeRequiredInSeconds = (int) secondsToComplete;
             if (!_counter.IsActive)
             {
-                JConsole.Warning($"{_counter.name} on {name} was not running. Force Start.", JLogTags.TimeProgress, this);
+                JLog.Warning($"{_counter.name} on {name} was not running. Force Start.", JLogTags.TimeProgress, this);
                 _counter.Activate();
             }
 

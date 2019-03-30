@@ -26,7 +26,7 @@ namespace JReact
             return state;
         }
 
-        /// <summary>
+        /// <summary>j
         /// activates the service
         /// </summary>
         [ButtonGroup("Commands", 200), Button("Activate", ButtonSizes.Medium)]
@@ -34,7 +34,7 @@ namespace JReact
         {
             if (IsActive)
             {
-                JConsole.Warning($"{name} was already active. Resetting.", JLogTags.Task, this);
+                JLog.Warning($"{name} was already active. Resetting.", JLogTags.Task, this);
                 ResetThis();
             }
 
@@ -66,13 +66,9 @@ namespace JReact
         public void SubscribeToEnd(JAction actionToSend) { OnExit   += actionToSend; }
         public void UnSubscribeToEnd(JAction actionToSend) { OnExit -= actionToSend; }
 
-        #region DISABLE AND RESET
-        private void OnDisable() { ResetThis(); }
-
         public virtual void ResetThis()
         {
             if (IsActive) End();
         }
-        #endregion
     }
 }

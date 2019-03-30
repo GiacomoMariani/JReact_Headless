@@ -42,7 +42,7 @@ namespace JReact.TimeProgress
         {
             base.ActivateThis();
             //make sure everything is setup correctly and starts the counting
-            JConsole.Log($"{name} starts counting", JLogTags.TimeProgress, this);
+            JLog.Log($"{name} starts counting", JLogTags.TimeProgress, this);
             if (!SanityChecks()) return;
             //complete the setup
             _objectId = GetInstanceID();
@@ -56,7 +56,7 @@ namespace JReact.TimeProgress
         /// </summary>
         protected override void EndThis()
         {
-            JConsole.Log($"{name} stops counting", JLogTags.TimeProgress, this);
+            JLog.Log($"{name} stops counting", JLogTags.TimeProgress, this);
             Timing.KillCoroutines(_objectId, JCoroutineTags.COROUTINE_CounterTag);
             base.EndThis();
         }

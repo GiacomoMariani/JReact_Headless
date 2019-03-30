@@ -40,7 +40,7 @@ namespace JReact.Conditions.Tasks
             get => _state;
             private set
             {
-                JConsole.Log($"{name} enters {value}", JLogTags.Task, this);
+                JLog.Log($"{name} enters {value}", JLogTags.Task, this);
                 _state = value;
                 OnTaskUpdate?.Invoke(this);
             }
@@ -131,7 +131,7 @@ namespace JReact.Conditions.Tasks
         {
             if (State != TaskState.ActivationWaiting)
             {
-                JConsole.Log($"{name} is no more active. State: {State}", JLogTags.Task, this);
+                JLog.Log($"{name} is no more active. State: {State}", JLogTags.Task, this);
                 return;
             }
 

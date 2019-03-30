@@ -33,7 +33,7 @@ namespace JReact.Collections
             int nextIndex = _last.SumRound(1, _maxLength);
             if (nextIndex == _first)
             {
-                JConsole.Error($"{name} is full with {_last + 1} elements. Cancel enqueue.", JLogTags.Collection, this);
+                JLog.Error($"{name} is full with {_last + 1} elements. Cancel enqueue.", JLogTags.Collection, this);
                 return;
             }
 
@@ -46,7 +46,7 @@ namespace JReact.Collections
         {
             if (_first == _last)
             {
-                JConsole.Error($"{name} is empty. Cancel dequeue.", JLogTags.Collection, this);
+                JLog.Error($"{name} is empty. Cancel dequeue.", JLogTags.Collection, this);
                 return default;
             }
 

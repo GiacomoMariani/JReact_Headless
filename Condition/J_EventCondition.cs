@@ -11,9 +11,9 @@ namespace JReact.Conditions
     {
         #region FIELDS AND PROPERTIES
         //these events set the condition to true
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event[] _trueEvents;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_SO_Event[] _trueEvents;
         //these events set the condition to false
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Event[] _falseEvents;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_SO_Event[] _falseEvents;
         //used to auto reset after a check
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _autoReset;
         #endregion

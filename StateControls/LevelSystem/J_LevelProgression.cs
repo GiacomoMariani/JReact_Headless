@@ -82,7 +82,7 @@ namespace JReact.StateControl.LevelSystem
             {
                 if (MaxLevelReached)
                 {
-                    JConsole.Warning($"{name} has reached max level of {MaxLevel}. Stop raising.", JLogTags.LevelSystem, this);
+                    JLog.Warning($"{name} has reached max level of {MaxLevel}. Stop raising.", JLogTags.LevelSystem, this);
                     return;
                 }
 
@@ -110,7 +110,7 @@ namespace JReact.StateControl.LevelSystem
             if (callAllEvents) GainLevel(level - 1);
             else _currentLevelIndex = level - 1;
 
-            JConsole.Log($"{name} forced to level {CurrentLevel}", JLogTags.LevelSystem, this);
+            JLog.Log($"{name} forced to level {CurrentLevel}", JLogTags.LevelSystem, this);
         }
         #endregion
 
@@ -152,14 +152,14 @@ namespace JReact.StateControl.LevelSystem
             //this command will also raise the enter and exit events of the other levels
             SetNewState(GetLevelData(CurrentLevel));
 
-            JConsole.Log($"{name} reached level {CurrentLevel}", JLogTags.LevelSystem, this);
+            JLog.Log($"{name} reached level {CurrentLevel}", JLogTags.LevelSystem, this);
         }
 
         private bool AboveMaxLevel(int level)
         {
             if (level > MaxLevel)
             {
-                JConsole.Warning($"{name} Current level {CurrentLevel} is above {level}. Setting Max", JLogTags.LevelSystem, this);
+                JLog.Warning($"{name} Current level {CurrentLevel} is above {level}. Setting Max", JLogTags.LevelSystem, this);
                 return true;
             }
 
