@@ -11,7 +11,7 @@ namespace JReact.Conditions.Tasks
     [CreateAssetMenu(menuName = "Reactive/Task/Dormant Task")]
     public class J_Collection_DormantTasks : J_ReactiveCollection<J_CompletableTask>
     {
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool HasDormants => _thisCollection.Count > 0;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool HasDormants => _ThisCollection.Count > 0;
 
         internal void TrackTask(J_CompletableTask task) { task.SubscribeToTaskChange(CheckTask); }
 
@@ -31,6 +31,7 @@ namespace JReact.Conditions.Tasks
                     if (Contains(task)) Remove(task);
                     break;
 
+                case TaskState.Startup:
                 case TaskState.WaitStartCondition:
                 case TaskState.Active:
                 case TaskState.ActivationWaiting:
@@ -48,7 +49,7 @@ namespace JReact.Conditions.Tasks
             if (!HasDormants) return;
 
             for (int i = 0; i < Count; i++)
-                _thisCollection[i].ReactivateTask();
+                _ThisCollection[i].ReactivateTask();
 
             Clear();
         }

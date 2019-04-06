@@ -82,8 +82,10 @@ namespace JReact.Collections
 
         protected override void EndThis()
         {
-            base.EndThis();
             for (int i = 0; i < _length; i++) RemoveAt(i);
+            OnAdd = null;
+            OnRemove = null;
+            base.EndThis();
         }
 
         /// <summary>

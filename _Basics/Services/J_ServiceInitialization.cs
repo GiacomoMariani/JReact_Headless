@@ -2,49 +2,59 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace JReact.Collections
+namespace JReact
 {
-    [CreateAssetMenu(menuName = "Reactive/Collection/Initialization")]
+    [CreateAssetMenu(menuName = "Reactive/Basics/Initialization")]
     public class J_ServiceInitialization : J_Service
     {
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Service[] _services;
-        
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _initializing = true;
+        //this can be used to force reactivation
+        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _resetBeforeActivation = false;
 
-        public static J_ServiceInitialization CreateInstance(J_Service[] statesToInitialize)
-        {
-            var ordered = CreateInstance<J_ServiceInitialization>();
-            ordered._services = statesToInitialize;
-            return ordered;
-        }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool? _initializing = null;
 
         public void Initialize()
         {
             _initializing = true;
             Activate();
+            _initializing = null;
         }
 
         public void DeInitialize()
         {
             _initializing = false;
             Activate();
+            _initializing = null;
         }
 
         protected override void ActivateThis()
         {
             base.ActivateThis();
-            if (_initializing)
-                JLog.Log($"{name} initialize with {_services.Length} services", JLogTags.Collection, this);
-            else
-                JLog.Log($"{name} de initialize with {_services.Length} services", JLogTags.Collection, this);
+
+            if (!_initializing.HasValue)
+            {
+                JLog.Warning("Please use Initialize and DeInitialize, not Activate, for this service", JLogTags.Service, this);
+                return;
+            }
+
+            JLog.Log(_initializing.Value
+                         ? $"{name} initialize with {_services.Length} services"
+                         : $"{name} de initialize with {_services.Length} services", JLogTags.Service, this);
 
             SanityChecks();
 
             //process all states
             for (int i = 0; i < _services.Length; i++)
             {
-                if (_initializing) _services[i].Activate();
-                else _services[i].End();
+                J_Service service = _services[i];
+                if (_initializing.Value)
+                {
+                    //reset will end the service if it was active
+                    if (_resetBeforeActivation) service.ResetThis();
+                    if (!_services[i].IsActive) service.Activate();
+                }
+                else
+                    service.End();
             }
 
             End();

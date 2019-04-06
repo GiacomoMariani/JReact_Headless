@@ -20,7 +20,7 @@ using UnityEngine.Assertions;
 
 namespace JReact.StateControl
 {
-    public class J_StateControl<T> : J_Service
+    public class J_StateControl<T> : J_Service, iObservable<(T previous, T current)>
         where T : J_State
     {
         #region FIELDS AND PROPERTIES
@@ -29,7 +29,7 @@ namespace JReact.StateControl
 
         // --------------- VALID STATES --------------- //
         /* These are used just a sanity check, to make sure we are implementing the correct states */
-        [Title("Setup", "The elements required to setup this control"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly,
+        [Title("Setup", "Starts with this state"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly,
          Required]
         protected T _firstState;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] protected T[] _validStates;
@@ -142,19 +142,19 @@ namespace JReact.StateControl
             return true;
         }
         #endregion MAIN CONTROL
-
+        
         #region SUBSCRIBE METHODS
         //the following methods are used to subscribe/register to the transition event. they act like the observer pattern
-        public void Subscribe(JGenericDelegate<(T previousState, T nextState)> action)
+        public void Subscribe(JGenericDelegate<(T previous, T current)> action)
         {
             if (!IsActive) Activate();
             OnStateTransition += action;
         }
 
-        public void UnSubscribe(JGenericDelegate<(T previousState, T nextState)> action) { OnStateTransition -= action; }
+        public void UnSubscribe(JGenericDelegate<(T previous, T current)> action) { OnStateTransition -= action; }
 
-        public void SubscribeToStateChange(JGenericDelegate<(T previousState, T nextState)> action) => Subscribe(action);
-        public void UnSubscribeToStateChange(JGenericDelegate<(T previousState, T nextState)> action) => UnSubscribe(action);
+        public void SubscribeToStateChange(JGenericDelegate<(T previous, T current)> action) => Subscribe(action);
+        public void UnSubscribeToStateChange(JGenericDelegate<(T previous, T current)> action) => UnSubscribe(action);
         #endregion SUBSCRIBE METHODS
     }
 }

@@ -19,7 +19,7 @@ namespace JReact.Collections
         /// </summary>
         /// <param name="elementNameKey">the name of the desired element</param>
         /// <returns></returns>
-        public bool HasItem(string elementNameKey) => ThisDictionary.ContainsKey(elementNameKey);
+        public bool HasItem(string elementNameKey) => _Dictionary.ContainsKey(elementNameKey);
 
         /// <summary>
         /// the main method to retrieve the element from its name
@@ -28,8 +28,8 @@ namespace JReact.Collections
         /// <returns>returns the value requestes</returns>
         public T GetItemFromName(string nameKey)
         {
-            Assert.IsTrue(ThisDictionary.ContainsKey(nameKey), $"Name Key -{nameKey}- not found in -{name}-");
-            return ThisDictionary[nameKey];
+            Assert.IsTrue(_Dictionary.ContainsKey(nameKey), $"Name Key -{nameKey}- not found in -{name}-");
+            return _Dictionary[nameKey];
         }
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace JReact.Collections
         protected virtual void PopulateThis()
         {
             //reset this, then add all the required item to the dictionary 
-            ResetThis();
+            Clear();
             for (int i = 0; i < _elementsToStore.Length; i++)
-                UpdateElement(GetItemName(_elementsToStore[i]), _elementsToStore[i]);
+                Set(GetItemName(_elementsToStore[i]), _elementsToStore[i]);
         }
         #endregion
     }

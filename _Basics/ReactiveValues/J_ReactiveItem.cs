@@ -13,6 +13,7 @@ namespace JReact
         //optionally set a starting value
         [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected T _startValue;
         protected T _currentValue;
+        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly] public bool HasListeners => OnPropertyChange == null;
         [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly] public virtual T CurrentValue
         {
             get => _currentValue;
@@ -22,12 +23,14 @@ namespace JReact
                 OnPropertyChange?.Invoke(value);
             }
         }
-        #region SUBSCRIBERS AND LISTENERS
+
         public virtual void Subscribe(JGenericDelegate<T> actionToSend) { OnPropertyChange   += actionToSend; }
         public virtual void UnSubscribe(JGenericDelegate<T> actionToSend) { OnPropertyChange -= actionToSend; }
 
-        public virtual void ResetThis() { _currentValue = _startValue; }
-        protected virtual void OnDisable() { ResetThis(); }
-        #endregion
+        public virtual void ResetThis()
+        {
+            _currentValue    = _startValue;
+            OnPropertyChange = null;
+        }
     }
 }

@@ -10,23 +10,23 @@ namespace JReact.Collections
     /// a reactive collection that sends events at add and remove
     /// </summary>
     /// <typeparam name="T">the type of this collection</typeparam>
-    public abstract class J_ReactiveCollection<T> : ScriptableObject, iResettable, IList<T>, iObservable<T>
+    public abstract class J_ReactiveCollection<T> : ScriptableObject, IList<T>, iObservable<T>
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS --------------- //
         private event JGenericDelegate<T> OnAdd;
         private event JGenericDelegate<T> OnRemove;
         
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected List<T> _thisCollection = new List<T>();
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _thisCollection.Count;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected List<T> _ThisCollection { get; } = new List<T>();
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _ThisCollection.Count;
         #endregion
 
         #region MAIN COMMANDS
         public void Add(T item)
         {
-            Assert.IsNotNull(_thisCollection, $"{name} Collection not initialized");
+            Assert.IsNotNull(_ThisCollection, $"{name} Collection not initialized");
             Assert.IsTrue(item != null, $"{name} Null elements are not valid");
-            _thisCollection.Add(item);
+            _ThisCollection.Add(item);
             //a virtual method if we want to add further actions
             WhatHappensOnAdd(item);
             OnAdd?.Invoke(item);
@@ -34,26 +34,25 @@ namespace JReact.Collections
 
         public bool Remove(T item)
         {
-            if (!_thisCollection.Contains(item))
+            if (!_ThisCollection.Contains(item))
             {
                 JLog.Warning($"The element {item} is not in the list", JLogTags.Collection, this);
                 return false;
             }
 
-            _thisCollection.Remove(item);
+            _ThisCollection.Remove(item);
             //a virtual method if we want to add further actions
             WhatHappensOnRemove(item);
             OnRemove?.Invoke(item);
             return true;
         }
 
-        public virtual void ResetThis()
+        public virtual void Clear()
         {
             //send the remove events for all the items
             for (int i = 0; i < Count; i++)
-                OnRemove?.Invoke(_thisCollection[i]);
-
-            _thisCollection.Clear();
+                OnRemove?.Invoke(_ThisCollection[i]);
+            _ThisCollection.Clear();
         }
 
         /// <summary>
@@ -63,7 +62,7 @@ namespace JReact.Collections
         public void ProcessWith(JGenericDelegate<T> actionToCall)
         {
             for (int i = 0; i < Count; i++)
-                actionToCall(_thisCollection[i]);
+                actionToCall(_ThisCollection[i]);
         }
         #endregion
 
@@ -74,7 +73,7 @@ namespace JReact.Collections
         #endregion
 
         #region GETTERS
-        public virtual bool Contains(T elementToCheck) => _thisCollection.Contains(elementToCheck);
+        public virtual bool Contains(T elementToCheck) => _ThisCollection.Contains(elementToCheck);
         #endregion
 
         #region SUBSCRIBERS
@@ -97,28 +96,22 @@ namespace JReact.Collections
         public void UnSubscribeToRemove(JGenericDelegate<T> actionToRegister) { OnRemove -= actionToRegister; }
         #endregion
 
-        #region DISABLE AND RESET
-        protected virtual void OnDisable() { ResetThis(); }
-        #endregion
-
         #region IENUMERABLE AND LIST IMPLEMENTATION
-        public void Clear() { ResetThis(); }
-
-        public void CopyTo(T[] array, int arrayIndex) { _thisCollection.CopyTo(array, arrayIndex); }
+        public void CopyTo(T[] array, int arrayIndex) { _ThisCollection.CopyTo(array, arrayIndex); }
 
         public bool IsReadOnly => false;
 
-        public IEnumerator<T> GetEnumerator() => _thisCollection.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => _ThisCollection.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public int IndexOf(T item) => _thisCollection.IndexOf(item);
+        public int IndexOf(T item) => _ThisCollection.IndexOf(item);
 
         public void Insert(int index, T item)
         {
             for (int i = index; i < Count; i++)
             {
-                T next = _thisCollection[i];
+                T next = _ThisCollection[i];
                 Replace(i, item);
                 item = next;
             }
@@ -127,18 +120,18 @@ namespace JReact.Collections
         public void RemoveAt(int index)
         {
             Assert.IsTrue(index < Count, $"{name} has not the given index {index}. List length = {Count}");
-            T item = _thisCollection[index];
+            T item = _ThisCollection[index];
             Remove(item);
         }
 
-        public T this[int index] { get => _thisCollection[index]; set => Replace(index, value); }
+        public T this[int index] { get => _ThisCollection[index]; set => Replace(index, value); }
 
         private void Replace(int index, T item)
         {
-            Assert.IsNotNull(_thisCollection, $"{name} Collection not initialized");
+            Assert.IsNotNull(_ThisCollection, $"{name} Collection not initialized");
             Assert.IsTrue(item != null, $"{name} Null elements are not valid");
             RemoveAt(index);
-            _thisCollection.Insert(index, item);
+            _ThisCollection.Insert(index, item);
             WhatHappensOnAdd(item);
             OnAdd?.Invoke(item);
         }

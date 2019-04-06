@@ -6,6 +6,7 @@ namespace JReact
         public const string HighLogTag = "-GAME_STATE-";
         public const string QuickLogTag = "-QUICKCHECK-";
         public const string EventTag = "-Event-";
+        public const string Service = "-Service-";
         public const string Collection = "-Collection-";
         public const string TutorialTag = "-Tutorial-";
         public const string CameraTag = "-Camera-";

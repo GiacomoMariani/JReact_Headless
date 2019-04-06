@@ -5,15 +5,15 @@ using UnityEngine.Assertions;
 namespace JReact
 {
     /// <summary>
-    /// a state with an Activate method from J_Event, and with an exit event
-    /// this script represents usually a game state or a task
+    /// a service to handle some processes
     /// IMPORTANT CONSIDERATION
-    /// => if this is used as a STATE something external should call Activate and End
-    /// => if this is used as a TASK the external may call Activate, but End should be call internally
+    /// => ACTIVATION starts the service if not active
+    /// => END stop the service, but keeps the listeners - nothing happen if this was inactive
+    /// => RESET make sure the service is ended
     /// </summary>
     public class J_Service : ScriptableObject, iStateObservable, iActivable
     {
-        private event JAction OnEnter;
+        private event JAction OnActivate;
         private event JAction OnExit;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; }
@@ -27,48 +27,58 @@ namespace JReact
         }
 
         /// <summary>j
-        /// activates the service
+        /// Activates the service. It would be better if the service has just one activation/entry point
         /// </summary>
         [ButtonGroup("Commands", 200), Button("Activate", ButtonSizes.Medium)]
         public void Activate()
         {
             if (IsActive)
             {
-                JLog.Warning($"{name} was already active. Resetting.", JLogTags.Task, this);
-                ResetThis();
+                JLog.Warning($"{name} was already active. Cancel command.", JLogTags.Task, this);
+                return;
             }
 
             IsActive = true;
             ActivateThis();
+            JLog.Log($"{name} service activated.", JLogTags.Service, this);
         }
 
         //the specific implementation of activate
-        protected virtual void ActivateThis() { OnEnter?.Invoke(); }
+        protected virtual void ActivateThis() { OnActivate?.Invoke(); }
 
         /// <summary>
-        /// ends the service
+        /// Ends the service. It would be better if the service has just one end/exit point
         /// </summary>
         [ButtonGroup("Commands", 200), Button("End", ButtonSizes.Medium)]
         public virtual void End()
         {
-            Assert.IsTrue(IsActive, $"{name} was not active. Cancel command.");
-            if (!IsActive) return;
+            if (!IsActive)
+            {
+                JLog.Warning($"{name} was not active. Cancel command.", JLogTags.Task, this);
+                return;
+            }
+
             EndThis();
             IsActive = false;
+            JLog.Log($"{name} service ended.", JLogTags.Service, this);
         }
 
         //the specific implementation of activate
         protected virtual void EndThis() { OnExit?.Invoke(); }
 
-        public void Subscribe(JAction actionToSubscribe) { OnEnter   += actionToSubscribe; }
-        public void UnSubscribe(JAction actionToSubscribe) { OnEnter -= actionToSubscribe; }
+        public void Subscribe(JAction actionToSubscribe) { OnActivate   += actionToSubscribe; }
+        public void UnSubscribe(JAction actionToSubscribe) { OnActivate -= actionToSubscribe; }
 
         public void SubscribeToEnd(JAction actionToSend) { OnExit   += actionToSend; }
         public void UnSubscribeToEnd(JAction actionToSend) { OnExit -= actionToSend; }
 
+        /// <summary>
+        /// You may use Reset to make sure the service has been ended before activation
+        /// </summary>
         public virtual void ResetThis()
         {
             if (IsActive) End();
+            JLog.Log($"{name} service reset.", JLogTags.Service, this);
         }
     }
 }

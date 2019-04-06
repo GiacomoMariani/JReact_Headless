@@ -49,13 +49,13 @@ namespace JReact.TimeProgress
             if (!IsActive) yield break;
 
             //count the time before the tick
-            float beforeTickTime = Time.time;
+            float beforeTickTime = CurrentRealSeconds;
             //wait the tick
             for (int i = 0; i < _tickInterval; i++)
                 yield return Timing.WaitForOneFrame;
 
             //count the time after the tick
-            float afterTickTime = Time.time;
+            float afterTickTime = CurrentRealSeconds;
             //calculate the real passed time
             float realTimePassed = afterTickTime - beforeTickTime;
 

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace JReact.Collections
 {
-    public class J_ReactiveQueue<T> : J_Service, ICollection, IReadOnlyCollection<T>
+    public class J_ReactiveQueue<T> : J_Service, ICollection, IReadOnlyCollection<T>, iObservable<T>
     {
         private JGenericDelegate<T> OnDequeue;
         private JGenericDelegate<T> OnEnqueue;
@@ -53,6 +53,7 @@ namespace JReact.Collections
             T item = Peek();
             _arrayQueue[_first] = default;
             _first              = _first.SumRound(1, _maxLength);
+            OnDequeue?.Invoke(item);
             return item;
         }
 
@@ -91,5 +92,16 @@ namespace JReact.Collections
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        #region SUBSCRIBERS
+        public void Subscribe(JGenericDelegate<T> action) { OnEnqueue   += action; }
+        public void UnSubscribe(JGenericDelegate<T> action) { OnEnqueue -= action; }
+
+        public void SubscribeToEnqueue(JGenericDelegate<T> action) { Subscribe(action); }
+        public void UnSubscribeToEnqueue(JGenericDelegate<T> action) { UnSubscribe(action); }
+
+        public void SubscribeToDequeue(JGenericDelegate<T> action) { OnDequeue   += action; }
+        public void UnSubscribeToDequeue(JGenericDelegate<T> action) { OnDequeue -= action; }
+        #endregion
     }
 }

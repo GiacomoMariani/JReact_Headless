@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Text;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -9,7 +11,19 @@ namespace JReact
     /// </summary>
     public static class JLog
     {
-        private static string Format(string message, string tag) => $"{DateTime.Now:[HH:mm:ss]}-[{tag}] {message}";
+        // --------------- FORMAT --------------- //
+        private static readonly StringBuilder _stringBuilder = new StringBuilder();
+        private static StringBuilder SBuilder { get { _stringBuilder.Clear(); return _stringBuilder; } }
+
+        private static string Format(string message, string tag)
+        {
+            return SBuilder.Append(DateTime.Now.ToString("HH:mm:ss", CultureInfo.InvariantCulture))
+                           .Append("-[")
+                           .Append(tag)
+                           .Append("] ")
+                           .Append(message)
+                           .ToString();
+        }
 
         // --------------- MAIN LOGGERS --------------- //
         /// <summary>
