@@ -9,7 +9,7 @@ namespace JReact.SceneControls
     public class J_Mono_ApplicationQuitter : MonoBehaviour
     {
         [BoxGroup("Quit Event", true, true, 0), SerializeField, AssetsOnly, Required]
-        private J_SO_Event _applicationQuitting;
+        private J_Event _applicationQuitting;
         private void OnApplicationQuit() { _applicationQuitting.RaiseEvent(); }
     }
 }

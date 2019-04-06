@@ -15,7 +15,7 @@ namespace JReact.Collections
         public const string NoTask = "QueueFree_NoTask";
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iTask _currentTask;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<iTask> _taskQueue = new Queue<iTask>();
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<iTask> _taskQueue { get; } = new Queue<iTask>();
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int TotalTasks => _taskQueue.Count;
 
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public string CurrentTaskName => _currentTask != null

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
@@ -19,6 +20,8 @@ namespace JReact.TimeProgress
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _objectId = -1;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float ThisDeltaTime { get; private set; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float CurrentRealSeconds
+            => Time.realtimeSinceStartup;
         #endregion
 
         #region COMMANDS
@@ -26,7 +29,7 @@ namespace JReact.TimeProgress
         /// creates a new counter and starts counting
         /// </summary>
         /// <returns>the new counter created</returns>
-        internal static T CreateCounter<T>(Segment desiredSegment = Segment.Update)
+        protected static T CreateCounter<T>(Segment desiredSegment = Segment.Update)
             where T : J_GenericCounter
         {
             var counter = CreateInstance<T>();

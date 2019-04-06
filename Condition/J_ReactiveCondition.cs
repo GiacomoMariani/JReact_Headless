@@ -38,11 +38,12 @@ namespace JReact.Conditions
         protected abstract void StopCheckingCondition();
 
         //used to update the condition before checking it
-        protected virtual void UpdateCondition() { }
-        
+        protected virtual void UpdateCondition() {}
+
         protected override void EndThis()
         {
             StopCheckingCondition();
+            _condition.ResetThis();
             base.EndThis();
         }
 

@@ -18,13 +18,14 @@ namespace JReact.ScreenMessage
         [BoxGroup("Setup", true, true, 0), SerializeField, Required] private GameObject[] _views;
         [BoxGroup("Setup", true, true, 8), SerializeField, Required] private J_Mono_MessagePrinter _printer;
 
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_SO_Event _checkNextEvent;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_SO_Event _resetPrinterEvent;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_SO_Event _onMessageComplete;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event _checkNextEvent;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event _resetPrinterEvent;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event _onMessageComplete;
 
         #region INITIALIZATION
         private void Awake() { SanityChecks(); }
-        private void SanityChecks() { Assert.IsNotNull(_printer, $"({gameObject.name}) requires a _printer"); }
+
+        private void SanityChecks() { Assert.IsNotNull(_printer, $"({gameObject.name}) requires a {nameof(_printer)}"); }
         #endregion
 
         #region UPDATE

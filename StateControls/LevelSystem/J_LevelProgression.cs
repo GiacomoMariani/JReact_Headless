@@ -65,10 +65,15 @@ namespace JReact.StateControl.LevelSystem
         {
             base.ActivateThis();
             Assert.IsNotNull(Experience, $"{name} requires Experience");
+            SetupLevels();
+            InitializeExperience();
+        }
+        
+        private void InitializeExperience()
+        {
             _currentLevelIndex = 0;
             PreviousExperience = 0;
-            SetupLevels();
-            if (!Experience.IsActive) Experience.Activate();
+            if (Experience.IsActive) Experience.ResetThis();
         }
 
         /// <summary>
@@ -103,7 +108,7 @@ namespace JReact.StateControl.LevelSystem
             if (AboveMaxLevel(level)) level = MaxLevel;
 
             // --------------- SETUP --------------- //
-            if (IsActive) ResetThis();
+            if (IsActive) InitializeExperience();
             Activate();
 
             // --------------- SET LEVEL --------------- //
@@ -166,13 +171,5 @@ namespace JReact.StateControl.LevelSystem
             return false;
         }
         #endregion
-
-        public override void ResetThis()
-        {
-            base.ResetThis();
-            _currentLevelIndex = 0;
-            PreviousExperience = 0;
-            if (Experience.IsActive) Experience.ResetThis();
-        }
     }
 }

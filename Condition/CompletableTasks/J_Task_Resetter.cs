@@ -22,7 +22,7 @@ namespace JReact.Conditions.Tasks
             }
 
             for (int i = 0; i < _alldDormantCollections.Length; i++)
-                _alldDormantCollections[i].ResetThis();
+                _alldDormantCollections[i].Clear();
         }
     }
 }

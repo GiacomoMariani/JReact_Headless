@@ -53,10 +53,12 @@ namespace JReact.TimeProgress
             float realTimePassed = 0f;
 
             //wait the tick
+            float beforeTickTime = CurrentRealSeconds;
             while (realTimePassed < _tickLengthInSeconds)
             {
                 yield return Timing.WaitForOneFrame;
-                realTimePassed += Time.deltaTime;
+                //calculate the real passed time
+                realTimePassed = CurrentRealSeconds - beforeTickTime;
             }
 
             //remove the  comment below to check time if required
