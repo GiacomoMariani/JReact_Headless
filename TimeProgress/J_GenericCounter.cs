@@ -12,7 +12,7 @@ namespace JReact.TimeProgress
     public abstract class J_GenericCounter : J_Service, iObservable<float>, iDeltaTime
     {
         #region FIELDS AND PROPERTIES
-        protected event JGenericDelegate<float> OnTick;
+        protected event Action<float> OnTick;
 
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField] protected Segment _desiredSegment = Segment.Update;
@@ -85,15 +85,15 @@ namespace JReact.TimeProgress
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<float> action)
+        public void Subscribe(Action<float> action)
         {
             if (!IsActive) Activate();
             OnTick += action;
         }
 
-        public void UnSubscribe(JGenericDelegate<float> action) { OnTick -= action; }
-        public void SubscribeToCounter(JGenericDelegate<float> action) { Subscribe(action); }
-        public void UnSubscribeToCounter(JGenericDelegate<float> action) { UnSubscribe(action); }
+        public void UnSubscribe(Action<float> action) { OnTick -= action; }
+        public void SubscribeToCounter(Action<float> action) { Subscribe(action); }
+        public void UnSubscribeToCounter(Action<float> action) { UnSubscribe(action); }
         #endregion
     }
 }

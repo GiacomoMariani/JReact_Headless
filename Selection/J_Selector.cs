@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace JReact.Selection
@@ -10,7 +11,7 @@ namespace JReact.Selection
     public abstract class J_Selector<T> : ScriptableObject, iObservable<T>, iResettable
     {
         #region FIELDS AND PROPERTIES
-        private event JGenericDelegate<T> OnSelect;
+        private event Action<T> OnSelect;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T _selected;
         public T Selected
@@ -52,8 +53,8 @@ namespace JReact.Selection
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<T> actionToAdd) { OnSelect      += actionToAdd; }
-        public void UnSubscribe(JGenericDelegate<T> actionToRemove) { OnSelect -= actionToRemove; }
+        public void Subscribe(Action<T> actionToAdd) { OnSelect      += actionToAdd; }
+        public void UnSubscribe(Action<T> actionToRemove) { OnSelect -= actionToRemove; }
         #endregion
     }
 }

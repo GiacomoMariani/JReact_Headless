@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace JReact
@@ -8,7 +9,7 @@ namespace JReact
     /// </summary>
     public class J_ReactiveItem<T> : ScriptableObject, iResettable, iObservableValue<T>
     {
-        private event JGenericDelegate<T> OnPropertyChange;
+        private event Action<T> OnPropertyChange;
 
         //optionally set a starting value
         [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected T _startValue;
@@ -24,8 +25,8 @@ namespace JReact
             }
         }
 
-        public virtual void Subscribe(JGenericDelegate<T> actionToSend) { OnPropertyChange   += actionToSend; }
-        public virtual void UnSubscribe(JGenericDelegate<T> actionToSend) { OnPropertyChange -= actionToSend; }
+        public virtual void Subscribe(Action<T> actionToSend) { OnPropertyChange   += actionToSend; }
+        public virtual void UnSubscribe(Action<T> actionToSend) { OnPropertyChange -= actionToSend; }
 
         public virtual void ResetThis()
         {

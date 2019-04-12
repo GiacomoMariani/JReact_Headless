@@ -1,4 +1,6 @@
-﻿namespace JReact
+﻿using System;
+
+namespace JReact
 {
     public interface iSelectable<out T> where T : class
     {
@@ -44,13 +46,13 @@
     {
     }
 
-    public interface iObservable<T>
+    public interface iObservable<out T>
     {
-        void Subscribe(JGenericDelegate<T> action);
-        void UnSubscribe(JGenericDelegate<T> action);
+        void Subscribe(Action<T> action);
+        void UnSubscribe(Action<T> action);
     }
 
-    public interface iObservableValue<T> : iObservable<T>
+    public interface iObservableValue<out T> : iObservable<T>
     {
         T CurrentValue { get; }
     }
@@ -65,8 +67,8 @@
     {
         int Max { get; }
         int FreeCapacity { get; }
-        void SubscribeToMaxCapacity(JGenericDelegate<int> action);
-        void UnSubscribeToMaxCapacity(JGenericDelegate<int> action);
+        void SubscribeToMaxCapacity(Action<int> action);
+        void UnSubscribeToMaxCapacity(Action<int> action);
     }
 
     public interface iTask

@@ -14,6 +14,7 @@
  * This script is using Odin Inspector for better visualization on the unity editor.
  */
 
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -25,7 +26,7 @@ namespace JReact.StateControl
     {
         #region FIELDS AND PROPERTIES
         // --------------- MAIN EVENTS AND DELEGATES --------------- //
-        private event JGenericDelegate<(T previous, T current)> OnStateTransition;
+        private event Action<(T previous, T current)> OnStateTransition;
 
         // --------------- VALID STATES --------------- //
         /* These are used just a sanity check, to make sure we are implementing the correct states */
@@ -145,16 +146,16 @@ namespace JReact.StateControl
         
         #region SUBSCRIBE METHODS
         //the following methods are used to subscribe/register to the transition event. they act like the observer pattern
-        public void Subscribe(JGenericDelegate<(T previous, T current)> action)
+        public void Subscribe(Action<(T previous, T current)> action)
         {
             if (!IsActive) Activate();
             OnStateTransition += action;
         }
 
-        public void UnSubscribe(JGenericDelegate<(T previous, T current)> action) { OnStateTransition -= action; }
+        public void UnSubscribe(Action<(T previous, T current)> action) { OnStateTransition -= action; }
 
-        public void SubscribeToStateChange(JGenericDelegate<(T previous, T current)> action) => Subscribe(action);
-        public void UnSubscribeToStateChange(JGenericDelegate<(T previous, T current)> action) => UnSubscribe(action);
+        public void SubscribeToStateChange(Action<(T previous, T current)> action) => Subscribe(action);
+        public void UnSubscribeToStateChange(Action<(T previous, T current)> action) => UnSubscribe(action);
         #endregion SUBSCRIBE METHODS
     }
 }

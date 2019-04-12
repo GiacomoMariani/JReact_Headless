@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace JReact.Conditions.Tasks
     public class J_TaskChunk : J_Service, iObservable<J_TaskChunk>
     {
         #region FIELDS AND PROPERTIES
-        private JGenericDelegate<J_TaskChunk> OnStateChange;
+        private Action<J_TaskChunk> OnStateChange;
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_CompletableTask[] _tasks;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Collection_DormantTasks _dormants;
@@ -105,10 +106,10 @@ namespace JReact.Conditions.Tasks
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<J_TaskChunk> action) { OnStateChange   += action; }
-        public void UnSubscribe(JGenericDelegate<J_TaskChunk> action) { OnStateChange -= action; }
-        public void SubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { Subscribe(action); }
-        public void UnSubscribeToStateChange(JGenericDelegate<J_TaskChunk> action) { UnSubscribe(action); }
+        public void Subscribe(Action<J_TaskChunk> action) { OnStateChange   += action; }
+        public void UnSubscribe(Action<J_TaskChunk> action) { OnStateChange -= action; }
+        public void SubscribeToStateChange(Action<J_TaskChunk> action) { Subscribe(action); }
+        public void UnSubscribeToStateChange(Action<J_TaskChunk> action) { UnSubscribe(action); }
         #endregion
 
         #region DISABLE AND RESET

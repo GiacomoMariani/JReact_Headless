@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -12,9 +13,9 @@ namespace JReact.TimeProgress
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS RELATED TO PROGRESS --------------- //
-        private event JGenericDelegate<J_Progress> OnProgressStart;
-        private event JGenericDelegate<J_Progress> OnProgressTick;
-        private event JGenericDelegate<J_Progress> OnProgressComplete;
+        private event Action<J_Progress> OnProgressStart;
+        private event Action<J_Progress> OnProgressTick;
+        private event Action<J_Progress> OnProgressComplete;
 
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_GenericCounter _counter;
@@ -49,7 +50,7 @@ namespace JReact.TimeProgress
         {
             if (_identifier != null)
                 JLog.Warning($"{name} has already an identifier ({_identifier.name}. Cannot set {identifier.name})",
-                                 JLogTags.TimeProgress, this);
+                             JLogTags.TimeProgress, this);
 
             if (_identifier == null) _identifier = identifier;
         }
@@ -163,14 +164,14 @@ namespace JReact.TimeProgress
         #endregion
 
         #region SUBSCRIBE EVENTS
-        public void SubscribeToStart(JGenericDelegate<J_Progress> actionToSend) { OnProgressStart   += actionToSend; }
-        public void UnSubscribeToStart(JGenericDelegate<J_Progress> actionToSend) { OnProgressStart -= actionToSend; }
+        public void SubscribeToStart(Action<J_Progress> actionToSend) { OnProgressStart   += actionToSend; }
+        public void UnSubscribeToStart(Action<J_Progress> actionToSend) { OnProgressStart -= actionToSend; }
 
-        public void Subscribe(JGenericDelegate<J_Progress> actionToSend) { OnProgressTick   += actionToSend; }
-        public void UnSubscribe(JGenericDelegate<J_Progress> actionToSend) { OnProgressTick -= actionToSend; }
+        public void Subscribe(Action<J_Progress> actionToSend) { OnProgressTick   += actionToSend; }
+        public void UnSubscribe(Action<J_Progress> actionToSend) { OnProgressTick -= actionToSend; }
 
-        public void SubscribeToComplete(JGenericDelegate<J_Progress> actionToSend) { OnProgressComplete   += actionToSend; }
-        public void UnSubscribeToComplete(JGenericDelegate<J_Progress> actionToSend) { OnProgressComplete -= actionToSend; }
+        public void SubscribeToComplete(Action<J_Progress> actionToSend) { OnProgressComplete   += actionToSend; }
+        public void UnSubscribeToComplete(Action<J_Progress> actionToSend) { OnProgressComplete -= actionToSend; }
         #endregion
 
         #region DISABLE AND RESET
