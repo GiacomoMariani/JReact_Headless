@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 
 namespace JReact.Conditions
@@ -48,17 +49,17 @@ namespace JReact.Conditions
         }
 
         //helpers to make this more readable
-        public void SubscribeToCondition(JGenericDelegate<bool> action) { Subscribe(action); }
+        public void SubscribeToCondition(Action<bool> action) { Subscribe(action); }
 
-        public void UnSubscribeToCondition(JGenericDelegate<bool> action) { UnSubscribe(action); }
+        public void UnSubscribeToCondition(Action<bool> action) { UnSubscribe(action); }
 
-        public void Subscribe(JGenericDelegate<bool> action)
+        public void Subscribe(Action<bool> action)
         {
             if (!IsActive) Activate();
             _condition.Subscribe(action);
         }
 
-        public void UnSubscribe(JGenericDelegate<bool> action) { _condition.UnSubscribe(action); }
+        public void UnSubscribe(Action<bool> action) { _condition.UnSubscribe(action); }
 
         #region OPERATORS
         public static bool operator true(J_ReactiveCondition item) => item.CurrentValue;

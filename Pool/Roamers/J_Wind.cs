@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace JReact.Pool.Roamer
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENT AND CONSTANT --------------- //
-        private event JGenericDelegate<Vector2> OnWindChange;
+        private event Action<Vector2> OnWindChange;
         private const string COROUTINE_WindTag = "COROUTINE_WindChanger";
 
         // --------------- SETUP --------------- //
@@ -119,8 +120,8 @@ namespace JReact.Pool.Roamer
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<Vector2> actionToAdd) { OnWindChange      += actionToAdd; }
-        public void UnSubscribe(JGenericDelegate<Vector2> actionToRemove) { OnWindChange -= actionToRemove; }
+        public void Subscribe(Action<Vector2> actionToAdd) { OnWindChange      += actionToAdd; }
+        public void UnSubscribe(Action<Vector2> actionToRemove) { OnWindChange -= actionToRemove; }
         #endregion
     }
 }

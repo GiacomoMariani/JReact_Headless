@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -11,8 +12,8 @@ namespace JReact.StateControl.LevelSystem
     public class J_ExperienceReceiver : ScriptableObject, iFillable, iActivable
     {
         #region FIELDS AND PROPERTIES
-        private event JGenericDelegate<int> OnGain;
-        private event JGenericDelegate<int> OnMaxChanged;
+        private event Action<int> OnGain;
+        private event Action<int> OnMaxChanged;
 
         [BoxGroup("State", true, true, 0), SerializeField, AssetsOnly, Required] private J_LevelProgression _levelProgress;
 
@@ -145,10 +146,10 @@ namespace JReact.StateControl.LevelSystem
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<int> action) { OnGain                      += action; }
-        public void UnSubscribe(JGenericDelegate<int> action) { OnGain                    -= action; }
-        public void SubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged   += action; }
-        public void UnSubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged -= action; }
+        public void Subscribe(Action<int> action) { OnGain                      += action; }
+        public void UnSubscribe(Action<int> action) { OnGain                    -= action; }
+        public void SubscribeToMaxCapacity(Action<int> action) { OnMaxChanged   += action; }
+        public void UnSubscribeToMaxCapacity(Action<int> action) { OnMaxChanged -= action; }
         #endregion
 
         #region DISABLE AND RESET

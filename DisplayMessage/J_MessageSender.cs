@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace JReact.ScreenMessage
     public class J_MessageSender : ScriptableObject, iObservable<JMessage>
     {
         #region VALUES AND PROPERTIES
-        private event JGenericDelegate<JMessage> OnPublish;
+        private event Action<JMessage> OnPublish;
 
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageId _defaultIdentifier;
 
@@ -47,8 +48,8 @@ namespace JReact.ScreenMessage
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<JMessage> actionToAdd) { OnPublish      += actionToAdd; }
-        public void UnSubscribe(JGenericDelegate<JMessage> actionToRemove) { OnPublish -= actionToRemove; }
+        public void Subscribe(Action<JMessage> actionToAdd) { OnPublish      += actionToAdd; }
+        public void UnSubscribe(Action<JMessage> actionToRemove) { OnPublish -= actionToRemove; }
         #endregion
 
         #region TEST

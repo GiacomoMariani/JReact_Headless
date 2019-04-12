@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -12,7 +13,7 @@ namespace JReact.Collections
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS --------------- //
-        private event JGenericDelegate<(int index, T oldItem, T newItem)> OnChange;
+        private event Action<(int index, T oldItem, T newItem)> OnChange;
 
         [BoxGroup("Setup", true, true, 0), SerializeField] protected T[] _thisArray;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Length => _thisArray.Length;
@@ -61,8 +62,8 @@ namespace JReact.Collections
         }
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<(int index, T oldItem, T newItem)> action) { OnChange += action; }
-        public void UnSubscribe(JGenericDelegate<(int index, T oldItem, T newItem)> action) { OnChange -= action; }
+        public void Subscribe(Action<(int index, T oldItem, T newItem)> action) { OnChange += action; }
+        public void UnSubscribe(Action<(int index, T oldItem, T newItem)> action) { OnChange -= action; }
         #endregion
     }
 }

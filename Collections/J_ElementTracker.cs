@@ -48,7 +48,7 @@ namespace JReact.Collections
             //reset this, then add all the required item to the dictionary 
             Clear();
             for (int i = 0; i < _elementsToStore.Length; i++)
-                Set(GetItemName(_elementsToStore[i]), _elementsToStore[i]);
+                Add(GetItemName(_elementsToStore[i]), _elementsToStore[i]);
         }
         #endregion
     }

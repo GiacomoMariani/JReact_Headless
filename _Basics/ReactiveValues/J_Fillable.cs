@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -11,9 +12,9 @@ namespace JReact
     public class J_Fillable : ScriptableObject, iResettable, iFillable
     {
         #region FIELDS AND PROPERTIES
-        private event JGenericDelegate<int> OnValueChange;
-        private event JGenericDelegate<int> OnMaxChanged;
-        private event JGenericDelegate<int> OnMinChanged;
+        private event Action<int> OnValueChange;
+        private event Action<int> OnMaxChanged;
+        private event Action<int> OnMinChanged;
 
         //optionally set a starting value
         [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startAmount;
@@ -161,14 +162,14 @@ namespace JReact
         #endregion
 
         #region SUBSCRIBERS AND LISTENERS
-        public virtual void Subscribe(JGenericDelegate<int> action) { OnValueChange   += action; }
-        public virtual void UnSubscribe(JGenericDelegate<int> action) { OnValueChange -= action; }
+        public virtual void Subscribe(Action<int> action) { OnValueChange   += action; }
+        public virtual void UnSubscribe(Action<int> action) { OnValueChange -= action; }
 
-        public virtual void SubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged   += action; }
-        public virtual void UnSubscribeToMaxCapacity(JGenericDelegate<int> action) { OnMaxChanged -= action; }
+        public virtual void SubscribeToMaxCapacity(Action<int> action) { OnMaxChanged   += action; }
+        public virtual void UnSubscribeToMaxCapacity(Action<int> action) { OnMaxChanged -= action; }
 
-        public virtual void SubscribeToMinCapacity(JGenericDelegate<int> action) { OnMinChanged   += action; }
-        public virtual void UnSubscribeToMinCapacity(JGenericDelegate<int> action) { OnMinChanged -= action; }
+        public virtual void SubscribeToMinCapacity(Action<int> action) { OnMinChanged   += action; }
+        public virtual void UnSubscribeToMinCapacity(Action<int> action) { OnMinChanged -= action; }
 
         public virtual void ResetThis()
         {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace JReact.Currency
 {
@@ -7,8 +8,8 @@ namespace JReact.Currency
     /// </summary>
     public abstract class J_Reward<T> : ScriptableObject, iObservable<J_Reward<T>>
     {
-        private event JGenericDelegate<J_Reward<T>> OnRewardFail;
-        private event JGenericDelegate<J_Reward<T>> OnRewardGranted;
+        private event Action<J_Reward<T>> OnRewardFail;
+        private event Action<J_Reward<T>> OnRewardGranted;
 
         /// <summary>
         /// sends a reward
@@ -29,11 +30,11 @@ namespace JReact.Currency
         protected abstract bool TrySendReward(int amount, Transform sender);
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<J_Reward<T>> actionToAdd) { OnRewardGranted      += actionToAdd; }
-        public void UnSubscribe(JGenericDelegate<J_Reward<T>> actionToRemove) { OnRewardGranted -= actionToRemove; }
+        public void Subscribe(Action<J_Reward<T>> actionToAdd) { OnRewardGranted      += actionToAdd; }
+        public void UnSubscribe(Action<J_Reward<T>> actionToRemove) { OnRewardGranted -= actionToRemove; }
 
-        public void SubscribeToFail(JGenericDelegate<J_Reward<T>> actionToAdd) { OnRewardFail      += actionToAdd; }
-        public void UnSubscribeToFail(JGenericDelegate<J_Reward<T>> actionToRemove) { OnRewardFail -= actionToRemove; }
+        public void SubscribeToFail(Action<J_Reward<T>> actionToAdd) { OnRewardFail      += actionToAdd; }
+        public void UnSubscribeToFail(Action<J_Reward<T>> actionToRemove) { OnRewardFail -= actionToRemove; }
         #endregion
     }
 }

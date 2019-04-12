@@ -1,3 +1,4 @@
+using System;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace JReact.Conditions.Tasks
     public class J_CompletableTask : J_ReactiveCondition, iObservable<J_CompletableTask>
     {
         #region FIELDS AND PROPERTIES
-        private JGenericDelegate<J_CompletableTask> OnTaskUpdate;
+        private Action<J_CompletableTask> OnTaskUpdate;
         // --------------- TRIGGERS --------------- //
         [InfoBox("Null => Auto Start"), BoxGroup("Setup - Triggers", true, true, -15), SerializeField, AssetsOnly]
         private J_ReactiveCondition _startTrigger;
@@ -204,10 +205,10 @@ namespace JReact.Conditions.Tasks
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToTaskChange(JGenericDelegate<J_CompletableTask> action) { Subscribe(action); }
-        public void UnSubscribeToTaskChange(JGenericDelegate<J_CompletableTask> action) { UnSubscribe(action); }
-        public void Subscribe(JGenericDelegate<J_CompletableTask> action) { OnTaskUpdate   += action; }
-        public void UnSubscribe(JGenericDelegate<J_CompletableTask> action) { OnTaskUpdate -= action; }
+        public void SubscribeToTaskChange(Action<J_CompletableTask> action) { Subscribe(action); }
+        public void UnSubscribeToTaskChange(Action<J_CompletableTask> action) { UnSubscribe(action); }
+        public void Subscribe(Action<J_CompletableTask> action) { OnTaskUpdate   += action; }
+        public void UnSubscribe(Action<J_CompletableTask> action) { OnTaskUpdate -= action; }
         #endregion
     }
 

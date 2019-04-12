@@ -28,7 +28,9 @@ namespace JReact
             //backslash tells that colon is not the part of format, it just a character that we want in output
             return time.ToString(@"dd\:hh\:mm\:ss\:fff");
         }
+        #endregion FLOAT
 
+        #region PERCENTAGE
         /// <summary>
         /// the float will be used as a chance
         /// </summary>
@@ -40,7 +42,42 @@ namespace JReact
             Assert.IsTrue(chance < 1f, $"{chance} is higher or equal to 1. So it will always be  true");
             return Random.Range(0, 1f) < chance;
         }
-        #endregion FLOAT
+        
+        /// <summary>
+        /// converts an axis (-1f to 1f) to a byte
+        /// </summary>
+        /// <param name="axisFloat">the value to compress</param>
+        /// <returns>the byte</returns>
+        public static byte ToByte(this float axisFloat)
+        {
+            // --------------- OUTER CASE --------------- //
+            if (axisFloat > 1.0f)
+            {
+                JLog.Warning($"Percentage {axisFloat} is higher than 1. Setting to 1");
+                return 100;
+            }
+            if (axisFloat < -1.0f)
+            {
+                JLog.Warning($"Percentage {axisFloat} is lower than -1 Setting to -1");
+                return 200;
+            }
+            //positive
+            if (axisFloat >= 0) return (byte) (axisFloat * 100);
+            //negative
+            return (byte) (200 + axisFloat          * 100);
+        }
+
+        /// <summary>
+        /// deconverts a byt to axis
+        /// </summary>
+        /// <param name="axisByte">the byte to deconvert</param>
+        /// <returns>returns the axis</returns>
+        public static float ToAxis(this byte axisByte)
+        {
+            if (axisByte < 100) return (axisByte * 0.1f);
+            return (axisByte                 * 0.1f) - 2.0f;
+        }
+        #endregion PERCENTAGE
 
         #region INT
         /// <summary>
@@ -103,12 +140,12 @@ namespace JReact
             foreach (T element in collection) element.UnSubscribe(actionToPerform);
         }
 
-        public static void SubscribeToAll<T>(this ICollection<iObservable<T>> collection, JGenericDelegate<T> actionToPerform)
+        public static void SubscribeToAll<T>(this ICollection<iObservable<T>> collection, Action<T> actionToPerform)
         {
             foreach (iObservable<T> element in collection) element.Subscribe(actionToPerform);
         }
 
-        public static void UnSubscribeToAll<T>(this ICollection<iObservable<T>> collection, JGenericDelegate<T> actionToPerform)
+        public static void UnSubscribeToAll<T>(this ICollection<iObservable<T>> collection, Action<T> actionToPerform)
         {
             foreach (iObservable<T> element in collection) element.UnSubscribe(actionToPerform);
         }

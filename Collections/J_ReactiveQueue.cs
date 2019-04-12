@@ -8,8 +8,8 @@ namespace JReact.Collections
 {
     public class J_ReactiveQueue<T> : J_Service, ICollection, IReadOnlyCollection<T>, iObservable<T>
     {
-        private JGenericDelegate<T> OnDequeue;
-        private JGenericDelegate<T> OnEnqueue;
+        private Action<T> OnDequeue;
+        private Action<T> OnEnqueue;
 
         #region FIELDS AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxLength = 10;
@@ -94,14 +94,14 @@ namespace JReact.Collections
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<T> action) { OnEnqueue   += action; }
-        public void UnSubscribe(JGenericDelegate<T> action) { OnEnqueue -= action; }
+        public void Subscribe(Action<T> action) { OnEnqueue   += action; }
+        public void UnSubscribe(Action<T> action) { OnEnqueue -= action; }
 
-        public void SubscribeToEnqueue(JGenericDelegate<T> action) { Subscribe(action); }
-        public void UnSubscribeToEnqueue(JGenericDelegate<T> action) { UnSubscribe(action); }
+        public void SubscribeToEnqueue(Action<T> action) { Subscribe(action); }
+        public void UnSubscribeToEnqueue(Action<T> action) { UnSubscribe(action); }
 
-        public void SubscribeToDequeue(JGenericDelegate<T> action) { OnDequeue   += action; }
-        public void UnSubscribeToDequeue(JGenericDelegate<T> action) { OnDequeue -= action; }
+        public void SubscribeToDequeue(Action<T> action) { OnDequeue   += action; }
+        public void UnSubscribeToDequeue(Action<T> action) { OnDequeue -= action; }
         #endregion
     }
 }

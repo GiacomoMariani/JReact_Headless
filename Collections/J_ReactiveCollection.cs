@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -14,8 +15,8 @@ namespace JReact.Collections
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS --------------- //
-        private event JGenericDelegate<T> OnAdd;
-        private event JGenericDelegate<T> OnRemove;
+        private event Action<T> OnAdd;
+        private event Action<T> OnRemove;
         
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected List<T> _ThisCollection { get; } = new List<T>();
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _ThisCollection.Count;
@@ -77,23 +78,23 @@ namespace JReact.Collections
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<T> actionToRegister)
+        public void Subscribe(Action<T> actionToRegister)
         {
             OnAdd    += actionToRegister;
             OnRemove += actionToRegister;
         }
 
-        public void UnSubscribe(JGenericDelegate<T> actionToRegister)
+        public void UnSubscribe(Action<T> actionToRegister)
         {
             OnAdd    -= actionToRegister;
             OnRemove -= actionToRegister;
         }
 
-        public void SubscribeToAdd(JGenericDelegate<T> actionToRegister) { OnAdd   += actionToRegister; }
-        public void UnSubscribeToAdd(JGenericDelegate<T> actionToRegister) { OnAdd -= actionToRegister; }
+        public void SubscribeToAdd(Action<T> actionToRegister) { OnAdd   += actionToRegister; }
+        public void UnSubscribeToAdd(Action<T> actionToRegister) { OnAdd -= actionToRegister; }
 
-        public void SubscribeToRemove(JGenericDelegate<T> actionToRegister) { OnRemove   += actionToRegister; }
-        public void UnSubscribeToRemove(JGenericDelegate<T> actionToRegister) { OnRemove -= actionToRegister; }
+        public void SubscribeToRemove(Action<T> actionToRegister) { OnRemove   += actionToRegister; }
+        public void UnSubscribeToRemove(Action<T> actionToRegister) { OnRemove -= actionToRegister; }
         #endregion
 
         #region IENUMERABLE AND LIST IMPLEMENTATION
