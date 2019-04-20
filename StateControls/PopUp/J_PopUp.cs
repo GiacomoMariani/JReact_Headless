@@ -36,22 +36,22 @@ namespace JReact.StateControl.PopUp
         #region SETUP
         public void SetupPopUpText(string message, string title = "")
         {
-            _message.CurrentValue = message;
-            _title.CurrentValue   = title;
+            _message.Current = message;
+            _title.Current   = title;
         }
 
         public void SetupConfirmButton(JUnityEvent confirmAction, string confirmText = DefaultConfirmText, bool exitAfter = true)
         {
             Confirm = confirmAction;
             if (exitAfter) Confirm.AddListener(Close);
-            _confirmButtonText.CurrentValue = confirmText;
+            _confirmButtonText.Current = confirmText;
         }
 
         public void SetupDenyButton(JUnityEvent denyAction, string confirmText = DefaultConfirmText, bool exitAfter = true)
         {
             Deny = denyAction;
             if (exitAfter) Confirm.AddListener(Close);
-            _denyButtonText.CurrentValue = confirmText;
+            _denyButtonText.Current = confirmText;
         }
         #endregion
 
@@ -81,9 +81,9 @@ namespace JReact.StateControl.PopUp
         {
             base.ResetThis();
             //strings
-            _title.CurrentValue             = DefaultTitle;
-            _confirmButtonText.CurrentValue = DefaultConfirmText;
-            _denyButtonText.CurrentValue    = DefaultDenyText;
+            _title.Current             = DefaultTitle;
+            _confirmButtonText.Current = DefaultConfirmText;
+            _denyButtonText.Current    = DefaultDenyText;
             _message.ResetThis();
             //actions
             if (Confirm != null)

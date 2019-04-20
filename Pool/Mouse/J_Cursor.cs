@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace JReact.Pool.SpecialEffect
     public class J_Cursor : ScriptableObject, iResettable
     {
         #region FIELDS AND VALUES
-        private event JGenericDelegate<GameObject> OnPointerChange;
+        private event Action<GameObject> OnPointerChange;
 
         // --------------- SETUP --------------- //
         [BoxGroup("Setup - Cursor", true, true, 0), SerializeField, AssetsOnly, Required]
@@ -190,8 +191,8 @@ namespace JReact.Pool.SpecialEffect
         }
         #endregion
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<GameObject> actionToAdd) { OnPointerChange      += actionToAdd; }
-        public void UnSubscribe(JGenericDelegate<GameObject> actionToRemove) { OnPointerChange -= actionToRemove; }
+        public void Subscribe(Action<GameObject> actionToAdd) { OnPointerChange      += actionToAdd; }
+        public void UnSubscribe(Action<GameObject> actionToRemove) { OnPointerChange -= actionToRemove; }
         #endregion
     }
 }

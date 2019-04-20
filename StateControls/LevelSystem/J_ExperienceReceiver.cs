@@ -18,7 +18,7 @@ namespace JReact.StateControl.LevelSystem
         [BoxGroup("State", true, true, 0), SerializeField, AssetsOnly, Required] private J_LevelProgression _levelProgress;
 
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private int _currentExperience;
-        public int CurrentValue
+        public int Current
         {
             get => _currentExperience;
             private set
@@ -32,7 +32,7 @@ namespace JReact.StateControl.LevelSystem
             => _levelProgress.CurrentLevelInfo.ExperienceNeeded;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private bool _CanGainExperience
             => !_levelProgress.MaxLevelReached;
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => Max - CurrentValue;
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => Max - Current;
 
         [BoxGroup("Debug", true, true, 1000), SerializeField] private bool _debug;
         #endregion
@@ -58,7 +58,7 @@ namespace JReact.StateControl.LevelSystem
             SanityChecks();
 
             IsActive     = true;
-            CurrentValue = 0;
+            Current = 0;
 
             _levelProgress.Subscribe(LevelUpdate);
         }
@@ -68,7 +68,7 @@ namespace JReact.StateControl.LevelSystem
         private void LevelUpdate((J_LevelState previous, J_LevelState current) transition)
         {
             OnMaxChanged?.Invoke(transition.current.ExperienceNeeded);
-            CurrentValue = 0;
+            Current = 0;
         }
         #endregion
 
@@ -80,7 +80,7 @@ namespace JReact.StateControl.LevelSystem
         public int Grant(int amountToAdd)
         {
             if (_debug)
-                JLog.Log($"{name} Granted Experience: {amountToAdd}. Current: {CurrentValue}. For next Level: {Max}",
+                JLog.Log($"{name} Granted Experience: {amountToAdd}. Current: {Current}. For next Level: {Max}",
                              JLogTags.LevelSystem, this);
 
             // --------------- CHECKERS --------------- //
@@ -93,7 +93,7 @@ namespace JReact.StateControl.LevelSystem
                 // --------------- STOP AT MAX --------------- //
                 if (!_CanGainExperience)
                 {
-                    CurrentValue = _levelProgress.CurrentLevelInfo.ExperienceNeeded;
+                    Current = _levelProgress.CurrentLevelInfo.ExperienceNeeded;
                     return -1;
                 }
 
@@ -102,7 +102,7 @@ namespace JReact.StateControl.LevelSystem
                 _levelProgress.GainLevel();
             }
 
-            CurrentValue = amountToAdd;
+            Current = amountToAdd;
 
             return 0;
         }

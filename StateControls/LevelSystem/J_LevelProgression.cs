@@ -24,7 +24,7 @@ namespace JReact.StateControl.LevelSystem
 
         // --------------- BOOK KEEPING --------------- //
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int TotalExperience
-            => PreviousExperience + Experience.CurrentValue;
+            => PreviousExperience + Experience.Current;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int CurrentLevel => _currentLevelIndex + 1;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int MaxLevel => _validStates.Length;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public J_LevelState CurrentLevelInfo => CurrentState;

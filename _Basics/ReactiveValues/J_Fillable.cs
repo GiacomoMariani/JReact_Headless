@@ -22,7 +22,7 @@ namespace JReact
         [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected int _startMin;
 
         private int _currentAmount;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int CurrentValue
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Current
         {
             get => _currentAmount;
             set
@@ -71,8 +71,8 @@ namespace JReact
             }
         }
 
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => Max - CurrentValue;
-        private string CurrentState => $"{name}. Min {Min} - Max {Max} - Current {CurrentValue}";
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => Max - Current;
+        private string CurrentState => $"{name}. Min {Min} - Max {Max} - Current {Current}";
         #endregion
 
         #region COMMANDS
@@ -104,12 +104,12 @@ namespace JReact
             if (!CanAdd(amount))
             {
                 JLog.Warning($"{CurrentState} invalid amount for grant {amount}. Setting Max.", JLogTags.Fillable, this);
-                int remaining = CurrentValue + amount - Max;
-                CurrentValue = Max;
+                int remaining = Current + amount - Max;
+                Current = Max;
                 return remaining;
             }
 
-            CurrentValue += amount;
+            Current += amount;
             return 0;
         }
 
@@ -131,12 +131,12 @@ namespace JReact
             if (!HasEnough(amount))
             {
                 JLog.Warning($"{CurrentState} invalid amount for remove {amount}. Setting Min.", JLogTags.Fillable, this);
-                int remaining = amount - (CurrentValue + Min);
-                CurrentValue = Min;
+                int remaining = amount - (Current + Min);
+                Current = Min;
                 return remaining;
             }
 
-            CurrentValue -= amount;
+            Current -= amount;
             return 0;
         }
         #endregion
@@ -147,17 +147,17 @@ namespace JReact
         /// </summary>
         /// <param name="amount">the amount we want to add</param>
         /// <returns>returns true if the request is valid</returns>
-        public bool CanAdd(int amount) => CurrentValue + amount <= Max;
+        public bool CanAdd(int amount) => Current + amount <= Max;
 
         /// <summary>
         /// checks if there's enough value
         /// </summary>
         /// <param name="amount">the amount we want to remove</param>
         /// <returns>returns true if we have anough/returns>
-        public bool HasEnough(int amount) => CurrentValue >= amount;
+        public bool HasEnough(int amount) => Current >= amount;
 
-        public bool CanSetMaxCapacity(int maxToSet) => CurrentValue <= maxToSet && Min   <= maxToSet;
-        public bool CanSetMinCapacity(int minToSet) => CurrentValue >= minToSet && Max   >= minToSet;
+        public bool CanSetMaxCapacity(int maxToSet) => Current <= maxToSet && Min   <= maxToSet;
+        public bool CanSetMinCapacity(int minToSet) => Current >= minToSet && Max   >= minToSet;
         public bool CanSetValue(int value) => value                 >= Min      && value <= Max;
         #endregion
 
@@ -181,11 +181,11 @@ namespace JReact
 
         public bool SanityChecks()
         {
-            Assert.IsTrue(CurrentValue <= Max, $"{name} has a current value {CurrentValue} higher than max {Max}");
-            Assert.IsTrue(CurrentValue >= Min, $"{name} has a current value {CurrentValue} lower than min {Min}");
+            Assert.IsTrue(Current <= Max, $"{name} has a current value {Current} higher than max {Max}");
+            Assert.IsTrue(Current >= Min, $"{name} has a current value {Current} lower than min {Min}");
             Assert.IsTrue(Min          <= Max, $"{name} has a min {Min} higher than max {Max}");
-            if (CurrentValue > Max) return false;
-            if (CurrentValue < Min) return false;
+            if (Current > Max) return false;
+            if (Current < Min) return false;
             if (Min          > Max) return false;
 
             return true;

@@ -25,7 +25,7 @@ namespace JReact.OdinDrawers
             //NAME
             GUI.Label(rect.AlignLeft(100f), label);
             //VALUE
-            value.CurrentValue = EditorGUI.Toggle(rect.AlignCenter(20f), value.CurrentValue);
+            value.Current = EditorGUI.Toggle(rect.AlignCenter(20f), value.Current);
             //REFERENCE
             ValueEntry.SmartValue =
                 (J_ReactiveBool) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveBool), false);
@@ -50,7 +50,7 @@ namespace JReact.OdinDrawers
             //NAME
             GUI.Label(rect.AlignLeft(100f), label);
             //VALUE
-            value.CurrentValue = SirenixEditorFields.IntField(rect.AlignCenter(200f), value.CurrentValue);
+            value.Current = SirenixEditorFields.IntField(rect.AlignCenter(200f), value.Current);
             //REFERENCE
             ValueEntry.SmartValue =
                 (J_ReactiveInt) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveBool), false);
@@ -75,7 +75,7 @@ namespace JReact.OdinDrawers
             //NAME
             GUI.Label(rect.AlignLeft(100f), label);
             //VALUE
-            value.CurrentValue = SirenixEditorFields.FloatField(rect.AlignCenter(200f), value.CurrentValue);
+            value.Current = SirenixEditorFields.FloatField(rect.AlignCenter(200f), value.Current);
             //REFERENCE
             ValueEntry.SmartValue =
                 (J_ReactiveFloat) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveBool), false);
@@ -106,7 +106,7 @@ namespace JReact.OdinDrawers
 
             rect = EditorGUILayout.GetControlRect(false, 50f);
             //VALUE
-            value.CurrentValue = SirenixEditorFields.TextField(rect, value.CurrentValue);
+            value.Current = SirenixEditorFields.TextField(rect, value.Current);
         }
     }
 }

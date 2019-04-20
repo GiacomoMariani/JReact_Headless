@@ -15,7 +15,7 @@ namespace JReact.UiView
         //start and stop tracking on enable
         private void OnEnable()
         {
-            SetText(_stringScreenMessage.CurrentValue);
+            SetText(_stringScreenMessage.Current);
             _stringScreenMessage.Subscribe(SetText);
         }
 

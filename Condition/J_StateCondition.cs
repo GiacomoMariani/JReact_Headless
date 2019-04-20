@@ -31,8 +31,8 @@ namespace JReact.Conditions
         {
             bool stateValid = Array.IndexOf(_validStates, states.nextState) > -1;
 
-            if (_passOnEnter) CurrentValue = stateValid;
-            else CurrentValue              = !stateValid;
+            if (_passOnEnter) Current = stateValid;
+            else Current              = !stateValid;
         }
 
     }

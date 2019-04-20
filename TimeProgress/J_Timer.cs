@@ -30,7 +30,7 @@ namespace JReact.TimeProgress
 
             var timer = CreateCounter<J_Timer>(desiredSegment);
             timer._tickLengthInSeconds = secondsPerTick;
-            if (autoStart) timer.Activate();
+            if (autoStart) timer.StartCount();
             return timer;
         }
 
@@ -43,16 +43,11 @@ namespace JReact.TimeProgress
         #endregion
 
         #region COUNTING
-        //this counts a single tick
+        //counts a single tick
         protected override IEnumerator<float> CountOneTick()
         {
-            //stop if requested
-            if (!IsActive) yield break;
-
-            //count the time before the tick
             float realTimePassed = 0f;
 
-            //wait the tick
             float beforeTickTime = CurrentRealSeconds;
             while (realTimePassed < _tickLengthInSeconds)
             {
@@ -64,13 +59,8 @@ namespace JReact.TimeProgress
             //remove the  comment below to check time if required
             //Debug.Log("We've been waiting for " + realTimePassed + " for a tick of " + _tickLengthInSeconds);
 
-            //do not send the event if not required anymore
-            if (!IsActive) yield break;
-
-            //the event send the time passed
+            //the event and tick again
             SendTickEvent(realTimePassed);
-
-            //tick again
             Tick();
         }
         #endregion

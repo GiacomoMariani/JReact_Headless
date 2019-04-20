@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
 
@@ -10,7 +11,7 @@ namespace JReact.Pool.SpecialEffect
     public abstract class J_PoolItem_SpecialEffect : J_PoolItem_Mono<J_PoolItem_SpecialEffect>
     {
         #region FIELDS AND PROPERTIES
-        public event JGenericDelegate<J_PoolItem_SpecialEffect> OnActivation;
+        public event Action<J_PoolItem_SpecialEffect> OnActivation;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
         #endregion

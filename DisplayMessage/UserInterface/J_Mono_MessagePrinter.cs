@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
@@ -13,7 +14,7 @@ namespace JReact.ScreenMessage
     {
         #region FIELDS AND PROPERTIS
         private const string COROUTINE_PrinterTag = "COROUTINE_MessagePrinterTag";
-        internal event JGenericDelegate<bool> OnPrinting;
+        internal event Action<bool> OnPrinting;
 
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _stringMessage;
@@ -66,7 +67,7 @@ namespace JReact.ScreenMessage
             IsPrinting = true;
             for (int i = 0; i < messageToPrint.Length; i++)
             {
-                _stringMessage.CurrentValue += messageToPrint[i];
+                _stringMessage.Current += messageToPrint[i];
                 yield return Timing.WaitForSeconds(_secondsForType);
             }
 
@@ -84,7 +85,7 @@ namespace JReact.ScreenMessage
             Assert.IsTrue(IsPrinting, $"{name} should not call CompletePrinting if it is not printing");
             //reset this and show the entire element
             ResetThis();
-            _stringMessage.CurrentValue = _actorElement.MessageContent;
+            _stringMessage.Current = _actorElement.MessageContent;
         }
         #endregion
 

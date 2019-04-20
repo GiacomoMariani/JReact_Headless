@@ -60,7 +60,7 @@ namespace JReact.Collections
         /// process all the elements in this list with a given action
         /// </summary>
         /// <param name="actionToCall">the action used on all the items</param>
-        public void ProcessWith(JGenericDelegate<T> actionToCall)
+        public void ProcessWith(Action<T> actionToCall)
         {
             for (int i = 0; i < Count; i++)
                 actionToCall(_ThisCollection[i]);

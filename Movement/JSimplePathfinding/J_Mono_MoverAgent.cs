@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using JReact.Movement;
 using MEC;
 using Sirenix.OdinInspector;
@@ -18,12 +19,11 @@ namespace JReact.Pathfinding
         #region VALUES AND PROPERTIES
         // --------------- EVENTS --------------- //
         //path actions
-        private event JGenericDelegate<T> OnStart;
-        private event JGenericDelegate<T> OnComplete;
+        private event Action<T> OnStart;
+        private event Action<T> OnComplete;
 
         //step action
-        public delegate void StepAction(Vector2Int startStep, Vector2Int endStep);
-        private event StepAction OnStepStart;
+        private event Action<(Vector2Int startStep, Vector2Int endStep)> OnStep;
 
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, Range(0.1f, 1.5f)] private float _stepInSeconds = 0.75f;
@@ -85,7 +85,7 @@ namespace JReact.Pathfinding
         {
             if (_debug)
                 JLog.Log($"{gameObject.name} moving from {start.Coordinates} to {goal.Coordinates}",
-                             JLogTags.Pathfind, this);
+                         JLogTags.Pathfind, this);
 
             _pathQueue.FindPath(start, goal, J_PathCost.CalculateNodeDistance, CanAccessNode, StartMovement);
         }
@@ -119,7 +119,7 @@ namespace JReact.Pathfinding
                 {
                     // --------------- STEP START --------------- //
                     _doingStep = true;
-                    OnStepStart?.Invoke(path[i].Coordinates, path[i + 1].Coordinates);
+                    OnStep?.Invoke((path[i].Coordinates, path[i + 1].Coordinates));
 
                     // --------------- MOVER ACTION --------------- //
                     Mover.SubscribeToReachFixedPosition(StepComplete);
@@ -144,12 +144,14 @@ namespace JReact.Pathfinding
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToPathStart(JGenericDelegate<T> actionToAdd) { OnStart            += actionToAdd; }
-        public void UnSubscribeToPathStart(JGenericDelegate<T> actionToRemove) { OnStart       -= actionToRemove; }
-        public void SubscribeToPathComplete(JGenericDelegate<T> actionToAdd) { OnComplete      += actionToAdd; }
-        public void UnSubscribeToPathComplete(JGenericDelegate<T> actionToRemove) { OnComplete -= actionToRemove; }
-        public void SubscribeToStep(StepAction actionToAdd) { OnStepStart                      += actionToAdd; }
-        public void UnSubscribeToStep(StepAction actionToRemove) { OnStepStart                 -= actionToRemove; }
+        public void SubscribeToPathStart(Action<T> actionToAdd) { OnStart                                    += actionToAdd; }
+        public void UnSubscribeToPathStart(Action<T> actionToRemove) { OnStart                               -= actionToRemove; }
+
+        public void SubscribeToPathComplete(Action<T> actionToAdd) { OnComplete                              += actionToAdd; }
+        public void UnSubscribeToPathComplete(Action<T> actionToRemove) { OnComplete                         -= actionToRemove; }
+
+        public void SubscribeToStep(Action<(Vector2Int startStep, Vector2Int endStep)> actionToAdd) { OnStep += actionToAdd; }
+        public void UnSubscribeToStep(Action<(Vector2Int startStep, Vector2Int endStep)> actionToRemove) { OnStep -= actionToRemove; }
         #endregion
     }
 }

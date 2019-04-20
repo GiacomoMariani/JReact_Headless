@@ -19,7 +19,7 @@ namespace JReact.Conditions
 
         protected override void StartCheckingCondition()
         {
-            AmountChanged(_stackable.CurrentValue);
+            AmountChanged(_stackable.Current);
             _stackable.Subscribe(AmountChanged);
         }
 
@@ -28,7 +28,7 @@ namespace JReact.Conditions
         protected override void UpdateCondition()
         {
             base.UpdateCondition();
-            AmountChanged(_stackable.CurrentValue);
+            AmountChanged(_stackable.Current);
         }
 
         protected virtual void AmountChanged(int currentAmount)
@@ -36,13 +36,13 @@ namespace JReact.Conditions
             switch (_comparison)
             {
                 case ComparisonType.Less:
-                    CurrentValue = currentAmount < _amount;
+                    Current = currentAmount < _amount;
                     break;
                 case ComparisonType.Equal:
-                    CurrentValue = currentAmount == _amount;
+                    Current = currentAmount == _amount;
                     break;
                 case ComparisonType.More:
-                    CurrentValue = currentAmount > _amount;
+                    Current = currentAmount > _amount;
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }

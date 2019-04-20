@@ -69,11 +69,6 @@ namespace JReact.TimeProgress
 
             // --------------- SETUP --------------- //
             _timeRequiredInSeconds = (int) secondsToComplete;
-            if (!_counter.IsActive)
-            {
-                JLog.Warning($"{_counter.name} on {name} was not running. Force Start.", JLogTags.TimeProgress, this);
-                _counter.Activate();
-            }
 
             // --------------- RUN --------------- //
             IsRunning = true;

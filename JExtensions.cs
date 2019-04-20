@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -42,7 +43,7 @@ namespace JReact
             Assert.IsTrue(chance < 1f, $"{chance} is higher or equal to 1. So it will always be  true");
             return Random.Range(0, 1f) < chance;
         }
-        
+
         /// <summary>
         /// converts an axis (-1f to 1f) to a byte
         /// </summary>
@@ -56,15 +57,17 @@ namespace JReact
                 JLog.Warning($"Percentage {axisFloat} is higher than 1. Setting to 1");
                 return 100;
             }
+
             if (axisFloat < -1.0f)
             {
                 JLog.Warning($"Percentage {axisFloat} is lower than -1 Setting to -1");
                 return 200;
             }
+
             //positive
             if (axisFloat >= 0) return (byte) (axisFloat * 100);
             //negative
-            return (byte) (200 + axisFloat          * 100);
+            return (byte) (200 + axisFloat * 100);
         }
 
         /// <summary>
@@ -75,7 +78,7 @@ namespace JReact
         public static float ToAxis(this byte axisByte)
         {
             if (axisByte < 100) return (axisByte * 0.1f);
-            return (axisByte                 * 0.1f) - 2.0f;
+            return (axisByte                     * 0.1f) - 2.0f;
         }
         #endregion PERCENTAGE
 
@@ -88,7 +91,7 @@ namespace JReact
         /// <param name="roundMax">the max</param>
         public static int SumRound(this int element, int toAdd, int roundMax) => (element + toAdd) % roundMax;
         #endregion INT
-        
+
         #region ARRAYS
         /// <summary>
         /// checks if an array contains a given item
@@ -128,13 +131,13 @@ namespace JReact
         /// <param name="collection">the sequence to check</param>
         /// <typeparam name="T">the type of element in the collection</typeparam>
         /// <returns>returns a random element</returns>
-        public static void SubscribeToAll<T>(this ICollection<T> collection, JAction actionToPerform)
+        public static void SubscribeToAll<T>(this ICollection<T> collection, Action actionToPerform)
             where T : iObservable
         {
             foreach (T element in collection) element.Subscribe(actionToPerform);
         }
 
-        public static void UnSubscribeToAll<T>(this ICollection<T> collection, JAction actionToPerform)
+        public static void UnSubscribeToAll<T>(this ICollection<T> collection, Action actionToPerform)
             where T : iObservable
         {
             foreach (T element in collection) element.UnSubscribe(actionToPerform);
@@ -295,33 +298,25 @@ namespace JReact
         #endregion VECTORS
 
         #region STRING
-        //converts a string into int
         public static int ToInt(this string stringToConvert)
         {
-            //try getting the value
             if (int.TryParse(stringToConvert, out int valueToReturn)) return valueToReturn;
 
-            //otherwise send a warning and return 0
             Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into integer. Returning 0.");
             return 0;
         }
 
-        //converts a string into float
         public static float ToFloat(this string stringToConvert)
         {
-            //try getting the value
             if (float.TryParse(stringToConvert, out float valueToReturn)) return valueToReturn;
 
-            //otherwise send a warning and return 0
             Debug.LogWarning($"The string '{stringToConvert}' cannot be converted into float. Returning 0f.");
             return 0f;
         }
 
         /// <summary>
-        /// this is used to encode a string into a hex string
+        /// encodes a string into a hex string
         /// </summary>
-        /// <param name="str">the string to encode</param>
-        /// <returns>returns the hex string</returns>
         public static string ToHexString(this string str)
         {
             var sb = new StringBuilder();
@@ -330,6 +325,21 @@ namespace JReact
             foreach (byte t in bytes) sb.Append(t.ToString("X2"));
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// removes all non alpha numeric elements.
+        /// </summary>
+        public static string ToAlphaNumeric(this string str, bool includeSpace = true)
+        {
+            Regex rgx;
+            rgx = includeSpace
+                      ? new Regex("[^a-zA-Z0-9 -]")
+                      : new Regex("[^a-zA-Z0-9-]");
+
+            str = rgx.Replace(str, "");
+
+            return str;
         }
         #endregion STRING
 

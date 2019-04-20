@@ -15,7 +15,7 @@ namespace JReact
         [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected T _startValue;
         protected T _currentValue;
         [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly] public bool HasListeners => OnPropertyChange == null;
-        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly] public virtual T CurrentValue
+        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly] public virtual T Current
         {
             get => _currentValue;
             set

@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -13,8 +14,8 @@ namespace JReact
     /// </summary>
     public class J_Service : ScriptableObject, iStateObservable, iActivable
     {
-        private event JAction OnActivate;
-        private event JAction OnExit;
+        private event Action OnActivate;
+        private event Action OnExit;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public string Name => name;
@@ -66,11 +67,11 @@ namespace JReact
         //the specific implementation of activate
         protected virtual void EndThis() { OnExit?.Invoke(); }
 
-        public void Subscribe(JAction actionToSubscribe) { OnActivate   += actionToSubscribe; }
-        public void UnSubscribe(JAction actionToSubscribe) { OnActivate -= actionToSubscribe; }
+        public void Subscribe(Action actionToSubscribe) { OnActivate   += actionToSubscribe; }
+        public void UnSubscribe(Action actionToSubscribe) { OnActivate -= actionToSubscribe; }
 
-        public void SubscribeToEnd(JAction actionToSend) { OnExit   += actionToSend; }
-        public void UnSubscribeToEnd(JAction actionToSend) { OnExit -= actionToSend; }
+        public void SubscribeToEnd(Action actionToSend) { OnExit   += actionToSend; }
+        public void UnSubscribeToEnd(Action actionToSend) { OnExit -= actionToSend; }
 
         /// <summary>
         /// You may use Reset to make sure the service has been ended before activation
