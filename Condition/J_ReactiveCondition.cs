@@ -9,14 +9,14 @@ namespace JReact.Conditions
     public abstract class J_ReactiveCondition : J_Service, iObservableValue<bool>
     {
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_ReactiveBool _condition;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool CurrentValue
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool Current
         {
             get
             {
                 UpdateCondition();
-                return _condition.CurrentValue;
+                return _condition.Current;
             }
-            set => _condition.CurrentValue = value;
+            set => _condition.Current = value;
         }
 
         public static T CreateCondition<T>()
@@ -31,7 +31,7 @@ namespace JReact.Conditions
         {
             base.ActivateThis();
             if (_condition == null) _condition = CreateInstance<J_ReactiveBool>();
-            CurrentValue = false;
+            Current = false;
             StartCheckingCondition();
         }
 
@@ -62,8 +62,8 @@ namespace JReact.Conditions
         public void UnSubscribe(Action<bool> action) { _condition.UnSubscribe(action); }
 
         #region OPERATORS
-        public static bool operator true(J_ReactiveCondition item) => item.CurrentValue;
-        public static bool operator false(J_ReactiveCondition item) => !item.CurrentValue;
+        public static bool operator true(J_ReactiveCondition item) => item.Current;
+        public static bool operator false(J_ReactiveCondition item) => !item.Current;
         #endregion
     }
 }

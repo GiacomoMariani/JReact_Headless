@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -10,11 +11,11 @@ namespace JReact.SceneControls
     /// this class is used to change the scene
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Scenes/Scene Changer")]
-    public class J_SceneChanger : ScriptableObject
+    public class J_SceneChanger : ScriptableObject, iObservable<(Scene previous, Scene current)>
     {
         #region FIELDS AND PROPERTIES
-        private event JSceneChange OnSceneChange;
-        private event JFloatDelegate OnLoadProgress;
+        private event Action<(Scene previous, Scene current)> OnSceneChange;
+        private event Action<float> OnLoadProgress;
 
         //to make sure we save one first scene
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isInitialized;
@@ -74,16 +75,16 @@ namespace JReact.SceneControls
 
             SceneManager.activeSceneChanged -= SceneChanged;
             CurrentScene                    =  newScene;
-            OnSceneChange?.Invoke(oldScene, newScene);
+            OnSceneChange?.Invoke((oldScene, newScene));
         }
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JSceneChange actionToAdd) { OnSceneChange      += actionToAdd; }
-        public void UnSubscribe(JSceneChange actionToRemove) { OnSceneChange -= actionToRemove; }
+        public void Subscribe(Action<(Scene previous, Scene current)> actionToAdd) { OnSceneChange      += actionToAdd; }
+        public void UnSubscribe(Action<(Scene previous, Scene current)> actionToRemove) { OnSceneChange -= actionToRemove; }
 
-        public void SubscribeToLoadProgress(JFloatDelegate actionToAdd) { OnLoadProgress      += actionToAdd; }
-        public void UnSubscribeToLoadProgress(JFloatDelegate actionToRemove) { OnLoadProgress -= actionToRemove; }
+        public void SubscribeToLoadProgress(Action<float> actionToAdd) { OnLoadProgress      += actionToAdd; }
+        public void UnSubscribeToLoadProgress(Action<float> actionToRemove) { OnLoadProgress -= actionToRemove; }
         #endregion
     }
 }

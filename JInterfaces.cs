@@ -38,8 +38,8 @@ namespace JReact
 
     public interface iObservable
     {
-        void Subscribe(JAction action);
-        void UnSubscribe(JAction action);
+        void Subscribe(Action action);
+        void UnSubscribe(Action action);
     }
 
     public interface iStateObservable : iTask, iObservable
@@ -54,7 +54,7 @@ namespace JReact
 
     public interface iObservableValue<out T> : iObservable<T>
     {
-        T CurrentValue { get; }
+        T Current { get; }
     }
 
     public interface iStackable : iObservableValue<int>
@@ -76,8 +76,8 @@ namespace JReact
         string Name { get; }
         bool IsActive { get; }
         void Activate();
-        void SubscribeToEnd(JAction action);
-        void UnSubscribeToEnd(JAction action);
+        void SubscribeToEnd(Action action);
+        void UnSubscribeToEnd(Action action);
     }
 
     //an interface of a ticker that may give a timer

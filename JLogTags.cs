@@ -13,7 +13,7 @@ namespace JReact
         public const string State = "-State-";
         public const string Reset = "-Reset-";
         public const string SceneManager = "-SceneManager-";
-        public const string TimeProgress = "-Time-";
+        public const string TimeProgress = "-TimeProgress-";
         public const string Task = "-Task-";
         public const string UiView = "-UiView-";
         public const string SceneView = "-Scene View-";

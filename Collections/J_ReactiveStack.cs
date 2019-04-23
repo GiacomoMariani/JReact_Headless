@@ -8,8 +8,8 @@ namespace JReact.Collections
 {
     public abstract class J_ReactiveStack<T> : J_Service, ICollection, IReadOnlyCollection<T>
     {
-        private JGenericDelegate<T> OnPop;
-        private JGenericDelegate<T> OnPush;
+        private Action<T> OnPop;
+        private Action<T> OnPush;
 
         #region FIELDS AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxLength = 10;

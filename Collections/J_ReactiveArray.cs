@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -12,8 +13,8 @@ namespace JReact.Collections
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS --------------- //
-        private event JGenericDelegate<T> OnAdd;
-        private event JGenericDelegate<T> OnRemove;
+        private event Action<T> OnAdd;
+        private event Action<T> OnRemove;
 
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _length = 50;
@@ -90,7 +91,7 @@ namespace JReact.Collections
         /// process all the non null elements with an action
         /// </summary>
         /// <param name="actionToCall">the action we want to send to non null items</param>
-        public void ProcessWith(JGenericDelegate<T> actionToCall)
+        public void ProcessWith(Action<T> actionToCall)
         {
             for (int i = 0; i < Length; i++)
                 if (_thisArray[i] != null)
@@ -154,23 +155,23 @@ namespace JReact.Collections
         #endregion
 
         #region SUBSCRIBERS
-        public void Subscribe(JGenericDelegate<T> action)
+        public void Subscribe(Action<T> action)
         {
             OnAdd    += action;
             OnRemove += action;
         }
 
-        public void UnSubscribe(JGenericDelegate<T> action)
+        public void UnSubscribe(Action<T> action)
         {
             OnAdd    -= action;
             OnRemove -= action;
         }
 
-        public void SubscribeToAdd(JGenericDelegate<T> action) { OnAdd   += action; }
-        public void UnSubscribeToAdd(JGenericDelegate<T> action) { OnAdd -= action; }
+        public void SubscribeToAdd(Action<T> action) { OnAdd   += action; }
+        public void UnSubscribeToAdd(Action<T> action) { OnAdd -= action; }
 
-        public void SubscribeToRemove(JGenericDelegate<T> action) { OnRemove   += action; }
-        public void UnSubscribeToRemove(JGenericDelegate<T> action) { OnRemove -= action; }
+        public void SubscribeToRemove(Action<T> action) { OnRemove   += action; }
+        public void UnSubscribeToRemove(Action<T> action) { OnRemove -= action; }
         #endregion
     }
 }

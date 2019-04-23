@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -10,7 +11,7 @@ namespace JReact
     public class J_Mono_ViewActivator : MonoBehaviour
     {
         #region FIELDS AND PROPERTIES
-        public event JActivationDelegate OnActivation;
+        public event Action<bool> OnActivation;
 
         //the views we want to activate
         [BoxGroup("Views", true, true, -50), SerializeField, Required] private GameObject[] _views;
@@ -22,9 +23,7 @@ namespace JReact
         //used for initialization
         private void Awake()
         {
-            //check that everything is as expected
             SanityChecks();
-            //setup components and other elements
             InitThis();
         }
 
@@ -45,7 +44,7 @@ namespace JReact
                 ActivateSpecificView(_views[i], activateView);
             }
 
-            if (OnActivation != null) OnActivation(activateView);
+            OnActivation?.Invoke(activateView);
         }
 
         //this is used to activate a specific view

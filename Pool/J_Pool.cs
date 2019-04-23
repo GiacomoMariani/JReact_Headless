@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -25,7 +26,7 @@ namespace JReact.Pool
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T _firstItem;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private JGenericDelegate<T> _initAction;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Action<T> _initAction;
         #endregion
 
         #region INITIALIZATION
@@ -33,7 +34,7 @@ namespace JReact.Pool
         /// adds an action to be sent to the elements to be initiated
         /// </summary>
         /// <param name="itemSetupAction">the action we want to set for the pool items</param>
-        public void AddSetupForItems(JGenericDelegate<T> itemSetupAction) { _initAction = itemSetupAction; }
+        public void AddSetupForItems(Action<T> itemSetupAction) { _initAction = itemSetupAction; }
 
         protected override void ActivateThis()
         {
@@ -56,7 +57,7 @@ namespace JReact.Pool
         }
 
         //populates the pool
-        private IEnumerator<float> Populate(int remainingObjects, JGenericDelegate<T> itemSetupAction)
+        private IEnumerator<float> Populate(int remainingObjects, Action<T> itemSetupAction)
         {
             // --------------- ITEM CREATION --------------- //
             T itemToAdd = AddItemIntoPool();

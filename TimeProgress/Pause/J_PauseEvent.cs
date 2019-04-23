@@ -18,8 +18,8 @@ namespace JReact.TimeProgress.Pause
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS--------------- //
-        private event JAction OnPauseStart;
-        private event JGenericDelegate<int> OnPauseEnds;
+        private event Action OnPauseStart;
+        private event Action<int> OnPauseEnds;
 
         // --------------- VALUES --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected int _startTimeUnix;
@@ -101,11 +101,11 @@ namespace JReact.TimeProgress.Pause
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToPauseStart(JAction actionToSend) { OnPauseStart   += actionToSend; }
-        public void UnSubscribeToPauseStart(JAction actionToSend) { OnPauseStart -= actionToSend; }
+        public void SubscribeToPauseStart(Action actionToSend) { OnPauseStart   += actionToSend; }
+        public void UnSubscribeToPauseStart(Action actionToSend) { OnPauseStart -= actionToSend; }
 
-        public void SubscribeToPauseEnd(JGenericDelegate<int> actionToSend) { OnPauseEnds   += actionToSend; }
-        public void UnSubscribeToPauseEnd(JGenericDelegate<int> actionToSend) { OnPauseEnds -= actionToSend; }
+        public void SubscribeToPauseEnd(Action<int> actionToSend) { OnPauseEnds   += actionToSend; }
+        public void UnSubscribeToPauseEnd(Action<int> actionToSend) { OnPauseEnds -= actionToSend; }
         #endregion
 
         #region RESET METHODS

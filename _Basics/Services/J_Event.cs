@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace JReact
@@ -9,11 +10,11 @@ namespace JReact
     [CreateAssetMenu(menuName = "Reactive/Events/Event")]
     public class J_Event : ScriptableObject, iObservable
     {
-        private event JAction OnEnter;
+        private event Action OnEnter;
 
         [ButtonGroup("Commands", 200), Button("Activate", ButtonSizes.Medium)] public void RaiseEvent() { OnEnter?.Invoke(); }
 
-        public void Subscribe(JAction actionToSubscribe) { OnEnter   += actionToSubscribe; }
-        public void UnSubscribe(JAction actionToSubscribe) { OnEnter -= actionToSubscribe; }
+        public void Subscribe(Action actionToSubscribe) { OnEnter   += actionToSubscribe; }
+        public void UnSubscribe(Action actionToSubscribe) { OnEnter -= actionToSubscribe; }
     }
 }

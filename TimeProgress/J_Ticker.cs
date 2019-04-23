@@ -29,7 +29,7 @@ namespace JReact.TimeProgress
 
             var ticker = J_GenericCounter.CreateCounter<J_Ticker>(desiredSegment);
             ticker._tickInterval = framePerTick;
-            if (autoStart) ticker.Activate();
+            if (autoStart) ticker.StartCount();
             return ticker;
         }
 
@@ -45,12 +45,8 @@ namespace JReact.TimeProgress
         //this counts a single tick
         protected override IEnumerator<float> CountOneTick()
         {
-            //stop if requested
-            if (!IsActive) yield break;
-
-            //count the time before the tick
             float beforeTickTime = CurrentRealSeconds;
-            //wait the tick
+
             for (int i = 0; i < _tickInterval; i++)
                 yield return Timing.WaitForOneFrame;
 
@@ -59,13 +55,8 @@ namespace JReact.TimeProgress
             //calculate the real passed time
             float realTimePassed = afterTickTime - beforeTickTime;
 
-            //do not send the event if not required anymore
-            if (!IsActive) yield break;
-
-            //the event send the tick counted
+            //send the event and ticks again
             SendTickEvent(realTimePassed);
-
-            //tick again
             Tick();
         }
         #endregion

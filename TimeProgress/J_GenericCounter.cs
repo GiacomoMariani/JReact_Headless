@@ -9,7 +9,7 @@ namespace JReact.TimeProgress
     /// <summary>
     /// a generic timer
     /// </summary>
-    public abstract class J_GenericCounter : J_Service, iObservable<float>, iDeltaTime
+    public abstract class J_GenericCounter : ScriptableObject, iObservable<float>, iDeltaTime
     {
         #region FIELDS AND PROPERTIES
         protected event Action<float> OnTick;
@@ -20,15 +20,13 @@ namespace JReact.TimeProgress
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _objectId = -1;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float ThisDeltaTime { get; private set; }
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public float CurrentRealSeconds
-            => Time.realtimeSinceStartup;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected float CurrentRealSeconds => Time.realtimeSinceStartup;
+
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private CoroutineHandle _handle;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive => _handle.IsValid && _handle.IsRunning;
         #endregion
 
         #region COMMANDS
-        /// <summary>
-        /// creates a new counter and starts counting
-        /// </summary>
-        /// <returns>the new counter created</returns>
         protected static T CreateCounter<T>(Segment desiredSegment = Segment.Update)
             where T : J_GenericCounter
         {
@@ -37,13 +35,9 @@ namespace JReact.TimeProgress
             return counter;
         }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// starts the counter
-        /// </summary>
-        protected override void ActivateThis()
+        // starts the counter
+        protected void StartCount()
         {
-            base.ActivateThis();
             //make sure everything is setup correctly and starts the counting
             JLog.Log($"{name} starts counting", JLogTags.TimeProgress, this);
             if (!SanityChecks()) return;
@@ -53,15 +47,11 @@ namespace JReact.TimeProgress
             Tick();
         }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// stops the timer
-        /// </summary>
-        protected override void EndThis()
+        // stops the counter
+        protected void StopCount()
         {
             JLog.Log($"{name} stops counting", JLogTags.TimeProgress, this);
             Timing.KillCoroutines(_objectId, JCoroutineTags.COROUTINE_CounterTag);
-            base.EndThis();
         }
         #endregion
 
@@ -71,7 +61,8 @@ namespace JReact.TimeProgress
         #endregion
 
         #region COUNTING
-        protected void Tick() { Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_CounterTag); }
+        protected void Tick()
+            => _handle = Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_CounterTag);
 
         //this counts a single tick
         protected abstract IEnumerator<float> CountOneTick();
@@ -87,13 +78,15 @@ namespace JReact.TimeProgress
         #region SUBSCRIBERS
         public void Subscribe(Action<float> action)
         {
-            if (!IsActive) Activate();
+            if (!IsActive) StartCount();
             OnTick += action;
         }
 
-        public void UnSubscribe(Action<float> action) { OnTick -= action; }
-        public void SubscribeToCounter(Action<float> action) { Subscribe(action); }
-        public void UnSubscribeToCounter(Action<float> action) { UnSubscribe(action); }
+        public void UnSubscribe(Action<float> action)
+        {
+            OnTick -= action;
+            if (OnTick == null) StopCount();
+        }
         #endregion
     }
 }

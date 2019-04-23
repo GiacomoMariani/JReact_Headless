@@ -32,14 +32,14 @@ namespace JReact.OdinDrawers
             // --------------- LINE 2 - LABELS AND CURRENT --------------- //
             Rect rect = EditorGUILayout.GetControlRect();
             GUI.Label(rect, "Min |");
-            value.CurrentValue = SirenixEditorFields.IntField(rect.AlignCenterX(200), value.CurrentValue);
+            value.Current = SirenixEditorFields.IntField(rect.AlignCenterX(200), value.Current);
             GUI.Label(rect, "| Max", SirenixGUIStyles.RightAlignedGreyMiniLabel);
 
             // --------------- LINE 3 - INT FIELDS AND SLIDER--------------- //
             rect      = EditorGUILayout.GetControlRect();
             value.Min = SirenixEditorFields.IntField(rect.AlignLeft(80f), value.Min);
-            value.CurrentValue =
-                (int) SirenixEditorFields.SegmentedProgressBarField(rect.AlignCenterX(rect.width - 80f * 2 - 4), value.CurrentValue,
+            value.Current =
+                (int) SirenixEditorFields.SegmentedProgressBarField(rect.AlignCenterX(rect.width - 80f * 2 - 4), value.Current,
                                                                     value.Min, value.Max);
 
             value.Max = SirenixEditorFields.IntField(rect.AlignRight(80f), value.Max);

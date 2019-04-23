@@ -34,7 +34,7 @@ namespace JReact.Collections
         // --------------- ADD --------------- //
         public void Add(TKey key, TValue value)
         {
-            Assert.IsNotNull(_Dictionary, $"{name} not initiated");
+            Remove(key);
             Internal_UpdateItem(key, value);
             OnChange?.Invoke((key, value));
         }

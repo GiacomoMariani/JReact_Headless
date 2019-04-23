@@ -27,13 +27,13 @@ namespace JReact.Conditions
         #region ACTIONS AND TRACKING
         private void SetAsFalse()
         {
-            if (CurrentValue) CurrentValue = false;
+            if (Current) Current = false;
         }
 
         private void SetAsTrue()
         {
-            if (!CurrentValue) CurrentValue = true;
-            if (_autoReset) CurrentValue    = false;
+            if (!Current) Current = true;
+            if (_autoReset) Current    = false;
         }
 
         private void StartTrackEvents()

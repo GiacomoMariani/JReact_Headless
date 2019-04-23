@@ -68,7 +68,7 @@ namespace JReact.Conditions.Tasks
         // launch the tasks. wait for triggers otherwise we directly start
         protected override void StartCheckingCondition()
         {
-            Assert.IsFalse(CurrentValue, $"{name} should start as false => not completed");
+            Assert.IsFalse(Current, $"{name} should start as false => not completed");
 
             // --------------- TRACKING --------------- //
             //subscribe to all triggers if the task is not started, otherwise only to complete
@@ -188,14 +188,14 @@ namespace JReact.Conditions.Tasks
             if (_requiresOneActivation && !_activatedOnce) return;
             StopCheckingCondition();
             CompleteTutorialStep();
-            CurrentValue = true;
+            Current = true;
             State        = TaskState.Complete;
         }
         #endregion
 
         #region CHECKS
-        private bool ActivationValid() => _startTrigger  == null || _startTrigger.CurrentValue;
-        private bool CompleteReady() => _completeTrigger == null || _completeTrigger.CurrentValue;
+        private bool ActivationValid() => _startTrigger  == null || _startTrigger.Current;
+        private bool CompleteReady() => _completeTrigger == null || _completeTrigger.Current;
         #endregion
 
         #region VIRTUAL IMPLEMENTATION
