@@ -77,8 +77,8 @@ namespace JReact
         /// <returns>returns the axis</returns>
         public static float ToAxis(this byte axisByte)
         {
-            if (axisByte < 100) return (axisByte * 0.1f);
-            return (axisByte                     * 0.1f) - 2.0f;
+            if (axisByte <= 100) return (axisByte * 0.01f);
+            return (axisByte                     * 0.01f) - 2.0f;
         }
         #endregion PERCENTAGE
 
@@ -104,57 +104,39 @@ namespace JReact
 
         #region COLLECTIONS
         /// <summary>
-        /// a way to debug all elements in an enumerable
+        /// debugs all elements in an enumerable
         /// </summary>
-        /// <param name="collection">the sequence to check</param>
-        /// <typeparam name="T">the type of element in the collection</typeparam>
-        /// <returns>returns the collection as a string</returns>
         public static string PrintAll<T>(this ICollection<T> collection)
-        {
-            string printedElements                            = "Elements: - ";
-            foreach (T element in collection) printedElements += element + " - ";
-
-            return printedElements;
-        }
+            => collection.Aggregate("Elements: - ", (current, element) => current + (element + " - "));
 
         /// <summary>
         /// get a random element in the collection
         /// </summary>
-        /// <param name="collection">the sequence to check</param>
-        /// <typeparam name="T">the type of element in the collection</typeparam>
-        /// <returns>returns a random element</returns>
         public static T GetRandomElement<T>(this ICollection<T> collection) => collection.ElementAt(Random.Range(0, collection.Count));
 
-        /// <summary>
-        /// get a random element in the collection
-        /// </summary>
-        /// <param name="collection">the sequence to check</param>
-        /// <typeparam name="T">the type of element in the collection</typeparam>
-        /// <returns>returns a random element</returns>
-        public static void SubscribeToAll<T>(this ICollection<T> collection, Action actionToPerform)
+        public static void SubscribeToAll<T>(this IEnumerable<T> collection, Action actionToPerform)
             where T : iObservable
         {
             foreach (T element in collection) element.Subscribe(actionToPerform);
         }
 
-        public static void UnSubscribeToAll<T>(this ICollection<T> collection, Action actionToPerform)
+        public static void UnSubscribeToAll<T>(this IEnumerable<T> collection, Action actionToPerform)
             where T : iObservable
         {
             foreach (T element in collection) element.UnSubscribe(actionToPerform);
         }
 
-        public static void SubscribeToAll<T>(this ICollection<iObservable<T>> collection, Action<T> actionToPerform)
+        public static void SubscribeToAll<T>(this IEnumerable<iObservable<T>> collection, Action<T> actionToPerform)
         {
             foreach (iObservable<T> element in collection) element.Subscribe(actionToPerform);
         }
 
-        public static void UnSubscribeToAll<T>(this ICollection<iObservable<T>> collection, Action<T> actionToPerform)
+        public static void UnSubscribeToAll<T>(this IEnumerable<iObservable<T>> collection, Action<T> actionToPerform)
         {
             foreach (iObservable<T> element in collection) element.UnSubscribe(actionToPerform);
         }
 
-        //reset 
-        public static void ResetAll(ICollection<iResettable> collection)
+        public static void ResetAll(IEnumerable<iResettable> collection)
         {
             foreach (iResettable element in collection) element.ResetThis();
         }

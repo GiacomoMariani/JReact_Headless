@@ -11,16 +11,16 @@ namespace JReact
     {
         #region FIELDS AND PROPERTIES
         //the package related to this view
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected T _actorElement;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected T _actor;
         #endregion
 
         //this is sent when the actor has been changed
         public void UpdateThis(T actor)
         {
             //remove the previous actor if any
-            if (_actorElement != null) ActorIsRemoved(_actorElement);
+            if (_actor != null) ActorIsRemoved(_actor);
             //set the new actor
-            _actorElement = actor;
+            _actor = actor;
             ActorUpdate(actor);
         }
 
@@ -33,17 +33,17 @@ namespace JReact
         #region UNITY EVENTS
         protected virtual void OnEnable()
         {
-            if (_actorElement != null) ActorUpdate(_actorElement);
+            if (_actor != null) ActorUpdate(_actor);
         }
 
         protected virtual void OnDisable()
         {
-            if (_actorElement != null) ActorIsRemoved(_actorElement);
+            if (_actor != null) ActorIsRemoved(_actor);
         }
 
         protected virtual void OnDestroy()
         {
-            if (_actorElement != null) ActorIsRemoved(_actorElement);
+            if (_actor != null) ActorIsRemoved(_actor);
         }
         #endregion
     }
