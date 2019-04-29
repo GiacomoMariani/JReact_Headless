@@ -49,13 +49,13 @@ namespace JReact.ScreenMessage
             //set the print controls
             _printer = printEffect;
             //update the state
-            ActorUpdate(_actorElement);
+            ActorUpdate(_actor);
             //subscribe to change
             _printer.OnPrinting += PrinterUpdate;
         }
 
         //update when the print state changes
-        private void PrinterUpdate(bool isActive) { ActorUpdate(_actorElement); }
+        private void PrinterUpdate(bool isActive) { ActorUpdate(_actor); }
 
         //update with print effect
         private bool ValidPrinterState()

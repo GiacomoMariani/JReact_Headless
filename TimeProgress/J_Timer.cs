@@ -52,12 +52,8 @@ namespace JReact.TimeProgress
             while (realTimePassed < _tickLengthInSeconds)
             {
                 yield return Timing.WaitForOneFrame;
-                //calculate the real passed time
                 realTimePassed = CurrentRealSeconds - beforeTickTime;
             }
-
-            //remove the  comment below to check time if required
-            //Debug.Log("We've been waiting for " + realTimePassed + " for a tick of " + _tickLengthInSeconds);
 
             //the event and tick again
             SendTickEvent(realTimePassed);

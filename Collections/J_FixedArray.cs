@@ -16,7 +16,7 @@ namespace JReact.Collections
         // --------------- EVENTS --------------- //
         private event Action<(int index, T oldItem, T newItem)> OnChange;
 
-        [BoxGroup("Setup", true, true, 0), SerializeField] private T[] _thisArray;
+        [BoxGroup("Setup", true, true, 0), SerializeField] protected T[] _thisArray;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Length => _thisArray?.Length ?? 0;
 
         // --------------- ARRAY --------------- //
@@ -46,12 +46,11 @@ namespace JReact.Collections
         /// <summary>
         /// process all the non null elements with an action
         /// </summary>
-        /// <param name="actionToCall">the action we want to send to non null items</param>
-        public void ProcessWith(Action<T> actionToCall)
+        public void ProcessWith(Action<T> action)
         {
             for (int i = 0; i < Length; i++)
                 if (_thisArray[i] != null)
-                    actionToCall(_thisArray[i]);
+                    action(_thisArray[i]);
         }
 
         public void CopyTo(T[] array, int arrayIndex) { _thisArray.CopyTo(array, arrayIndex); }
@@ -65,7 +64,17 @@ namespace JReact.Collections
             }
 
             //we reach this point the is not found
-            JLog.Warning($"{name} item not found: {item}", JLogTags.Collection, this);
+            JLog.Warning($"{name} item not found: {item}. Return -1", JLogTags.Collection, this);
+            return -1;
+        }
+        
+        //the first null place in the array
+        private int FirstEmptyPlace()
+        {
+            for (int i = 0; i < Length; i++)
+                if (_thisArray[i] == null) return i;
+
+            JLog.Warning($"{name} is full. Return -1", JLogTags.Collection, this);
             return -1;
         }
 

@@ -11,19 +11,28 @@ namespace JReact
     /// </summary>
     public static class JLog
     {
+        //can be set to false to avoid too much logging
+        private static bool _wantTrace = true;
+
         // --------------- FORMAT --------------- //
         private static readonly StringBuilder _stringBuilder = new StringBuilder();
-        private static StringBuilder SBuilder { get { _stringBuilder.Clear(); return _stringBuilder; } }
-
-        private static string Format(string message, string tag)
+        private static StringBuilder SBuilder
         {
-            return SBuilder.Append(DateTime.Now.ToString("HH:mm:ss", CultureInfo.InvariantCulture))
-                           .Append("-[")
-                           .Append(tag)
-                           .Append("] ")
-                           .Append(message)
-                           .ToString();
+            get
+            {
+                _stringBuilder.Clear();
+                return _stringBuilder;
+            }
         }
+
+        private static string Format(string message, string tag) => SBuilder
+                                                                   .Append(DateTime.Now.ToString("HH:mm:ss",
+                                                                                                 CultureInfo.InvariantCulture))
+                                                                   .Append("-[")
+                                                                   .Append(tag)
+                                                                   .Append("] ")
+                                                                   .Append(message)
+                                                                   .ToString();
 
         // --------------- MAIN LOGGERS --------------- //
         /// <summary>
@@ -39,6 +48,16 @@ namespace JReact
 #endif
 #if !UNITY_EDITOR
 			Debug.Log(Format(message, tag));
+#endif
+        }
+
+        public static void Trace(string message, string tag = "", Object context = null)
+        {
+#if UNITY_EDITOR
+            if (_wantTrace) Debug.Log(Format(message, tag), context);
+#endif
+#if !UNITY_EDITOR
+			if(_wantTrace) Debug.Log(Format(message, tag));
 #endif
         }
 

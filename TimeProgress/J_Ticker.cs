@@ -27,7 +27,7 @@ namespace JReact.TimeProgress
             if (framePerTick <= 0)
                 throw new ArgumentOutOfRangeException($"Cannot create a timer with negative seconds. Received {framePerTick}");
 
-            var ticker = J_GenericCounter.CreateCounter<J_Ticker>(desiredSegment);
+            var ticker = CreateCounter<J_Ticker>(desiredSegment);
             ticker._tickInterval = framePerTick;
             if (autoStart) ticker.StartCount();
             return ticker;
@@ -42,7 +42,7 @@ namespace JReact.TimeProgress
         #endregion
 
         #region COUNTING
-        //this counts a single tick
+        //counts a single tick
         protected override IEnumerator<float> CountOneTick()
         {
             float beforeTickTime = CurrentRealSeconds;
@@ -50,10 +50,8 @@ namespace JReact.TimeProgress
             for (int i = 0; i < _tickInterval; i++)
                 yield return Timing.WaitForOneFrame;
 
-            //count the time after the tick
-            float afterTickTime = CurrentRealSeconds;
             //calculate the real passed time
-            float realTimePassed = afterTickTime - beforeTickTime;
+            float realTimePassed = CurrentRealSeconds - beforeTickTime;
 
             //send the event and ticks again
             SendTickEvent(realTimePassed);

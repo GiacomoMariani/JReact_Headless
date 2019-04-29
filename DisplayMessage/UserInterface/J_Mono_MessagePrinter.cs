@@ -50,7 +50,7 @@ namespace JReact.ScreenMessage
         {
             //reset to make sure it's ready, then print
             ResetThis();
-            Timing.RunCoroutine(PrintCurrent(message), Segment.FixedUpdate, _actorElement.MessageNumber, COROUTINE_PrinterTag);
+            Timing.RunCoroutine(PrintCurrent(message), Segment.FixedUpdate, _actor.MessageNumber, COROUTINE_PrinterTag);
         }
         #endregion
 
@@ -85,7 +85,7 @@ namespace JReact.ScreenMessage
             Assert.IsTrue(IsPrinting, $"{name} should not call CompletePrinting if it is not printing");
             //reset this and show the entire element
             ResetThis();
-            _stringMessage.Current = _actorElement.MessageContent;
+            _stringMessage.Current = _actor.MessageContent;
         }
         #endregion
 
@@ -99,7 +99,7 @@ namespace JReact.ScreenMessage
         public void ResetThis()
         {
             if (!IsPrinting) return;
-            Timing.KillCoroutines(_actorElement.MessageNumber, COROUTINE_PrinterTag);
+            Timing.KillCoroutines(_actor.MessageNumber, COROUTINE_PrinterTag);
             _stringMessage.ResetThis();
             IsPrinting = false;
         }
