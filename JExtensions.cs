@@ -61,13 +61,13 @@ namespace JReact
             if (axisFloat < -1.0f)
             {
                 JLog.Warning($"Percentage {axisFloat} is lower than -1 Setting to -1");
-                return 200;
+                return 101;
             }
 
             //positive
             if (axisFloat >= 0) return (byte) (axisFloat * 100);
             //negative
-            return (byte) (200 + axisFloat * 100);
+            return (byte) (201 + axisFloat * 100);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace JReact
         public static float ToAxis(this byte axisByte)
         {
             if (axisByte <= 100) return (axisByte * 0.01f);
-            return (axisByte                     * 0.01f) - 2.0f;
+            return (axisByte                      * 0.01f) - 2.01f;
         }
         #endregion PERCENTAGE
 

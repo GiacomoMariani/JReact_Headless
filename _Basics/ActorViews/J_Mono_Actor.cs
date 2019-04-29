@@ -13,7 +13,7 @@ namespace JReact
     {
         #region FIELDS AND PROPERTIES
         //sets the actor directly or by injection
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] protected T _actorElement;
+        [BoxGroup("Setup", true, true, 0), SerializeField] protected T _actor;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _initCompleted;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iUpdater<T>[] _relatedElements;
@@ -38,8 +38,8 @@ namespace JReact
         /// <param name="element">the element to be injected</param>
         public void UpdateElement(T element)
         {
-            if (_actorElement != null) RemovePreviousActor(_actorElement);
-            _actorElement = element;
+            if (_actor != null) RemovePreviousActor(_actor);
+            _actor = element;
             SanityChecks();
             if (!_initCompleted) InitThis();
             UpdateAllViews(element);
@@ -69,7 +69,7 @@ namespace JReact
         //set the on enable listener
         protected virtual void OnEnable()
         {
-            if (_actorElement != null) UpdateElement(_actorElement);
+            if (_actor != null) UpdateElement(_actor);
         }
     }
 }
