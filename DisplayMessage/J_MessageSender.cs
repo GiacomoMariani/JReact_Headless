@@ -9,7 +9,7 @@ namespace JReact.ScreenMessage
     /// sends the messages
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Screen Message/Sender")]
-    public class J_MessageSender : ScriptableObject, iObservable<JMessage>
+    public class J_MessageSender : ScriptableObject, jObservable<JMessage>
     {
         #region VALUES AND PROPERTIES
         private event Action<JMessage> OnPublish;

@@ -10,7 +10,7 @@ namespace JReact.Collections
     /// a fixed array to be shared between classes
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class J_FixedArray<T> : ScriptableObject, iObservable<(int index, T oldItem, T newItem)>, IEnumerable
+    public abstract class J_FixedArray<T> : ScriptableObject, jObservable<(int index, T oldItem, T newItem)>, IEnumerable
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS --------------- //

@@ -100,6 +100,6 @@ namespace JReact
 #endif
         }
 
-        public static void QuickLog(string message, Object context = null) { Log(message, JLogTags.QuickLogTag, context); }
+        public static void QuickLog(string message, Object context = null) { Log(message, JLogTags.QuickLog, context); }
     }
 }

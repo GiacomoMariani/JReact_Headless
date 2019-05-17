@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -15,7 +16,7 @@ namespace JReact
         #region CONSTANT VALUES
         private const string ScriptableObjectSuffix = "_ScriptableObject";
         #endregion
-
+        
         #region FLOAT
         /// <summary>
         /// converts a float value into time string
@@ -115,25 +116,25 @@ namespace JReact
         public static T GetRandomElement<T>(this ICollection<T> collection) => collection.ElementAt(Random.Range(0, collection.Count));
 
         public static void SubscribeToAll<T>(this IEnumerable<T> collection, Action actionToPerform)
-            where T : iObservable
+            where T : jObservable
         {
             foreach (T element in collection) element.Subscribe(actionToPerform);
         }
 
         public static void UnSubscribeToAll<T>(this IEnumerable<T> collection, Action actionToPerform)
-            where T : iObservable
+            where T : jObservable
         {
             foreach (T element in collection) element.UnSubscribe(actionToPerform);
         }
 
-        public static void SubscribeToAll<T>(this IEnumerable<iObservable<T>> collection, Action<T> actionToPerform)
+        public static void SubscribeToAll<T>(this IEnumerable<jObservable<T>> collection, Action<T> actionToPerform)
         {
-            foreach (iObservable<T> element in collection) element.Subscribe(actionToPerform);
+            foreach (jObservable<T> element in collection) element.Subscribe(actionToPerform);
         }
 
-        public static void UnSubscribeToAll<T>(this IEnumerable<iObservable<T>> collection, Action<T> actionToPerform)
+        public static void UnSubscribeToAll<T>(this IEnumerable<jObservable<T>> collection, Action<T> actionToPerform)
         {
-            foreach (iObservable<T> element in collection) element.UnSubscribe(actionToPerform);
+            foreach (jObservable<T> element in collection) element.UnSubscribe(actionToPerform);
         }
 
         public static void ResetAll(IEnumerable<iResettable> collection)

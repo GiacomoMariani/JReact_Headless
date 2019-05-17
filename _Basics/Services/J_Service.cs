@@ -12,7 +12,7 @@ namespace JReact
     /// => END stop the service, but keeps the listeners - nothing happen if this was inactive
     /// => RESET make sure the service is ended
     /// </summary>
-    public class J_Service : ScriptableObject, iStateObservable, iActivable
+    public class J_Service : ScriptableObject, jStateJObservable, iActivable
     {
         private event Action OnActivate;
         private event Action OnExit;

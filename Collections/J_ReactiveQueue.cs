@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace JReact.Collections
 {
-    public class J_ReactiveQueue<T> : J_Service, ICollection, IReadOnlyCollection<T>, iObservable<T>
+    public class J_ReactiveQueue<T> : J_Service, ICollection, IReadOnlyCollection<T>, jObservable<T>
     {
         private Action<T> OnDequeue;
         private Action<T> OnEnqueue;

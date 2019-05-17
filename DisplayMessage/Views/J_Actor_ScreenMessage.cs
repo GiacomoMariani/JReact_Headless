@@ -27,7 +27,7 @@ namespace JReact.ScreenMessage
         {
             //publish only desired messages
             if (_desiredTypes.ArrayContains(messageSent.MessageId))
-                UpdateElement(messageSent);
+                ActorUpdate(messageSent);
         }
         #endregion
 

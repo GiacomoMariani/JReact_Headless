@@ -29,7 +29,7 @@ namespace JReact.Selection
 
         private void TrackSelection()
         {
-            if (_ThisSelector.Selected != null) UpdateElement(_ThisSelector.Selected);
+            if (_ThisSelector.Selected != null) ActorUpdate(_ThisSelector.Selected);
             _ThisSelector.Subscribe(SelectionUpdate);
         }
         #endregion
@@ -39,7 +39,7 @@ namespace JReact.Selection
         protected virtual void SelectionUpdate(T selectedElement)
         {
             _currentSelection = selectedElement;
-            UpdateElement(selectedElement);
+            ActorUpdate(selectedElement);
         }
         #endregion
 

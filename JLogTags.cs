@@ -2,16 +2,19 @@ namespace JReact
 {
     public class JLogTags
     {
-        public const string ErrorTag = "-ERROR-";
-        public const string HighLogTag = "-GAME_STATE-";
-        public const string QuickLogTag = "-QUICKCHECK-";
-        public const string EventTag = "-Event-";
+        public const string Error = "-ERROR-";
+        public const string HighLog = "-GAME_STATE-";
+        public const string QuickLog = "-QUICKCHECK-";
+        public const string Event = "-Event-";
         public const string Service = "-Service-";
         public const string Collection = "-Collection-";
-        public const string TutorialTag = "-Tutorial-";
-        public const string CameraTag = "-Camera-";
+        public const string Tutorial = "-Tutorial-";
+        public const string Camera = "-Camera-";
+        public const string Player = "-Player-";
+        public const string GameBoard = "-GameBoard-";
         public const string State = "-State-";
         public const string Reset = "-Reset-";
+        public const string SanityChecks = "-SanityCheck-";
         public const string SceneManager = "-SceneManager-";
         public const string TimeProgress = "-TimeProgress-";
         public const string Task = "-Task-";

@@ -8,7 +8,7 @@ namespace JReact.Collections
     /// an array that acts as a reactive collection, with the option to add at a given index, or add in the first empty place
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class J_ReactiveArray<T> : ScriptableObject, iObservable<(int index, T previous, T current)>, iResettable
+    public abstract class J_ReactiveArray<T> : ScriptableObject, jObservable<(int index, T previous, T current)>, iResettable
     {
         // --------------- EVENTS --------------- //
         private event Action<(int index, T previous, T current)> OnChange;

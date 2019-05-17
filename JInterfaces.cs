@@ -36,28 +36,40 @@ namespace JReact
         void End();
     }
 
-    public interface iObservable
+    public interface iObservable<out T>
+    {
+        IDisposable Subscribe(iObserver<T> observer);
+    }
+    
+    public interface iObserver<in T>
+    {
+        void OnCompleted();
+        void OnError(Exception exception);
+        void OnNext(T value);
+    }
+
+    public interface jObservable
     {
         void Subscribe(Action action);
         void UnSubscribe(Action action);
     }
 
-    public interface iStateObservable : iTask, iObservable
+    public interface jStateJObservable : iTask, jObservable
     {
     }
 
-    public interface iObservable<out T>
+    public interface jObservable<out T>
     {
         void Subscribe(Action<T> action);
         void UnSubscribe(Action<T> action);
     }
 
-    public interface iObservableValue<out T> : iObservable<T>
+    public interface jObservableValue<out T> : jObservable<T>
     {
         T Current { get; }
     }
 
-    public interface iStackable : iObservableValue<int>
+    public interface iStackable : jObservableValue<int>
     {
         int Grant(int amount);
         int Remove(int amount);

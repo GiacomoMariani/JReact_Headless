@@ -10,7 +10,7 @@ namespace JReact.Conditions.Tasks
     /// contains multiple tasks related to a single goal, such as a mission
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Task/Task Chunk")]
-    public class J_TaskChunk : J_Service, iObservable<J_TaskChunk>
+    public class J_TaskChunk : J_Service, jObservable<J_TaskChunk>
     {
         #region FIELDS AND PROPERTIES
         private Action<J_TaskChunk> OnStateChange;

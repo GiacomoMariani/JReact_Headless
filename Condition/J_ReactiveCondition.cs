@@ -4,9 +4,9 @@ using Sirenix.OdinInspector;
 namespace JReact.Conditions
 {
     /// <summary>
-    /// a condition that may be attached to anything
+    /// a condition that may be attached to anything, it starts checking automatically at the first subscriber
     /// </summary>
-    public abstract class J_ReactiveCondition : J_Service, iObservableValue<bool>
+    public abstract class J_ReactiveCondition : J_Service, jObservableValue<bool>
     {
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_ReactiveBool _condition;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool Current
@@ -29,10 +29,10 @@ namespace JReact.Conditions
 
         protected override void ActivateThis()
         {
-            base.ActivateThis();
             if (_condition == null) _condition = CreateInstance<J_ReactiveBool>();
             Current = false;
             StartCheckingCondition();
+            base.ActivateThis();
         }
 
         protected abstract void StartCheckingCondition();
@@ -43,9 +43,8 @@ namespace JReact.Conditions
 
         protected override void EndThis()
         {
-            StopCheckingCondition();
-            _condition.ResetThis();
             base.EndThis();
+            StopCheckingCondition();
         }
 
         //helpers to make this more readable
@@ -59,11 +58,17 @@ namespace JReact.Conditions
             _condition.Subscribe(action);
         }
 
-        public void UnSubscribe(Action<bool> action) { _condition.UnSubscribe(action); }
+        public void UnSubscribe(Action<bool> action)
+        {
+            _condition.UnSubscribe(action); 
+            if(!_condition.HasListeners) End();
+        }
 
         #region OPERATORS
         public static bool operator true(J_ReactiveCondition item) => item.Current;
         public static bool operator false(J_ReactiveCondition item) => !item.Current;
+
+        public static implicit operator bool(J_ReactiveCondition condition) => condition.Current;
         #endregion
     }
 }

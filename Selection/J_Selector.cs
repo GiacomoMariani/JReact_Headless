@@ -8,7 +8,7 @@ namespace JReact.Selection
     /// selects one item
     /// </summary>
     /// <typeparam name="T">type of the selectable item</typeparam>
-    public abstract class J_Selector<T> : ScriptableObject, iObservable<T>, iResettable
+    public abstract class J_Selector<T> : ScriptableObject, jObservable<T>, iResettable
     {
         #region FIELDS AND PROPERTIES
         private event Action<T> OnSelect;
