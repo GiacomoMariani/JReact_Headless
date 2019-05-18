@@ -136,6 +136,16 @@ namespace JReact
         {
             foreach (jObservable<T> element in collection) element.UnSubscribe(actionToPerform);
         }
+        
+        public static void ActivateAll(this IEnumerable<J_Service> services)
+        {
+            foreach (J_Service element in services) element.Activate();
+        }
+
+        public static void UnSubscribeToAll<T>(this IEnumerable<J_Service> services)
+        {
+            foreach (J_Service element in services) element.End();
+        }
 
         public static void ResetAll(IEnumerable<iResettable> collection)
         {

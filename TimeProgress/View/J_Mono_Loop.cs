@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using MEC;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -19,7 +20,7 @@ namespace JReact.TimeProgress
         [BoxGroup("Setup - Events", true, true, 5), SerializeField] private JUnityEvent _unityEvents_AtEnd;
 
         // --------------- OPTIONALS - THEY MAY BE AUTO IMPLEMENTED --------------- //
-        [BoxGroup("Setup - Optionals", true, true, 10), SerializeField, AssetsOnly] private J_Progress _progressEvent;
+        [InfoBox("NULL => will create a timer"),BoxGroup("Setup - Optionals", true, true, 10), SerializeField, AssetsOnly] private J_GenericCounter _counter;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 25), ReadOnly, ShowInInspector] public bool IsActive { get; private set; }
@@ -27,15 +28,15 @@ namespace JReact.TimeProgress
         #region INITIALIZATION
         private void Awake()
         {
-            ProgressSafeChecks();
+            Counter();
             if (_startAtAwake) Activate();
         }
 
-        //make sure the progress event is set
-        private void ProgressSafeChecks()
+        //make sure we have a counter
+        private void Counter()
         {
-            if (_progressEvent == null)
-                _progressEvent = J_Progress.CreateProgress<J_Progress>();
+            if (_counter == null)
+                _counter = J_Timer.CreateTimer(3f, Segment.FixedUpdate, true);
         }
         #endregion
 
@@ -47,8 +48,12 @@ namespace JReact.TimeProgress
         public void Activate()
         {
             //avoid multiple loops
-            Assert.IsFalse(IsActive, $"{gameObject.name} is already looping and cannot start again. Cancel command.");
-            if (IsActive) return;
+            if (IsActive)
+            {
+                JLog.Warning($"{gameObject.name} is looping and cannot restart. Cancel start.", JLogTags.TimeProgress, this);
+
+                return;
+            }
 
             // --------------- START --------------- //
             JLog.Log($"Loop starts on {gameObject.name}", JLogTags.TimeProgress, this);
@@ -56,17 +61,11 @@ namespace JReact.TimeProgress
             _unityEvents_AtStart.Invoke();
 
             // --------------- PROGRESS SET --------------- //
-            Assert.IsTrue(!_progressEvent.IsRunning, $"{gameObject.name} loop progress -{_progressEvent.name}- was already running.");
-            _progressEvent.SubscribeToComplete(TriggerThisLoop);
-            _progressEvent.StartProgress(_intervalInSeconds);
+            _counter.Subscribe(Loop);
         }
 
         //invoke events and loop again
-        private void TriggerThisLoop(J_Progress progress)
-        {
-            _unityEvents_AtLoop.Invoke();
-            _progressEvent.StartProgress(_intervalInSeconds);
-        }
+        private void Loop(float deltaTime) => _unityEvents_AtLoop.Invoke();
 
         /// <summary>
         /// stop the loop
@@ -75,14 +74,16 @@ namespace JReact.TimeProgress
         public void End()
         {
             //avoid stop non active loop
-            Assert.IsTrue(IsActive, $"{gameObject.name} was not looping. Cancel command.");
-            if (!IsActive) return;
+            if (!IsActive)
+            {
+                JLog.Warning($"{gameObject.name} was not looping. Cancel stop.", JLogTags.TimeProgress, this);
+                return;
+            }
 
             JLog.Log($"Loop stops on {gameObject.name}", JLogTags.TimeProgress, this);
-            Assert.IsTrue(_progressEvent.IsRunning, $"{gameObject.name} loop progress -{_progressEvent.name}- was not running.");
+            Assert.IsTrue(_counter.IsActive, $"{gameObject.name} loop progress -{_counter.name}- was not running.");
             // --------------- COMPLETE LOOP --------------- //
-            _progressEvent.UnSubscribeToComplete(TriggerThisLoop);
-            _progressEvent.StopProgress();
+            _counter.UnSubscribe(Loop);
             _unityEvents_AtEnd.Invoke();
             IsActive = false;
         }
@@ -90,8 +91,8 @@ namespace JReact.TimeProgress
 
         #region LISTENERS
         //stop on destroy
-        private void OnDestroy() { End(); }
+        private void OnDestroy() => End();
+        public void ResetThis() => End();
         #endregion
-        public void ResetThis() { End(); }
     }
 }
