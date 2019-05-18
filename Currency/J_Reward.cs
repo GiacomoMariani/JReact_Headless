@@ -6,7 +6,7 @@ namespace JReact.Currency
     /// <summary>
     /// the basic reward giver
     /// </summary>
-    public abstract class J_Reward<T> : ScriptableObject, iObservable<J_Reward<T>>
+    public abstract class J_Reward<T> : ScriptableObject, jObservable<J_Reward<T>>
     {
         private event Action<J_Reward<T>> OnRewardFail;
         private event Action<J_Reward<T>> OnRewardGranted;

@@ -9,7 +9,7 @@ namespace JReact.Conditions.Tasks
     /// <summary>
     /// A task is a condition that might be completed
     /// </summary>
-    public class J_CompletableTask : J_ReactiveCondition, iObservable<J_CompletableTask>
+    public class J_CompletableTask : J_ReactiveCondition, jObservable<J_CompletableTask>
     {
         #region FIELDS AND PROPERTIES
         private Action<J_CompletableTask> OnTaskUpdate;

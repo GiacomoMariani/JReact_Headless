@@ -11,7 +11,7 @@ namespace JReact.Collections
     /// a reactive collection that sends events at add and remove
     /// </summary>
     /// <typeparam name="T">the type of this collection</typeparam>
-    public abstract class J_ReactiveCollection<T> : ScriptableObject, IList<T>, iObservable<T>
+    public abstract class J_ReactiveCollection<T> : ScriptableObject, IList<T>, jObservable<T>
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS --------------- //

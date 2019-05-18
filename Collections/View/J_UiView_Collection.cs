@@ -52,7 +52,7 @@ namespace JReact.UiView.Collections
             // --------------- VIEW CREATION --------------- //
             //Instantiate => updated => track on dictionary
             J_Mono_Actor<T> newUiView = Instantiate(_PrefabActor, transform);
-            newUiView.UpdateElement(item);
+            newUiView.ActorUpdate(item);
             _trackedElements[item] = newUiView;
             //add further adjustments here
             AddedView(item);

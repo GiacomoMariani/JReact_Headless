@@ -21,7 +21,7 @@ using UnityEngine.Assertions;
 
 namespace JReact.StateControl
 {
-    public class J_StateControl<T> : J_Service, iObservable<(T previous, T current)>
+    public class J_StateControl<T> : J_Service, jObservable<(T previous, T current)>
         where T : J_State
     {
         #region FIELDS AND PROPERTIES

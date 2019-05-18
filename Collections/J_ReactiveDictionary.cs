@@ -10,7 +10,7 @@ namespace JReact.Collections
 {
     public abstract class J_ReactiveDictionary<TKey, TValue> : ScriptableObject,
                                                                iResettable,
-                                                               iObservable<(TKey key, TValue value)>,
+                                                               jObservable<(TKey key, TValue value)>,
                                                                IDictionary<TKey, TValue>
     {
         // --------------- EVENTS --------------- //

@@ -10,7 +10,7 @@ namespace JReact.Pool.Roamer
     /// a wind with a 2d force that might change at intervals
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Roamer/Wind", fileName = "Wind")]
-    public class J_Wind : J_Service, iObservable<Vector2>
+    public class J_Wind : J_Service, jObservable<Vector2>
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENT AND CONSTANT --------------- //

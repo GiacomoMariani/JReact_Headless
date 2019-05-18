@@ -9,7 +9,7 @@ namespace JReact.TimeProgress
     /// <summary>
     /// a generic timer
     /// </summary>
-    public abstract class J_GenericCounter : ScriptableObject, iObservable<float>, iDeltaTime
+    public abstract class J_GenericCounter : ScriptableObject, jObservable<float>, iDeltaTime
     {
         #region FIELDS AND PROPERTIES
         protected event Action<float> OnTick;

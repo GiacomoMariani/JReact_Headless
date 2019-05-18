@@ -5,17 +5,17 @@ using UnityEngine;
 namespace JReact
 {
     /// <summary>
-    /// this is the base reactive item, that can be be registered to, so the subscriber will be able to track its changes
+    /// a base reactive item, that can be be registered to, so the subscriber will be able to track its changes
     /// </summary>
-    public class J_ReactiveItem<T> : ScriptableObject, iResettable, iObservableValue<T>
+    public class J_ReactiveItem<T> : ScriptableObject, iResettable, jObservableValue<T>
     {
         private event Action<T> OnPropertyChange;
 
         //optionally set a starting value
-        [BoxGroup("Setup", true, true, 0), ShowInInspector, SerializeField] protected T _startValue;
+        [BoxGroup("Setup", true, true, 0), SerializeField] protected T _startValue;
         protected T _currentValue;
-        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly] public bool HasListeners => OnPropertyChange == null;
-        [BoxGroup("View", true, true, 5), ShowInInspector, ReadOnly] public virtual T Current
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool HasListeners => OnPropertyChange == null;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public virtual T Current
         {
             get => _currentValue;
             set
@@ -25,13 +25,9 @@ namespace JReact
             }
         }
 
-        public virtual void Subscribe(Action<T> actionToSend) { OnPropertyChange   += actionToSend; }
-        public virtual void UnSubscribe(Action<T> actionToSend) { OnPropertyChange -= actionToSend; }
+        public virtual void Subscribe(Action<T> actionToSend) => OnPropertyChange += actionToSend;
+        public virtual void UnSubscribe(Action<T> actionToSend) => OnPropertyChange -= actionToSend;
 
-        public virtual void ResetThis()
-        {
-            _currentValue    = _startValue;
-            OnPropertyChange = null;
-        }
+        public virtual void ResetThis() => _currentValue = _startValue;
     }
 }

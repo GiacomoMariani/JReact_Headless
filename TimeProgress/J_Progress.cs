@@ -9,7 +9,7 @@ namespace JReact.TimeProgress
     /// a progress, related to time
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Time Progress/Progress Event")]
-    public class J_Progress : ScriptableObject, iObservable<J_Progress>, iResettable
+    public class J_Progress : ScriptableObject, jObservable<J_Progress>, iResettable
     {
         #region VALUES AND PROPERTIES
         // --------------- EVENTS RELATED TO PROGRESS --------------- //

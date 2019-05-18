@@ -11,7 +11,7 @@ namespace JReact.SceneControls
     /// this class is used to change the scene
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Scenes/Scene Changer")]
-    public class J_SceneChanger : ScriptableObject, iObservable<(Scene previous, Scene current)>
+    public class J_SceneChanger : ScriptableObject, jObservable<(Scene previous, Scene current)>
     {
         #region FIELDS AND PROPERTIES
         private event Action<(Scene previous, Scene current)> OnSceneChange;
