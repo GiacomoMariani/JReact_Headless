@@ -15,7 +15,7 @@ namespace JReact
         private static bool _wantTrace = true;
 
         // --------------- FORMAT --------------- //
-        private static readonly StringBuilder _stringBuilder = new StringBuilder();
+        private static readonly StringBuilder _stringBuilder = new StringBuilder(capacity: 150);
         private static StringBuilder SBuilder
         {
             get
@@ -26,12 +26,7 @@ namespace JReact
         }
 
         private static string Format(string message, string tag) => SBuilder
-                                                                   .Append(DateTime.Now.ToString("HH:mm:ss",
-                                                                                                 CultureInfo.InvariantCulture))
-                                                                   .Append("-[")
-                                                                   .Append(tag)
-                                                                   .Append("] ")
-                                                                   .Append(message)
+                                                                   .AppendFormat("{0:HH:mm:ss}-[{1}] {2}", DateTime.Now, tag, message)
                                                                    .ToString();
 
         // --------------- MAIN LOGGERS --------------- //

@@ -11,7 +11,7 @@ namespace JReact.TimeProgress
     /// a counter ticking at time intervals
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Time Progress/Timer", fileName = "Timer")]
-    public class J_Timer : J_GenericCounter
+    public sealed class J_Timer : J_GenericCounter
     {
         #region FIELDS AND PROPERTIES
         // --------------- SETUP --------------- //

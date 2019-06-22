@@ -9,7 +9,7 @@ namespace JReact.StateControl.LevelSystem
     /// the experience of a single element
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Level System/Experience Receiver")]
-    public class J_ExperienceReceiver : ScriptableObject, iFillable, iActivable
+    public sealed class J_ExperienceReceiver : ScriptableObject, iFillable, iActivable
     {
         #region FIELDS AND PROPERTIES
         private event Action<int> OnGain;

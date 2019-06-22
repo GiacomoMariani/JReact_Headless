@@ -9,7 +9,7 @@ namespace JReact.StateControl
     /// used to track the flow of events to move back to a previous state
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Game States/J State Tracker")]
-    public class J_StateTracker : J_Service
+    public sealed class J_StateTracker : J_Service
     {
         #region VALUES AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField, Required, AssetsOnly] private J_SimpleStateControl _stateControl;
