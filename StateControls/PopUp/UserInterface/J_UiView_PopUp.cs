@@ -3,7 +3,7 @@
     /// <summary>
     /// just a friendly way to access the views of the pop up
     /// </summary>
-    public class J_UiView_PopUp : J_Mono_StateViewActivator
+    public sealed class J_UiView_PopUp : J_Mono_StateViewActivator
     {
     }
 }

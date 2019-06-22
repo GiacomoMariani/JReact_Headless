@@ -8,11 +8,10 @@ namespace JReact.TimeProgress
     /// <summary>
     /// sends events during a loop
     /// </summary>
-    public class J_Mono_Loop : MonoBehaviour, iActivable
+    public sealed class J_Mono_Loop : MonoBehaviour, iActivable
     {
         // --------------- ELEMENTS RELATED TO COUTNINT --------------- //
         [BoxGroup("Setup - Count", true, true, 0), SerializeField] private bool _startAtAwake = true;
-        [BoxGroup("Setup - Count", true, true, 0), SerializeField] private float _intervalInSeconds = 3.0f;
 
         // --------------- EVENTS TO SEND --------------- //
         [BoxGroup("Setup - Events", true, true, 5), SerializeField] private JUnityEvent _unityEvents_AtStart;
@@ -20,7 +19,8 @@ namespace JReact.TimeProgress
         [BoxGroup("Setup - Events", true, true, 5), SerializeField] private JUnityEvent _unityEvents_AtEnd;
 
         // --------------- OPTIONALS - THEY MAY BE AUTO IMPLEMENTED --------------- //
-        [InfoBox("NULL => will create a timer"),BoxGroup("Setup - Optionals", true, true, 10), SerializeField, AssetsOnly] private J_GenericCounter _counter;
+        [InfoBox("NULL => will create a timer"), BoxGroup("Setup - Optionals", true, true, 10), SerializeField, AssetsOnly]
+        private J_GenericCounter _counter;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 25), ReadOnly, ShowInInspector] public bool IsActive { get; private set; }

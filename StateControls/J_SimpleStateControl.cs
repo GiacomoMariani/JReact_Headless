@@ -9,7 +9,7 @@ namespace JReact.StateControl
     /// but also friend invitation or any other element that may be tracked with a state machine
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Game States/State Control")]
-    public class J_SimpleStateControl : J_StateControl<J_State>
+    public sealed class J_SimpleStateControl : J_StateControl<J_State>
     {
     }
 }

@@ -8,14 +8,14 @@ namespace JReact.StateControl
     /// a simple action used to change the state
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Game States/State Change Action")]
-    public class J_StateChangeAction : ScriptableObject
+    public sealed class J_StateChangeAction : ScriptableObject
     {
         #region FIELDS AND PROPERTIES
         public UnityAction ThisAction => Process;
         [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
-        protected J_SimpleStateControl _stateControl;
+        private J_SimpleStateControl _stateControl;
         [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
-        protected J_State _desiredState;
+        private J_State _desiredState;
         #endregion
 
         /// <summary>

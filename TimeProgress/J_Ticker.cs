@@ -11,7 +11,7 @@ namespace JReact.TimeProgress
     /// the time counter
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Time Progress/Delayed Tick", fileName = "Ticker")]
-    public class J_Ticker : J_GenericCounter
+    public sealed class J_Ticker : J_GenericCounter
     {
         #region FIELDS AND PROPERTIES
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _tickInterval = 1;

@@ -17,7 +17,7 @@ namespace JReact.Collections
         // --------------- EVENTS --------------- //
         private event Action<T> OnAdd;
         private event Action<T> OnRemove;
-        
+
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected List<T> _ThisCollection { get; } = new List<T>();
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _ThisCollection.Count;
         #endregion
@@ -48,11 +48,14 @@ namespace JReact.Collections
             return true;
         }
 
+        public int RemoveAll(Predicate<T> predicate) => _ThisCollection.RemoveAll(predicate);
+
         public virtual void Clear()
         {
             //send the remove events for all the items
             for (int i = 0; i < Count; i++)
                 OnRemove?.Invoke(_ThisCollection[i]);
+
             _ThisCollection.Clear();
         }
 

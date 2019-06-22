@@ -6,7 +6,7 @@ namespace JReact.StateControl.Weather
     /// <summary>
     /// spawns particles on specific states
     /// </summary>
-    public class J_Mono_RainCatcher : J_Mono_StateElement
+    public sealed class J_Mono_RainCatcher : J_Mono_StateElement
     {
         [BoxGroup("Setup", true, true, 0), SerializeField, Required] private ParticleSystem _rainParticles;
 

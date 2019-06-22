@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace JReact
@@ -16,7 +17,7 @@ namespace JReact
         #region CONSTANT VALUES
         private const string ScriptableObjectSuffix = "_ScriptableObject";
         #endregion
-        
+
         #region FLOAT
         /// <summary>
         /// converts a float value into time string
@@ -42,7 +43,7 @@ namespace JReact
         {
             Assert.IsTrue(chance > 0,  $"{chance} is lower or equal to 0. So it will always be false");
             Assert.IsTrue(chance < 1f, $"{chance} is higher or equal to 1. So it will always be  true");
-            return Random.Range(0, 1f) < chance;
+            return Random.Range(0, 1f) <= chance;
         }
 
         /// <summary>
@@ -93,6 +94,14 @@ namespace JReact
         public static int SumRound(this int element, int toAdd, int roundMax) => (element + toAdd) % roundMax;
         #endregion INT
 
+        #region ENUMS
+        /// <summary>
+        /// retrieveves all the values of a given enumerator
+        /// </summary>
+        /// <returns>all the possible enumerator, as an array</returns>
+        public static TEnum[] GetValues<TEnum>() where TEnum : struct => (TEnum[])Enum.GetValues(typeof(TEnum));
+        #endregion
+
         #region ARRAYS
         /// <summary>
         /// checks if an array contains a given item
@@ -136,7 +145,7 @@ namespace JReact
         {
             foreach (jObservable<T> element in collection) element.UnSubscribe(actionToPerform);
         }
-        
+
         public static void ActivateAll(this IEnumerable<J_Service> services)
         {
             foreach (J_Service element in services) element.Activate();
@@ -164,7 +173,23 @@ namespace JReact
         /// </summary>
         public static void ClearTransform(this Transform transform)
         {
-            foreach (Transform child in transform) GameObject.Destroy(child.gameObject);
+            foreach (Transform child in transform) Object.Destroy(child.gameObject);
+        }
+
+        /// <summary>
+        /// print all transform up to its root, for debug purposes
+        /// </summary>
+        public static string PrintAllParents(this Transform transform)
+        {
+            var transformNames = "";
+            while (transform.root != transform)
+            {
+                transformNames = transformNames + " -> " + transform.gameObject.name;
+                transform      = transform.parent;
+            }
+
+            transformNames = transformNames + transform.gameObject.name;
+            return transformNames;
         }
         #endregion TRANSFORMS
 
@@ -261,7 +286,7 @@ namespace JReact
         /// Gets a random value between vector.x and vector.y
         /// </summary>
         /// <param name="rangeInt">the vector with the min and max</param>
-        public static int RandomValue(this Vector2Int rangeInt)
+        public static int GetRandomValue(this Vector2Int rangeInt)
         {
             Assert.IsTrue(rangeInt.x <= rangeInt.y,
                           $"The y value of the given range needs to be higher than x. X = {rangeInt.x}, Y = {rangeInt.y}");

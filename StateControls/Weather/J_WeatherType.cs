@@ -7,7 +7,7 @@ namespace JReact.StateControl.Weather
     /// this class represent one possible weather, like rainy or sunny
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Weather/Weather Type")]
-    public class J_WeatherType : J_State
+    public sealed class J_WeatherType : J_State
     {
         // --------------- SETUP --------------- //
         //chances to have this weather

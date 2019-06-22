@@ -5,6 +5,7 @@ namespace JReact
 {
     /// <summary>
     /// component or view of an actor element and requires an J_Mono_Actor to be tracked
+    /// remember to seal the derived class for better performance
     /// </summary>
     /// <typeparam name="T">the actor type related to this element</typeparam>
     public abstract class J_Mono_ActorElement<T> : MonoBehaviour, iUpdater<T>

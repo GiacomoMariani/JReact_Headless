@@ -7,7 +7,7 @@ namespace JReact.TimeProgress
     /// converts progress into seconds
     /// </summary>
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class J_UiView_ProgressTime : J_Mono_ProgressView
+    public sealed class J_UiView_ProgressTime : J_Mono_ProgressView
     {
         #region FIELDS AND PROPERTIES
         private TextMeshProUGUI _thisText;

@@ -12,7 +12,7 @@ namespace JReact.StateControl.Weather
     /// <summary>
     /// darkens the sky on specicic states
     /// </summary>
-    public class J_Mono_DarkenSky : J_Mono_StateElement
+    public sealed class J_Mono_DarkenSky : J_Mono_StateElement
     {
         #region FIELDS AND PROPERTIES
         private const string COROUTINE_ThunderTag = "COROUTINE_ThunderTag";

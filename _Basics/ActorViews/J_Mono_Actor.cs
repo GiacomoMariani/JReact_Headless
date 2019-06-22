@@ -6,6 +6,7 @@ namespace JReact
     /// <summary>
     /// this class represent an actor that may have many elements, implementing the actor pattern, explained in these slides
     /// https://gamedevacademy.org/lessons-learned-in-unity-after-5-years/
+    /// remember to seal the derived class for better performance
     /// </summary>
     /// <typeparam name="T">the actor type</typeparam>
     public abstract class J_Mono_Actor<T> : MonoBehaviour

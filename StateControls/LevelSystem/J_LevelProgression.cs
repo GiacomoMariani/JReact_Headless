@@ -8,7 +8,7 @@ namespace JReact.StateControl.LevelSystem
     /// the system to control the player level progression
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Level System/Full Progression")]
-    public class J_LevelProgression : J_StateControl<J_LevelState>
+    public sealed class J_LevelProgression : J_StateControl<J_LevelState>
     {
         #region VALUES AND PROPERTIES
         //-----------------> SETUP CAPACITOR AND CAPACITOR VIEW

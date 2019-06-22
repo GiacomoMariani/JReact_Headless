@@ -15,11 +15,13 @@ namespace JReact
         public const string State = "-State-";
         public const string Reset = "-Reset-";
         public const string SanityChecks = "-SanityCheck-";
+        public const string Login = "-Login-";
+        public const string SaveSystem = "-SaveSystem-";
         public const string SceneManager = "-SceneManager-";
         public const string TimeProgress = "-TimeProgress-";
         public const string Task = "-Task-";
         public const string UiView = "-UiView-";
-        public const string SceneView = "-Scene View-";
+        public const string SceneView = "-SceneView-";
         public const string Pathfind = "-JPathfind-";
         public const string Input = "-Input-";
         public const string Settings = "-Settings-";
