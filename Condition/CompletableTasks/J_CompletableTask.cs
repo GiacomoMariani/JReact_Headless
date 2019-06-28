@@ -11,7 +11,7 @@ namespace JReact.Conditions.Tasks
     /// </summary>
     public class J_CompletableTask : J_ReactiveCondition, jObservable<J_CompletableTask>
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- EVENTS --------------- //
         private Action<J_CompletableTask> OnTaskUpdate;
         // --------------- TRIGGERS --------------- //
         [InfoBox("Null => Auto Start"), BoxGroup("Setup - Triggers", true, true, -15), SerializeField, AssetsOnly]
@@ -21,7 +21,7 @@ namespace JReact.Conditions.Tasks
         [InfoBox("Null => Auto Complete"), BoxGroup("Setup - Triggers", true, true, -15), SerializeField, AssetsOnly]
         private J_ReactiveCondition _completeTrigger;
 
-        // --------------- EVENTS --------------- //
+        // --------------- UNITY EVENTS --------------- //
         [BoxGroup("Setup - Events", true, true, -10), SerializeField] private JUnityEvent _unityEvents_AtActivation
             = new JUnityEvent();
         [BoxGroup("Setup - Events", true, true, -10), SerializeField] private JUnityEvent _unityEvents_AtDormant
@@ -46,9 +46,8 @@ namespace JReact.Conditions.Tasks
                 OnTaskUpdate?.Invoke(this);
             }
         }
-        #endregion
 
-        #region IMPLEMENTORS
+        // --------------- IMPLEMENTATION --------------- //
         public static J_CompletableTask CreateTask<T>(J_ReactiveCondition start, J_ReactiveCondition complete,
                                                       J_ReactiveCondition dormant = null, bool autoReactivate = true,
                                                       bool required = false)
@@ -62,9 +61,8 @@ namespace JReact.Conditions.Tasks
             task._requiresOneActivation = required;
             return task;
         }
-        #endregion
 
-        #region ACTIVATORS
+        // --------------- ACTIVATORS --------------- //
         // launch the tasks. wait for triggers otherwise we directly start
         protected override void StartCheckingCondition()
         {
@@ -103,9 +101,8 @@ namespace JReact.Conditions.Tasks
         }
 
         private void WaitingActivation() { State = TaskState.WaitStartCondition; }
-        #endregion
 
-        #region ACTIVE STATE
+        // --------------- ACTIVE STATE --------------- //
         private void TriggerStart(bool item)
         {
             if (!item) return;
@@ -149,9 +146,8 @@ namespace JReact.Conditions.Tasks
             RunTask();
             State = TaskState.Active;
         }
-        #endregion
 
-        #region DORMANT STATE
+        // --------------- DORMANT STATE --------------- //
         private void TriggerDormant(bool item)
         {
             if (!item) return;
@@ -173,9 +169,8 @@ namespace JReact.Conditions.Tasks
             if (ActivationValid()) ConfirmActivation();
             else State = TaskState.WaitStartCondition;
         }
-        #endregion
 
-        #region COMPLETE STATE
+        // --------------- COMPLETE STATE --------------- //
         private void TriggerComplete(bool item)
         {
             if (!item) return;
@@ -191,25 +186,21 @@ namespace JReact.Conditions.Tasks
             Current = true;
             State        = TaskState.Complete;
         }
-        #endregion
 
-        #region CHECKS
+        // --------------- CHECKS --------------- //
         private bool ActivationValid() => _startTrigger  == null || _startTrigger.Current;
         private bool CompleteReady() => _completeTrigger == null || _completeTrigger.Current;
-        #endregion
 
-        #region VIRTUAL IMPLEMENTATION
+        // --------------- VIRTUAL IMPLEMENTATION --------------- //
         protected virtual void RunTask() { _unityEvents_AtActivation.Invoke(); }
         protected virtual void SetDormant() { _unityEvents_AtDormant.Invoke(); }
         protected virtual void CompleteTutorialStep() { _unityEvents_AtComplete.Invoke(); }
-        #endregion
 
-        #region SUBSCRIBERS
+        // --------------- SUBSCRIBERS --------------- //
         public void SubscribeToTaskChange(Action<J_CompletableTask> action) { Subscribe(action); }
         public void UnSubscribeToTaskChange(Action<J_CompletableTask> action) { UnSubscribe(action); }
         public void Subscribe(Action<J_CompletableTask> action) { OnTaskUpdate   += action; }
         public void UnSubscribe(Action<J_CompletableTask> action) { OnTaskUpdate -= action; }
-        #endregion
     }
 
     //the states related to this tutorial

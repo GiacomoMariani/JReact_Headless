@@ -9,11 +9,10 @@ namespace JReact.Pathfinding
     [CreateAssetMenu(menuName = "Reactive/PathFinding/Heuristics")]
     public class J_PathHeuristics : ScriptableObject
     {
-        #region VALUES AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         public enum HeuristicsType { Euclidean, Manhattan }
         public HeuristicsType _desiredHeuristic;
-        #endregion
-
+        
         /// <summary>
         /// calculates the heuristic cost of 2 nodes
         /// </summary>

@@ -14,7 +14,6 @@ namespace JReact.Pool
     public abstract class J_Pool<T> : J_Service
         where T : J_PoolItem_Mono<T>
     {
-        #region VALUES AND PROPERTIES
         // --------------- STATE --------------- //
         //the prefabs are an array to differentiate them. Also an array of one can be used if we want always the same
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private T[] _prefabItem;
@@ -27,9 +26,8 @@ namespace JReact.Pool
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T _firstItem;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Action<T> _initAction;
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         /// <summary>
         /// adds an action to be sent to the elements to be initiated
         /// </summary>
@@ -70,34 +68,8 @@ namespace JReact.Pool
                 Timing.RunCoroutine(Populate(remainingObjects, itemSetupAction), Segment.SlowUpdate, _instanceId,
                                     JCoroutineTags.COROUTINE_PoolTag);
         }
-        #endregion
 
-        #region PRIVATE COMMANDS
-        private T AddItemIntoPool()
-        {
-            T poolItem = Instantiate(_prefabItem.GetRandomElement(), _parentTransform.ThisTransform);
-            poolItem.InjectPoolOwner(this);
-            PlaceInPool(poolItem);
-            return poolItem;
-        }
-        #endregion
-
-        #region COMMANDS
-        //sets the item at the end of the pool
-        internal void PlaceInPool(T itemToPool)
-        {
-            //disable the item if requested
-            if (_disableItemInPool && itemToPool.gameObject.activeSelf) itemToPool.gameObject.SetActive(false);
-
-            //replace the first item
-            itemToPool.ConnectWithPool(_firstItem);
-            _firstItem = itemToPool;
-
-            //a sanity check to avoid a common bug
-            Assert.IsFalse(_firstItem == _firstItem.NextItemInPool,
-                           $"{name} first item {_firstItem.gameObject.name} points to itself");
-        }
-
+        // --------------- COMMANDS --------------- //
         /// <summary>
         /// gets an element from the pool
         /// creates a new element if there are no available
@@ -117,6 +89,28 @@ namespace JReact.Pool
             element.GetFromPool();
             return element;
         }
-        #endregion
+        
+        //sets the item at the end of the pool
+        internal void PlaceInPool(T itemToPool)
+        {
+            //disable the item if requested
+            if (_disableItemInPool && itemToPool.gameObject.activeSelf) itemToPool.gameObject.SetActive(false);
+
+            //replace the first item
+            itemToPool.ConnectWithPool(_firstItem);
+            _firstItem = itemToPool;
+
+            //a sanity check to avoid a common bug
+            Assert.IsFalse(_firstItem == _firstItem.NextItemInPool,
+                           $"{name} first item {_firstItem.gameObject.name} points to itself");
+        }
+
+        private T AddItemIntoPool()
+        {
+            T poolItem = Instantiate(_prefabItem.GetRandomElement(), _parentTransform.ThisTransform);
+            poolItem.InjectPoolOwner(this);
+            PlaceInPool(poolItem);
+            return poolItem;
+        }
     }
 }

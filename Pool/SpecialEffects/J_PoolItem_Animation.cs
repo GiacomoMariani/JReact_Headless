@@ -8,9 +8,8 @@ namespace JReact.Pool.SpecialEffect
     /// animation effect implemented as pool item
     /// </summary>
     [RequireComponent(typeof(Animator))]
-    public class J_PoolItem_Animation : J_PoolItem_SpecialEffect
+    public sealed class J_PoolItem_Animation : J_PoolItem_SpecialEffect
     {
-        #region FIELDS AND PROPERTIES
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField] private float _animationLength;
         [BoxGroup("Setup", true, true, 0), SerializeField] private string _animatorTrigger;
@@ -25,22 +24,18 @@ namespace JReact.Pool.SpecialEffect
                 return _thisAnimator;
             }
         }
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- IMPLEMENTATION --------------- //
         protected override void SanityChecks()
         {
             base.SanityChecks();
             Assert.IsNotNull(_ThisAnimator, $"{gameObject.name} requires an animator ");
         }
-        #endregion
 
-        #region IMPLEMENTATION
         protected override void TriggerThisEffect()
         {
             _ThisAnimator.SetTrigger(_animatorTrigger);
             RemoveAfterSeconds(_animationLength);
         }
-        #endregion
     }
 }

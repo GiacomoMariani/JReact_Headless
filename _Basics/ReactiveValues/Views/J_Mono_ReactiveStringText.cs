@@ -11,7 +11,6 @@ namespace JReact.UiView
         //the string with the text
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _stringScreenMessage;
 
-        #region LISTENERS
         //start and stop tracking on enable
         private void OnEnable()
         {
@@ -20,6 +19,5 @@ namespace JReact.UiView
         }
 
         private void OnDisable() { _stringScreenMessage.UnSubscribe(SetText); }
-        #endregion
     }
 }

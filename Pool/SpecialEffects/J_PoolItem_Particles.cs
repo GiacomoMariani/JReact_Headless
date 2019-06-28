@@ -8,10 +8,9 @@ namespace JReact.Pool.SpecialEffect
     /// particles effect implemented as pool item
     /// </summary>
     [RequireComponent(typeof(ParticleSystem))]
-    public class J_PoolItem_Particles : J_PoolItem_SpecialEffect
+    public sealed class J_PoolItem_Particles : J_PoolItem_SpecialEffect
     {
-        #region FIELDS AND PROPERTIES
-        #endregion
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private ParticleSystem _particles;
         private ParticleSystem _ThisParticles
         {
@@ -22,20 +21,17 @@ namespace JReact.Pool.SpecialEffect
             }
         }
 
-        #region INITIALIZATION
+        // --------------- IMPLEMENTATION --------------- //
         protected override void SanityChecks()
         {
             base.SanityChecks();
             Assert.IsNotNull(_ThisParticles, $"{gameObject.name} requires a particle effect");
         }
-        #endregion
 
-        #region IMPLEMENTATION
         protected override void TriggerThisEffect()
         {
             _ThisParticles.Play();
             RemoveAfterSeconds(_ThisParticles.main.duration);
         }
-        #endregion
     }
 }

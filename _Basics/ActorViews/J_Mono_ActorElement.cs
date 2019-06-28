@@ -26,7 +26,7 @@ namespace JReact
         protected abstract void ActorUpdate(T element);
         protected virtual void ActorIsRemoved(T element) {}
 
-        #region UNITY EVENTS
+        // --------------- UNITY EVENTS --------------- //
         protected virtual void OnEnable()
         {
             if (_actor != null) ActorUpdate(_actor);
@@ -41,6 +41,5 @@ namespace JReact
         {
             if (_actor != null) ActorIsRemoved(_actor);
         }
-        #endregion
     }
 }

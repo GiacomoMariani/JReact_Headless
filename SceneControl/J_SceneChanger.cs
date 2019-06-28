@@ -11,9 +11,9 @@ namespace JReact.SceneControls
     /// this class is used to change the scene
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Scenes/Scene Changer")]
-    public class J_SceneChanger : ScriptableObject, jObservable<(Scene previous, Scene current)>
+    public sealed class J_SceneChanger : ScriptableObject, jObservable<(Scene previous, Scene current)>
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         private event Action<(Scene previous, Scene current)> OnSceneChange;
         private event Action<float> OnLoadProgress;
 
@@ -21,9 +21,8 @@ namespace JReact.SceneControls
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isInitialized;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Scene _currentScene;
         public Scene CurrentScene { get => _currentScene; private set => _currentScene = value; }
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         private void SetupThis()
         {
             _isInitialized = true;
@@ -31,9 +30,8 @@ namespace JReact.SceneControls
             _currentScene = SceneManager.GetActiveScene();
             JLog.Log($"{name} complete the setup", JLogTags.SceneManager, this);
         }
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         /// <summary>
         /// loads a specific scene from its name
         /// </summary>
@@ -48,9 +46,8 @@ namespace JReact.SceneControls
         /// used to cancel the load of a given scene
         /// </summary>
         public void CancelLoadScene() { Timing.KillCoroutines(JCoroutineTags.COROUTINE_SceneChangerTag); }
-        #endregion
 
-        #region SCENE PROCESSING
+        // --------------- SCENE PROCESSING --------------- //
         private IEnumerator<float> LoadingTheScene(string sceneName)
         {
             // The Application loads the Scene in the background as the current Scene runs.
@@ -77,7 +74,6 @@ namespace JReact.SceneControls
             CurrentScene                    =  newScene;
             OnSceneChange?.Invoke((oldScene, newScene));
         }
-        #endregion
 
         #region SUBSCRIBERS
         public void Subscribe(Action<(Scene previous, Scene current)> actionToAdd) { OnSceneChange      += actionToAdd; }

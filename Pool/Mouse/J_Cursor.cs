@@ -11,9 +11,9 @@ namespace JReact.Pool.SpecialEffect
     /// this class is used to change the mouse pointer
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Special Effects/Cursor")]
-    public class J_Cursor : ScriptableObject, iResettable
+    public sealed class J_Cursor : ScriptableObject, iResettable
     {
-        #region FIELDS AND VALUES
+        // --------------- EVENTS --------------- //
         private event Action<GameObject> OnPointerChange;
 
         // --------------- SETUP --------------- //
@@ -46,9 +46,8 @@ namespace JReact.Pool.SpecialEffect
         [FoldoutGroup("State - Cursor", false, 20), ReadOnly, ShowInInspector] private GameObject[] _customCursorViews;
 
         [FoldoutGroup("State - Effects", false, 25), ReadOnly, ShowInInspector] private bool _activeEffect;
-        #endregion
 
-        #region STARTUP
+        // --------------- STARTUP --------------- //
         /// <summary>
         /// sets the cursor with a prefab
         /// </summary>
@@ -59,9 +58,8 @@ namespace JReact.Pool.SpecialEffect
             if (_effect != null)
                 EnableEffect(mainCamera);
         }
-        #endregion
 
-        #region MOUSE CURSOR
+        // --------------- MOUSE CURSOR --------------- //
         private void EnableCursor(Camera mainCamera)
         {
             _activeCursor = true;
@@ -95,9 +93,8 @@ namespace JReact.Pool.SpecialEffect
                 yield return Timing.WaitForOneFrame;
             }
         }
-        #endregion
 
-        #region MOUSE EFFECTS
+        // --------------- MOUSE EFFECTS --------------- //
         private void EnableEffect(Camera mainCamera)
         {
             _activeEffect = true;
@@ -113,9 +110,8 @@ namespace JReact.Pool.SpecialEffect
                 yield return Timing.WaitForSeconds(_interval);
             }
         }
-        #endregion
 
-        #region COMMANDS - CURSOR
+        // --------------- COMMANDS - CURSOR --------------- //
         /// <summary>
         /// resets the cursor to its default
         /// </summary>
@@ -154,9 +150,8 @@ namespace JReact.Pool.SpecialEffect
             Cursor.visible = true;
             _activeCursor  = false;
         }
-        #endregion
 
-        #region COMMANDS - EFFECT
+        // --------------- COMMANDS - EFFECT --------------- //
         /// <summary>
         /// applies an effect to spawn on mouse
         /// </summary>
@@ -179,9 +174,8 @@ namespace JReact.Pool.SpecialEffect
             Timing.KillCoroutines(JCoroutineTags.COROUTINE_MouseEffect);
             _activeEffect = false;
         }
-        #endregion
 
-        #region DISABLE AND RESET
+        // --------------- DISABLE AND RESET --------------- //
         private void OnDisable() { ResetThis(); }
 
         public void ResetThis()
@@ -189,10 +183,9 @@ namespace JReact.Pool.SpecialEffect
             DisableMouseCursor();
             DisableMouseEffect();
         }
-        #endregion
-        #region SUBSCRIBERS
+        
+        // --------------- SUBSCRIBERS --------------- //
         public void Subscribe(Action<GameObject> actionToAdd) { OnPointerChange      += actionToAdd; }
         public void UnSubscribe(Action<GameObject> actionToRemove) { OnPointerChange -= actionToRemove; }
-        #endregion
     }
 }

@@ -10,7 +10,6 @@ namespace JReact.StateControl.LevelSystem
     [CreateAssetMenu(menuName = "Reactive/Level System/Full Progression")]
     public sealed class J_LevelProgression : J_StateControl<J_LevelState>
     {
-        #region VALUES AND PROPERTIES
         //-----------------> SETUP CAPACITOR AND CAPACITOR VIEW
         private const string ExperienceSuffix = "{0}_Experience";
 
@@ -29,9 +28,8 @@ namespace JReact.StateControl.LevelSystem
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int MaxLevel => _validStates.Length;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public J_LevelState CurrentLevelInfo => CurrentState;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public bool MaxLevelReached => CurrentLevel == MaxLevel;
-        #endregion
 
-        #region INSTANTIATION
+        // --------------- INSTANTIATION --------------- //
         /// <summary>
         /// instantiate a level progression
         /// </summary>
@@ -58,9 +56,8 @@ namespace JReact.StateControl.LevelSystem
             if (init) stateControl.Activate();
             return stateControl;
         }
-        #endregion INSTANTIATION
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         protected override void ActivateThis()
         {
             base.ActivateThis();
@@ -117,9 +114,8 @@ namespace JReact.StateControl.LevelSystem
 
             JLog.Log($"{name} forced to level {CurrentLevel}", JLogTags.LevelSystem, this);
         }
-        #endregion
 
-        #region GETTERS
+        // --------------- GETTERS --------------- //
         public J_LevelState GetLevelData(int level)
         {
             Assert.IsTrue(level <= MaxLevel, $"{name} has no such level: {level}. Max Level: {MaxLevel}");
@@ -127,9 +123,8 @@ namespace JReact.StateControl.LevelSystem
         }
 
         public int GetExperienceToReach(int level) => GetLevelData(level).PreviousExperience;
-        #endregion
 
-        #region HELPERS AND IMPLEMENTORS
+        // --------------- HELPERS AND IMPLEMENTORS --------------- //
         //used to set all the relevant info into the levels
         private void SetupLevels()
         {
@@ -170,6 +165,5 @@ namespace JReact.StateControl.LevelSystem
 
             return false;
         }
-        #endregion
     }
 }

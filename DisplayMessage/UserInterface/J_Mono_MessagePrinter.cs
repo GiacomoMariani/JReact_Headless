@@ -10,9 +10,9 @@ namespace JReact.ScreenMessage
     /// <summary>
     /// shows a message to be printed on the screen
     /// </summary>
-    public class J_Mono_MessagePrinter : J_Mono_ActorElement<JMessage>, iResettable
+    public sealed class J_Mono_MessagePrinter : J_Mono_ActorElement<JMessage>, iResettable
     {
-        #region FIELDS AND PROPERTIS
+        // --------------- FIELDS AND PROPERTIES --------------- //
         private const string COROUTINE_PrinterTag = "COROUTINE_MessagePrinterTag";
         internal event Action<bool> OnPrinting;
 
@@ -31,9 +31,8 @@ namespace JReact.ScreenMessage
                 if (OnPrinting != null) OnPrinting(value);
             }
         }
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- // 
         private void Awake()
         {
             SanityChecks();
@@ -43,18 +42,16 @@ namespace JReact.ScreenMessage
         private void InitThis() { this.InjectToChildren(); }
 
         private void SanityChecks() { Assert.IsNotNull(_stringMessage, $"({gameObject.name}) needs an element for _currentMessage"); }
-        #endregion
 
-        #region OVERRIDES
+        // --------------- OVERRIDES --------------- //
         protected override void ActorUpdate(JMessage message)
         {
             //reset to make sure it's ready, then print
             ResetThis();
             Timing.RunCoroutine(PrintCurrent(message), Segment.FixedUpdate, _actor.MessageNumber, COROUTINE_PrinterTag);
         }
-        #endregion
 
-        #region PRINT IMPLEMENTATION
+        // --------------- PRINT IMPLEMENTATION --------------- //
         //print all the chars of the message
         private IEnumerator<float> PrintCurrent(JMessage message)
         {
@@ -74,9 +71,8 @@ namespace JReact.ScreenMessage
             //finish printing
             IsPrinting = false;
         }
-        #endregion
 
-        #region MESSAGE COMMANDS
+        // --------------- MESSAGE COMMANDS --------------- //
         /// <summary>
         /// used to fast finish to print the message
         /// </summary>
@@ -87,9 +83,8 @@ namespace JReact.ScreenMessage
             ResetThis();
             _stringMessage.Current = _actor.MessageContent;
         }
-        #endregion
 
-        #region RESET & DISABLE
+        // --------------- RESET & DISABLE --------------- //
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -103,6 +98,5 @@ namespace JReact.ScreenMessage
             _stringMessage.ResetThis();
             IsPrinting = false;
         }
-        #endregion
     }
 }

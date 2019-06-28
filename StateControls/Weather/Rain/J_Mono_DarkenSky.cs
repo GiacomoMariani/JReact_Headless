@@ -14,20 +14,12 @@ namespace JReact.StateControl.Weather
     /// </summary>
     public sealed class J_Mono_DarkenSky : J_Mono_StateElement
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         private const string COROUTINE_ThunderTag = "COROUTINE_ThunderTag";
 
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private Image _darkSky;
-        private Image DarkSky
-        {
-            get
-            {
-                if (_darkSky == null) _darkSky = GetComponent<Image>();
-                return _darkSky;
-            }
-        }
 
         // --------------- SKY SETUP --------------- //
+        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private Image _darkSky;
         [BoxGroup("Setup - Sky", true, true, 0), SerializeField, Range(0.00f, 0.25f)]
         private float _clearAlpha;
         [BoxGroup("Setup - Sky", true, true, 0), SerializeField, Range(0.25f, 0.99f)]
@@ -42,10 +34,11 @@ namespace JReact.StateControl.Weather
         [BoxGroup("Setup - Thunder", true, true, 0), SerializeField] private AnimationCurve _thunderCurve;
         [BoxGroup("Setup - Thunder", true, true, 0), SerializeField] private SoundControl _soundControl;
 
+        // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Tween _thunderTween;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId;
-        #endregion
 
+        // --------------- INIT --------------- //
         protected override void InitThis()
         {
             base.InitThis();
@@ -55,19 +48,19 @@ namespace JReact.StateControl.Weather
         protected override void SanityChecks()
         {
             base.SanityChecks();
-            Assert.IsNotNull(DarkSky,       $"{gameObject.name} requires a _darkSky");
+            Assert.IsNotNull(_darkSky,       $"{gameObject.name} requires a _darkSky");
             Assert.IsNotNull(_soundControl, $"{gameObject.name} requires a _soundControl");
-            Assert.IsTrue(DarkSky.color.a <= 0.01,
-                          $"{gameObject.name}- the alpha of the image {DarkSky.gameObject.name} should start at 0");
+            Assert.IsTrue(_darkSky.color.a <= 0.01,
+                          $"{gameObject.name}- the alpha of the image {_darkSky.gameObject.name} should start at 0");
         }
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         /// <summary>
         /// darkens the sky
         /// </summary>
         private void DarkenSky()
         {
-            DarkSky.DOFade(_darkAlpha, _secondsToGetDark);
+            _darkSky.DOFade(_darkAlpha, _secondsToGetDark);
             if (_thunderChance > 0f)
                 Timing.RunCoroutine(ThunderLoop().CancelWith(gameObject), Segment.SlowUpdate, _instanceId, COROUTINE_ThunderTag);
         }
@@ -79,11 +72,10 @@ namespace JReact.StateControl.Weather
         {
             Timing.KillCoroutines(_instanceId, COROUTINE_ThunderTag);
             _thunderTween?.Kill();
-            DarkSky.DOFade(_clearAlpha, _secondsToGetDark);
+            _darkSky.DOFade(_clearAlpha, _secondsToGetDark);
         }
-        #endregion
 
-        #region THUNDERS
+        // --------------- THUNDERS --------------- //
         //keep thundering until is raining
         private IEnumerator<float> ThunderLoop()
         {
@@ -104,13 +96,11 @@ namespace JReact.StateControl.Weather
         {
             _thunderTween = null;
             _soundControl.PlaySound(_thunderSound);
-            _thunderTween = DarkSky.DOFade(_darkAlpha, _secondsToGetDark).SetEase<Tween>(_thunderCurve);
+            _thunderTween = _darkSky.DOFade(_darkAlpha, _secondsToGetDark).SetEase<Tween>(_thunderCurve);
         }
-        #endregion
 
-        #region ABSTRACT IMPLEMENTATION
-        protected override void EnterState() { DarkenSky(); }
-        protected override void ExitState() { ClearSky(); }
-        #endregion
+        // --------------- ABSTRACT IMPLEMENTATION --------------- //
+        protected override void EnterState() => DarkenSky();
+        protected override void ExitState() => ClearSky();
     }
 }

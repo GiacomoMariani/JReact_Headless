@@ -10,7 +10,7 @@ namespace JReact.Selection
     /// <typeparam name="T">type of the selectable item</typeparam>
     public abstract class J_Selector<T> : ScriptableObject, jObservable<T>, iResettable
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         private event Action<T> OnSelect;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T _selected;
@@ -28,33 +28,32 @@ namespace JReact.Selection
                 OnSelect?.Invoke(value);
             }
         }
-        #endregion
 
+        // --------------- COMMANDS --------------- //
         /// <summary>
         /// selects an item
         /// </summary>
         /// <param name="item">the item selected</param>
         public void Select(T item) { Selected = item; }
 
-        /// any logic to be applied on the selected item
-        protected virtual void ActOnSelection(T item) {}
-
         /// <summary>
         /// deselects the selected item
         /// </summary>
         public void Deselect() { Selected = default; }
 
+        // --------------- VIRTUAL IMPLEMENTATION --------------- //
+        /// any logic to be applied on the selected item
+        protected virtual void ActOnSelection(T item) {}
+        
         //any logic to apply on the deselected item
         protected virtual void ActOnDeselection(T item) {}
 
-        #region DISABLE AND RESET
+        // --------------- DISABLE AND RESET --------------- //
         private void OnDisable() { ResetThis(); }
         public virtual void ResetThis() { Deselect(); }
-        #endregion
 
-        #region SUBSCRIBERS
+        // --------------- SUBSCRIBERS --------------- //
         public void Subscribe(Action<T> actionToAdd) { OnSelect      += actionToAdd; }
         public void UnSubscribe(Action<T> actionToRemove) { OnSelect -= actionToRemove; }
-        #endregion
     }
 }

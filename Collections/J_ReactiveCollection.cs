@@ -13,16 +13,15 @@ namespace JReact.Collections
     /// <typeparam name="T">the type of this collection</typeparam>
     public abstract class J_ReactiveCollection<T> : ScriptableObject, IList<T>, jObservable<T>
     {
-        #region VALUES AND PROPERTIES
         // --------------- EVENTS --------------- //
         private event Action<T> OnAdd;
         private event Action<T> OnRemove;
 
+        // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected List<T> _ThisCollection { get; } = new List<T>();
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _ThisCollection.Count;
-        #endregion
 
-        #region MAIN COMMANDS
+        // --------------- MAIN COMMANDS --------------- //
         public void Add(T item)
         {
             Assert.IsNotNull(_ThisCollection, $"{name} Collection not initialized");
@@ -68,17 +67,13 @@ namespace JReact.Collections
             for (int i = 0; i < Count; i++)
                 actionToCall(_ThisCollection[i]);
         }
-        #endregion
 
-        #region VIRTUAL FURTHER IMPLEMENTATION
+        // --------------- FURTHER IMPLEMENTATIONS AND HELPERS --------------- //
         //virtual methods to be applied if required
         protected virtual void WhatHappensOnRemove(T elementToRemove) {}
         protected virtual void WhatHappensOnAdd(T elementToAdd) {}
-        #endregion
-
-        #region GETTERS
+        
         public virtual bool Contains(T elementToCheck) => _ThisCollection.Contains(elementToCheck);
-        #endregion
 
         #region SUBSCRIBERS
         public void Subscribe(Action<T> actionToRegister)

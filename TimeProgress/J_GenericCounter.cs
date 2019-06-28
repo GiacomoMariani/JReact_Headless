@@ -11,7 +11,7 @@ namespace JReact.TimeProgress
     /// </summary>
     public abstract class J_GenericCounter : ScriptableObject, jObservable<float>, iDeltaTime
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- // 
         protected event Action<float> OnTick;
 
         // --------------- SETUP --------------- //
@@ -24,9 +24,8 @@ namespace JReact.TimeProgress
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private CoroutineHandle _handle;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive => _handle.IsValid && _handle.IsRunning;
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- // 
         protected static T CreateCounter<T>(Segment desiredSegment = Segment.Update)
             where T : J_GenericCounter
         {
@@ -53,14 +52,12 @@ namespace JReact.TimeProgress
             JLog.Log($"{name} stops counting", JLogTags.TimeProgress, this);
             Timing.KillCoroutines(_objectId, JCoroutineTags.COROUTINE_CounterTag);
         }
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- // 
         //make sure this is setup correctly, used in subclasses
         protected virtual bool SanityChecks() => true;
-        #endregion
 
-        #region COUNTING
+        // --------------- COUNTING --------------- // 
         protected void Tick()
             => _handle = Timing.RunCoroutine(CountOneTick(), _desiredSegment, _objectId, JCoroutineTags.COROUTINE_CounterTag);
 
@@ -73,9 +70,8 @@ namespace JReact.TimeProgress
             ThisDeltaTime = tickValue;
             OnTick?.Invoke(tickValue);
         }
-        #endregion
 
-        #region SUBSCRIBERS
+        // --------------- SUBSCRIBERS --------------- //
         public void Subscribe(Action<float> action)
         {
             if (!IsActive) StartCount();
@@ -87,6 +83,5 @@ namespace JReact.TimeProgress
             OnTick -= action;
             if (OnTick == null) StopCount();
         }
-        #endregion
     }
 }

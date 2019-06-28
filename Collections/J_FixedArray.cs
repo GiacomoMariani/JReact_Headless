@@ -12,7 +12,7 @@ namespace JReact.Collections
     /// <typeparam name="T"></typeparam>
     public abstract class J_FixedArray<T> : ScriptableObject, jObservable<(int index, T oldItem, T newItem)>, IEnumerable
     {
-        #region VALUES AND PROPERTIES
+        // --------------- VALUES AND PROPERTIES --------------- //
         // --------------- EVENTS --------------- //
         private event Action<(int index, T oldItem, T newItem)> OnChange;
 
@@ -21,8 +21,8 @@ namespace JReact.Collections
 
         // --------------- ARRAY --------------- //
         public T this[int index] { get => _thisArray[index]; set => Set(index, value); }
-        #endregion
 
+        // --------------- MAIN COMMANDS --------------- //
         /// <summary>
         /// usually the array should be pre initialized, but with this it can be setup during run mode
         /// </summary>
@@ -43,6 +43,7 @@ namespace JReact.Collections
 
         public void ResetThis() => ProcessWith(item => item = default);
 
+        // --------------- HELPERS --------------- //
         /// <summary>
         /// process all the non null elements with an action
         /// </summary>
@@ -80,10 +81,11 @@ namespace JReact.Collections
 
         protected virtual void WhatHappensOnChange(int index, T previousItem, T item) {}
 
-        #region SUBSCRIBERS
+        // --------------- SUBSCRIBERS --------------- // 
         public void Subscribe(Action<(int index, T oldItem, T newItem)> action) { OnChange   += action; }
         public void UnSubscribe(Action<(int index, T oldItem, T newItem)> action) { OnChange -= action; }
-        #endregion
+        
+        // --------------- ENUMERATOR --------------- //
         public IEnumerator GetEnumerator() => _thisArray.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

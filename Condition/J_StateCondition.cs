@@ -11,13 +11,12 @@ namespace JReact.Conditions
     [CreateAssetMenu(menuName = "Reactive/Conditions/State")]
     public class J_StateCondition : J_ReactiveCondition
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _passOnEnter = true;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State[] _validStates;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_SimpleStateControl _stateControls;
-        #endregion
 
-        #region INITIALIZE AND RESET
+        // --------------- INITIALIZE AND RESET --------------- //
         protected override void StartCheckingCondition()
         {
             StateChange((null, _stateControls.CurrentState));
@@ -25,8 +24,8 @@ namespace JReact.Conditions
         }
 
         protected override void StopCheckingCondition() { _stateControls.UnSubscribeToStateChange(StateChange); }
-        #endregion
 
+        // --------------- IMPLEMENTATION --------------- //
         private void StateChange((J_State previousState, J_State nextState) states)
         {
             bool stateValid = Array.IndexOf(_validStates, states.nextState) > -1;

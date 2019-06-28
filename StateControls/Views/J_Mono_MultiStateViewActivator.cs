@@ -9,7 +9,7 @@ namespace JReact.StateControl
     /// </summary>
     public class J_Mono_MultiStateViewActivator : MonoBehaviour
     {
-        #region VALUES AND PROPERTIES
+        // --------------- VALUES AND PROPERTIES --------------- //
         //the views related to this element
         [BoxGroup("Setup", true, true, 0), SerializeField, Required] private J_Mono_ViewActivator _view;
         private J_Mono_ViewActivator ThisView
@@ -42,9 +42,8 @@ namespace JReact.StateControl
                 ThisView.ActivateView(_isActive);
             }
         }
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         private void Awake() { SanityChecks(); }
 
         protected virtual void SanityChecks()
@@ -52,9 +51,8 @@ namespace JReact.StateControl
             for (int i = 0; i < _validStates.Length; i++)
                 Assert.IsNotNull(_validStates[i], $"{gameObject.name} has a missing state at index {i}");
         }
-        #endregion
 
-        #region LISTENERS
+        // --------------- LISTENERS --------------- //
         //update this if the next state is contained here
         protected virtual void StateChange((J_State previous, J_State current) transition)
         {
@@ -69,6 +67,5 @@ namespace JReact.StateControl
         }
 
         protected virtual void OnDisable() { _mainStateControl.UnSubscribe(StateChange); }
-        #endregion
     }
 }

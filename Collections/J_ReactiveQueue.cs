@@ -11,15 +11,15 @@ namespace JReact.Collections
         private Action<T> OnDequeue;
         private Action<T> OnEnqueue;
 
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxLength = 10;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T[] _arrayQueue;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _first = 0;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _last = 0;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _last - _first;
-        #endregion
 
+        // --------------- MAIN COMMANDS --------------- //
         protected override void ActivateThis()
         {
             base.ActivateThis();
@@ -93,7 +93,7 @@ namespace JReact.Collections
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        #region SUBSCRIBERS
+        // --------------- SUBSCRIBERS --------------- //
         public void Subscribe(Action<T> action) { OnEnqueue   += action; }
         public void UnSubscribe(Action<T> action) { OnEnqueue -= action; }
 
@@ -102,6 +102,5 @@ namespace JReact.Collections
 
         public void SubscribeToDequeue(Action<T> action) { OnDequeue   += action; }
         public void UnSubscribeToDequeue(Action<T> action) { OnDequeue -= action; }
-        #endregion
     }
 }

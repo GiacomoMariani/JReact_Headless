@@ -10,13 +10,12 @@ namespace JReact.Pool.SpecialEffect
     /// </summary>
     public abstract class J_PoolItem_SpecialEffect : J_PoolItem_Mono<J_PoolItem_SpecialEffect>
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         public event Action<J_PoolItem_SpecialEffect> OnActivation;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         private void Awake()
         {
             InitThis();
@@ -25,9 +24,8 @@ namespace JReact.Pool.SpecialEffect
 
         protected virtual void InitThis() { _instanceId = GetInstanceID(); }
         protected virtual void SanityChecks() {}
-        #endregion
 
-        #region ACTICATION AND DEACTIVATION
+        // --------------- ACTIVATION AND DEACTIVATION --------------- //
         /// <summary>
         /// triggers all the effect of this item
         /// </summary>
@@ -54,9 +52,8 @@ namespace JReact.Pool.SpecialEffect
             yield return Timing.WaitForSeconds(particleDuration);
             EndEffect();
         }
-        #endregion
 
-        #region ABSTRACT IMPLEMENTATION
+        // --------------- ABSTRACT IMPLEMENTATION --------------- //
         /// <summary>
         /// this is the specific implementation of the effect
         /// </summary>
@@ -66,6 +63,5 @@ namespace JReact.Pool.SpecialEffect
         /// this is mostly a method to remind to despawn this at the end of the effect
         /// </summary>
         protected virtual void EndEffect() { ReturnToPool(); }
-        #endregion
     }
 }

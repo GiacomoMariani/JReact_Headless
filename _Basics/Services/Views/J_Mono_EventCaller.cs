@@ -11,7 +11,7 @@ namespace JReact
     /// </summary>
     public class J_Mono_EventCaller : MonoBehaviour
     {
-        #region FIELD AND PROPERTIES
+        // --------------- FIELD AND PROPERTIES --------------- //
         //the possible condition to cancel the event
         [BoxGroup("Setup", true, true, 5), SerializeField, AssetsOnly] private J_ReactiveBool[] _conditions;
         //if we desire to launch this at startup
@@ -20,9 +20,8 @@ namespace JReact
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event[] _event;
         //what we want to send
         [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _actions;
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         private void Awake() { InitThis(); }
 
         private void InitThis()
@@ -32,8 +31,8 @@ namespace JReact
             //subscribe to the following events
             _event.SubscribeToAll(CallEvent);
         }
-        #endregion
 
+        // --------------- IMPLEMENTATION --------------- //
         /// <summary>
         /// the event we method to happen when the event is called
         /// </summary>
@@ -52,8 +51,7 @@ namespace JReact
             _actions.Invoke();
         }
 
-        #region LISTENERS
+        // --------------- UNITY EVENTS --------------- //
         private void OnDestroy() { _event.UnSubscribeToAll(CallEvent); }
-        #endregion
     }
 }

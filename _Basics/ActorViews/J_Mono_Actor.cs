@@ -11,16 +11,15 @@ namespace JReact
     /// <typeparam name="T">the actor type</typeparam>
     public abstract class J_Mono_Actor<T> : MonoBehaviour
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         //sets the actor directly or by injection
         [InfoBox("Null => needs to be injected via code"), BoxGroup("Setup", true, true, 0), SerializeField]
         protected T _actor;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _initCompleted;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iUpdater<T>[] _relatedElements;
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         protected virtual void SanityChecks() {}
 
         protected virtual void InitThis()
@@ -29,7 +28,6 @@ namespace JReact
             _relatedElements = GetComponentsInChildren<iUpdater<T>>(true);
             _initCompleted   = true;
         }
-        #endregion
 
         public void ActorUpdate(T actor)
         {

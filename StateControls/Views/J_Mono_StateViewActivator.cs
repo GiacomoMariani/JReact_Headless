@@ -8,7 +8,7 @@ namespace JReact.StateControl
     /// </summary>
     public class J_Mono_StateViewActivator : MonoBehaviour
     {
-        #region FIELD AND PROPERTIES
+        // --------------- FIELD AND PROPERTIES --------------- //
         //the views related to this element
         [BoxGroup("Setup", true, true, 0), SerializeField, Required] private J_Mono_ViewActivator _view;
         private J_Mono_ViewActivator ThisView
@@ -21,13 +21,13 @@ namespace JReact.StateControl
         }
         //the desired state
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State _stateToActivate;
-        #endregion
 
+        // --------------- OPEN AND CLOSE --------------- //
         //open or close the views as requested
         private void CloseView() { ThisView.ActivateView(false); }
         private void OpenView() { ThisView.ActivateView(true); }
 
-        #region LISTENERS
+        // --------------- LISTENERS --------------- //
         //start and stop tracking on enable
         protected virtual void OnEnable()
         {
@@ -48,6 +48,5 @@ namespace JReact.StateControl
             _stateToActivate.UnSubscribe(OpenView);
             _stateToActivate.UnSubscribeToEnd(CloseView);
         }
-        #endregion
     }
 }

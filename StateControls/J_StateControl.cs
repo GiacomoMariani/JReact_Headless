@@ -24,7 +24,6 @@ namespace JReact.StateControl
     public class J_StateControl<T> : J_Service, jObservable<(T previous, T current)>
         where T : J_State
     {
-        #region FIELDS AND PROPERTIES
         // --------------- MAIN EVENTS AND DELEGATES --------------- //
         private event Action<(T previous, T current)> OnStateTransition;
 
@@ -59,9 +58,8 @@ namespace JReact.StateControl
                 CurrentState.Activate();
             }
         }
-        #endregion FIELDS AND PROPERTIES
 
-        #region INSTANTIATION
+        // --------------- INSTANTIATION --------------- //
         public static J_StateControl<T> Create(T[] states, T firstState, bool initialize = true)
         {
             var stateControl = CreateInstance<J_StateControl<T>>();
@@ -82,15 +80,14 @@ namespace JReact.StateControl
 
             return Create(states, firstState, initialize);
         }
-        #endregion INSTANTIATION
 
-        #region ACTIVATION
+        // --------------- ACTIVATION --------------- //
         // sets the first state of the game
         protected override void ActivateThis()
         {
             base.ActivateThis();
             Assert.IsNotNull(_firstState, $"Please set a first state to validate the controls on: {name}");
-            SetStateSanityChecks(_firstState);
+            ValidState(_firstState);
             _currentState = _firstState;
             _firstState.Activate();
             JLog.Log($"Initialization completed on {name} with {_validStates.Length} states.", JLogTags.State, this);
@@ -102,9 +99,8 @@ namespace JReact.StateControl
             _currentState = null;
             base.EndThis();
         }
-        #endregion ACTIVATION
 
-        #region MAIN CONTROL
+        // --------------- MAIN CONTROLS --------------- //
         /// <summary>
         /// the main command of this class. This is used to change the state into another most of the
         /// logic will be handled by the property CurrentState
@@ -113,8 +109,8 @@ namespace JReact.StateControl
         public void SetNewState(T stateToSet)
         {
             // --------------- PRE COMMAND CHECKS --------------- //
+            if (!ValidState(stateToSet)) return;
             if (StateAlreadySet(stateToSet)) return;
-            SetStateSanityChecks(stateToSet);
 
             JLog.Log($"{name} from {(CurrentState != null ? CurrentState.name : "null")} to {stateToSet.name}.",
                      JLogTags.State, this);
@@ -125,11 +121,24 @@ namespace JReact.StateControl
             OnStateTransition?.Invoke((previous, stateToSet));
         }
 
-        private void SetStateSanityChecks(T stateToSet)
+        //to make sure the state is valid
+        private bool ValidState(T stateToSet)
         {
-            Assert.IsNotNull(stateToSet, $"{name} is trying to set a null state");
-            Assert.IsTrue(_validStates.ArrayContains(stateToSet),
-                          $"The state {stateToSet} is not in the of valid states of {name}. List{_validStates.PrintAll()}.");
+            if (stateToSet == null)
+            {
+                JLog.Error($"{name} is trying to set a null state.", JLogTags.State, this);
+                return false;
+            }
+
+            if (!_validStates.ArrayContains(stateToSet))
+            {
+                JLog.Error($"{name} The state {stateToSet} is not in the of valid states of {name}. List{_validStates.PrintAll()}.",
+                           JLogTags.State, this);
+
+                return false;
+            }
+
+            return true;
         }
 
         //to avoid setting the same state again
@@ -142,9 +151,8 @@ namespace JReact.StateControl
 
             return true;
         }
-        #endregion MAIN CONTROL
-        
-        #region SUBSCRIBE METHODS
+
+        // --------------- SUBSCRIBE METHODS --------------- //
         //the following methods are used to subscribe/register to the transition event. they act like the observer pattern
         public void Subscribe(Action<(T previous, T current)> action)
         {
@@ -156,6 +164,5 @@ namespace JReact.StateControl
 
         public void SubscribeToStateChange(Action<(T previous, T current)> action) => Subscribe(action);
         public void UnSubscribeToStateChange(Action<(T previous, T current)> action) => UnSubscribe(action);
-        #endregion SUBSCRIBE METHODS
     }
 }

@@ -8,17 +8,18 @@ namespace JReact.Collections
 {
     public abstract class J_ReactiveStack<T> : J_Service, ICollection, IReadOnlyCollection<T>
     {
+        // --------------- EVENTS --------------- //
         private Action<T> OnPop;
         private Action<T> OnPush;
 
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxLength = 10;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T[] _arrayQueue;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _index = 0;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _index;
-        #endregion
 
+        // --------------- MAIN COMMANDS --------------- //
         protected override void ActivateThis()
         {
             base.ActivateThis();

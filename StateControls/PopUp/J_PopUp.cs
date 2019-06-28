@@ -9,7 +9,6 @@ namespace JReact.StateControl.PopUp
     [CreateAssetMenu(menuName = "Reactive/PopUp/Reactive Pop Up")]
     public sealed class J_PopUp : J_State
     {
-        #region VALUES AND PROPERTIES
         // --------------- CONSTANTS --------------- //
         private const string DefaultTitle = "Pop-Up";
         private const string DefaultConfirmText = "Confirm";
@@ -31,9 +30,8 @@ namespace JReact.StateControl.PopUp
         // --------------- ACTIONS --------------- //        
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent Confirm { get; private set; }
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent Deny { get; private set; }
-        #endregion
 
-        #region SETUP
+        // --------------- SETUP --------------- //
         public void SetupPopUpText(string message, string title = "")
         {
             _message.Current = message;
@@ -53,12 +51,11 @@ namespace JReact.StateControl.PopUp
             if (exitAfter) Confirm.AddListener(Close);
             _denyButtonText.Current = confirmText;
         }
-        #endregion
 
-        #region OPEN AND CLOSE
-        public void Open() { Activate(); }
+        // --------------- OPEN AND CLOSE --------------- //
+        public void Open() =>  Activate(); 
 
-        public void Close() { End(); }
+        public void Close() => End(); 
 
         protected override void ActivateThis()
         {
@@ -74,9 +71,8 @@ namespace JReact.StateControl.PopUp
 
             ResetThis();
         }
-        #endregion
 
-        #region DISABLE AND RESET
+        // --------------- DISABLE AND RESET --------------- //
         public override void ResetThis()
         {
             base.ResetThis();
@@ -99,7 +95,6 @@ namespace JReact.StateControl.PopUp
             }
         }
 
-        private void OnDisable() { ResetThis(); }
-        #endregion
+        private void OnDisable() => ResetThis();
     }
 }

@@ -11,9 +11,8 @@ namespace JReact.Pool.Roamer
     /// a roamer that randomly moves on a board
     /// </summary>
     [RequireComponent(typeof(J_TransformMover))]
-    public class J_Mono_Roamer : J_PoolItem_Mono<J_Mono_Roamer>, iResettable, iDestroyable
+    public sealed class J_Mono_Roamer : J_PoolItem_Mono<J_Mono_Roamer>, iResettable, iDestroyable
     {
-        #region VALUES AND PROPERTIES
         // --------------- CONSTANTS --------------- //
         private const string COROUTINE_Timeout = "COROUTINE_RoamerTimeout";
         private const string COROUTINE_Adjust = "COROUTINE_RoamerAdjust";
@@ -40,7 +39,6 @@ namespace JReact.Pool.Roamer
             => TransformMover.CurrentPosition;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
-        #endregion
 
         /// <summary>
         /// sets up the roamer
@@ -112,7 +110,7 @@ namespace JReact.Pool.Roamer
             }
         }
 
-        #region BORDER CHECKS
+        // --------------- BORDER CHECKS --------------- //
         private void CheckIfOut(Vector3 currentPosition)
         {
             if (OutOfBorders(currentPosition, _borders)) DestroyThis();
@@ -123,9 +121,8 @@ namespace JReact.Pool.Roamer
                                                                                      positionToCheck.x < borders.LeftBorder  ||
                                                                                      positionToCheck.y > borders.UpBorder    ||
                                                                                      positionToCheck.y < borders.DownBorder;
-        #endregion
 
-        #region TIMEOUT AND DESTROY COMMANDS
+        // --------------- TIMEOUT AND DESTROY COMMANDS --------------- //
         //used to keep the cloud alive for an amount of time
         private IEnumerator<float> Timeout(float lifeSpan)
         {
@@ -146,6 +143,5 @@ namespace JReact.Pool.Roamer
             if (_windControl    != null) _windControl.UnSubscribe(FollowWind);
             if (_transformMover != null) _transformMover.UnSubscribeToMovement(CheckIfOut);
         }
-        #endregion
     }
 }

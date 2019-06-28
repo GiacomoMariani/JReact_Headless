@@ -9,18 +9,17 @@ namespace JReact.ScreenMessage
     /// sends the messages
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Screen Message/Sender")]
-    public class J_MessageSender : ScriptableObject, jObservable<JMessage>
+    public sealed class J_MessageSender : ScriptableObject, jObservable<JMessage>
     {
-        #region VALUES AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         private event Action<JMessage> OnPublish;
 
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageId _defaultIdentifier;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private JMessage _message;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _currentId;
-        #endregion
 
-        #region MAIN COMMAND - SEND
+        // --------------- MAIN COMMAND - SEND --------------- //
         /// <summary>
         /// sends a message on the screen
         /// </summary>
@@ -45,19 +44,16 @@ namespace JReact.ScreenMessage
             _message.MessageId      = messageId;
             _message.MessageNumber  = _currentId++;
         }
-        #endregion
 
-        #region SUBSCRIBERS
+        // --------------- SUBSCRIBERS --------------- //
         public void Subscribe(Action<JMessage> actionToAdd) { OnPublish      += actionToAdd; }
         public void UnSubscribe(Action<JMessage> actionToRemove) { OnPublish -= actionToRemove; }
-        #endregion
 
-        #region TEST
+        // --------------- TEST --------------- //
         [BoxGroup("Debug", true, true, 50), SerializeField, AssetsOnly, Required] private J_MessageId _test;
 
         [BoxGroup("Debug", true, true, 50), Button(ButtonSizes.Medium)]
         private void SendTestMessage() { Send("This is just a test", _test); }
-        #endregion
     }
 
     //the message type

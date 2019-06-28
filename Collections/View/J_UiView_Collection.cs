@@ -11,15 +11,14 @@ namespace JReact.UiView.Collections
     /// </summary>
     public abstract class J_UiView_Collection<T> : MonoBehaviour
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_ReactiveCollection<T> _Collection { get; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_Mono_Actor<T> _PrefabActor { get; }
         //the dictionary is used for safety and to track the current elements on this viewer
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
         private Dictionary<T, J_Mono_Actor<T>> _trackedElements = new Dictionary<T, J_Mono_Actor<T>>();
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         private void Awake()
         {
             SanityChecks();
@@ -33,9 +32,8 @@ namespace JReact.UiView.Collections
         }
 
         protected virtual void InitThis() {}
-        #endregion
 
-        #region VIEW UPDATER
+        // --------------- VIEW UPDATER --------------- //
         protected virtual void OpenThis()
         {
             //make sure all the elements are shown
@@ -73,9 +71,8 @@ namespace JReact.UiView.Collections
 
         //further adjustments if we want to remove a view
         protected virtual void RemovedView(T itemRemoved) {}
-        #endregion
 
-        #region LISTENERS
+        // --------------- UNITY EVENTS --------------- //
         private void OnEnable()
         {
             OpenThis();
@@ -89,6 +86,5 @@ namespace JReact.UiView.Collections
             _Collection.UnSubscribeToRemove(Remove);
             CloseThis();
         }
-        #endregion
     }
 }

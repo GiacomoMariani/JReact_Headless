@@ -9,29 +9,26 @@ namespace JReact.ScreenMessage
     /// </summary>
     public class J_Actor_ScreenMessage : J_Mono_Actor<JMessage>
     {
-        #region VALUES AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] protected J_MessageSender _sender;
         [BoxGroup("Setup", true, true, 0), SerializeField] private J_MessageId[] _desiredTypes;
-        #endregion
 
-        #region INITIALIZATION AND SETUP
+        // --------------- INITIALIZATION --------------- //
         protected override void SanityChecks()
         {
             base.SanityChecks();
             Assert.IsNotNull(_sender, $"{gameObject.name} requires a _messageControl");
         }
-        #endregion
 
-        #region SENDER
+        // --------------- SENDER --------------- //
         private void TrySettingThisElement(JMessage messageSent)
         {
             //publish only desired messages
             if (_desiredTypes.ArrayContains(messageSent.MessageId))
                 ActorUpdate(messageSent);
         }
-        #endregion
 
-        #region RESET AND LISTENERS
+        // --------------- RESET AND LISTENERS --------------- //
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -39,6 +36,5 @@ namespace JReact.ScreenMessage
         }
 
         protected virtual void OnDisable() { _sender.UnSubscribe(TrySettingThisElement); }
-        #endregion
     }
 }

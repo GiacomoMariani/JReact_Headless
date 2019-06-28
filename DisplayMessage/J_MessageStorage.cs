@@ -9,17 +9,16 @@ namespace JReact.ScreenMessage
     /// stores a number of messages
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Screen Message/Message Storage")]
-    public class J_MessageStorage : ScriptableObject
+    public sealed class J_MessageStorage : ScriptableObject
     {
-        #region VALUES AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxMessages;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageSender _sender;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<JMessage> _messages = new Queue<JMessage>();
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isRunning;
-        #endregion
 
-        #region INITIALIZE AND DEINITIALIZE
+        // --------------- INITIALIZE AND DEINITIALIZE --------------- //
         public void Initialize(J_MessageSender messageControls)
         {
             if (messageControls != null) _sender = messageControls;
@@ -50,18 +49,16 @@ namespace JReact.ScreenMessage
             _sender.UnSubscribe(AddMessage);
             _messages.Clear();
         }
-        #endregion
 
-        #region MESSAGE STORAGE
+        // --------------- MESSAGE STORAGE --------------- //
         //stores the message
         private void AddMessage(JMessage message)
         {
             if (_messages.Count > _maxMessages) _messages.Dequeue();
             _messages.Enqueue(message);
         }
-        #endregion
 
-        #region RESET AND DISABLE
+        // --------------- RESET AND DISABLE --------------- //
         //used to reset the item
         private void OnDisable() { ResetThis(); }
 
@@ -70,6 +67,5 @@ namespace JReact.ScreenMessage
         {
             if (_isRunning) DeInitialize();
         }
-        #endregion
     }
 }

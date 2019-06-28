@@ -22,7 +22,7 @@ namespace JReact.StateControl.LevelSystem
 
         private void UpdateText((J_LevelState previous, J_LevelState current) transition) { SetText(transition.current.ToString()); }
 
-        #region LISTENERS
+        // --------------- UNITY EVENTS --------------- //
         private void OnEnable()
         {
             SetText(_levelControl.CurrentLevelInfo.ToString());
@@ -30,6 +30,5 @@ namespace JReact.StateControl.LevelSystem
         }
 
         private void OnDisable() { _levelControl.UnSubscribe(UpdateText); }
-        #endregion
     }
 }

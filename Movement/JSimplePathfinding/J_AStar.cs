@@ -13,7 +13,6 @@ namespace JReact.Pathfinding
     public abstract class J_AStar<T> : ScriptableObject
         where T : J_PathNode
     {
-        #region VALUES AND PROPERTIES
         // --------------- SETUP --------------- //
         //the related grid
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_PathGrid<T> _pathGrid;
@@ -38,9 +37,8 @@ namespace JReact.Pathfinding
 
         // --------------- DEBUG --------------- //
         [BoxGroup("Debug", true, true, 100), SerializeField] private bool _debug;
-        #endregion
 
-        #region PATHFINDING ALGORITHM
+        // --------------- PATHFINDING ALGORITHM --------------- //
         /// <summary>
         /// calculates the path from start to goal
         /// </summary>
@@ -140,9 +138,8 @@ namespace JReact.Pathfinding
 
             return path;
         }
-        #endregion
 
-        #region HELPERS
+        // --------------- HELPERS --------------- //
         private void ResetCollections()
         {
             _heuristicCost.Clear();
@@ -186,6 +183,5 @@ namespace JReact.Pathfinding
             if (_debug) JLog.Log($"{name} Path found. Nodes: {_resultPath.Count}.", JLogTags.Pathfind, this);
             return _resultPath;
         }
-        #endregion
     }
 }

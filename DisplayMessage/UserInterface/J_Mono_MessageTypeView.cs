@@ -8,7 +8,7 @@ namespace JReact.ScreenMessage
     /// </summary>
     public class J_Mono_MessageTypeView : J_Mono_ActorElement<JMessage>, iInitiator<J_Mono_MessagePrinter>
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageId[] _validMessages;
         [BoxGroup("Setup", true, true, 0), SerializeField, Required] private GameObject[] _views;
 
@@ -16,9 +16,8 @@ namespace JReact.ScreenMessage
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _enableWhenPrinting;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_Mono_MessagePrinter _printer;
-        #endregion
 
-        #region BASE VIEW
+        // --------------- BASE VIEW --------------- //
         //update the views
         protected override void ActorUpdate(JMessage element)
         {
@@ -36,9 +35,8 @@ namespace JReact.ScreenMessage
                     _views[i].SetActive(isActiveToShow);
             }
         }
-        #endregion
 
-        #region PRINT EFFECT
+        // --------------- PRINT EFFECT --------------- //
         //used to inject the printer effect
         public void InjectThis(J_Mono_MessagePrinter printEffect)
         {
@@ -83,8 +81,8 @@ namespace JReact.ScreenMessage
             //return true in all other cases
             return true;
         }
-        #endregion
 
+        // --------------- UNITY EVENTS --------------- //
         protected override void OnDestroy()
         {
             base.OnDestroy();

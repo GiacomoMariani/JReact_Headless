@@ -11,9 +11,9 @@ namespace JReact.ScreenMessage
     /// <summary>
     /// pops a message on the screen
     /// </summary>
-    public class J_Mono_PoppingMessages : J_Mono_ActorElement<JMessage>
+    public sealed class J_Mono_PoppingMessages : J_Mono_ActorElement<JMessage>
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         private const string COROUTINE_PoppingMessagesTag = "COROUTINE_PoppingMessagesTag";
 
         // --------------- SETUP --------------- //
@@ -26,15 +26,13 @@ namespace JReact.ScreenMessage
         // --------------- STATE --------------- //
         [BoxGroup("State", true, true, 15), ReadOnly]
         private List<(JMessage, J_UiView_FloatingText)> _messageDictionary = new List<(JMessage, J_UiView_FloatingText)>();
-        #endregion
 
-        #region INITIALIZATION AND SETUP
+        // --------------- INITIALIZATION AND SETUP --------------- //
         private void Awake() { SanityChecks(); }
 
         private void SanityChecks() { Assert.IsNotNull(_floatingPrefab, $"{gameObject.name} requires a _simpleTextPrefab"); }
-        #endregion
 
-        #region SENDER
+        // --------------- SENDER --------------- //
         protected override void ActorUpdate(JMessage messageSent)
         {
             //instantiate a new message
@@ -67,6 +65,5 @@ namespace JReact.ScreenMessage
 
             Destroy(messageView.gameObject);
         }
-        #endregion
     }
 }

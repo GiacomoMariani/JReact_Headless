@@ -9,7 +9,7 @@ namespace JReact.ScreenMessage
     /// <summary>
     /// finish printing if we were printing
     /// </summary>
-    public class J_Mono_PermanentMessageControl : J_Mono_ActorElement<JMessage>
+    public sealed class J_Mono_PermanentMessageControl : J_Mono_ActorElement<JMessage>
     {
         //the coroutine tag for the message display
         private const string COROUTINE_MessageChangerTag = "COROUTINE_MessageChangerTag";
@@ -22,13 +22,12 @@ namespace JReact.ScreenMessage
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event _resetPrinterEvent;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event _onMessageComplete;
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         private void Awake() { SanityChecks(); }
 
         private void SanityChecks() { Assert.IsNotNull(_printer, $"({gameObject.name}) requires a {nameof(_printer)}"); }
-        #endregion
 
-        #region UPDATE
+        // --------------- UPDATE --------------- //
         protected override void ActorUpdate(JMessage message)
         {
             //ignore null messages
@@ -41,9 +40,8 @@ namespace JReact.ScreenMessage
             //show next message after a small blink
             Timing.RunCoroutine(BlinkThenNextMessage(), Segment.FixedUpdate, GetInstanceID(), COROUTINE_MessageChangerTag);
         }
-        #endregion
 
-        #region MAIN COMMANDS
+        // --------------- MAIN COMMANDS --------------- //
         //show or hide the views
         private void ShowViews(bool isActive)
         {
@@ -78,9 +76,8 @@ namespace JReact.ScreenMessage
             ShowViews(false);
             _printer.ResetThis();
         }
-        #endregion
 
-        #region LISTENERS
+        // --------------- UNITY EVENTS --------------- //
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -94,6 +91,5 @@ namespace JReact.ScreenMessage
             _checkNextEvent.UnSubscribe(TryCheckNext);
             _resetPrinterEvent.UnSubscribe(ResetPrinter);
         }
-        #endregion
     }
 }

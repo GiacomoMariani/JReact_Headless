@@ -11,7 +11,7 @@ namespace JReact.StateControl
     [CreateAssetMenu(menuName = "Reactive/Game States/J State Tracker")]
     public sealed class J_StateTracker : J_Service
     {
-        #region VALUES AND PROPERTIES
+        // --------------- VALUES AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, Required, AssetsOnly] private J_SimpleStateControl _stateControl;
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxStatesToTrack = 5;
 
@@ -25,9 +25,8 @@ namespace JReact.StateControl
             }
         }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private List<J_State> _previousStates = new List<J_State>();
-        #endregion
 
-        #region INITIALIZATION AND LISTENERS
+        // --------------- INITIALIZATION AND LISTENERS --------------- //
         protected override void ActivateThis()
         {
             base.ActivateThis();
@@ -43,9 +42,8 @@ namespace JReact.StateControl
             _stateControl.UnSubscribe(ChangeState);
             base.EndThis();
         }
-        #endregion
 
-        #region STATE CHANGE PROCESSING
+        // --------------- STATE CHANGE PROCESSING --------------- //
         //called when the state change
         private void ChangeState((J_State previous, J_State current) transition) { AppendToPrevious(transition.previous); }
 
@@ -57,9 +55,8 @@ namespace JReact.StateControl
             //then append the last stae
             _previousStates.Add(oldState);
         }
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         /// <summary>
         /// moves the state control to the previous state
         /// </summary>
@@ -79,6 +76,5 @@ namespace JReact.StateControl
             JLog.Warning($"Currently there are no previous states on {name}. Aborting command.", JLogTags.State, this);
             return true;
         }
-        #endregion
     }
 }

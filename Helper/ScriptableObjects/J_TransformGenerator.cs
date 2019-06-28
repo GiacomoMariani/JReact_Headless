@@ -9,7 +9,6 @@ namespace JReact
     [CreateAssetMenu(menuName = "Reactive/Basics/Transform Creator", fileName = "Transformis")]
     public sealed class J_TransformGenerator : ScriptableObject
     {
-        #region FIELDS AND PROPERTIES
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_TransformGenerator Parent;
 
@@ -24,7 +23,6 @@ namespace JReact
             }
             private set => _thisTransform = value;
         }
-        #endregion
 
         //creates the transform when missing
         private Transform GenerateNewTransform()

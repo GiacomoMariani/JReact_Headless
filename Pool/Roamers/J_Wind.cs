@@ -10,9 +10,8 @@ namespace JReact.Pool.Roamer
     /// a wind with a 2d force that might change at intervals
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Roamer/Wind", fileName = "Wind")]
-    public class J_Wind : J_Service, jObservable<Vector2>
+    public sealed class J_Wind : J_Service, jObservable<Vector2>
     {
-        #region VALUES AND PROPERTIES
         // --------------- EVENT AND CONSTANT --------------- //
         private event Action<Vector2> OnWindChange;
         private const string COROUTINE_WindTag = "COROUTINE_WindChanger";
@@ -46,9 +45,8 @@ namespace JReact.Pool.Roamer
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private int _instanceId;
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public Direction CurrentDirection
             => _windSpeed.GetDirection();
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         /// <inheritdoc />
         /// <summary>
         /// winds start flowing
@@ -81,9 +79,8 @@ namespace JReact.Pool.Roamer
             _windSpeed.y = 0;
             OnWindChange?.Invoke(WindSpeed);
         }
-        #endregion
 
-        #region WIND CONTROLS
+        // --------------- WIND CONTROLS --------------- //
         private void SetFixedSpeed()
         {
             _windSpeed = _desiredSpeed;
@@ -117,11 +114,9 @@ namespace JReact.Pool.Roamer
             //run again
             Timing.RunCoroutine(WindChanger(), Segment.LateUpdate, _instanceId, COROUTINE_WindTag);
         }
-        #endregion
 
-        #region SUBSCRIBERS
+        // --------------- SUBSCRIBERS --------------- //
         public void Subscribe(Action<Vector2> actionToAdd) { OnWindChange      += actionToAdd; }
         public void UnSubscribe(Action<Vector2> actionToRemove) { OnWindChange -= actionToRemove; }
-        #endregion
     }
 }

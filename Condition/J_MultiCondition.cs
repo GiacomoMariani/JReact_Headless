@@ -9,13 +9,12 @@ namespace JReact.Conditions
     [CreateAssetMenu(menuName = "Reactive/Conditions/Multi", fileName = "MULTI_Condition")]
     public class J_MultiCondition : J_ReactiveCondition
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField] private OperatorType _operator = OperatorType.And;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveBool[] _trueConditions;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveBool[] _falseConditions;
-        #endregion
 
-        #region INITIALIZATION METHODS
+        // --------------- INITIALIZATION METHODS --------------- //
         protected override void StartCheckingCondition()
         {
             ConditionsCheck(false);
@@ -28,8 +27,8 @@ namespace JReact.Conditions
             _trueConditions.UnSubscribeToAll(ConditionsCheck);
             _falseConditions.UnSubscribeToAll(ConditionsCheck);
         }
-        #endregion
 
+        // --------------- IMPLEMENTATIONM --------------- //
         protected override void UpdateCondition()
         {
             base.UpdateCondition();
@@ -42,7 +41,7 @@ namespace JReact.Conditions
             else OrOperator();
         }
 
-        #region AND
+        // --------------- AND OPERATOR --------------- //
         //checks AND conditions
         private void AndOperator()
         {
@@ -61,9 +60,8 @@ namespace JReact.Conditions
 
             return true;
         }
-        #endregion
 
-        #region OR
+        // --------------- OR OPERATOR --------------- //
         private void OrOperator()
         {
             Current = RequiresOneCondition(_trueConditions,  true) ||
@@ -82,6 +80,5 @@ namespace JReact.Conditions
 
             return false;
         }
-        #endregion
     }
 }
