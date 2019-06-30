@@ -277,7 +277,7 @@ namespace JReact
         public static float GetRandomValue(this Vector2 range)
         {
             Assert.IsTrue(range.x <= range.y,
-                          $"The y value of the given range needs to be higher than x. X = {range.x}, Y = {range.y}");
+                          $"Y (max) = {range.y} needs to be be higher than X(MIN) = {range.x}, ");
 
             return Random.Range(range.x, range.y);
         }
@@ -289,7 +289,7 @@ namespace JReact
         public static int GetRandomValue(this Vector2Int rangeInt)
         {
             Assert.IsTrue(rangeInt.x <= rangeInt.y,
-                          $"The y value of the given range needs to be higher than x. X = {rangeInt.x}, Y = {rangeInt.y}");
+                          $"Y (max) = {rangeInt.y} needs to be be higher than X(MIN) = {rangeInt.x}, ");
 
             return Random.Range(rangeInt.x, rangeInt.y);
         }

@@ -12,7 +12,7 @@ namespace JReact
         //the states we want to call the event
         [BoxGroup("State", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event _stateEvent;
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         private void Awake()
         {
             SanityChecks();
@@ -25,15 +25,13 @@ namespace JReact
         }
 
         protected virtual void InitThis() { _stateEvent.Subscribe(CallEvent); }
-        #endregion
 
+        // --------------- IMPLEMENTATION --------------- //
         /// <summary>
         /// the event we method to happen when the event is called
         /// </summary>
         protected abstract void CallEvent();
 
-        #region LISTENERS
         protected virtual void OnDestroy() { _stateEvent.UnSubscribe(CallEvent); }
-        #endregion
     }
 }

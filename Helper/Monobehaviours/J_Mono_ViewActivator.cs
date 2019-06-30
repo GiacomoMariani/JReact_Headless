@@ -10,16 +10,15 @@ namespace JReact
     /// </summary>
     public class J_Mono_ViewActivator : MonoBehaviour
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         public event Action<bool> OnActivation;
 
         //the views we want to activate
         [BoxGroup("Views", true, true, -50), SerializeField, Required] private GameObject[] _views;
         //to decide if we want to start them as active
         [BoxGroup("Views", true, true, -50), SerializeField] protected bool _startsActive;
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         //used for initialization
         private void Awake()
         {
@@ -32,9 +31,8 @@ namespace JReact
 
         //used to initialize this element
         protected virtual void InitThis() { ActivateView(_startsActive); }
-        #endregion
 
-        #region ACTIVATION
+        // --------------- ACTIVATION --------------- //
         //used to activate the views
         public void ActivateView(bool activateView)
         {
@@ -54,12 +52,10 @@ namespace JReact
             if (activeNow) ActivateThis(viewToActivate);
             else DeActivateThis(viewToActivate);
         }
-        #endregion
 
-        #region TEMPLATES
+        // --------------- TEMPLATES --------------- //
         //if we want to add further actions to the view
         protected virtual void ActivateThis(GameObject viewToActivate) {}
         protected virtual void DeActivateThis(GameObject viewToActivate) {}
-        #endregion
     }
 }

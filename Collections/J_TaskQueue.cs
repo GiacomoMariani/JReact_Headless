@@ -11,19 +11,18 @@ namespace JReact.Collections
     [CreateAssetMenu(menuName = "Reactive/Collection/Task Queue")]
     public class J_TaskQueue : J_Service, IEnumerable<iTask>
     {
-        #region FIELDS AND PROPERTIS
+        // --------------- FIELDS AND PROPERTIS --------------- //
         public const string NoTask = "QueueFree_NoTask";
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iTask _currentTask;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<iTask> _taskQueue { get; } = new Queue<iTask>();
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<iTask> _taskQueue { get; } = new Queue<iTask>(50);
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int TotalTasks => _taskQueue.Count;
 
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public string CurrentTaskName => _currentTask != null
                                                                                                                   ? _currentTask.Name
                                                                                                                   : NoTask;
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         public static J_TaskQueue CreateInstance() => CreateInstance<J_TaskQueue>();
 
         public void ProcessTask(iTask taskToProcess)
@@ -33,9 +32,8 @@ namespace JReact.Collections
             if (!IsActive) StartQueueWith(taskToProcess);
             else EnqueueTask(taskToProcess);
         }
-        #endregion
 
-        #region START AND END QUEUE
+        // --------------- START AND END QUEUE --------------- //
         //the first task activate the queue        
         private void StartQueueWith(iTask taskToProcess)
         {
@@ -49,9 +47,8 @@ namespace JReact.Collections
             JLog.Log($"{name} Task Queue STOP with {_currentTask.Name}", JLogTags.Task, this);
             End();
         }
-        #endregion
 
-        #region PROCESSING TASKS
+        // --------------- TASKS PROCESSING --------------- // 
         private void RunTask(iTask taskToProcess)
         {
             //send the task and wait for the next
@@ -75,9 +72,8 @@ namespace JReact.Collections
             StopTrackingTask();
             if (TotalTasks > 0) RunTask(_taskQueue.Dequeue());
         }
-        #endregion
 
-        #region DISABLE AND RESET
+        // --------------- DISABLE AND RESET --------------- //
         public override void ResetThis()
         {
             base.ResetThis();
@@ -91,14 +87,12 @@ namespace JReact.Collections
             if (_taskQueue.Count == 0) StopQueue(_currentTask);
             _currentTask = null;
         }
-        #endregion
 
-        #region QUEUE CLASS
+        // --------------- QUEUE IMPLEMENTATION --------------- //
         public IEnumerator<iTask> GetEnumerator() => _taskQueue.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public int Count => _taskQueue.Count;
         public bool Contains(iTask state) => _taskQueue.Contains(state);
-        #endregion
     }
 }

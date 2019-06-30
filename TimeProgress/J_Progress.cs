@@ -11,7 +11,6 @@ namespace JReact.TimeProgress
     [CreateAssetMenu(menuName = "Reactive/Time Progress/Progress Event")]
     public class J_Progress : ScriptableObject, jObservable<J_Progress>, iResettable
     {
-        #region VALUES AND PROPERTIES
         // --------------- EVENTS RELATED TO PROGRESS --------------- //
         private event Action<J_Progress> OnProgressStart;
         private event Action<J_Progress> OnProgressTick;
@@ -33,9 +32,8 @@ namespace JReact.TimeProgress
             => SecondsFromStart / _timeRequiredInSeconds;
         [BoxGroup("Book Keeping", true, true, 10), ReadOnly, ShowInInspector] public float RemainingSeconds
             => _timeRequiredInSeconds - SecondsFromStart;
-        #endregion
 
-        #region SETUP METHODS
+        // --------------- SETUP METHODS --------------- //
         public static T CreateProgress<T>(J_GenericCounter counter = null)
             where T : J_Progress
         {
@@ -54,9 +52,8 @@ namespace JReact.TimeProgress
 
             if (_identifier == null) _identifier = identifier;
         }
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         /// <summary>
         /// start the progress. Elements may be injected at start
         /// </summary>
@@ -98,9 +95,8 @@ namespace JReact.TimeProgress
         /// </summary>
         [BoxGroup("Test", true, true, 100), Button("FastFinish", ButtonSizes.Medium)]
         public void FastFinish() { ProgressComplete(); }
-        #endregion
 
-        #region SETUP
+        // --------------- SETUP --------------- // 
         //make sure all the fields are correct
         private bool SanityChecks(float secondsToComplete)
         {
@@ -111,9 +107,8 @@ namespace JReact.TimeProgress
             Assert.IsFalse(IsRunning, $"{name} is already started. Command canceled.");
             return secondsToComplete > 0 && !IsRunning && _counter != null;
         }
-        #endregion
 
-        #region MAIN EVENTS
+        // --------------- MAIN EVENTS --------------- //
         //sends the start event
         [BoxGroup("Debug", true, true, 100), Button("Start Event", ButtonSizes.Medium)]
         private void StartEvent() { OnProgressStart?.Invoke(this); }
@@ -125,9 +120,8 @@ namespace JReact.TimeProgress
         //sends the complete event
         [BoxGroup("Debug", true, true, 100), Button("Complete Event", ButtonSizes.Medium)]
         private void CompleteEvent() { OnProgressComplete?.Invoke(this); }
-        #endregion
 
-        #region COUNT AND COMPLETION
+        // --------------- COUNT AND COMPLETION --------------- //
         //add the time for each tick
         private void AddTimePerTick(float tickDeltaTime)
         {
@@ -156,9 +150,8 @@ namespace JReact.TimeProgress
             StopTrackingTime();
             CompleteEvent();
         }
-        #endregion
 
-        #region SUBSCRIBE EVENTS
+        // --------------- SUBSCRIBE EVENTS --------------- //
         public void SubscribeToStart(Action<J_Progress> actionToSend) { OnProgressStart   += actionToSend; }
         public void UnSubscribeToStart(Action<J_Progress> actionToSend) { OnProgressStart -= actionToSend; }
 
@@ -167,16 +160,11 @@ namespace JReact.TimeProgress
 
         public void SubscribeToComplete(Action<J_Progress> actionToSend) { OnProgressComplete   += actionToSend; }
         public void UnSubscribeToComplete(Action<J_Progress> actionToSend) { OnProgressComplete -= actionToSend; }
-        #endregion
 
-        #region DISABLE AND RESET
-        private void OnDisable() { ResetThis(); }
+        // --------------- DISABLE AND RESET --------------- //
+        private void OnDisable() => ResetThis();
 
-        public virtual void ResetThis()
-        {
-            ResetValues();
-            ResetEvents();
-        }
+        public virtual void ResetThis() => ResetValues();
 
         private void ResetValues()
         {
@@ -193,14 +181,6 @@ namespace JReact.TimeProgress
             _counter.UnSubscribe(AddTimePerTick);
             IsRunning = false;
         }
-
-        private void ResetEvents()
-        {
-            OnProgressStart    = null;
-            OnProgressComplete = null;
-            OnProgressTick     = null;
-        }
-        #endregion
     }
 
     //an interface for the progress view

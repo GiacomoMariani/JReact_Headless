@@ -9,22 +9,20 @@ namespace JReact.Conditions
     [CreateAssetMenu(menuName = "Reactive/Conditions/Event", fileName = "EVENT_Condition")]
     public class J_EventCondition : J_ReactiveCondition
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         //these events set the condition to true
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event[] _trueEvents;
         //these events set the condition to false
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Event[] _falseEvents;
         //used to auto reset after a check
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _autoReset;
-        #endregion
 
-        #region INITIALIZE AND RESET
-        protected override void StartCheckingCondition() { StartTrackEvents(); }
+        // --------------- INITIALIZE AND RESET --------------- //
+        protected override void StartCheckingCondition() => StartTrackEvents(); 
 
-        protected override void StopCheckingCondition() { StopTrackEvents(); }
-        #endregion
+        protected override void StopCheckingCondition() => StopTrackEvents(); 
 
-        #region ACTIONS AND TRACKING
+        // --------------- ACTIONS AND TRACKING --------------- //
         private void SetAsFalse()
         {
             if (Current) Current = false;
@@ -47,6 +45,5 @@ namespace JReact.Conditions
             _trueEvents.UnSubscribeToAll(SetAsTrue);
             _falseEvents.UnSubscribeToAll(SetAsFalse);
         }
-        #endregion
     }
 }

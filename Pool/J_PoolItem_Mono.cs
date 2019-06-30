@@ -11,7 +11,6 @@ namespace JReact.Pool
     public class J_PoolItem_Mono<T> : MonoBehaviour
         where T : J_PoolItem_Mono<T>
     {
-        #region VALUES AND PROPERTIES
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _returnInPoolAtDisable = true;
 
@@ -19,9 +18,8 @@ namespace JReact.Pool
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] internal T NextItemInPool { get; private set; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_Pool<T> _poolOwner;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _inPool;
-        #endregion
 
-        #region POOL METHODS
+        // --------------- POOL METHODS --------------- //
         internal void InjectPoolOwner(J_Pool<T> owner) { _poolOwner = owner; }
 
         internal virtual void GetFromPool()
@@ -41,13 +39,11 @@ namespace JReact.Pool
             NextItemInPool = next;
             _inPool        = true;
         }
-        #endregion
 
-        #region UNITY EVENTS
+        // --------------- UNITY EVENTS --------------- //
         protected virtual void OnDisable()
         {
             if (_returnInPoolAtDisable && !_inPool) ReturnToPool();
         }
-        #endregion
     }
 }

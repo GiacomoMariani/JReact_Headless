@@ -12,9 +12,9 @@ namespace JReact.Pool.Roamer
     /// spawns roamer at given intervals
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Roamer/Roamer Spawner", fileName = "RoamerSpawner")]
-    public class J_RoamerSpawn : J_Service
+    public sealed class J_RoamerSpawn : J_Service
     {
-        #region VALUES AND PROPERTIES
+        // --------------- CONSTANTS --------------- //
         private string COROUTINE_RoamerSpawnTag = "COROUTINE_RoamerSpawnTag";
 
         // --------------- MAIN SETUP --------------- //
@@ -33,9 +33,8 @@ namespace JReact.Pool.Roamer
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private List<J_Mono_Roamer> _roamers = new List<J_Mono_Roamer>();
 
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private int _instanceId;
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         /// <inheritdoc />
         /// <summary>
         ///  starts spawning roamers
@@ -71,9 +70,8 @@ namespace JReact.Pool.Roamer
 
             _roamers.Clear();
         }
-        #endregion
 
-        #region CONTROLS
+        // --------------- CONTROLS --------------- //
         //spawn the roamers
         private IEnumerator<float> RoamersSpawn()
         {
@@ -128,6 +126,5 @@ namespace JReact.Pool.Roamer
 
         private float RandomHorizontalPosition() => Random.Range(_borders.LeftBorder, _borders.RightBorder);
         private float RandomVerticalPosition() => Random.Range(_borders.DownBorder,   _borders.UpBorder);
-        #endregion
     }
 }

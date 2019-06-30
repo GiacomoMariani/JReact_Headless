@@ -35,7 +35,7 @@ namespace JReact
         /// </summary>
         /// <param name="message">the message to be logged</param>
         /// <param name="tag">a tag useful for console pro</param>
-        /// <param name="context">the related context</param>
+        /// <param name="context">the related conjextext</param>
         public static void Log(string message, string tag = "", Object context = null)
         {
 #if UNITY_EDITOR

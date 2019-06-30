@@ -16,7 +16,6 @@ namespace JReact.Pathfinding
     public abstract class J_Mono_MoverAgent<T> : MonoBehaviour
         where T : J_PathNode
     {
-        #region VALUES AND PROPERTIES
         // --------------- EVENTS --------------- //
         //path actions
         private event Action<T> OnStart;
@@ -53,9 +52,8 @@ namespace JReact.Pathfinding
         // --------------- DEBUG --------------- //
         //debug elements
         [BoxGroup("Debug", true, true, 100), SerializeField] private bool _debug;
-        #endregion
 
-        #region MOVE COMMANDS
+        // --------------- MOVE COMMANDS --------------- //
         /// <summary>
         /// places the agent on a node
         /// </summary>
@@ -94,18 +92,16 @@ namespace JReact.Pathfinding
         {
             Timing.RunCoroutine(MovingOnPath(path).CancelWith(gameObject), Segment.FixedUpdate, JCoroutineTags.COROUTINE_MoverAgent);
         }
-        #endregion
 
-        #region ABSTRACT IMPLEMENTATION
+        // --------------- ABSTRACT IMPLEMENTATION --------------- //
         /// <summary>
         /// to calculate node accessibility
         /// </summary>
         /// <param name="node">the data of the node to check if mover can access</param>
         /// <returns>true if the node is accessible</returns>
         protected abstract bool CanAccessNode(T node);
-        #endregion
 
-        #region MOVEMENT
+        // --------------- MOVEMENT --------------- //
         //moves the agent forward
         private IEnumerator<float> MovingOnPath(List<T> path)
         {
@@ -137,13 +133,11 @@ namespace JReact.Pathfinding
 
         //sets the step as completed
         private void StepComplete(Vector3 newPosition) { _doingStep = false; }
-        #endregion
 
-        #region HELPER
+        // --------------- HELPER --------------- //
         private bool GetDoingAStep() => _doingStep;
-        #endregion
 
-        #region SUBSCRIBERS
+        // --------------- SUBSCRIBERS --------------- //
         public void SubscribeToPathStart(Action<T> actionToAdd) { OnStart                                    += actionToAdd; }
         public void UnSubscribeToPathStart(Action<T> actionToRemove) { OnStart                               -= actionToRemove; }
 
@@ -152,6 +146,5 @@ namespace JReact.Pathfinding
 
         public void SubscribeToStep(Action<(Vector2Int startStep, Vector2Int endStep)> actionToAdd) { OnStep += actionToAdd; }
         public void UnSubscribeToStep(Action<(Vector2Int startStep, Vector2Int endStep)> actionToRemove) { OnStep -= actionToRemove; }
-        #endregion
     }
 }

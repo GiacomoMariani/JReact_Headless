@@ -6,7 +6,7 @@ namespace JReact.SceneControls
     /// <summary>
     /// sends events after quit
     /// </summary>
-    public class J_Mono_ApplicationQuitter : MonoBehaviour
+    public sealed class J_Mono_ApplicationQuitter : MonoBehaviour
     {
         [BoxGroup("Quit Event", true, true, 0), SerializeField, AssetsOnly, Required]
         private J_Event _applicationQuitting;

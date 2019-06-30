@@ -12,7 +12,7 @@ namespace JReact.Conditions.Tasks
     [CreateAssetMenu(menuName = "Reactive/Task/Task Chunk")]
     public class J_TaskChunk : J_Service, jObservable<J_TaskChunk>
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         private Action<J_TaskChunk> OnStateChange;
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_CompletableTask[] _tasks;
@@ -34,9 +34,8 @@ namespace JReact.Conditions.Tasks
                 JLog.Log($"{name} enter state: {State}", JLogTags.Task, this);
             }
         }
-        #endregion
 
-        #region GENERATORS AND CHECKS
+        // --------------- GENERATORS AND CHECKS --------------- //
         public static J_TaskChunk CreateChunk(J_CompletableTask[] tasks, J_Collection_DormantTasks dormants, string nameSet = "Chunk")
         {
             var chunk = CreateInstance<J_TaskChunk>();
@@ -53,9 +52,8 @@ namespace JReact.Conditions.Tasks
             Assert.IsTrue(_tasks.Length > 0, $"({name}) needs at least one item for _tutorialSteps");
             Assert.IsNotNull(_dormants, $"{name} requires a _dormants");
         }
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         /// <summary>
         /// launch this task chunk
         /// </summary>
@@ -103,16 +101,14 @@ namespace JReact.Conditions.Tasks
         /// sets a specific state
         /// </summary>
         public void SetState(ChunkState stateLoaded) { State = stateLoaded; }
-        #endregion
 
-        #region SUBSCRIBERS
+        // --------------- SUBSCRIBERS --------------- //
         public void Subscribe(Action<J_TaskChunk> action) { OnStateChange   += action; }
         public void UnSubscribe(Action<J_TaskChunk> action) { OnStateChange -= action; }
         public void SubscribeToStateChange(Action<J_TaskChunk> action) { Subscribe(action); }
         public void UnSubscribeToStateChange(Action<J_TaskChunk> action) { UnSubscribe(action); }
-        #endregion
 
-        #region DISABLE AND RESET
+        // --------------- DISABLE AND RESET --------------- //
         protected virtual void OnDisable() { ResetThis(); }
 
         public override void ResetThis()
@@ -129,7 +125,6 @@ namespace JReact.Conditions.Tasks
             _activeTasks.Clear();
             State = ChunkState.NotStarted;
         }
-        #endregion
     }
 
     public enum ChunkState { NotStarted = 0, Active = 100, Completed = 200 }

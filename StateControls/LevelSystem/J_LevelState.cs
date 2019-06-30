@@ -22,7 +22,7 @@ namespace JReact.StateControl.LevelSystem
 
         private void SanityCheck() { Assert.IsTrue(ExperienceNeeded > 0, "One level experience is not positive. Level: " + name); }
 
-        #region SETUP COMMANDS
+        // --------------- SETUP COMMANDS --------------- //
         internal void SetPreviousExperience(int experience) { PreviousExperience = experience; }
 
         //used to set this as max level
@@ -34,6 +34,5 @@ namespace JReact.StateControl.LevelSystem
             ExperienceNeeded = experience;
             SanityCheck();
         }
-        #endregion
     }
 }

@@ -38,7 +38,7 @@ namespace JReact.Collections
         /// <returns></returns>
         protected abstract TKey GetItemId(TValue item);
 
-        #region DISABLE AND RESET
+        // --------------- DISABLE AND RESET --------------- //
         protected virtual void OnEnable() { PopulateThis(); }
 
         protected virtual void PopulateThis()
@@ -48,6 +48,5 @@ namespace JReact.Collections
             for (int i = 0; i < _elementsToStore.Length; i++)
                 Add(GetItemId(_elementsToStore[i]), _elementsToStore[i]);
         }
-        #endregion
     }
 }

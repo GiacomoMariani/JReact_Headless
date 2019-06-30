@@ -13,11 +13,10 @@ namespace JReact.TimeProgress
     [CreateAssetMenu(menuName = "Reactive/Time Progress/Delayed Tick", fileName = "Ticker")]
     public sealed class J_Ticker : J_GenericCounter
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- // 
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _tickInterval = 1;
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         /// <summary>
         /// creates a new ticker and starts counting
         /// </summary>
@@ -39,9 +38,8 @@ namespace JReact.TimeProgress
             Assert.IsTrue(_tickInterval > 0, $"{name} tick requires to be positive. Tick: {_tickInterval}.");
             return base.SanityChecks();
         }
-        #endregion
 
-        #region COUNTING
+        // --------------- COUNTING --------------- //
         //counts a single tick
         protected override IEnumerator<float> CountOneTick()
         {
@@ -57,6 +55,5 @@ namespace JReact.TimeProgress
             SendTickEvent(realTimePassed);
             Tick();
         }
-        #endregion
     }
 }

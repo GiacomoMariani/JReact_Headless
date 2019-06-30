@@ -11,7 +11,7 @@ namespace JReact.StateControl.LevelSystem
     [CreateAssetMenu(menuName = "Reactive/Level System/Experience Receiver")]
     public sealed class J_ExperienceReceiver : ScriptableObject, iFillable, iActivable
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         private event Action<int> OnGain;
         private event Action<int> OnMaxChanged;
 
@@ -35,18 +35,16 @@ namespace JReact.StateControl.LevelSystem
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => Max - Current;
 
         [BoxGroup("Debug", true, true, 1000), SerializeField] private bool _debug;
-        #endregion
 
-        #region CREATION
+        // --------------- CREATION --------------- //
         public static J_ExperienceReceiver Create(J_LevelProgression levelProgress)
         {
             var experience = CreateInstance<J_ExperienceReceiver>();
             experience._levelProgress = levelProgress;
             return experience;
         }
-        #endregion
 
-        #region TRACK METHODS
+        // --------------- TRACK METHODS --------------- //
         public void Activate()
         {
             if (IsActive)
@@ -70,9 +68,8 @@ namespace JReact.StateControl.LevelSystem
             OnMaxChanged?.Invoke(transition.current.ExperienceNeeded);
             Current = 0;
         }
-        #endregion
 
-        #region EXPERIENCE PROGRESS
+        // --------------- EXPERIENCE PROGRESS --------------- //
         /// <summary>
         /// grants an amount of experience to the player
         /// </summary>
@@ -143,22 +140,19 @@ namespace JReact.StateControl.LevelSystem
             _levelProgress.UnSubscribe(LevelUpdate);
             IsActive = false;
         }
-        #endregion
 
-        #region SUBSCRIBERS
+        // --------------- SUBSCRIBERS --------------- //
         public void Subscribe(Action<int> action) { OnGain                      += action; }
         public void UnSubscribe(Action<int> action) { OnGain                    -= action; }
         public void SubscribeToMaxCapacity(Action<int> action) { OnMaxChanged   += action; }
         public void UnSubscribeToMaxCapacity(Action<int> action) { OnMaxChanged -= action; }
-        #endregion
 
-        #region DISABLE AND RESET
+        // --------------- DISABLE AND RESET --------------- //
         private void OnDisable()
         {
             if (!IsActive) ResetThis();
         }
 
         public void ResetThis() {if (IsActive) End(); }
-        #endregion
     }
 }

@@ -8,7 +8,7 @@ namespace JReact.JRandom
     /// a random float interval
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Random/Float")]
-    public class J_Random_Float : ScriptableObject
+    public sealed class J_Random_Float : ScriptableObject
     {
         [BoxGroup("Range", true, true, 0), SerializeField] private float _min;
         [BoxGroup("Range", true, true, 0), SerializeField] private float _max = 1f;

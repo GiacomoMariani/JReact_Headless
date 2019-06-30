@@ -11,7 +11,7 @@ namespace JReact
     [CreateAssetMenu(menuName = "Reactive/Basics/Fillable", fileName = "Fillable")]
     public class J_Fillable : ScriptableObject, iResettable, iFillable
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         private event Action<int> OnValueChange;
         private event Action<int> OnMaxChanged;
         private event Action<int> OnMinChanged;
@@ -73,9 +73,8 @@ namespace JReact
 
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int FreeCapacity => Max - Current;
         private string CurrentState => $"{name}. Min {Min} - Max {Max} - Current {Current}";
-        #endregion
-
-        #region COMMANDS
+        
+        // --------------- COMMANDS --------------- //
         public static J_Fillable CreateInstance(int max, int amount = 0, int min = 0)
         {
             var fillable                                    = CreateInstance<J_Fillable>();
@@ -139,9 +138,8 @@ namespace JReact
             Current -= amount;
             return 0;
         }
-        #endregion
 
-        #region PUBLIC CHECKS
+        // --------------- PUBLIC CHECKS --------------- //
         /// <summary>
         /// checks if an amount can be added to this fillable
         /// </summary>
@@ -159,9 +157,8 @@ namespace JReact
         public bool CanSetMaxCapacity(int maxToSet) => Current <= maxToSet && Min   <= maxToSet;
         public bool CanSetMinCapacity(int minToSet) => Current >= minToSet && Max   >= minToSet;
         public bool CanSetValue(int value) => value                 >= Min      && value <= Max;
-        #endregion
 
-        #region SUBSCRIBERS AND LISTENERS
+        // --------------- SUBSCRIBERS AND LISTENERS --------------- //
         public virtual void Subscribe(Action<int> action) { OnValueChange   += action; }
         public virtual void UnSubscribe(Action<int> action) { OnValueChange -= action; }
 
@@ -191,9 +188,8 @@ namespace JReact
             return true;
         }
 
-        protected virtual void OnDisable() { ResetThis(); }
+        protected virtual void OnDisable() => ResetThis(); 
 
-        private void OnValidate() { ResetThis(); }
-        #endregion
+        private void OnValidate() => ResetThis();
     }
 }

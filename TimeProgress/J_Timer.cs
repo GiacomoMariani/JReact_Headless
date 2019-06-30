@@ -13,12 +13,11 @@ namespace JReact.TimeProgress
     [CreateAssetMenu(menuName = "Reactive/Time Progress/Timer", fileName = "Timer")]
     public sealed class J_Timer : J_GenericCounter
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, Range(0.05f, 2.5f)] private float _tickLengthInSeconds = 1.0f;
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         /// <summary>
         /// creates a new timer and starts counting
         /// </summary>
@@ -40,9 +39,8 @@ namespace JReact.TimeProgress
             Assert.IsTrue(_tickLengthInSeconds > 0, $"{name} tick requires to be positive. Tick: {_tickLengthInSeconds}.");
             return base.SanityChecks();
         }
-        #endregion
 
-        #region COUNTING
+        // --------------- COUNTING --------------- //
         //counts a single tick
         protected override IEnumerator<float> CountOneTick()
         {
@@ -59,6 +57,5 @@ namespace JReact.TimeProgress
             SendTickEvent(realTimePassed);
             Tick();
         }
-        #endregion
     }
 }

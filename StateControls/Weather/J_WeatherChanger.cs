@@ -12,7 +12,6 @@ namespace JReact.StateControl.Weather
     [CreateAssetMenu(menuName = "Reactive/Weather/Weather Changer", fileName = "WeatherChanger")]
     public sealed class J_WeatherChanger : J_Service
     {
-        #region FIELDS AND PROPERTIES
         // --------------- CONSTANTS --------------- //
         private const string COROUTINE_WeatherMainTag = "COROUTINE_WeatherMainTag";
 
@@ -23,9 +22,8 @@ namespace JReact.StateControl.Weather
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _allWeatherWeights;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId = -1;
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         protected override void ActivateThis()
         {
             base.ActivateThis();
@@ -52,9 +50,8 @@ namespace JReact.StateControl.Weather
             _weatherStateControl.ResetThis();
             base.EndThis();
         }
-        #endregion
 
-        #region WEATHER CHANGES
+        // --------------- WEATHER CHANGES --------------- //
         private void WaitWeather(J_WeatherType weather)
         {
             Timing.RunCoroutine(WaitBeforeChange(weather), Segment.SlowUpdate, _instanceId, COROUTINE_WeatherMainTag);
@@ -94,14 +91,11 @@ namespace JReact.StateControl.Weather
 
             JLog.Error($"{name} found no weather");
         }
-        #endregion
 
-        #region HELPERS
         private void SetNextWeather(J_WeatherType nextWeather)
         {
             _weatherStateControl.SetNewState(nextWeather);
             WaitWeather(nextWeather);
         }
-        #endregion
     }
 }

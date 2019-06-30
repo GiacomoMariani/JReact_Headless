@@ -11,7 +11,6 @@ namespace JReact.Pathfinding
     public abstract class J_PathfindQueue<T> : ScriptableObject
         where T : J_PathNode
     {
-        #region VALUES AND PROPERTIES
         // --------------- SETUP --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_AStar<T> _algorithm;
 
@@ -19,9 +18,8 @@ namespace JReact.Pathfinding
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<PathRequest> _pathQueue = new Queue<PathRequest>();
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private PathRequest _current;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isProcessing;
-        #endregion
 
-        #region PATHFIND METHODS
+        // --------------- PATHFIND METHODS --------------- //
         /// <summary>
         /// request a search for a given path
         /// </summary>
@@ -55,9 +53,8 @@ namespace JReact.Pathfinding
             _current.callback(path);
             TryFindNext();
         }
-        #endregion
 
-        #region PATH REQUEST
+        // --------------- PATH REQUEST --------------- //
         //a request for the path
         [Serializable]
         private struct PathRequest
@@ -77,9 +74,8 @@ namespace JReact.Pathfinding
                 this.callback     = callback;
             }
         }
-        #endregion
 
-        #region DISABLE AND RESET
+        // --------------- DISABLE AND RESET --------------- //
         protected virtual void OnDisable() { ResetThis(); }
 
         private void ResetThis()
@@ -87,6 +83,5 @@ namespace JReact.Pathfinding
             _pathQueue.Clear();
             _isProcessing = false;
         }
-        #endregion
     }
 }

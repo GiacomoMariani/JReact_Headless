@@ -6,7 +6,7 @@ namespace JReact.CloudBuild
 {
     public static class J_CloudBuildData
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         //the file manifest
         private static TextAsset _manifest;
         //the dictionary of the manifest
@@ -16,9 +16,8 @@ namespace JReact.CloudBuild
         private const string ManifestNameTxt = "UnityCloudBuildManifest.json";
 
         private const string VersionNumber = "buildNumber";
-        #endregion
 
-        #region SETUP
+        // --------------- SETUP --------------- //
         //setup and check manifest and dictionary
         private static void GetManifest()
         {
@@ -41,9 +40,8 @@ namespace JReact.CloudBuild
             //return the given key
             return _manifestDictionary[key].ToString();
         }
-        #endregion
 
-        #region PRINT ALL COMMAND
+        // --------------- PRINT ALL COMMAND --------------- //
         //print all the values of the manifest
         public static void PrintAllManifestValues()
         {
@@ -60,9 +58,8 @@ namespace JReact.CloudBuild
                 JLog.Log($"Key: {kvp.Key}, Value: {value}", JLogTags.Build);
             }
         }
-        #endregion
 
-        #region DATA GETTERS
+        // --------------- DATA GETTERS --------------- //
         /// <summary>
         /// gets the cloud build data
         /// </summary>
@@ -74,6 +71,5 @@ namespace JReact.CloudBuild
 
             return GetKeyFromManifest(VersionNumber);
         }
-        #endregion
     }
 }

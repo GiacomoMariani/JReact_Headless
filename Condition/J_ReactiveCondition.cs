@@ -8,6 +8,7 @@ namespace JReact.Conditions
     /// </summary>
     public abstract class J_ReactiveCondition : J_Service, jObservableValue<bool>
     {
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_ReactiveBool _condition;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool Current
         {
@@ -18,7 +19,8 @@ namespace JReact.Conditions
             }
             set => _condition.Current = value;
         }
-
+        
+        // --------------- INSTANTIATION --------------- //
         public static T CreateCondition<T>()
             where T : J_ReactiveCondition
         {
@@ -27,6 +29,7 @@ namespace JReact.Conditions
             return condition;
         }
 
+        // --------------- ACTIVATION --------------- //
         protected override void ActivateThis()
         {
             if (_condition == null) _condition = CreateInstance<J_ReactiveBool>();
@@ -34,19 +37,22 @@ namespace JReact.Conditions
             StartCheckingCondition();
             base.ActivateThis();
         }
-
+        
+        protected override void EndThis()
+        {
+            base.EndThis();
+            StopCheckingCondition();
+        }
+        
+        // --------------- IMPLEMENTATION --------------- //
         protected abstract void StartCheckingCondition();
         protected abstract void StopCheckingCondition();
 
         //used to update the condition before checking it
         protected virtual void UpdateCondition() {}
 
-        protected override void EndThis()
-        {
-            base.EndThis();
-            StopCheckingCondition();
-        }
-
+        
+        // --------------- SUBSCRIBERS --------------- //
         //helpers to make this more readable
         public void SubscribeToCondition(Action<bool> action) { Subscribe(action); }
 
@@ -64,11 +70,10 @@ namespace JReact.Conditions
             if(!_condition.HasListeners) End();
         }
 
-        #region OPERATORS
+        // --------------- OPERATORS OVERLOAD --------------- //
         public static bool operator true(J_ReactiveCondition item) => item.Current;
         public static bool operator false(J_ReactiveCondition item) => !item.Current;
 
         public static implicit operator bool(J_ReactiveCondition condition) => condition.Current;
-        #endregion
     }
 }

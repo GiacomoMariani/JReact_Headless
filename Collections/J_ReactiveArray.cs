@@ -113,12 +113,11 @@ namespace JReact.Collections
             return -1;
         }
 
-        #region VIRTUAL FURTHER IMPLEMENTATION
+        // --------------- VIRTUAL FURTHER IMPLEMENTATION --------------- //
         protected virtual void HappensOnRemove(T item) => OnAdd?.Invoke(item);
         protected virtual void HappensOnAdd(T item) => OnRemove?.Invoke(item);
-        #endregion
 
-        #region HELPERS
+        // --------------- HELPERS --------------- //
         /// <summary>
         /// process all the non null elements with an action
         /// </summary>
@@ -136,12 +135,10 @@ namespace JReact.Collections
         public void CopyTo(T[] array, int arrayIndex) => _thisArray.CopyTo(array, arrayIndex);
 
         public bool Contains(T item) => IndexOf(item) != -1;
-        #endregion
 
-        #region SUBSCRIBERS & SETUP
-        public void Subscribe(Action<(int index, T previous, T current)> action) { OnChange   += action; }
-        public void UnSubscribe(Action<(int index, T previous, T current)> action) { OnChange -= action; }
+        // --------------- SUBSCRIBERS & SETUP --------------- //
+        public void Subscribe(Action<(int index, T previous, T current)> action) => OnChange   += action;
+        public void UnSubscribe(Action<(int index, T previous, T current)> action) => OnChange -= action;
         private void OnDisable() => _thisArray = _thisArray ?? new T[_length];
-        #endregion
     }
 }

@@ -24,7 +24,7 @@ namespace JReact.StateControl
         /// </summary>
         protected abstract void ExitState();
 
-        #region LISTENERS
+        // --------------- UNITY EVENTS --------------- //
         //start and stop tracking on enable
         private void OnEnable()
         {
@@ -38,6 +38,5 @@ namespace JReact.StateControl
             SelectionState.UnSubscribe(UpdateThis);
             SelectionState.UnSubscribeToEnd(ExitState);
         }
-        #endregion
     }
 }

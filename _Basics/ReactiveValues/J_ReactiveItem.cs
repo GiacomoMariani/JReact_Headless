@@ -29,5 +29,7 @@ namespace JReact
         public virtual void UnSubscribe(Action<T> actionToSend) => OnPropertyChange -= actionToSend;
 
         public virtual void ResetThis() => _currentValue = _startValue;
+
+        public static implicit operator T(J_ReactiveItem<T> value) => value.Current;
     }
 }
