@@ -9,9 +9,9 @@ namespace JReact.Conditions.Tasks
     /// stores the dormant tasks and reactivate them when required
     /// </summary>
     [CreateAssetMenu(menuName = "Reactive/Task/Dormant Task")]
-    public class J_Collection_DormantTasks : J_ReactiveCollection<J_CompletableTask>
+    public class J_Collection_DormantTasks : J_ReactiveList<J_CompletableTask>
     {
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool HasDormants => _ThisCollection.Count > 0;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool HasDormants => _ThisList.Count > 0;
 
         internal void TrackTask(J_CompletableTask task) { task.SubscribeToTaskChange(CheckTask); }
 
@@ -49,7 +49,7 @@ namespace JReact.Conditions.Tasks
             if (!HasDormants) return;
 
             for (int i = 0; i < Count; i++)
-                _ThisCollection[i].ReactivateTask();
+                _ThisList[i].ReactivateTask();
 
             Clear();
         }

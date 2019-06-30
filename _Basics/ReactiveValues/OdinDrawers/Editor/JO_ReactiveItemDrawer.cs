@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace JReact.OdinDrawers
 {
+    
     public class JO_ReactiveBoolDrawer : OdinValueDrawer<J_ReactiveBool>
     {
         protected override void DrawPropertyLayout(GUIContent label)

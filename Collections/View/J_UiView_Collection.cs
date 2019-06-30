@@ -12,7 +12,7 @@ namespace JReact.UiView.Collections
     public abstract class J_UiView_Collection<T> : MonoBehaviour
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_ReactiveCollection<T> _Collection { get; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract iReactiveCollection<T> _Collection { get; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_Mono_Actor<T> _PrefabActor { get; }
         //the dictionary is used for safety and to track the current elements on this viewer
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
@@ -27,8 +27,8 @@ namespace JReact.UiView.Collections
 
         protected virtual void SanityChecks()
         {
-            Assert.IsNotNull(_PrefabActor, $"{gameObject.name} requires a _PrefabActor");
-            Assert.IsNotNull(_Collection,  $"{gameObject.name} requires a _Collection");
+            Assert.IsNotNull(_PrefabActor, $"{gameObject.name} requires a {nameof(_PrefabActor)}");
+            Assert.IsNotNull(_Collection,  $"{gameObject.name} requires a {nameof(_Collection)}");
         }
 
         protected virtual void InitThis() {}
@@ -37,7 +37,7 @@ namespace JReact.UiView.Collections
         protected virtual void OpenThis()
         {
             //make sure all the elements are shown
-            for (int i = 0; i < _Collection.Count; i++)
+            for (int i = 0; i < _Collection.Length; i++)
                 Add(_Collection[i]);
         }
 

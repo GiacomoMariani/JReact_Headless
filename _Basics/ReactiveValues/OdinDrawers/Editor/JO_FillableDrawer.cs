@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace JReact.OdinDrawers
 {
+    
     /// <summary>
     /// draws a fillable on the inspector
     /// </summary>
@@ -31,7 +32,7 @@ namespace JReact.OdinDrawers
 
             // --------------- LINE 2 - LABELS AND CURRENT --------------- //
             Rect rect = EditorGUILayout.GetControlRect();
-            GUI.Label(rect, "Min |");
+            GUI.Label(rect, "Min |", SirenixGUIStyles.LeftAlignedGreyMiniLabel);
             value.Current = SirenixEditorFields.IntField(rect.AlignCenterX(200), value.Current);
             GUI.Label(rect, "| Max", SirenixGUIStyles.RightAlignedGreyMiniLabel);
 

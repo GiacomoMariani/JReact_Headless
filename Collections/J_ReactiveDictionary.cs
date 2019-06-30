@@ -19,7 +19,7 @@ namespace JReact.Collections
 
         // --------------- FIELDS --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected Dictionary<TKey, TValue> _Dictionary { get; } =
-            new Dictionary<TKey, TValue>();
+            new Dictionary<TKey, TValue>(50);
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _Dictionary.Count;
 

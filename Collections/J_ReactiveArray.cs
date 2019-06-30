@@ -137,8 +137,8 @@ namespace JReact.Collections
         public bool Contains(T item) => IndexOf(item) != -1;
 
         // --------------- SUBSCRIBERS & SETUP --------------- //
-        public void Subscribe(Action<(int index, T previous, T current)> action) { OnChange   += action; }
-        public void UnSubscribe(Action<(int index, T previous, T current)> action) { OnChange -= action; }
+        public void Subscribe(Action<(int index, T previous, T current)> action) => OnChange   += action;
+        public void UnSubscribe(Action<(int index, T previous, T current)> action) => OnChange -= action;
         private void OnDisable() => _thisArray = _thisArray ?? new T[_length];
     }
 }
