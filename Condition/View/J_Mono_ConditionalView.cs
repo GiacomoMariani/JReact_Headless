@@ -48,8 +48,9 @@ namespace JReact.Conditions.View
         // --------------- LISTENERS --------------- //
         private void OnEnable()
         {
-            _isActive = gameObject.activeSelf;
+            _isActive = ThisView.IsActive;
             _condition.Subscribe(CheckCondition);
+            CheckCondition(_condition.Current);
         }
 
         private void OnDisable() => _condition.UnSubscribe(CheckCondition);

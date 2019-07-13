@@ -17,6 +17,8 @@ namespace JReact
         [BoxGroup("Views", true, true, -50), SerializeField, Required] private GameObject[] _views;
         //to decide if we want to start them as active
         [BoxGroup("Views", true, true, -50), SerializeField] protected bool _startsActive;
+        
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsActive { get; private set; }
 
         // --------------- INITIALIZATION --------------- //
         //used for initialization
@@ -42,6 +44,7 @@ namespace JReact
                 ActivateSpecificView(_views[i], activateView);
             }
 
+            IsActive = activateView;
             OnActivation?.Invoke(activateView);
         }
 

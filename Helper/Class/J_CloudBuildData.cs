@@ -28,8 +28,11 @@ namespace JReact.CloudBuild
         }
 
         //gets a key
-        private static string GetKeyFromManifest(string key)
+        public static string GetKeyFromManifest(string key)
         {
+#if UNITY_EDITOR
+            return "";
+#endif
             //key without a value sends a warning
             if (_manifestDictionary.ContainsKey(key))
             {
@@ -45,6 +48,9 @@ namespace JReact.CloudBuild
         //print all the values of the manifest
         public static void PrintAllManifestValues()
         {
+#if UNITY_EDITOR
+            return;
+#endif
             if (_manifest == null) GetManifest();
             if (_manifest == null) return;
 
@@ -66,6 +72,10 @@ namespace JReact.CloudBuild
         /// <returns>returns the version of the cloud build</returns>
         public static string GetCloudBuildVersion()
         {
+#if UNITY_EDITOR
+            return "";
+#endif
+
             if (_manifest == null) GetManifest();
             if (_manifest == null) return "";
 
