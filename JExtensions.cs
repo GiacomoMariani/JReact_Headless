@@ -100,6 +100,8 @@ namespace JReact
         /// </summary>
         /// <returns>all the possible enumerator, as an array</returns>
         public static TEnum[] GetValues<TEnum>() where TEnum : struct => (TEnum[]) Enum.GetValues(typeof(TEnum));
+        
+        public static int CountValues<TEnum>() where TEnum : struct => Enum.GetValues(typeof(TEnum)).Length;
         #endregion
 
         #region ARRAYS
