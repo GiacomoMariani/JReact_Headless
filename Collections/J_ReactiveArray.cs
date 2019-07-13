@@ -19,10 +19,10 @@ namespace JReact.Collections
         public event Action<T> OnRemove;
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _length = 50;
+        [BoxGroup("Setup", true, true, 0), SerializeField] private int _desiredLength = 50;
+        [InfoBox("NULL => generated at default"), BoxGroup("Setup", true, true, 0), SerializeField] protected T[] _thisArray;
 
         // --------------- STATE --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected T[] _thisArray;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Length => _thisArray?.Length ?? 0;
 
         // --------------- ARRAY --------------- //
@@ -106,7 +106,7 @@ namespace JReact.Collections
 
         private int IndexOf(T item)
         {
-            for (int i = 0; i < _length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 if (_thisArray[i] != null) continue;
                 return i;
@@ -131,7 +131,7 @@ namespace JReact.Collections
                     actionToCall(_thisArray[i]);
         }
 
-        public void ResetThis() => _thisArray = new T[_length];
+        public void ResetThis() => _thisArray = new T[_desiredLength];
 
         public void Clear() => ResetThis();
 
@@ -149,6 +149,6 @@ namespace JReact.Collections
         public void SubscribeToRemove(Action<T>   actionToRegister) { OnRemove += actionToRegister; }
         public void UnSubscribeToRemove(Action<T> actionToRegister) { OnRemove -= actionToRegister; }
 
-        private void OnDisable() => _thisArray = _thisArray ?? new T[_length];
+        private void OnDisable() => _thisArray = _thisArray ?? new T[_desiredLength];
     }
 }
