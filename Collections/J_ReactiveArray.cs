@@ -8,7 +8,10 @@ namespace JReact.Collections
     /// an array that acts as a reactive collection, with the option to add at a given index, or add in the first empty place
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class J_ReactiveArray<T> : ScriptableObject, jObservable<(int index, T previous, T current)>, iResettable
+    public abstract class J_ReactiveArray<T> : ScriptableObject,
+                                               jObservable<(int index, T previous, T current)>,
+                                               iResettable,
+                                               iReactiveCollection<T>
     {
         // --------------- EVENTS --------------- //
         private event Action<(int index, T previous, T current)> OnChange;
@@ -86,7 +89,7 @@ namespace JReact.Collections
         /// <returns>returns the index of the item, or -1 if nothing is found</returns>
         public int Remove(T item)
         {
-            if(item == null) JLog.Warning($"{name} is removing a null element. Is it intended?");
+            if (item == null) JLog.Warning($"{name} is removing a null element. Is it intended?");
             //find the item
             int index = IndexOf(item);
             // --------------- REMOVE CONFIRM --------------- //
@@ -100,7 +103,7 @@ namespace JReact.Collections
             JLog.Warning($"{name} there is not such item in the array. Item {item}");
             return -1;
         }
-        
+
         private int IndexOf(T item)
         {
             for (int i = 0; i < _length; i++)
@@ -115,7 +118,7 @@ namespace JReact.Collections
 
         // --------------- VIRTUAL FURTHER IMPLEMENTATION --------------- //
         protected virtual void HappensOnRemove(T item) => OnAdd?.Invoke(item);
-        protected virtual void HappensOnAdd(T item) => OnRemove?.Invoke(item);
+        protected virtual void HappensOnAdd(T    item) => OnRemove?.Invoke(item);
 
         // --------------- HELPERS --------------- //
         /// <summary>
@@ -127,7 +130,7 @@ namespace JReact.Collections
                 if (_thisArray[i] != null)
                     actionToCall(_thisArray[i]);
         }
-        
+
         public void ResetThis() => _thisArray = new T[_length];
 
         public void Clear() => ResetThis();
@@ -137,8 +140,15 @@ namespace JReact.Collections
         public bool Contains(T item) => IndexOf(item) != -1;
 
         // --------------- SUBSCRIBERS & SETUP --------------- //
-        public void Subscribe(Action<(int index, T previous, T current)> action) => OnChange   += action;
+        public void Subscribe(Action<(int index, T previous, T current)>   action) => OnChange += action;
         public void UnSubscribe(Action<(int index, T previous, T current)> action) => OnChange -= action;
+
+        public void SubscribeToAdd(Action<T>   actionToRegister) { OnAdd += actionToRegister; }
+        public void UnSubscribeToAdd(Action<T> actionToRegister) { OnAdd -= actionToRegister; }
+
+        public void SubscribeToRemove(Action<T>   actionToRegister) { OnRemove += actionToRegister; }
+        public void UnSubscribeToRemove(Action<T> actionToRegister) { OnRemove -= actionToRegister; }
+
         private void OnDisable() => _thisArray = _thisArray ?? new T[_length];
     }
 }

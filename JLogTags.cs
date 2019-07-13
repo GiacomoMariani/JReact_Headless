@@ -11,6 +11,7 @@ namespace JReact
         public const string Tutorial = "-Tutorial-";
         public const string Camera = "-Camera-";
         public const string Player = "-Player-";
+        public const string Avatar = "-Avatar-";
         public const string GameBoard = "-GameBoard-";
         public const string State = "-State-";
         public const string Reset = "-Reset-";

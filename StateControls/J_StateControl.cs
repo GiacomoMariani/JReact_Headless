@@ -85,19 +85,17 @@ namespace JReact.StateControl
         // sets the first state of the game
         protected override void ActivateThis()
         {
-            base.ActivateThis();
             Assert.IsNotNull(_firstState, $"Please set a first state to validate the controls on: {name}");
-            ValidState(_firstState);
-            _currentState = _firstState;
-            _firstState.Activate();
+            SetNewState(_firstState);
             JLog.Log($"Initialization completed on {name} with {_validStates.Length} states.", JLogTags.State, this);
+            base.ActivateThis();
         }
 
         protected override void EndThis()
         {
+            base.EndThis();
             if (CurrentState != null) CurrentState.End();
             _currentState = null;
-            base.EndThis();
         }
 
         // --------------- MAIN CONTROLS --------------- //

@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace JReact.Conditions
 {
-    [CreateAssetMenu(menuName = "Menu/Name", fileName = "Item")]
     public abstract class J_Condition_IntervalChecks : J_ReactiveCondition
     {
         
