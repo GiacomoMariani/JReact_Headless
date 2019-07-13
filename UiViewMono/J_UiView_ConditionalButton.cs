@@ -1,3 +1,4 @@
+using JReact.Conditions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -13,7 +14,7 @@ namespace JReact.UiView
         //what we want to send
         [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _unityEventToSend;
         //the possible condition to cancel the commands
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveBool[] _commandConditions;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveCondition[] _commandConditions;
         //if we want to show the disabled button
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _showDisabledButton = true;
         #endregion

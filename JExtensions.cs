@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -96,10 +96,10 @@ namespace JReact
 
         #region ENUMS
         /// <summary>
-        /// retrieveves all the values of a given enumerator
+        /// retrieves all the values of a given enumerator
         /// </summary>
         /// <returns>all the possible enumerator, as an array</returns>
-        public static TEnum[] GetValues<TEnum>() where TEnum : struct => (TEnum[])Enum.GetValues(typeof(TEnum));
+        public static TEnum[] GetValues<TEnum>() where TEnum : struct => (TEnum[]) Enum.GetValues(typeof(TEnum));
         #endregion
 
         #region ARRAYS
@@ -110,12 +110,13 @@ namespace JReact
         /// <param name="itemToCheck">the item we want to find</param>
         /// <returns>returns true if the array contains the item</returns>
         public static bool ArrayContains<T>(this T[] array, T itemToCheck) => Array.IndexOf(array, itemToCheck) > -1;
+
+        public static bool ArrayIsValid<T>(this T[] array) => array != null && array.Length > 0;
         #endregion ARRAYS
 
         #region COLLECTIONS
-        /// <summary>
-        /// debugs all elements in an enumerable
-        /// </summary>
+        public static bool ContainsIndex(this ICollection collection, int index) => index >= 0 && index < collection.Count;
+
         public static string PrintAll<T>(this ICollection<T> collection)
             => collection.Aggregate("Elements: - ", (current, element) => current + (element + " - "));
 
@@ -207,6 +208,13 @@ namespace JReact
             rectTransform.offsetMin = JConstants.VectorZero;
             rectTransform.offsetMax = JConstants.VectorOne;
         }
+
+        /// <summary>
+        /// returns the screen position of the given rect
+        /// </summary>
+        /// <param name="camera">this might be null</param>
+        public static Vector2 ToScreenPosition(this RectTransform rectTransform, Camera camera)
+            => RectTransformUtility.WorldToScreenPoint(camera, rectTransform.transform.position);
         #endregion RECT TRANSFORM
 
         #region COMPONENT
@@ -236,6 +244,12 @@ namespace JReact
         #endregion COMPONENT
 
         #region GAMEOBJECT
+        public static void ActivateAll(this GameObject[] gameObjects, bool activation)
+        {
+            for (int i = 0; i < gameObjects.Length; i++)
+                gameObjects[i].SetActive(activation);
+        }
+
         /// <summary>
         /// checks if the elements is a prefab or a scene game object
         /// </summary>

@@ -7,9 +7,11 @@ namespace JReact.StateControl
     /// <summary>
     /// used to change the menu based on the state
     /// </summary>
-    public class J_Mono_MultiStateViewActivator : MonoBehaviour
+    public sealed class J_Mono_MultiStateViewActivator : MonoBehaviour
     {
         // --------------- VALUES AND PROPERTIES --------------- //
+
+        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _activateWhenEnterState;
         //the views related to this element
         [BoxGroup("Setup", true, true, 0), SerializeField, Required] private J_Mono_ViewActivator _view;
         private J_Mono_ViewActivator ThisView
@@ -44,28 +46,35 @@ namespace JReact.StateControl
         }
 
         // --------------- INITIALIZATION --------------- //
-        private void Awake() { SanityChecks(); }
+        private void Awake() => SanityChecks();
 
-        protected virtual void SanityChecks()
+        private void SanityChecks()
         {
             for (int i = 0; i < _validStates.Length; i++)
                 Assert.IsNotNull(_validStates[i], $"{gameObject.name} has a missing state at index {i}");
         }
 
         // --------------- LISTENERS --------------- //
-        //update this if the next state is contained here
-        protected virtual void StateChange((J_State previous, J_State current) transition)
+        private void StateChange((J_State previous, J_State current) transition)
         {
-            IsActive = _validStates.ArrayContains(transition.current);
+            IsActive = _validStates.ArrayContains(transition.current) == _activateWhenEnterState;
         }
 
-        //start and stop listening to events
-        protected virtual void OnEnable()
+        private void OnEnable()
         {
-            StateChange((null, _mainStateControl.CurrentState));
+            _isActive = gameObject.activeSelf;
+            if (_mainStateControl.IsActive) StateChange((null, _mainStateControl.CurrentState));
+            else _mainStateControl.Subscribe(CheckActivation);
+
             _mainStateControl.Subscribe(StateChange);
         }
 
-        protected virtual void OnDisable() { _mainStateControl.UnSubscribe(StateChange); }
+        private void CheckActivation()
+        {
+            _mainStateControl.UnSubscribe(CheckActivation);
+            StateChange((null, _mainStateControl.CurrentState));
+        }
+
+        private void OnDisable() => _mainStateControl.UnSubscribe(StateChange);
     }
 }
