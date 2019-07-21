@@ -11,15 +11,12 @@ namespace JReact.StateControl.PopUp
     public sealed class J_PopUp : J_State
     {
         // --------------- CONSTANTS --------------- //
-        private const string DefaultTitle = "Pop-Up";
         private const string DefaultConfirmText = "Confirm";
         private const string DefaultDenyText = "Cancel";
 
         // --------------- STATE - OPTIONAL --------------- //
         [InfoBox("Null => no connection with state"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly]
         private J_SimpleStateControl _stateControl;
-        [InfoBox("Required if we have state control"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly]
-        private J_State _exitState;
 
         // --------------- CONTENT --------------- //
         //J_Mono_ReactiveStringText might be used to display this
@@ -27,6 +24,9 @@ namespace JReact.StateControl.PopUp
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _message;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _confirmButtonText;
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _denyButtonText;
+
+        // --------------- STATE --------------- //
+        [BoxGroup("State", true, true, 5), SerializeField, AssetsOnly, Required] private J_State _previousState;
 
         // --------------- ACTIONS --------------- //        
         private JUnityEvent _confirm;
@@ -51,7 +51,7 @@ namespace JReact.StateControl.PopUp
             _confirmButtonText.Current = confirmText;
         }
 
-        public void SetupDenyButton(Action denyAction, string confirmText = DefaultConfirmText, bool exitStateAfter = true)
+        public void SetupDenyButton(Action denyAction, string confirmText = DefaultDenyText, bool exitStateAfter = true)
         {
             Deny.RemoveAllListeners();
             Deny.AddListener(denyAction.Invoke);
@@ -66,6 +66,7 @@ namespace JReact.StateControl.PopUp
 
         protected override void ActivateThis()
         {
+            _previousState = _stateControl.CurrentState;
             base.ActivateThis();
             if (_stateControl              != null &&
                 _stateControl.CurrentState != this) _stateControl.SetNewState(this);
@@ -75,9 +76,17 @@ namespace JReact.StateControl.PopUp
         {
             base.EndThis();
             if (_stateControl              != null &&
-                _stateControl.CurrentState == this) _stateControl.SetNewState(_exitState);
+                _stateControl.CurrentState == this &&
+                _previousState             != null) _stateControl.SetNewState(_previousState);
 
             ResetThis();
+        }
+
+        public override void ResetThis()
+        {
+            base.ResetThis();
+            Confirm.RemoveAllListeners();
+            Deny.RemoveAllListeners();
         }
     }
 }
