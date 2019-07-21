@@ -10,16 +10,15 @@ namespace JReact.UiView
     /// </summary>
     public class J_UiView_ConditionalButton : J_UiView_ButtonElement
     {
-        #region FIELDS AND PROPERTIEES
+        // --------------- FIELDS AND PROPERTIEES --------------- //
         //what we want to send
         [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _unityEventToSend;
         //the possible condition to cancel the commands
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveCondition[] _commandConditions;
         //if we want to show the disabled button
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _showDisabledButton = true;
-        #endregion
 
-        #region COMMAND
+        // --------------- COMMAND --------------- //
         protected override void ButtonCommand()
         {
             //STEP 1 - check if all save conditions are met
@@ -27,9 +26,8 @@ namespace JReact.UiView
             //STEP 2 - sends the event
             _unityEventToSend.Invoke();
         }
-        #endregion
 
-        #region CONDITION
+        // --------------- CONDITION --------------- //
         private bool ConditionsMet()
         {
             for (int i = 0; i < _commandConditions.Length; i++)
@@ -46,9 +44,8 @@ namespace JReact.UiView
 
         //used to implement further conditions if required
         protected virtual bool CheckFurtherConditions() => true;
-        #endregion
 
-        #region LISTENERS & INTERACTION
+        // --------------- LISTENERS & INTERACTION --------------- //
         //sent when any of the conditions changed
         private void UpdateInteractability(bool item) { CheckInteraction(); }
         private void CheckInteraction() { ThisButton.interactable = ConditionsMet(); }
@@ -66,6 +63,5 @@ namespace JReact.UiView
             base.OnDisable();
             _commandConditions.UnSubscribeToAll(UpdateInteractability);
         }
-        #endregion
     }
 }

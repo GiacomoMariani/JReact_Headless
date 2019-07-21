@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace JReact.StateControl.PopUp
@@ -28,8 +29,12 @@ namespace JReact.StateControl.PopUp
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _denyButtonText;
 
         // --------------- ACTIONS --------------- //        
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent Confirm { get; private set; }
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent Deny { get; private set; }
+        private JUnityEvent _confirm;
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent Confirm
+            => _confirm ?? (_confirm = new JUnityEvent());
+        private JUnityEvent _deny;
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent Deny
+            => _deny ?? (_deny = new JUnityEvent());
 
         // --------------- SETUP --------------- //
         public void SetupPopUpText(string message, string title = "")
@@ -38,29 +43,32 @@ namespace JReact.StateControl.PopUp
             _title.Current   = title;
         }
 
-        public void SetupConfirmButton(JUnityEvent confirmAction, string confirmText = DefaultConfirmText, bool exitAfter = true)
+        public void SetupConfirmButton(Action confirmAction, string confirmText = DefaultConfirmText, bool exitStateAfter = true)
         {
-            Confirm = confirmAction;
-            if (exitAfter) Confirm.AddListener(Close);
+            Confirm.RemoveAllListeners();
+            Confirm.AddListener(confirmAction.Invoke);
+            if (exitStateAfter) Confirm.AddListener(Close);
             _confirmButtonText.Current = confirmText;
         }
 
-        public void SetupDenyButton(JUnityEvent denyAction, string confirmText = DefaultConfirmText, bool exitAfter = true)
+        public void SetupDenyButton(Action denyAction, string confirmText = DefaultConfirmText, bool exitStateAfter = true)
         {
-            Deny = denyAction;
-            if (exitAfter) Confirm.AddListener(Close);
+            Deny.RemoveAllListeners();
+            Deny.AddListener(denyAction.Invoke);
+            if (exitStateAfter) Deny.AddListener(Close);
             _denyButtonText.Current = confirmText;
         }
 
         // --------------- OPEN AND CLOSE --------------- //
-        public void Open() =>  Activate(); 
+        public void Open() => Activate();
 
-        public void Close() => End(); 
+        public void Close() => End();
 
         protected override void ActivateThis()
         {
             base.ActivateThis();
-            if (_stateControl != null) _stateControl.SetNewState(this);
+            if (_stateControl              != null &&
+                _stateControl.CurrentState != this) _stateControl.SetNewState(this);
         }
 
         protected override void EndThis()
@@ -71,30 +79,5 @@ namespace JReact.StateControl.PopUp
 
             ResetThis();
         }
-
-        // --------------- DISABLE AND RESET --------------- //
-        public override void ResetThis()
-        {
-            base.ResetThis();
-            //strings
-            _title.Current             = DefaultTitle;
-            _confirmButtonText.Current = DefaultConfirmText;
-            _denyButtonText.Current    = DefaultDenyText;
-            _message.ResetThis();
-            //actions
-            if (Confirm != null)
-            {
-                Confirm.RemoveAllListeners();
-                Confirm = null;
-            }
-
-            if (Deny != null)
-            {
-                Deny.RemoveAllListeners();
-                Deny = null;
-            }
-        }
-
-        private void OnDisable() => ResetThis();
     }
 }

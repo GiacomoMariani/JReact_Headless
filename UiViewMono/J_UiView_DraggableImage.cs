@@ -10,6 +10,7 @@ namespace JReact.UiView
     /// </summary>
     public abstract class J_UiView_DraggableImage : J_UiView_ImageElement
     {
+        // --------------- FIELDS AND PROPERTIES --------------- //
         //a way to store the starting position
         [BoxGroup("Structure", true, true, 0), ReadOnly] private Vector2 _defaultPosition;
 
@@ -53,7 +54,7 @@ namespace JReact.UiView
             return RetrieveParent(parentTransform.parent);
         }
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         //storing the position at initialization
         protected override void InitThis()
         {
@@ -79,9 +80,8 @@ namespace JReact.UiView
 
             Assert.IsNotNull(ThisCanvas, "The image view needs a canvas to control the sorting layer: " + gameObject.name);
         }
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         /// <summary>
         /// when we start dragging we move the image above one sorting layer to make sure it appears above the others
         /// </summary>
@@ -125,7 +125,6 @@ namespace JReact.UiView
             ThisCanvas.overrideSorting            = false;
             IsActive                              = true;
         }
-        #endregion
 
         //call the method on enable otherwise the canvas adjustments does not work when the gameobject is disabled
         private void OnEnable() { ResetPosition(); }

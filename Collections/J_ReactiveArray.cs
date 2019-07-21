@@ -105,17 +105,12 @@ namespace JReact.Collections
             return -1;
         }
 
-        private int IndexOf(T item)
-        {
-            for (int i = 0; i < Length; i++)
-            {
-                if (_thisArray[i] != null) continue;
-                return i;
-            }
-
-            //we reach this point the is not found
-            return -1;
-        }
+        /// <summary>
+        /// returns the first index with the given item
+        /// </summary>
+        /// <param name="item">the item we search</param>
+        /// <returns></returns>
+        public int IndexOf(T item) => Array.IndexOf(_thisArray, item);
 
         // --------------- VIRTUAL FURTHER IMPLEMENTATION --------------- //
         protected virtual void HappensOnRemove(T item) => OnAdd?.Invoke(item);

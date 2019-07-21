@@ -11,7 +11,7 @@ namespace JReact.UiView
     [RequireComponent(typeof(Image))]
     public abstract class J_UiView_ImageElement : MonoBehaviour
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         //reference to the text
         private Image _thisImage;
         [BoxGroup("Base", true, true, -5), ReadOnly] protected Image ThisImage
@@ -34,9 +34,8 @@ namespace JReact.UiView
                 ThisImage.enabled = value;
             }
         }
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         private void Awake()
         {
             InitThis();
@@ -45,11 +44,9 @@ namespace JReact.UiView
 
         protected virtual void InitThis() {}
         protected virtual void SanityChecks() { Assert.IsNotNull(ThisImage, "Requires a TextMeshProUGUI: " + gameObject); }
-        #endregion
 
-        #region COMMANDS
+        // --------------- COMMANDS --------------- //
         //sets the sprite on the image
         protected virtual void SetImage(Sprite image) { ThisImage.sprite = image; }
-        #endregion
     }
 }

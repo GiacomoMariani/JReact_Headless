@@ -22,22 +22,18 @@ namespace JReact.UiView
             }
         }
 
-        #region INITIALIZATION
-        //initialization
+        // --------------- INITIALIZATION --------------- //
         private void Awake()
         {
             InitThis();
             SanityChecks();
         }
 
-        //element used for initialization
         protected virtual void InitThis() {}
 
-        //sanity checks
-        protected virtual void SanityChecks() { Assert.IsNotNull(ThisButton, "Requires a Button: " + gameObject); }
-        #endregion
+        protected virtual void SanityChecks() => Assert.IsNotNull(ThisButton, $"{gameObject.name} requires a {nameof(ThisButton)}");
 
-        #region PRECHECKS
+        // --------------- PRECHECKS --------------- //
         //this is used in case we want to apply any condition, as default it is true
         protected virtual bool CanBePressed() => true;
 
@@ -46,17 +42,14 @@ namespace JReact.UiView
         {
             if (CanBePressed()) ButtonCommand();
         }
-        #endregion
 
-        #region INTERFACE
+        // --------------- IMPLEMENTATION --------------- //
         //the main command sent by this button
         protected abstract void ButtonCommand();
-        #endregion
 
-        #region LISTENERS
+        // --------------- LISTENERS --------------- //
         //start and stop tracking on enable
-        protected virtual void OnEnable() { ThisButton.onClick.AddListener(TryPressButton); }
-        protected virtual void OnDisable() { ThisButton.onClick.RemoveListener(TryPressButton); }
-        #endregion
+        protected virtual void OnEnable()  => ThisButton.onClick.AddListener(TryPressButton);
+        protected virtual void OnDisable() => ThisButton.onClick.RemoveListener(TryPressButton);
     }
 }

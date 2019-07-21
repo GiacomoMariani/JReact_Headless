@@ -34,26 +34,42 @@ namespace JReact.Selection
         /// selects an item
         /// </summary>
         /// <param name="item">the item selected</param>
-        public void Select(T item) { Selected = item; }
+        public void Select(T item)
+        {
+            if (!CanSelect(item)) return;
+            Selected = item;
+        }
 
         /// <summary>
         /// deselects the selected item
         /// </summary>
-        public void Deselect() { Selected = default; }
+        public void Deselect()
+        {
+            if (!CanDeselect(Selected)) return;
+            Selected = default;
+        }
+
+        
 
         // --------------- VIRTUAL IMPLEMENTATION --------------- //
+        //logic to stop the selection
+        protected virtual bool CanSelect(T item) => true;
+
         /// any logic to be applied on the selected item
         protected virtual void ActOnSelection(T item) {}
+
+        //logic to stop the deselection
+        protected virtual bool CanDeselect(T selected) => true;
         
         //any logic to apply on the deselected item
         protected virtual void ActOnDeselection(T item) {}
 
         // --------------- DISABLE AND RESET --------------- //
-        private void OnDisable() { ResetThis(); }
+        private        void OnDisable() { ResetThis(); }
         public virtual void ResetThis() { Deselect(); }
 
         // --------------- SUBSCRIBERS --------------- //
-        public void Subscribe(Action<T> actionToAdd) { OnSelect      += actionToAdd; }
+        public void Subscribe(Action<T>   actionToAdd)    { OnSelect += actionToAdd; }
         public void UnSubscribe(Action<T> actionToRemove) { OnSelect -= actionToRemove; }
     }
 }
