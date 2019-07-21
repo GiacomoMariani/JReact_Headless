@@ -19,8 +19,8 @@ namespace JReact.StateControl.PopUp
             {
                 switch (_buttonType)
                 {
-                    case PopUpButtonType.Confirm: return _popUp.Confirm;
-                    case PopUpButtonType.Deny:    return _popUp.Deny;
+                    case PopUpButtonType.Confirm: return _popUp.ConfirmAction;
+                    case PopUpButtonType.Deny:    return _popUp.CancelAction;
                     default:                      return null;
                 }
             }

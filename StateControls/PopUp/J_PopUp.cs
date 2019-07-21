@@ -30,10 +30,10 @@ namespace JReact.StateControl.PopUp
 
         // --------------- ACTIONS --------------- //        
         private JUnityEvent _confirm;
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent Confirm
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent ConfirmAction
             => _confirm ?? (_confirm = new JUnityEvent());
         private JUnityEvent _deny;
-        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent Deny
+        [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public JUnityEvent CancelAction
             => _deny ?? (_deny = new JUnityEvent());
 
         // --------------- SETUP --------------- //
@@ -45,48 +45,57 @@ namespace JReact.StateControl.PopUp
 
         public void SetupConfirmButton(Action confirmAction, string confirmText = DefaultConfirmText, bool exitStateAfter = true)
         {
-            Confirm.RemoveAllListeners();
-            Confirm.AddListener(confirmAction.Invoke);
-            if (exitStateAfter) Confirm.AddListener(Close);
+            ConfirmAction.RemoveAllListeners();
+            ConfirmAction.AddListener(confirmAction.Invoke);
+            if (exitStateAfter) ConfirmAction.AddListener(Close);
             _confirmButtonText.Current = confirmText;
         }
 
         public void SetupDenyButton(Action denyAction, string confirmText = DefaultDenyText, bool exitStateAfter = true)
         {
-            Deny.RemoveAllListeners();
-            Deny.AddListener(denyAction.Invoke);
-            if (exitStateAfter) Deny.AddListener(Close);
+            CancelAction.RemoveAllListeners();
+            CancelAction.AddListener(denyAction.Invoke);
+            if (exitStateAfter) CancelAction.AddListener(Close);
             _denyButtonText.Current = confirmText;
         }
 
         // --------------- OPEN AND CLOSE --------------- //
-        public void Open() => Activate();
-
-        public void Close() => End();
-
-        protected override void ActivateThis()
+        public void Open()
         {
-            _previousState = _stateControl.CurrentState;
-            base.ActivateThis();
-            if (_stateControl              != null &&
-                _stateControl.CurrentState != this) _stateControl.SetNewState(this);
+            if(_stateControl == null) Activate();
+            else
+            {
+                _previousState = _stateControl.CurrentState;
+                _stateControl.SetNewState(this);
+            }
         }
 
-        protected override void EndThis()
+        public void Close()
         {
-            base.EndThis();
-            if (_stateControl              != null &&
-                _stateControl.CurrentState == this &&
-                _previousState             != null) _stateControl.SetNewState(_previousState);
+            if (_stateControl == null) End();
+            else if (_stateControl.CurrentState == this &&
+                     _previousState             != null) _stateControl.SetNewState(_previousState);
 
             ResetThis();
         }
 
+        // --------------- COMMANDS --------------- //
+        /// <summary>
+        /// sends the confirm actions, can be attached to a button
+        /// </summary>
+        public void Confirm() => ConfirmAction.Invoke();
+
+        /// <summary>
+        /// sends the cancel actions, can be attached to a button
+        /// </summary>
+        public void Cancel() => CancelAction.Invoke();
+
+        // --------------- RESET --------------- //
         public override void ResetThis()
         {
             base.ResetThis();
-            Confirm.RemoveAllListeners();
-            Deny.RemoveAllListeners();
+            ConfirmAction.RemoveAllListeners();
+            CancelAction.RemoveAllListeners();
         }
     }
 }
