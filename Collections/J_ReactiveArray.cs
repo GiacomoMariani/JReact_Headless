@@ -19,8 +19,9 @@ namespace JReact.Collections
         public event Action<T> OnRemove;
 
         // --------------- SETUP --------------- //
+        [InfoBox("NULL => generated at default"), BoxGroup("Setup", true, true, 0), SerializeField]
+        protected T[] _thisArray;
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _desiredLength = 50;
-        [InfoBox("NULL => generated at default"), BoxGroup("Setup", true, true, 0), SerializeField] protected T[] _thisArray;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Length => _thisArray?.Length ?? 0;
@@ -131,6 +132,7 @@ namespace JReact.Collections
                     actionToCall(_thisArray[i]);
         }
 
+        [FoldoutGroup("Commands", false, 100), Button(ButtonSizes.Medium)]
         public void ResetThis() => _thisArray = new T[_desiredLength];
 
         public void Clear() => ResetThis();
