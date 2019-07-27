@@ -53,14 +53,14 @@ namespace JReact.UiView.Collections
             newUiView.ActorUpdate(item);
             _trackedElements[item] = newUiView;
             //add further adjustments here
-            AddedView(item);
+            AddedView(item, newUiView);
         }
 
         //used to decide if we want to hide some element
         protected virtual bool WantToShowElement(T item) => !_trackedElements.ContainsKey(item);
 
         //an helper method if we want to apply further elements
-        protected virtual void AddedView(T itemAdded) {}
+        protected virtual void AddedView(T itemAdded, J_Mono_Actor<T> newUiView) {}
 
         private void Remove(T itemRemoved)
         {

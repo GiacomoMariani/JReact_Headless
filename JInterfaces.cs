@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine.Events;
 
 namespace JReact
 {
@@ -7,6 +8,12 @@ namespace JReact
         string NameOfThis { get; }
         bool IsSelected { get; set; }
         T ThisElement { get; }
+    }
+
+    public interface iProcessable
+    {
+        UnityAction ThisAction { get; }
+        void Process();
     }
 
     public interface iInitiator<in T>
@@ -40,17 +47,17 @@ namespace JReact
     {
         IDisposable Subscribe(iObserver<T> observer);
     }
-    
+
     public interface iObserver<in T>
     {
         void OnCompleted();
         void OnError(Exception exception);
-        void OnNext(T value);
+        void OnNext(T          value);
     }
 
     public interface jObservable
     {
-        void Subscribe(Action action);
+        void Subscribe(Action   action);
         void UnSubscribe(Action action);
     }
 
@@ -60,7 +67,7 @@ namespace JReact
 
     public interface jObservable<out T>
     {
-        void Subscribe(Action<T> action);
+        void Subscribe(Action<T>   action);
         void UnSubscribe(Action<T> action);
     }
 
@@ -71,7 +78,7 @@ namespace JReact
 
     public interface iStackable : jObservableValue<int>
     {
-        int Grant(int amount);
+        int Grant(int  amount);
         int Remove(int amount);
     }
 
@@ -79,7 +86,7 @@ namespace JReact
     {
         int Max { get; }
         int FreeCapacity { get; }
-        void SubscribeToMaxCapacity(Action<int> action);
+        void SubscribeToMaxCapacity(Action<int>   action);
         void UnSubscribeToMaxCapacity(Action<int> action);
     }
 
@@ -88,7 +95,7 @@ namespace JReact
         string Name { get; }
         bool IsActive { get; }
         void Activate();
-        void SubscribeToEnd(Action action);
+        void SubscribeToEnd(Action   action);
         void UnSubscribeToEnd(Action action);
     }
 
@@ -100,7 +107,7 @@ namespace JReact
 
     public interface iInputAxisGetter
     {
-        float GetAxis(string axisId);
+        float GetAxis(string    axisId);
         float GetAxisRaw(string axisId);
     }
 

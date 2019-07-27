@@ -13,7 +13,7 @@ namespace JReact.Selection
     public abstract class J_UiView_ButtonSelect<T> : J_Mono_ActorElement<T>
         where T : class
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_Selector<T> _ThisSelector { get; }
 
         //the button related to this element
@@ -26,20 +26,21 @@ namespace JReact.Selection
                 return _thisButton;
             }
         }
-        #endregion
 
+        // --------------- INIT --------------- //
         private void Awake()
         {
             SanityChecks();
             InitThis();
         }
 
-        protected virtual void SanityChecks() { Assert.IsNotNull(ThisButton, $"{gameObject.name} requires a Button"); }
-        protected virtual void InitThis() {}
+        protected virtual void SanityChecks() { Assert.IsNotNull(ThisButton, $"{gameObject.name} requires a {nameof(ThisButton)}"); }
+        protected virtual void InitThis()     {}
+
+        // --------------- COMMAND --------------- //
         private void ButtonCommand() { _ThisSelector.Select(_actor); }
 
-        #region LISTENERS
-        //start and stop tracking on enable
+        // --------------- LISTENERS --------------- //
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -51,6 +52,5 @@ namespace JReact.Selection
             base.OnDisable();
             ThisButton.onClick.RemoveListener(ButtonCommand);
         }
-        #endregion
     }
 }
