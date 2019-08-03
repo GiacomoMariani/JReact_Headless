@@ -82,7 +82,7 @@ namespace JReact.TimeProgress
         /// adds a fixed amount of seconds to the progress
         /// </summary>
         /// <param name="secondsToAdd">the seconds to be added</param>
-        public void AddTime(float secondsToAdd) { SecondsFromStart += secondsToAdd; }
+        public void AddSeconds(float secondsToAdd) { SecondsFromStart += secondsToAdd; }
 
         /// <summary>
         /// starts and stops the progress
@@ -94,32 +94,33 @@ namespace JReact.TimeProgress
         /// fast finish the progress
         /// </summary>
         [BoxGroup("Test", true, true, 100), Button("FastFinish", ButtonSizes.Medium)]
-        public void FastFinish() { ProgressComplete(); }
+        public void FastFinish() => ProgressComplete();
 
         // --------------- SETUP --------------- // 
         //make sure all the fields are correct
-        private bool SanityChecks(float secondsToComplete)
+        private bool SanityChecks(float seconds)
         {
-            Assert.IsNotNull(_counter, $"{name} has not counter. Command canceled.");
-            Assert.IsTrue(secondsToComplete > 0,
-                          $"{name} requires positive secondsToComplete. Received: {secondsToComplete}.Command canceled.");
+            if (_counter == null) JLog.Error($"{name} has not counter. Command canceled.", JLogTags.TimeProgress, this);
+            if (seconds <= 0)
+                JLog.Error($"{name} {nameof(seconds)} is negative: {seconds}. .Command canceled.", JLogTags.TimeProgress, this);
 
-            Assert.IsFalse(IsRunning, $"{name} is already started. Command canceled.");
-            return secondsToComplete > 0 && !IsRunning && _counter != null;
+            if (IsRunning) JLog.Error($"{name} is already started. Command canceled.", JLogTags.TimeProgress, this);
+
+            return seconds > 0 && !IsRunning && _counter != null;
         }
 
         // --------------- MAIN EVENTS --------------- //
         //sends the start event
         [BoxGroup("Debug", true, true, 100), Button("Start Event", ButtonSizes.Medium)]
-        private void StartEvent() { OnProgressStart?.Invoke(this); }
+        private void StartEvent() => OnProgressStart?.Invoke(this);
 
         //sends the tick event
         [BoxGroup("Debug", true, true, 100), Button("Tick Event", ButtonSizes.Medium)]
-        private void TickEvent() { OnProgressTick?.Invoke(this); }
+        private void TickEvent() => OnProgressTick?.Invoke(this);
 
         //sends the complete event
         [BoxGroup("Debug", true, true, 100), Button("Complete Event", ButtonSizes.Medium)]
-        private void CompleteEvent() { OnProgressComplete?.Invoke(this); }
+        private void CompleteEvent() => OnProgressComplete?.Invoke(this);
 
         // --------------- COUNT AND COMPLETION --------------- //
         //add the time for each tick
@@ -152,13 +153,13 @@ namespace JReact.TimeProgress
         }
 
         // --------------- SUBSCRIBE EVENTS --------------- //
-        public void SubscribeToStart(Action<J_Progress> actionToSend) { OnProgressStart   += actionToSend; }
+        public void SubscribeToStart(Action<J_Progress>   actionToSend) { OnProgressStart += actionToSend; }
         public void UnSubscribeToStart(Action<J_Progress> actionToSend) { OnProgressStart -= actionToSend; }
 
-        public void Subscribe(Action<J_Progress> actionToSend) { OnProgressTick   += actionToSend; }
+        public void Subscribe(Action<J_Progress>   actionToSend) { OnProgressTick += actionToSend; }
         public void UnSubscribe(Action<J_Progress> actionToSend) { OnProgressTick -= actionToSend; }
 
-        public void SubscribeToComplete(Action<J_Progress> actionToSend) { OnProgressComplete   += actionToSend; }
+        public void SubscribeToComplete(Action<J_Progress>   actionToSend) { OnProgressComplete += actionToSend; }
         public void UnSubscribeToComplete(Action<J_Progress> actionToSend) { OnProgressComplete -= actionToSend; }
 
         // --------------- DISABLE AND RESET --------------- //

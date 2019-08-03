@@ -14,7 +14,7 @@ namespace JReact.Pool.SpecialEffect
         public virtual void TriggerEffectOnPosition(Vector3 position, Quaternion rotation)
         {
             //get the next effect
-            J_PoolItem_SpecialEffect specialEffect = GetElementFromPool();
+            J_PoolItem_SpecialEffect specialEffect = GetItemFromPool();
             //set its location
             Transform transform = specialEffect.transform;
             transform.position = position;

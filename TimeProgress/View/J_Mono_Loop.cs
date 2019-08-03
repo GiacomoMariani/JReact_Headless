@@ -25,7 +25,7 @@ namespace JReact.TimeProgress
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 25), ReadOnly, ShowInInspector] public bool IsActive { get; private set; }
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         private void Awake()
         {
             Counter();
@@ -38,9 +38,8 @@ namespace JReact.TimeProgress
             if (_counter == null)
                 _counter = J_Timer.CreateTimer(3f, Segment.FixedUpdate, true);
         }
-        #endregion
 
-        #region LOOP
+        // --------------- LOOP --------------- //
         /// <summary>
         /// start the loop
         /// </summary>
@@ -81,18 +80,15 @@ namespace JReact.TimeProgress
             }
 
             JLog.Log($"Loop stops on {gameObject.name}", JLogTags.TimeProgress, this);
-            Assert.IsTrue(_counter.IsActive, $"{gameObject.name} loop progress -{_counter.name}- was not running.");
             // --------------- COMPLETE LOOP --------------- //
             _counter.UnSubscribe(Loop);
             _unityEvents_AtEnd.Invoke();
             IsActive = false;
         }
-        #endregion
 
-        #region LISTENERS
+        // --------------- LISTENERS --------------- //
         //stop on destroy
         private void OnDestroy() => End();
         public void ResetThis() => End();
-        #endregion
     }
 }

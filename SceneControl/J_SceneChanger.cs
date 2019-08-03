@@ -39,6 +39,7 @@ namespace JReact.SceneControls
         public void LoadScene(string sceneName)
         {
             if (!_isInitialized) SetupThis();
+            JLog.Log($"{name} load scene with name {sceneName}", JLogTags.SceneManager, this);
             Timing.RunCoroutine(LoadingTheScene(sceneName), Segment.Update, JCoroutineTags.COROUTINE_SceneChangerTag);
         }
 

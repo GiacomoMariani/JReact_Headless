@@ -15,7 +15,7 @@ namespace JReact.Collections
         // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxLength = 10;
 
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T[] _arrayQueue;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T[] _arrayStack;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _index = 0;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _index;
 
@@ -23,7 +23,7 @@ namespace JReact.Collections
         protected override void ActivateThis()
         {
             base.ActivateThis();
-            _arrayQueue = new T[_maxLength];
+            _arrayStack = new T[_maxLength];
             _index      = 0;
         }
 
@@ -35,7 +35,7 @@ namespace JReact.Collections
                 return;
             }
 
-            _arrayQueue[_index] = item;
+            _arrayStack[_index] = item;
             _index++;
             OnPush?.Invoke(item);
         }
@@ -49,17 +49,17 @@ namespace JReact.Collections
             }
 
             T item = Peek();
-            _arrayQueue[_index - 1] = default;
+            _arrayStack[_index - 1] = default;
             _index--;
             return item;
         }
 
-        public T Peek() => _arrayQueue[_index - 1];
+        public T Peek() => _arrayStack[_index - 1];
 
         public void Clear()
         {
             for (int i = _index - 1; i >= 0; i--)
-                _arrayQueue[i] = default;
+                _arrayStack[i] = default;
 
             _index = 0;
         }
@@ -78,13 +78,13 @@ namespace JReact.Collections
         {
             var newArray = (T[]) array;
             for (int i = 0; i < Count; i++)
-                newArray[index + i] = _arrayQueue[i];
+                newArray[index + i] = _arrayStack[i];
         }
 
         public IEnumerator<T> GetEnumerator()
         {
             for (int i = 0; i < Count; i++)
-                yield return _arrayQueue[i];
+                yield return _arrayStack[i];
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
