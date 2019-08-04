@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace JReact.UiView
 {
-    public class J_UiView_MessagePrinter : J_UiView_TextElement
+    public class J_UiView_TextPrinter : J_UiView_TextElement
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         private const string EmptyString = "";
@@ -61,8 +61,8 @@ namespace JReact.UiView
                 JLog.Warning($"{gameObject.name} is not printing. Cancel fast finish.");
                 return;
             }
-            SetText(_currentText);
             StopThis();
+            SetText(_currentText);
         }
 
         // --------------- PRINT IMPLEMENTATION --------------- //
