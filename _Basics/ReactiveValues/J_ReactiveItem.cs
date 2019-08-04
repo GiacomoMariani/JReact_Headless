@@ -13,14 +13,15 @@ namespace JReact
 
         //optionally set a starting value
         [BoxGroup("Setup", true, true, 0), SerializeField] protected T _startValue;
-        protected T _currentValue;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool HasListeners => OnPropertyChange == null;
+       
+        private T _current;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public virtual T Current
         {
-            get => _currentValue;
+            get => _current;
             set
             {
-                _currentValue = value;
+                _current = value;
                 OnPropertyChange?.Invoke(value);
             }
         }
@@ -28,7 +29,7 @@ namespace JReact
         public virtual void Subscribe(Action<T> actionToSend) => OnPropertyChange += actionToSend;
         public virtual void UnSubscribe(Action<T> actionToSend) => OnPropertyChange -= actionToSend;
 
-        public virtual void ResetThis() => _currentValue = _startValue;
+        public virtual void ResetThis() => _current = _startValue;
 
         public static implicit operator T(J_ReactiveItem<T> value) => value.Current;
     }

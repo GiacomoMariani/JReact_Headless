@@ -10,7 +10,7 @@ namespace JReact
     public sealed class J_TransformGenerator : ScriptableObject
     {
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_TransformGenerator Parent;
+        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_TransformGenerator _parent;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Transform _thisTransform;
@@ -23,6 +23,16 @@ namespace JReact
             }
             private set => _thisTransform = value;
         }
+        
+        // --------------- CREATION --------------- //
+        public static J_TransformGenerator CreateTransformGenerator(string nameToSet, J_TransformGenerator parent = null)
+        {
+            var generator = CreateInstance<J_TransformGenerator>();
+            generator.name = nameToSet;
+            generator._parent = parent;
+            return generator;
+        }
+        
 
         //creates the transform when missing
         private Transform GenerateNewTransform()
@@ -34,7 +44,7 @@ namespace JReact
             Transform transformToSpawn = new GameObject(name).transform;
 
             // --------------- PARENTING --------------- //
-            if (Parent != null) transformToSpawn.SetParent(Parent.ThisTransform);
+            if (_parent != null) transformToSpawn.SetParent(_parent.ThisTransform);
 
             //COMPLETE
             return transformToSpawn;
@@ -43,12 +53,12 @@ namespace JReact
         //used to avoid a circular parenting
         private bool AllParentsValid()
         {
-            J_TransformGenerator currentCheck = Parent;
+            J_TransformGenerator currentCheck = _parent;
             while (currentCheck != null)
             {
                 if (currentCheck != this)
                 {
-                    currentCheck = currentCheck.Parent;
+                    currentCheck = currentCheck._parent;
                     continue;
                 }
 

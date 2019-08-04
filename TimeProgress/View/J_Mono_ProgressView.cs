@@ -9,7 +9,7 @@ namespace JReact.TimeProgress
     /// </summary>
     public abstract class J_Mono_ProgressView : MonoBehaviour, iProgressView
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         //the progress may be set manually of by injection
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] protected J_Progress _progressEvent;
         //this may be left unassigned
@@ -17,9 +17,8 @@ namespace JReact.TimeProgress
 
         //tracking elements
         [BoxGroup("State", true, true, 5), ReadOnly, SerializeField] private bool _isTracking;
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         private void Awake()
         {
             InitThis();
@@ -29,9 +28,8 @@ namespace JReact.TimeProgress
         protected virtual void InitThis() {}
 
         protected virtual void SanityChecks() {}
-        #endregion
 
-        #region INJECTION
+        // --------------- INJECTION --------------- //
         /// <summary>
         /// inject a progress
         /// </summary>
@@ -50,9 +48,8 @@ namespace JReact.TimeProgress
             //start tracking directly if the view is active
             if (gameObject.activeSelf) StartTracking();
         }
-        #endregion
 
-        #region TRACKING
+        // --------------- TRACKING --------------- //
         private void StartTracking()
         {
             // --------------- SETUP --------------- //
@@ -76,9 +73,8 @@ namespace JReact.TimeProgress
             ViewDisabled(_progressEvent);
             _isTracking = false;
         }
-        #endregion
 
-        #region INTERFACE IMPLEMENTATION
+        // --------------- INTERFACE IMPLEMENTATION --------------- //
         /// <summary>
         /// triggered at progress starts
         /// </summary>
@@ -96,9 +92,8 @@ namespace JReact.TimeProgress
 
         protected virtual void ViewEnabled(J_Progress progress) {}
         protected virtual void ViewDisabled(J_Progress progress) {}
-        #endregion
 
-        #region LISTENERS
+        // --------------- LISTENERS --------------- //
         //start and stop tracking on enable
         private void OnEnable()
         {
@@ -106,6 +101,5 @@ namespace JReact.TimeProgress
         }
 
         private void OnDisable() { StopTracking(); }
-        #endregion
     }
 }

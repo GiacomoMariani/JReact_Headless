@@ -25,11 +25,11 @@ namespace JReact
         /// <param name="seconds">the time in seconds</param>
         /// <param name="withFormat">if we want this formatted</param>
         /// <returns>the string time format</returns>
-        public static string SecondsToString(this float seconds, bool withFormat = true)
+        public static string SecondsToString(this float seconds)
         {
             TimeSpan time = TimeSpan.FromSeconds(seconds);
             //backslash tells that colon is not the part of format, it just a character that we want in output
-            return time.ToString(@"dd\:hh\:mm\:ss\:fff");
+            return time.SpanToStringTwo();
         }
         #endregion FLOAT
 
@@ -100,6 +100,8 @@ namespace JReact
         /// </summary>
         /// <returns>all the possible enumerator, as an array</returns>
         public static TEnum[] GetValues<TEnum>() where TEnum : struct => (TEnum[]) Enum.GetValues(typeof(TEnum));
+
+        public static int CountValues<TEnum>() where TEnum : struct => Enum.GetValues(typeof(TEnum)).Length;
         #endregion
 
         #region ARRAYS
@@ -238,16 +240,14 @@ namespace JReact
         public static void InjectElementToChildren<T>(this Component component, T element, bool alsoDisabled = true)
         {
             iInitiator<T>[] elementThatRequireThis = component.GetComponentsInChildren<iInitiator<T>>(alsoDisabled);
-            for (int i = 0; i < elementThatRequireThis.Length; i++)
-                elementThatRequireThis[i].InjectThis(element);
+            for (int i = 0; i < elementThatRequireThis.Length; i++) elementThatRequireThis[i].InjectThis(element);
         }
         #endregion COMPONENT
 
         #region GAMEOBJECT
         public static void ActivateAll(this GameObject[] gameObjects, bool activation)
         {
-            for (int i = 0; i < gameObjects.Length; i++)
-                gameObjects[i].SetActive(activation);
+            for (int i = 0; i < gameObjects.Length; i++) gameObjects[i].SetActive(activation);
         }
 
         /// <summary>
@@ -375,7 +375,7 @@ namespace JReact
         }
         #endregion STRING
 
-        #region DATE TIME
+        #region DATE TIME and DATE SPAN
         /// <summary>
         /// this is used to calculate the seconds passed between 2 date times
         /// </summary>
@@ -401,6 +401,17 @@ namespace JReact
             int unixTime   = (int) (dateTime - epochStart).TotalSeconds;
             JLog.Log($"Current time unix = {unixTime}");
             return unixTime;
+        }
+
+        /// <summary>
+        /// given a span it returns a string with the 2 highest values
+        /// </summary>
+        public static string SpanToStringTwo(this TimeSpan span,      string day       = "d", string hour = "h", string min = "m",
+                                             string        sec = "s", string separator = ":")
+        {
+            if (span.Days  > 0) return $"{span:%d}{day}{separator}{span:%h}{hour}";
+            if (span.Hours > 0) return $"{span:%h}{hour}{separator}{span:%m}{min}";
+            return $"{span:%m}{min}{separator}{span:%s}{sec}";
         }
         #endregion
 

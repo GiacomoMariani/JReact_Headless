@@ -10,40 +10,47 @@ namespace JReact.Conditions
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_ReactiveBool _condition;
+        public J_ReactiveBool Condition
+        {
+            get
+            {
+                if (_condition == null) _condition = CreateInstance<J_ReactiveBool>();
+                return _condition;
+            }
+        }
+
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool Current
         {
             get
             {
                 UpdateCondition();
-                return _condition.Current;
+                return Condition.Current;
             }
-            set => _condition.Current = value;
+            set => Condition.Current = value;
         }
-        
+
         // --------------- INSTANTIATION --------------- //
         public static T CreateCondition<T>()
             where T : J_ReactiveCondition
         {
             var condition = CreateInstance<T>();
-            condition._condition = CreateInstance<J_ReactiveBool>();
             return condition;
         }
 
         // --------------- ACTIVATION --------------- //
         protected override void ActivateThis()
         {
-            if (_condition == null) _condition = CreateInstance<J_ReactiveBool>();
             Current = false;
             StartCheckingCondition();
             base.ActivateThis();
         }
-        
+
         protected override void EndThis()
         {
             base.EndThis();
             StopCheckingCondition();
         }
-        
+
         // --------------- IMPLEMENTATION --------------- //
         protected abstract void StartCheckingCondition();
         protected abstract void StopCheckingCondition();
@@ -51,7 +58,6 @@ namespace JReact.Conditions
         //used to update the condition before checking it
         protected virtual void UpdateCondition() {}
 
-        
         // --------------- SUBSCRIBERS --------------- //
         //helpers to make this more readable
         public void SubscribeToCondition(Action<bool> action) { Subscribe(action); }
@@ -61,17 +67,17 @@ namespace JReact.Conditions
         public void Subscribe(Action<bool> action)
         {
             if (!IsActive) Activate();
-            _condition.Subscribe(action);
+            Condition.Subscribe(action);
         }
 
         public void UnSubscribe(Action<bool> action)
         {
-            _condition.UnSubscribe(action); 
-            if(!_condition.HasListeners) End();
+            Condition.UnSubscribe(action);
+            if (!Condition.HasListeners) End();
         }
 
         // --------------- OPERATORS OVERLOAD --------------- //
-        public static bool operator true(J_ReactiveCondition item) => item.Current;
+        public static bool operator true(J_ReactiveCondition  item) => item.Current;
         public static bool operator false(J_ReactiveCondition item) => !item.Current;
 
         public static implicit operator bool(J_ReactiveCondition condition) => condition.Current;

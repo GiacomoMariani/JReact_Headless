@@ -37,12 +37,12 @@ namespace JReact.UiView.Collections
         protected virtual void OpenThis()
         {
             //make sure all the elements are shown
-            for (int i = 0; i < _Collection.Length; i++)
-                Add(_Collection[i]);
+            for (int i = 0; i < _Collection.Length; i++) Add(_Collection[i]);
         }
 
         protected virtual void CloseThis() {}
 
+        // --------------- ADD --------------- //
         private void Add(T item)
         {
             //some views might be ignored
@@ -53,24 +53,25 @@ namespace JReact.UiView.Collections
             newUiView.ActorUpdate(item);
             _trackedElements[item] = newUiView;
             //add further adjustments here
-            AddedView(item);
+            AddedView(item, newUiView);
         }
 
         //used to decide if we want to hide some element
         protected virtual bool WantToShowElement(T item) => !_trackedElements.ContainsKey(item);
 
         //an helper method if we want to apply further elements
-        protected virtual void AddedView(T itemAdded) {}
+        protected virtual void AddedView(T itemAdded, J_Mono_Actor<T> newUiView) {}
 
+        // --------------- REMOVE --------------- //
         private void Remove(T itemRemoved)
         {
-            RemovedView(itemRemoved);
+            RemovedView(itemRemoved, _trackedElements[itemRemoved]);
             Destroy(_trackedElements[itemRemoved].gameObject);
             _trackedElements.Remove(itemRemoved);
         }
 
         //further adjustments if we want to remove a view
-        protected virtual void RemovedView(T itemRemoved) {}
+        protected virtual void RemovedView(T itemRemoved, J_Mono_Actor<T> newUiView) {}
 
         // --------------- UNITY EVENTS --------------- //
         private void OnEnable()

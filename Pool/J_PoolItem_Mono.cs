@@ -15,35 +15,38 @@ namespace JReact.Pool
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _returnInPoolAtDisable = true;
 
         // --------------- STATE --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] internal T NextItemInPool { get; private set; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_Pool<T> _poolOwner;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _inPool;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool InPool { get; private set; }
 
         // --------------- POOL METHODS --------------- //
-        internal void InjectPoolOwner(J_Pool<T> owner) { _poolOwner = owner; }
+        internal void InjectPoolOwner(J_Pool<T> owner)
+        {
+            _poolOwner = owner;
+            InPool     = true;
+        }
 
         internal virtual void GetFromPool()
         {
-            Assert.IsTrue(_inPool, $"{gameObject.name} was not in the pool.");
-            _inPool = false;
+            Assert.IsTrue(InPool, $"{gameObject.name} was not in the pool.");
+            InPool = false;
         }
 
-        internal virtual void ReturnToPool()
+        protected virtual void ReturnToPool()
         {
-            Assert.IsFalse(_inPool, $"{gameObject.name} seems to be in the pool already. Cancel command.");
-            if (!_inPool) _poolOwner.PlaceInPool((T) this);
-        }
+            if (InPool)
+            {
+                JLog.Warning($"{gameObject.name} seems to be in the pool already. Cancel command.");
+                return;
+            }
 
-        internal void ConnectWithPool(T next)
-        {
-            NextItemInPool = next;
-            _inPool        = true;
+            if (!InPool) _poolOwner.PlaceInPool((T) this);
+            InPool = true;
         }
 
         // --------------- UNITY EVENTS --------------- //
         protected virtual void OnDisable()
         {
-            if (_returnInPoolAtDisable && !_inPool) ReturnToPool();
+            if (_returnInPoolAtDisable && !InPool) ReturnToPool();
         }
     }
 }

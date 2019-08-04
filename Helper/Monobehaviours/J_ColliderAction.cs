@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using JReact.Conditions;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,9 +11,13 @@ namespace JReact
     [RequireComponent(typeof(Collider2D))]
     public sealed class J_ColliderAction : MonoBehaviour, IPointerClickHandler
     {
+        [BoxGroup("Setup", true, true, 0), SerializeField] private J_ReactiveCondition[] _conditions;
         [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _unityEventToSend;
 
-        private void SendCommand() => _unityEventToSend.Invoke(); 
+        private void SendCommand()
+        {
+            if (_conditions.AndOperator()) _unityEventToSend.Invoke();
+        }
 
         public void OnPointerClick(PointerEventData eventData) => SendCommand();
     }

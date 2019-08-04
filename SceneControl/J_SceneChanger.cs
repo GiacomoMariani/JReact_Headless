@@ -10,7 +10,7 @@ namespace JReact.SceneControls
     /// <summary>
     /// this class is used to change the scene
     /// </summary>
-    [CreateAssetMenu(menuName = "Reactive/Scenes/Scene Changer")]
+    [CreateAssetMenu(menuName = "Reactive/Scenes/Scene Changer", fileName = "SceneChanger")]
     public sealed class J_SceneChanger : ScriptableObject, jObservable<(Scene previous, Scene current)>
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
@@ -39,6 +39,7 @@ namespace JReact.SceneControls
         public void LoadScene(string sceneName)
         {
             if (!_isInitialized) SetupThis();
+            JLog.Log($"{name} load scene with name {sceneName}", JLogTags.SceneManager, this);
             Timing.RunCoroutine(LoadingTheScene(sceneName), Segment.Update, JCoroutineTags.COROUTINE_SceneChangerTag);
         }
 
@@ -67,20 +68,24 @@ namespace JReact.SceneControls
         //this is sent when the new scene is changed
         private void SceneChanged(Scene oldScene, Scene newScene)
         {
-            JLog.Log($"{name} changed from scene -{oldScene.name}- to scene -{newScene.name}-",
-                         JLogTags.SceneManager, this);
+            JLog.Log($"{name} scene change from -{oldScene.name}- to -{newScene.name}-", JLogTags.SceneManager, this);
 
             SceneManager.activeSceneChanged -= SceneChanged;
             CurrentScene                    =  newScene;
             OnSceneChange?.Invoke((oldScene, newScene));
         }
 
-        #region SUBSCRIBERS
-        public void Subscribe(Action<(Scene previous, Scene current)> actionToAdd) { OnSceneChange      += actionToAdd; }
+        // --------------- SUBSCRIBERS --------------- //
+        public void Subscribe(Action<(Scene previous, Scene current)>   actionToAdd)    { OnSceneChange += actionToAdd; }
         public void UnSubscribe(Action<(Scene previous, Scene current)> actionToRemove) { OnSceneChange -= actionToRemove; }
 
-        public void SubscribeToLoadProgress(Action<float> actionToAdd) { OnLoadProgress      += actionToAdd; }
+        public void SubscribeToLoadProgress(Action<float>   actionToAdd)    { OnLoadProgress += actionToAdd; }
         public void UnSubscribeToLoadProgress(Action<float> actionToRemove) { OnLoadProgress -= actionToRemove; }
-        #endregion
+
+#if UNITY_EDITOR
+        // --------------- DEBUG --------------- //
+        [BoxGroup("Debug", true, true, 0), SerializeField] private string _sceneToLoad;
+        [BoxGroup("Debug", true, true, 0), Button(ButtonSizes.Medium)] private void DebugLoadScene() => LoadScene(_sceneToLoad);
+#endif
     }
 }

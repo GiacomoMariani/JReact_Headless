@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 namespace JReact
@@ -11,9 +12,6 @@ namespace JReact
     /// </summary>
     public static class JLog
     {
-        //can be set to false to avoid too much logging
-        private static bool _wantTrace = true;
-
         // --------------- FORMAT --------------- //
         private static readonly StringBuilder _stringBuilder = new StringBuilder(capacity: 150);
         private static StringBuilder SBuilder
@@ -36,6 +34,7 @@ namespace JReact
         /// <param name="message">the message to be logged</param>
         /// <param name="tag">a tag useful for console pro</param>
         /// <param name="context">the related conjextext</param>
+        [Conditional("DEBUG")]
         public static void Log(string message, string tag = "", Object context = null)
         {
 #if UNITY_EDITOR
@@ -46,13 +45,14 @@ namespace JReact
 #endif
         }
 
+        [Conditional("TRACE")]
         public static void Trace(string message, string tag = "", Object context = null)
         {
 #if UNITY_EDITOR
-            if (_wantTrace) Debug.Log(Format(message, tag), context);
+            Debug.Log(Format(message, tag), context);
 #endif
 #if !UNITY_EDITOR
-			if(_wantTrace) Debug.Log(Format(message, tag));
+			Debug.Log(Format(message, tag));
 #endif
         }
 
@@ -88,6 +88,7 @@ namespace JReact
 #endif
         }
 
+        [Conditional("DEBUG")]
         public static void RememberToDo(string message, object workOnThis)
         {
 #if UNITY_EDITOR
@@ -95,6 +96,7 @@ namespace JReact
 #endif
         }
 
+        [Conditional("DEBUG")]
         public static void QuickLog(string message, Object context = null) { Log(message, JLogTags.QuickLog, context); }
     }
 }

@@ -40,20 +40,20 @@ namespace JReact
         }
 
         // --------------- VIEW UPDATE --------------- //
-        protected virtual void UpdateAllViews(T element)
+        protected virtual void UpdateAllViews(T actor)
         {
             for (int i = 0; i < _relatedElements.Length; i++)
-                UpdateView(_relatedElements[i], element);
+                UpdateView(_relatedElements[i], actor);
         }
 
         /// <summary>
         /// updates the specific views on this actor
         /// </summary>
-        protected virtual void UpdateView(iUpdater<T> view, T element) { view.UpdateThis(element); }
+        protected virtual void UpdateView(iUpdater<T> view, T actor) { view.UpdateThis(actor); }
 
         // --------------- ABSTRACT IMPLEMENTATION --------------- //
-        protected virtual void ActorRemoved(T actorElement) {}
-        protected virtual void ActorAdded(T element) {}
+        protected virtual void ActorRemoved(T actor) {}
+        protected virtual void ActorAdded(T actor) {}
 
         protected virtual void OnEnable()
         {

@@ -22,14 +22,18 @@ namespace JReact.CloudBuild
         private static void GetManifest()
         {
             _manifest = (TextAsset) Resources.Load(ManifestNameTxt);
+            if (_manifest == null) JLog.Error($"No manifest found.");
             Assert.IsNotNull(_manifest, $"Retrieved no manifest file from resource file: {ManifestNameTxt}");
             _manifestDictionary = JsonUtility.FromJson<Dictionary<string, object>>(_manifest.text);
-            Assert.IsNotNull(_manifestDictionary, "no Dictionary found for manifest");
+            if (_manifestDictionary == null) JLog.Error("No Manifest dictionary found");
         }
 
         //gets a key
-        private static string GetKeyFromManifest(string key)
+        public static string GetKeyFromManifest(string key)
         {
+#if UNITY_EDITOR
+            return "";
+#endif
             //key without a value sends a warning
             if (_manifestDictionary.ContainsKey(key))
             {
@@ -45,6 +49,9 @@ namespace JReact.CloudBuild
         //print all the values of the manifest
         public static void PrintAllManifestValues()
         {
+#if UNITY_EDITOR
+            return;
+#endif
             if (_manifest == null) GetManifest();
             if (_manifest == null) return;
 
@@ -66,6 +73,10 @@ namespace JReact.CloudBuild
         /// <returns>returns the version of the cloud build</returns>
         public static string GetCloudBuildVersion()
         {
+#if UNITY_EDITOR
+            return "";
+#endif
+
             if (_manifest == null) GetManifest();
             if (_manifest == null) return "";
 

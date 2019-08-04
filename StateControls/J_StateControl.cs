@@ -38,26 +38,7 @@ namespace JReact.StateControl
         /* The following items are used to track the current situation */
 
         [Title("State", "The current situation"), FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
-        private T _currentState;
-        public T CurrentState
-        {
-            get => _currentState;
-            private set
-            {
-                // --------------- EXIT EVENT --------------- //
-                //send exit event of the previous event
-                Assert.IsNotNull(CurrentState, $"{name} is trying to exit from a null state.");
-                CurrentState.End();
-
-                // --------------- VALUE SET --------------- //
-                //set the value and raise the event of the next state
-                Assert.IsNotNull(value, $"{name} is trying to set a null state.");
-                _currentState = value;
-
-                // --------------- ENTER EVENT--------------- //
-                CurrentState.Activate();
-            }
-        }
+        public T CurrentState { get; private set; }
 
         // --------------- INSTANTIATION --------------- //
         public static J_StateControl<T> Create(T[] states, T firstState, bool initialize = true)
@@ -71,10 +52,9 @@ namespace JReact.StateControl
 
         public static J_StateControl<T> FromTemplate(J_StateControl<T> template, bool initialize = true)
         {
-            int length = template._validStates.Length;
-            var states = new T[length];
-            for (int i = 0; i < length; i++)
-                states[i] = J_State.Copy(template._validStates[i]);
+            int length                                 = template._validStates.Length;
+            var states                                 = new T[length];
+            for (int i = 0; i < length; i++) states[i] = J_State.Copy(template._validStates[i]);
 
             T firstState = J_State.Copy(template._firstState);
 
@@ -86,7 +66,9 @@ namespace JReact.StateControl
         protected override void ActivateThis()
         {
             Assert.IsNotNull(_firstState, $"Please set a first state to validate the controls on: {name}");
-            SetNewState(_firstState);
+            CurrentState = _firstState;
+            CurrentState.Activate();
+            OnStateTransition?.Invoke((null, CurrentState));
             JLog.Log($"Initialization completed on {name} with {_validStates.Length} states.", JLogTags.State, this);
             base.ActivateThis();
         }
@@ -95,7 +77,7 @@ namespace JReact.StateControl
         {
             base.EndThis();
             if (CurrentState != null) CurrentState.End();
-            _currentState = null;
+            CurrentState = null;
         }
 
         // --------------- MAIN CONTROLS --------------- //
@@ -110,12 +92,19 @@ namespace JReact.StateControl
             if (!ValidState(stateToSet)) return;
             if (StateAlreadySet(stateToSet)) return;
 
-            JLog.Log($"{name} from {(CurrentState != null ? CurrentState.name : "null")} to {stateToSet.name}.",
-                     JLogTags.State, this);
+            JLog.Log($"{name} from {CurrentState.name} to {stateToSet.name}.", JLogTags.State, this);
 
-            // --------------- COMMAND PROCESSING --------------- //
+            // --------------- EXIT EVENT --------------- //
+            //send exit event of the previous event
+            Assert.IsNotNull(CurrentState, $"{name} is trying to exit from a null state.");
+            CurrentState.End();
+
+            // --------------- VALUE SET --------------- //
             T previous = CurrentState;
             CurrentState = stateToSet;
+
+            // --------------- ENTER EVENTS --------------- //
+            CurrentState.Activate();
             OnStateTransition?.Invoke((previous, stateToSet));
         }
 
@@ -160,7 +149,7 @@ namespace JReact.StateControl
 
         public void UnSubscribe(Action<(T previous, T current)> action) { OnStateTransition -= action; }
 
-        public void SubscribeToStateChange(Action<(T previous, T current)> action) => Subscribe(action);
+        public void SubscribeToStateChange(Action<(T previous, T current)>   action) => Subscribe(action);
         public void UnSubscribeToStateChange(Action<(T previous, T current)> action) => UnSubscribe(action);
     }
 }

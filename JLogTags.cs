@@ -13,6 +13,7 @@ namespace JReact
         public const string Player = "-Player-";
         public const string Avatar = "-Avatar-";
         public const string GameBoard = "-GameBoard-";
+        public const string Pool = "-Pool-";
         public const string State = "-State-";
         public const string Reset = "-Reset-";
         public const string SanityChecks = "-SanityCheck-";
@@ -26,6 +27,7 @@ namespace JReact
         public const string Pathfind = "-JPathfind-";
         public const string Input = "-Input-";
         public const string Settings = "-Settings-";
+        public const string Dialogue = "-Dialogue-";
         public const string Message = "-Message-";
         public const string Build = "-Build-";
         public const string Conditions = "-Conditions-";
