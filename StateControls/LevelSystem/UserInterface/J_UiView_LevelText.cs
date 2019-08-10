@@ -12,7 +12,7 @@ namespace JReact.StateControl.LevelSystem
     [RequireComponent(typeof(TextMeshProUGUI))]
     public sealed class J_UiView_LevelText : J_UiView_TextElement
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required, AssetsOnly] private J_LevelProgression _levelControl;
+        [BoxGroup("Setup", true, true), SerializeField, Required, AssetsOnly] private J_LevelProgression _levelControl;
 
         protected override void SanityChecks()
         {

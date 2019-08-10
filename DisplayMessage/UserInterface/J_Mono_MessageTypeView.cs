@@ -9,11 +9,11 @@ namespace JReact.ScreenMessage
     public class J_Mono_MessageTypeView : J_Mono_ActorElement<JMessage>, iInitiator<J_Mono_MessagePrinter>
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageId[] _validMessages;
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private GameObject[] _views;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_MessageId[] _validMessages;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private GameObject[] _views;
 
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _disableWhenPrinting;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _enableWhenPrinting;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _disableWhenPrinting;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _enableWhenPrinting;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_Mono_MessagePrinter _printer;
 
@@ -31,8 +31,7 @@ namespace JReact.ScreenMessage
             //activate the views accordingly
             for (int i = 0; i < _views.Length; i++)
             {
-                if (isActiveToShow != _views[i].activeSelf)
-                    _views[i].SetActive(isActiveToShow);
+                if (isActiveToShow != _views[i].activeSelf) _views[i].SetActive(isActiveToShow);
             }
         }
 

@@ -5,10 +5,10 @@ namespace JReact.UiView
 {
     public class J_RectToScreenPosition : MonoBehaviour
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveVector2 _screenPoint;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ReactiveVector2 _screenPoint;
 
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Camera _camera;
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private RectTransform _rect;
+        [BoxGroup("Setup", true, true), SerializeField] private Camera _camera;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private RectTransform _rect;
         private RectTransform _ThisRect
         {
             get

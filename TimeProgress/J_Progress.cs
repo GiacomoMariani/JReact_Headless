@@ -17,8 +17,8 @@ namespace JReact.TimeProgress
         private event Action<J_Progress> OnProgressComplete;
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_GenericCounter _counter;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Identifier _identifier;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_GenericCounter _counter;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly] private J_Identifier _identifier;
         public J_Identifier Identifier => _identifier;
 
         // --------------- STATE --------------- //

@@ -12,8 +12,8 @@ namespace JReact.ScreenMessage
     public sealed class J_MessageStorage : ScriptableObject
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxMessages;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageSender _sender;
+        [BoxGroup("Setup", true, true), SerializeField] private int _maxMessages;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_MessageSender _sender;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<JMessage> _messages = new Queue<JMessage>();
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isRunning;

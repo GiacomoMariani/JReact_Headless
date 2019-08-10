@@ -8,7 +8,7 @@ namespace JReact.StateControl.Weather
     /// </summary>
     public sealed class J_Mono_RainCatcher : J_Mono_StateElement
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private ParticleSystem _rainParticles;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private ParticleSystem _rainParticles;
 
         protected override void EnterState() { _rainParticles.Play(); }
 

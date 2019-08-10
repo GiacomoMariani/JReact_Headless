@@ -10,8 +10,8 @@ namespace JReact.ScreenMessage
     public class J_Actor_ScreenMessage : J_Mono_Actor<JMessage>
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] protected J_MessageSender _sender;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private J_MessageId[] _desiredTypes;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] protected J_MessageSender _sender;
+        [BoxGroup("Setup", true, true), SerializeField] private J_MessageId[] _desiredTypes;
 
         // --------------- INITIALIZATION --------------- //
         protected override void SanityChecks()
@@ -24,8 +24,7 @@ namespace JReact.ScreenMessage
         private void TrySettingThisElement(JMessage messageSent)
         {
             //publish only desired messages
-            if (_desiredTypes.ArrayContains(messageSent.MessageId))
-                ActorUpdate(messageSent);
+            if (_desiredTypes.ArrayContains(messageSent.MessageId)) ActorUpdate(messageSent);
         }
 
         // --------------- RESET AND LISTENERS --------------- //

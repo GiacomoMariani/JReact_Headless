@@ -15,11 +15,11 @@ namespace JReact.Pathfinding
     {
         // --------------- SETUP --------------- //
         //the related grid
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_PathGrid<T> _pathGrid;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_PathGrid<T> _pathGrid;
         //heuristic, used to calculate the path
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_PathHeuristics _heuristics;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_PathHeuristics _heuristics;
         //max amount of steps for a path
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxPathSteps = 1000;
+        [BoxGroup("Setup", true, true), SerializeField] private int _maxPathSteps = 1000;
 
         // --------------- STATE --------------- //
         //estimated distances
@@ -58,7 +58,7 @@ namespace JReact.Pathfinding
         {
             if (_debug)
                 JLog.Log($"{name} calculates from {startNode.Coordinates} to {goalNode.Coordinates}",
-                             JLogTags.Pathfind, this);
+                         JLogTags.Pathfind, this);
 
             // --------------- SETTING UP THE CALCULATION --------------- //
             bool goalReached = false;
@@ -100,8 +100,7 @@ namespace JReact.Pathfinding
                     float tentativeScore = _realCost[currentNode] + getCost(currentNode, neighbour);
                     //ignore if we have already a better path until here
                     if (_realCost.ContainsKey(neighbour) &&
-                        tentativeScore >= _realCost[neighbour])
-                        continue;
+                        tentativeScore >= _realCost[neighbour]) continue;
 
                     // --------------- REPLACEMENT --------------- //
                     //set the new cost
@@ -116,22 +115,20 @@ namespace JReact.Pathfinding
 
                     // --------------- ADDING TO OPEN SET --------------- //
                     //add the neighbour to the list if missing
-                    if (!_openList.Contains(neighbour))
-                        _openList.Enqueue(neighbour, _heuristicCost[neighbour]);
+                    if (!_openList.Contains(neighbour)) _openList.Enqueue(neighbour, _heuristicCost[neighbour]);
                 }
             }
 
             if (_debug)
                 JLog.Log($"{name} Path from {startNode.Coordinates} to {goalNode.Coordinates}. Found: {goalReached}. Explored {_exploredNodes.Count} nodes.",
-                             JLogTags.Input, this);
+                         JLogTags.Input, this);
 
             if (_debug && !goalReached)
                 JLog.Log($"{name} No path Found. Nodes Explored {_exploredNodes.PrintAll()}", JLogTags.Input, this);
 
             //if we have not reached the goal we return null
             if (!goalReached ||
-                goalNode == startNode)
-                return null;
+                goalNode == startNode) return null;
 
             //calculates the path backward
             List<T> path = RecalculatePath(goalNode, startNode);

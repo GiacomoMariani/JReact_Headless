@@ -22,10 +22,10 @@ namespace JReact.Movement
         private const int INT_StartID = -1;
 
         //the reference to the transform
-        [BoxGroup("Mover", true, true, 0), ReadOnly] protected Transform _ThisTransform => transform;
+        [BoxGroup("Mover", true, true), ReadOnly] protected Transform _ThisTransform => transform;
         //the id of the mover, it starts at -1, and then get identified
-        [BoxGroup("Mover", true, true, 0), ReadOnly] private int _transformId = INT_StartID;
-        [BoxGroup("Mover", true, true, 0), ReadOnly] private int _TransformId
+        [BoxGroup("Mover", true, true), ReadOnly] private int _transformId = INT_StartID;
+        [BoxGroup("Mover", true, true), ReadOnly] private int _TransformId
         {
             get
             {
@@ -34,7 +34,7 @@ namespace JReact.Movement
             }
         }
         //the current position of the mover, used also to move it
-        [BoxGroup("Mover", true, true, 0), ReadOnly] public virtual Vector2 CurrentPosition
+        [BoxGroup("Mover", true, true), ReadOnly] public virtual Vector2 CurrentPosition
         {
             get => _ThisTransform.position;
             protected set => _ThisTransform.position = value;
@@ -192,9 +192,9 @@ namespace JReact.Movement
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToMovement(MoveAction actionToAdd) { OnMove                                += actionToAdd; }
-        public void UnSubscribeToMovement(MoveAction actionToRemove) { OnMove                           -= actionToRemove; }
-        public void SubscribeToReachFixedPosition(MoveAction actionToAdd) { OnFixedPositionReached      += actionToAdd; }
+        public void SubscribeToMovement(MoveAction             actionToAdd)    { OnMove                 += actionToAdd; }
+        public void UnSubscribeToMovement(MoveAction           actionToRemove) { OnMove                 -= actionToRemove; }
+        public void SubscribeToReachFixedPosition(MoveAction   actionToAdd)    { OnFixedPositionReached += actionToAdd; }
         public void UnSubscribeToReachFixedPosition(MoveAction actionToRemove) { OnFixedPositionReached -= actionToRemove; }
         #endregion
 

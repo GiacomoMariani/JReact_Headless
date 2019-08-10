@@ -14,16 +14,14 @@ namespace JReact
         public void RunAllTests()
         {
             _testables = GetComponentsInChildren<iTestable>();
-            foreach (iTestable test in _testables)
-                test.RunTest();
+            foreach (iTestable test in _testables) test.RunTest();
         }
 
         [Button(ButtonSizes.Large)]
         public void StopAllTests()
         {
             _testables = GetComponentsInChildren<iTestable>();
-            foreach (iTestable test in _testables)
-                test.StopTest();
+            foreach (iTestable test in _testables) test.StopTest();
         }
     }
 }

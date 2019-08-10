@@ -18,10 +18,9 @@ namespace JReact.Pool.Roamer
         private const string COROUTINE_Adjust = "COROUTINE_RoamerAdjust";
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private float _speedMultiplier = 1f;
+        [BoxGroup("Setup", true, true), SerializeField] private float _speedMultiplier = 1f;
         //the time to adapt to the new wind speed
-        [BoxGroup("Setup", true, true, 0), SerializeField, MinMaxSlider(0f, 5f)]
-        private Vector2 _adaptionTimeRange = new Vector2(0f, 5f);
+        [BoxGroup("Setup", true, true), SerializeField, MinMaxSlider(0f, 5f)] private Vector2 _adaptionTimeRange = new Vector2(0f, 5f);
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_Wind _windControl;
@@ -118,8 +117,8 @@ namespace JReact.Pool.Roamer
 
         //check if we are out of the borders
         private bool OutOfBorders(Vector2 positionToCheck, J_GameBorders borders) => positionToCheck.x > borders.RightBorder ||
-                                                                                     positionToCheck.x < borders.LeftBorder  ||
-                                                                                     positionToCheck.y > borders.UpBorder    ||
+                                                                                     positionToCheck.x < borders.LeftBorder ||
+                                                                                     positionToCheck.y > borders.UpBorder   ||
                                                                                      positionToCheck.y < borders.DownBorder;
 
         // --------------- TIMEOUT AND DESTROY COMMANDS --------------- //

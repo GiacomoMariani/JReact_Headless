@@ -22,7 +22,7 @@ namespace JReact.Pool.SpecialEffect
             SanityChecks();
         }
 
-        protected virtual void InitThis() { _instanceId = GetInstanceID(); }
+        protected virtual void InitThis()     { _instanceId = GetInstanceID(); }
         protected virtual void SanityChecks() {}
 
         // --------------- ACTIVATION AND DEACTIVATION --------------- //

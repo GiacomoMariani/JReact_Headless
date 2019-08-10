@@ -42,7 +42,7 @@ namespace JReact.UiView
             SanityChecks();
         }
 
-        protected virtual void InitThis() {}
+        protected virtual void InitThis()     {}
         protected virtual void SanityChecks() { Assert.IsNotNull(ThisImage, "Requires a TextMeshProUGUI: " + gameObject); }
 
         // --------------- COMMANDS --------------- //

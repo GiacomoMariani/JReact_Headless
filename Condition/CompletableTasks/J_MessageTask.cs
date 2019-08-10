@@ -10,12 +10,12 @@ namespace JReact.Conditions.Tasks
     [CreateAssetMenu(menuName = "Reactive/Task/Tutorial Message")]
     public class J_MessageTask : J_CompletableTask
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageSender _messageSender;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_MessageSender _messageSender;
         //the string related to this tutorial
-        [BoxGroup("Setup", true, true, 0), SerializeField] private string _message;
+        [BoxGroup("Setup", true, true), SerializeField] private string _message;
 
         //the desired type of message
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageId _messageType;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_MessageId _messageType;
 
         //sends the message required by this tutorial
         protected override void RunTask()

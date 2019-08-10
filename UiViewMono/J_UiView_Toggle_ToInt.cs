@@ -8,8 +8,8 @@ namespace JReact
     public class J_UiView_Toggle_ToInt : MonoBehaviour
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveInt _intValue;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Toggle _toggle;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ReactiveInt _intValue;
+        [BoxGroup("Setup", true, true), SerializeField] private Toggle _toggle;
 
         // --------------- INITIALIZATION --------------- //
         private void Awake()
@@ -30,7 +30,9 @@ namespace JReact
         }
 
         // --------------- COMMAND --------------- //
-        private void IsOnUpdate(bool isOn) => _intValue.Current = isOn ? 1 : 0;
+        private void IsOnUpdate(bool isOn) => _intValue.Current = isOn
+                                                                      ? 1
+                                                                      : 0;
 
         // --------------- LISTENER SETUP --------------- //
         private void OnEnable()

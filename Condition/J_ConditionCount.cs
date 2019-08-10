@@ -12,8 +12,8 @@ namespace JReact.Conditions
         where T : iStackable
     {
         //desired request
-        [BoxGroup("Setup", true, true, 0), SerializeField] private ComparisonType _comparison;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _amount;
+        [BoxGroup("Setup", true, true), SerializeField] private ComparisonType _comparison;
+        [BoxGroup("Setup", true, true), SerializeField] private int _amount;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract T _stackable { get; }
 
@@ -38,12 +38,15 @@ namespace JReact.Conditions
                 case ComparisonType.Less:
                     Current = currentAmount < _amount;
                     break;
+
                 case ComparisonType.Equal:
                     Current = currentAmount == _amount;
                     break;
+
                 case ComparisonType.More:
                     Current = currentAmount > _amount;
                     break;
+
                 default: throw new ArgumentOutOfRangeException();
             }
         }

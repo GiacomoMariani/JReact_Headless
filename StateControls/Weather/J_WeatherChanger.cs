@@ -16,8 +16,8 @@ namespace JReact.StateControl.Weather
         private const string COROUTINE_WeatherMainTag = "COROUTINE_WeatherMainTag";
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_WeatherType[] _allWeathers;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_WeatherStates _weatherStateControl;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_WeatherType[] _allWeathers;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_WeatherStates _weatherStateControl;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _allWeatherWeights;
@@ -39,8 +39,7 @@ namespace JReact.StateControl.Weather
         private void CalculateWeights()
         {
             _allWeatherWeights = 0;
-            for (int i = 0; i < _allWeathers.Length; i++)
-                _allWeatherWeights += _allWeathers[i].Weight;
+            for (int i = 0; i < _allWeathers.Length; i++) _allWeatherWeights += _allWeathers[i].Weight;
         }
 
         protected override void EndThis()

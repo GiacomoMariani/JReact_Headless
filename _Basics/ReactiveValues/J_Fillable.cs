@@ -17,9 +17,9 @@ namespace JReact
         private event Action<int> OnMinChanged;
 
         //optionally set a starting value
-        [BoxGroup("Setup", true, true, 0), SerializeField] protected int _startAmount;
-        [BoxGroup("Setup", true, true, 0), SerializeField] protected int _startMax = 100;
-        [BoxGroup("Setup", true, true, 0), SerializeField] protected int _startMin;
+        [BoxGroup("Setup", true, true), SerializeField] protected int _startAmount;
+        [BoxGroup("Setup", true, true), SerializeField] protected int _startMax = 100;
+        [BoxGroup("Setup", true, true), SerializeField] protected int _startMin;
 
         private int _current;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Current
@@ -161,22 +161,22 @@ namespace JReact
         }
 
         // --------------- PUBLIC CHECKS --------------- //
-        public bool CanAdd(int amount) => Current + amount <= Max;
-        public bool HasEnough(int amount) => Current       >= amount;
-        public int HowMuchToReach(int amount) => amount - Current;
+        public bool CanAdd(int         amount) => Current + amount <= Max;
+        public bool HasEnough(int      amount) => Current          >= amount;
+        public int  HowMuchToReach(int amount) => amount - Current;
 
         public bool CanSetMaxCapacity(int maxToSet) => Current <= maxToSet && Min   <= maxToSet;
         public bool CanSetMinCapacity(int minToSet) => Current >= minToSet && Max   >= minToSet;
-        public bool CanSetValue(int value) => value            >= Min      && value <= Max;
+        public bool CanSetValue(int       value)    => value   >= Min      && value <= Max;
 
         // --------------- SUBSCRIBERS AND LISTENERS --------------- //
-        public virtual void Subscribe(Action<int> action) { OnValueChange   += action; }
+        public virtual void Subscribe(Action<int>   action) { OnValueChange += action; }
         public virtual void UnSubscribe(Action<int> action) { OnValueChange -= action; }
 
-        public virtual void SubscribeToMaxCapacity(Action<int> action) { OnMaxChanged   += action; }
+        public virtual void SubscribeToMaxCapacity(Action<int>   action) { OnMaxChanged += action; }
         public virtual void UnSubscribeToMaxCapacity(Action<int> action) { OnMaxChanged -= action; }
 
-        public virtual void SubscribeToMinCapacity(Action<int> action) { OnMinChanged   += action; }
+        public virtual void SubscribeToMinCapacity(Action<int>   action) { OnMinChanged += action; }
         public virtual void UnSubscribeToMinCapacity(Action<int> action) { OnMinChanged -= action; }
     }
 }

@@ -13,7 +13,7 @@ namespace JReact
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         //sets the actor directly or by injection
-        [InfoBox("Null => needs to be injected via code"), BoxGroup("Setup", true, true, 0), SerializeField]
+        [InfoBox("Null => needs to be injected via code"), BoxGroup("Setup", true, true), SerializeField]
         protected T _actor;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _initCompleted;
@@ -42,8 +42,7 @@ namespace JReact
         // --------------- VIEW UPDATE --------------- //
         protected virtual void UpdateAllViews(T actor)
         {
-            for (int i = 0; i < _relatedElements.Length; i++)
-                UpdateView(_relatedElements[i], actor);
+            for (int i = 0; i < _relatedElements.Length; i++) UpdateView(_relatedElements[i], actor);
         }
 
         /// <summary>
@@ -53,7 +52,7 @@ namespace JReact
 
         // --------------- ABSTRACT IMPLEMENTATION --------------- //
         protected virtual void ActorRemoved(T actor) {}
-        protected virtual void ActorAdded(T actor) {}
+        protected virtual void ActorAdded(T   actor) {}
 
         protected virtual void OnEnable()
         {

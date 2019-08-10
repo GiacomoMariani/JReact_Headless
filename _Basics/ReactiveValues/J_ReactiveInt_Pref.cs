@@ -7,7 +7,7 @@ namespace JReact
     public sealed class J_ReactiveInt_Pref : J_ReactiveInt
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private string _prefName;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private string _prefName;
         public override int Current
         {
             get
@@ -24,4 +24,3 @@ namespace JReact
         }
     }
 }
-

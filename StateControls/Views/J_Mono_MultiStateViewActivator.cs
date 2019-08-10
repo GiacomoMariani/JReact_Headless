@@ -11,9 +11,9 @@ namespace JReact.StateControl
     {
         // --------------- VALUES AND PROPERTIES --------------- //
 
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _activateWhenEnterState = true;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _activateWhenEnterState = true;
         //the views related to this element
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private J_Mono_ViewActivator _view;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private J_Mono_ViewActivator _view;
         private J_Mono_ViewActivator ThisView
         {
             get
@@ -23,11 +23,11 @@ namespace JReact.StateControl
             }
         }
 
-        [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
+        [BoxGroup("State Control", true, true), SerializeField, AssetsOnly, Required]
         protected J_SimpleStateControl _mainStateControl;
 
         //when we want to see this
-        [BoxGroup("Controls", true, true, 0), SerializeField] protected J_State[] _validStates;
+        [BoxGroup("Controls", true, true), SerializeField] protected J_State[] _validStates;
 
         //to check the activation of this element
         private bool _isActive;

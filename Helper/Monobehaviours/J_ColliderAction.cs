@@ -11,8 +11,8 @@ namespace JReact
     [RequireComponent(typeof(Collider2D))]
     public sealed class J_ColliderAction : MonoBehaviour, IPointerClickHandler
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField] private J_ReactiveCondition[] _conditions;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _unityEventToSend;
+        [BoxGroup("Setup", true, true), SerializeField] private J_ReactiveCondition[] _conditions;
+        [BoxGroup("Setup", true, true), SerializeField] private JUnityEvent _unityEventToSend;
 
         private void SendCommand()
         {

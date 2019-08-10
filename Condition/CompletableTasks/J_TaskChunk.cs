@@ -15,8 +15,8 @@ namespace JReact.Conditions.Tasks
         // --------------- FIELDS AND PROPERTIES --------------- //
         private Action<J_TaskChunk> OnStateChange;
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_CompletableTask[] _tasks;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Collection_DormantTasks _dormants;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_CompletableTask[] _tasks;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_Collection_DormantTasks _dormants;
 
         // --------------- STATE --------------- //
         [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] public string Title => name;
@@ -74,10 +74,11 @@ namespace JReact.Conditions.Tasks
                 nextTask.SubscribeToTaskChange(StepCompleted);
                 if (_dormants != null) _dormants.TrackTask(nextTask);
             }
-            
+
             //then run them all
             for (int i = 0; i < _tasks.Length; i++)
-                if (!_tasks[i].IsActive) _tasks[i].Activate();
+                if (!_tasks[i].IsActive)
+                    _tasks[i].Activate();
         }
 
         //remove the task when completed
@@ -103,9 +104,9 @@ namespace JReact.Conditions.Tasks
         public void SetState(ChunkState stateLoaded) { State = stateLoaded; }
 
         // --------------- SUBSCRIBERS --------------- //
-        public void Subscribe(Action<J_TaskChunk> action) { OnStateChange   += action; }
-        public void UnSubscribe(Action<J_TaskChunk> action) { OnStateChange -= action; }
-        public void SubscribeToStateChange(Action<J_TaskChunk> action) { Subscribe(action); }
+        public void Subscribe(Action<J_TaskChunk>                action) { OnStateChange += action; }
+        public void UnSubscribe(Action<J_TaskChunk>              action) { OnStateChange -= action; }
+        public void SubscribeToStateChange(Action<J_TaskChunk>   action) { Subscribe(action); }
         public void UnSubscribeToStateChange(Action<J_TaskChunk> action) { UnSubscribe(action); }
 
         // --------------- DISABLE AND RESET --------------- //

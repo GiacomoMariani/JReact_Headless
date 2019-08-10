@@ -15,11 +15,11 @@ namespace JReact
         //the possible condition to cancel the event
         [BoxGroup("Setup", true, true, 5), SerializeField, AssetsOnly] private J_ReactiveBool[] _conditions;
         //if we desire to launch this at startup
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _launchAtAwake;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _launchAtAwake;
         //the events where we want to send this
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event[] _event;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_Event[] _event;
         //what we want to send
-        [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _actions;
+        [BoxGroup("Setup", true, true), SerializeField] private JUnityEvent _actions;
 
         // --------------- INITIALIZATION --------------- //
         private void Awake() { InitThis(); }

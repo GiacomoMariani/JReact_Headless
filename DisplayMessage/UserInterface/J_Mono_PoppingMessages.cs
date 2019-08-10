@@ -17,11 +17,11 @@ namespace JReact.ScreenMessage
         private const string COROUTINE_PoppingMessagesTag = "COROUTINE_PoppingMessagesTag";
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_UiView_FloatingText _floatingPrefab;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _direction;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Color _color;
-        [BoxGroup("Setup", true, true, 0), SerializeField, Range(0.5f, 10.0f)] private float _secondsToComplete = 1.0f;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Ease _messageEase;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_UiView_FloatingText _floatingPrefab;
+        [BoxGroup("Setup", true, true), SerializeField] private Vector2 _direction;
+        [BoxGroup("Setup", true, true), SerializeField] private Color _color;
+        [BoxGroup("Setup", true, true), SerializeField, Range(0.5f, 10.0f)] private float _secondsToComplete = 1.0f;
+        [BoxGroup("Setup", true, true), SerializeField] private Ease _messageEase;
 
         // --------------- STATE --------------- //
         [BoxGroup("State", true, true, 15), ReadOnly]

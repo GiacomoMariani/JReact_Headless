@@ -9,8 +9,8 @@ namespace JReact.StateControl.PopUp
     {
         // --------------- SETUP --------------- //
         private enum PopUpButtonType { Confirm, Deny }
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_PopUp _popUp;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private PopUpButtonType _buttonType;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_PopUp _popUp;
+        [BoxGroup("Setup", true, true), SerializeField] private PopUpButtonType _buttonType;
 
         // --------------- STATE and BOOK KEEPING --------------- //
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private JUnityEvent _commandAction

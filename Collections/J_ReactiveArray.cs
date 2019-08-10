@@ -11,7 +11,7 @@ namespace JReact.Collections
     public abstract class J_ReactiveArray<T> : ScriptableObject,
                                                jObservable<(int index, T previous, T current)>,
                                                iResettable,
-                                               iReactiveCollection<T>
+                                               iReactiveIndexCollection<T>
     {
         // --------------- EVENTS --------------- //
         private event Action<(int index, T previous, T current)> OnChange;
@@ -19,9 +19,9 @@ namespace JReact.Collections
         public event Action<T> OnRemove;
 
         // --------------- SETUP --------------- //
-        [InfoBox("NULL => generated at default"), BoxGroup("Setup", true, true, 0), SerializeField]
+        [InfoBox("NULL => generated at default"), BoxGroup("Setup", true, true), SerializeField]
         protected T[] _thisArray;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _desiredLength = 50;
+        [BoxGroup("Setup", true, true), SerializeField] private int _desiredLength = 50;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Length => _thisArray?.Length ?? 0;
@@ -123,8 +123,9 @@ namespace JReact.Collections
         public void ProcessWith(Action<T> actionToCall)
         {
             for (int i = 0; i < Length; i++)
-                if (_thisArray[i] != null)
-                    actionToCall(_thisArray[i]);
+            {
+                if (_thisArray[i] != null) actionToCall(_thisArray[i]);
+            }
         }
 
         [FoldoutGroup("Commands", false, 100), Button(ButtonSizes.Medium)]

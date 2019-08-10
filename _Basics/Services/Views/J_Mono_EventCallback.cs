@@ -10,7 +10,7 @@ namespace JReact
     public abstract class J_Mono_EventCallback : MonoBehaviour
     {
         //the states we want to call the event
-        [BoxGroup("State", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event _stateEvent;
+        [BoxGroup("State", true, true), SerializeField, AssetsOnly, Required] private J_Event _stateEvent;
 
         // --------------- INITIALIZATION --------------- //
         private void Awake()

@@ -16,12 +16,12 @@ namespace JReact.Pool
     {
         // --------------- SETUP --------------- //
         //the prefabs are an array to differentiate them. Also an array of one can be used if we want always the same
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private T[] _prefabVariations;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_TransformGenerator _parentTransform;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _startPopulation = 50;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private T[] _prefabVariations;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly] private J_TransformGenerator _parentTransform;
+        [BoxGroup("Setup", true, true), SerializeField] private int _startPopulation = 50;
         //set this to true if we want to disable items when they get back to pool
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _disableItemInPool = true;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _instantPopulation = false;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _disableItemInPool = true;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _instantPopulation;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Stack<T> _poolStack;

@@ -7,7 +7,7 @@ namespace JReact
     public sealed class J_ReactiveFloat_Pref : J_ReactiveFloat
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private string _prefName;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private string _prefName;
         public override float Current
         {
             get

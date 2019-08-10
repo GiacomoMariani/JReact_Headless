@@ -12,11 +12,11 @@ namespace JReact.UiView
         // --------------- FIELDS AND PROPERTIES --------------- //
         private const string KeptPress_Tag = "KeptPress_Tag";
 
-        [BoxGroup("Setup", true, true, 0), SerializeField] private UnityEvent _action;
-        [BoxGroup("Setup", true, true, 0), SerializeField, MinValue(1f)] private ushort[] _actionPerSeconds;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private float _secondsBetweenIterations = 2f;
+        [BoxGroup("Setup", true, true), SerializeField] private UnityEvent _action;
+        [BoxGroup("Setup", true, true), SerializeField, MinValue(1f)] private ushort[] _actionPerSeconds;
+        [BoxGroup("Setup", true, true), SerializeField] private float _secondsBetweenIterations = 2f;
 
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private float _secondsPressed = 0;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private float _secondsPressed;
 
         // --------------- ACTION LOOP --------------- //
         private IEnumerator<float> PressingButton(int iteration)
@@ -50,7 +50,7 @@ namespace JReact.UiView
 
         // --------------- CLICK EVENTS --------------- //
         public void OnPointerDown(PointerEventData eventData) => Timing.RunCoroutine(PressingButton(0), Segment.Update, KeptPress_Tag);
-        public void OnPointerUp(PointerEventData eventData) => ResetThis();
+        public void OnPointerUp(PointerEventData   eventData) => ResetThis();
 
         // --------------- DISABLE AND RESET --------------- //
         private void OnDisable() => ResetThis();

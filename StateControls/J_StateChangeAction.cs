@@ -10,9 +10,9 @@ namespace JReact.StateControl
     public sealed class J_StateChangeAction : J_ProcessableAction
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
+        [BoxGroup("State Control", true, true), SerializeField, AssetsOnly, Required]
         private J_SimpleStateControl _stateControl;
-        [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
+        [BoxGroup("State Control", true, true), SerializeField, AssetsOnly, Required]
         private J_State _desiredState;
 
         /// <summary>

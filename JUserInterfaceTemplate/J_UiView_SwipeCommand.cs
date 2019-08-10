@@ -5,18 +5,18 @@ using UnityEngine.EventSystems;
 
 namespace JReact
 {
-    public class J_UiView_DragCommand : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class J_UiView_SwipeCjommand : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         // --------------- SETUP - EVENTS --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private float _dragAmount = 2f;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _upEvents = new JUnityEvent();
-        [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _downEvents = new JUnityEvent();
-        [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _rightEvents = new JUnityEvent();
-        [BoxGroup("Setup", true, true, 0), SerializeField] private JUnityEvent _leftEvents = new JUnityEvent();
+        [BoxGroup("Setup", true, true), SerializeField] private float _dragAmount = 2f;
+        [BoxGroup("Setup", true, true), SerializeField] private JUnityEvent _upEvents = new JUnityEvent();
+        [BoxGroup("Setup", true, true), SerializeField] private JUnityEvent _downEvents = new JUnityEvent();
+        [BoxGroup("Setup", true, true), SerializeField] private JUnityEvent _rightEvents = new JUnityEvent();
+        [BoxGroup("Setup", true, true), SerializeField] private JUnityEvent _leftEvents = new JUnityEvent();
 
         // --------------- STATE --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private float _currentDragX = 0;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private float _currentDragY = 0;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private float _currentDragX;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private float _currentDragY;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool _isDragging;
 
         // --------------- INJECTION --------------- //

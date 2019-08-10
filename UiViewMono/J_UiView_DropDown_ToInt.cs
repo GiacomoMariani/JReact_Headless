@@ -8,8 +8,8 @@ namespace JReact
     public class J_UiView_DropDown_ToInt : MonoBehaviour
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveInt _intValue;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private TMP_Dropdown _dropDown;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ReactiveInt _intValue;
+        [BoxGroup("Setup", true, true), SerializeField] private TMP_Dropdown _dropDown;
 
         // --------------- INITIALIZATION --------------- //
         private void Awake()
@@ -26,7 +26,7 @@ namespace JReact
         private void SanityChecks()
         {
             Assert.IsNotNull(_dropDown, $"{gameObject.name} requires a {nameof(_dropDown)}");
-            Assert.IsNotNull(_intValue,      $"{gameObject.name} requires a {nameof(_intValue)}");
+            Assert.IsNotNull(_intValue, $"{gameObject.name} requires a {nameof(_intValue)}");
         }
 
         // --------------- COMMAND --------------- //

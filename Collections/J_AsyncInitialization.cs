@@ -10,8 +10,8 @@ namespace JReact.Collections
     [CreateAssetMenu(menuName = "Reactive/Collection/Async Initialization")]
     public class J_AsyncInitialization : J_Service
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Service[] _orderedStates;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_TaskQueue _queue;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_Service[] _orderedStates;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_TaskQueue _queue;
 
         public static J_AsyncInitialization CreateInstance(J_Service[] statesToInitialize)
         {
@@ -28,8 +28,7 @@ namespace JReact.Collections
             SanityChecks();
 
             //process all states
-            for (int i = 0; i < _orderedStates.Length; i++)
-                _queue.ProcessTask(_orderedStates[i]);
+            for (int i = 0; i < _orderedStates.Length; i++) _queue.ProcessTask(_orderedStates[i]);
 
             //confirm directly if all states are already processed or wait them
             if (!_queue.IsActive) End();

@@ -7,7 +7,7 @@ namespace JReact
     public sealed class J_ReactiveString_Pref : J_ReactiveString
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private string _prefName;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private string _prefName;
         public override string Current
         {
             get
@@ -24,4 +24,3 @@ namespace JReact
         }
     }
 }
-

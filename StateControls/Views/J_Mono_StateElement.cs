@@ -9,7 +9,7 @@ namespace JReact.StateControl
     /// </summary>
     public abstract class J_Mono_StateElement : MonoBehaviour
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State _state;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_State _state;
 
         private void Awake()
         {

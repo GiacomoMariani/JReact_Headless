@@ -14,7 +14,7 @@ namespace JReact
 
         [ButtonGroup("Commands", 200), Button("Activate", ButtonSizes.Medium)] public void RaiseEvent() { OnEnter?.Invoke(); }
 
-        public void Subscribe(Action actionToSubscribe) { OnEnter   += actionToSubscribe; }
+        public void Subscribe(Action   actionToSubscribe) { OnEnter += actionToSubscribe; }
         public void UnSubscribe(Action actionToSubscribe) { OnEnter -= actionToSubscribe; }
     }
 }

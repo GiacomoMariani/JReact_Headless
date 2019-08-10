@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.Text;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
@@ -13,7 +12,7 @@ namespace JReact
     public static class JLog
     {
         // --------------- FORMAT --------------- //
-        private static readonly StringBuilder _stringBuilder = new StringBuilder(capacity: 150);
+        private static readonly StringBuilder _stringBuilder = new StringBuilder(150);
         private static StringBuilder SBuilder
         {
             get

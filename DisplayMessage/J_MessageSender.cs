@@ -14,7 +14,7 @@ namespace JReact.ScreenMessage
         // --------------- FIELDS AND PROPERTIES --------------- //
         private event Action<JMessage> OnPublish;
 
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_MessageId _defaultIdentifier;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_MessageId _defaultIdentifier;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private JMessage _message;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _currentId;
@@ -46,7 +46,7 @@ namespace JReact.ScreenMessage
         }
 
         // --------------- SUBSCRIBERS --------------- //
-        public void Subscribe(Action<JMessage> actionToAdd) { OnPublish      += actionToAdd; }
+        public void Subscribe(Action<JMessage>   actionToAdd)    { OnPublish += actionToAdd; }
         public void UnSubscribe(Action<JMessage> actionToRemove) { OnPublish -= actionToRemove; }
 
         // --------------- TEST --------------- //

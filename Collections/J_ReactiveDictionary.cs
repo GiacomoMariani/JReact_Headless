@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace JReact.Collections
 {
     public abstract class J_ReactiveDictionary<TKey, TValue> : ScriptableObject,
                                                                iResettable,
-                                                               jObservable<(TKey key, TValue value)>,
-                                                               IDictionary<TKey, TValue>
+                                                               jObservable<(TKey key, TValue value)>
     {
         // --------------- EVENTS --------------- //
         private event Action<(TKey key, TValue value)> OnChange;
@@ -54,9 +52,9 @@ namespace JReact.Collections
         }
 
         // --------------- CHECKS --------------- //
-        public bool Contains(KeyValuePair<TKey, TValue> item) => _Dictionary.Contains(item);
-        public bool ContainsKey(TKey key) => _Dictionary.ContainsKey(key);
-        public bool ContainsValue(TValue value) => _Dictionary.ContainsValue(value);
+        public bool Contains(KeyValuePair<TKey, TValue> item)  => _Dictionary.Contains(item);
+        public bool ContainsKey(TKey                    key)   => _Dictionary.ContainsKey(key);
+        public bool ContainsValue(TValue                value) => _Dictionary.ContainsValue(value);
 
         // --------------- RESET --------------- //
         public void Clear() => _Dictionary.Clear();
@@ -64,7 +62,7 @@ namespace JReact.Collections
         public virtual void ResetThis() => Clear();
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => _Dictionary.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        // IEnumerator IEnumerable.                       GetEnumerator() => GetEnumerator();
 
         // --------------- REMOVE --------------- //
         public bool Remove(TKey key)
@@ -75,6 +73,7 @@ namespace JReact.Collections
             Internal_RemoveItem(key, value);
             return true;
         }
+
         public bool Remove(KeyValuePair<TKey, TValue> item) => Remove(item.Key);
 
         // the specific action to be sent when the dictionary is changed, as default it adds the key
@@ -86,9 +85,9 @@ namespace JReact.Collections
 
         #region SUBSCRIBERS
         // --------------- SUBSCRIBERS --------------- //
-        public void Subscribe(Action<(TKey key, TValue value)> action) { OnChange           += action; }
-        public void UnSubscribe(Action<(TKey key, TValue value)> action) { OnChange         -= action; }
-        public void SubscribeToRemove(Action<(TKey key, TValue value)> action) { OnRemove   += action; }
+        public void Subscribe(Action<(TKey key, TValue value)>           action) { OnChange += action; }
+        public void UnSubscribe(Action<(TKey key, TValue value)>         action) { OnChange -= action; }
+        public void SubscribeToRemove(Action<(TKey key, TValue value)>   action) { OnRemove += action; }
         public void UnSubscribeToRemove(Action<(TKey key, TValue value)> action) { OnRemove -= action; }
         #endregion
     }

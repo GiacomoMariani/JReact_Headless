@@ -6,7 +6,7 @@ namespace JReact.Z_Experimental
     public sealed class J_SelectableDotTrace : MonoBehaviour
     {
         [SerializeField] private float _threshold = .975f;
-        
+
         private List<iHittable> _hittable = new List<iHittable>();
 
         public iHittable Hit { get; private set; }
@@ -15,21 +15,22 @@ namespace JReact.Z_Experimental
         {
             Hit = null;
 
-            var rayDirection = ray.direction.normalized;
+            Vector2 rayDirection = ray.direction.normalized;
 
-            var closest = 0f;
+            float closest = 0f;
             for (int i = 0; i < _hittable.Count; i++)
             {
-                var hittable = _hittable[i];
-                var objectDirection = (hittable.Position - ray.origin).normalized;
+                iHittable hittable        = _hittable[i];
+                Vector2   objectDirection = (hittable.Position - ray.origin).normalized;
 
-                var rayHitPercentage = Vector2.Dot(rayDirection, objectDirection);
+                float rayHitPercentage = Vector2.Dot(rayDirection, objectDirection);
 
                 hittable.PercentageHit = rayHitPercentage;
-                if (rayHitPercentage > _threshold && rayHitPercentage > closest)
+                if (rayHitPercentage > _threshold &&
+                    rayHitPercentage > closest)
                 {
                     closest = rayHitPercentage;
-                    Hit = _hittable[i];
+                    Hit     = _hittable[i];
                 }
             }
         }

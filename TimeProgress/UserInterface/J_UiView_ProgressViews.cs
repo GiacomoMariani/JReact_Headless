@@ -11,7 +11,7 @@ namespace JReact.TimeProgress
     {
         #region FIELDS AND PROPERTIES
         //the views related to this progress
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private J_Mono_ViewActivator _view;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private J_Mono_ViewActivator _view;
         private J_Mono_ViewActivator ThisView
         {
             get

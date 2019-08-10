@@ -10,9 +10,9 @@ namespace JReact.StateControl
     [RequireComponent(typeof(Button))]
     public sealed class J_UiView_ButtonStateCommand : J_UiView_ConditionalButton
     {
-        [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
+        [BoxGroup("State Control", true, true), SerializeField, AssetsOnly, Required]
         protected J_SimpleStateControl _mainStateControl;
-        [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
+        [BoxGroup("State Control", true, true), SerializeField, AssetsOnly, Required]
         protected J_State _desiredState;
 
         //caching components at initialization

@@ -13,7 +13,7 @@ namespace JReact.Selection
         // --------------- FIELDS AND PROPERTIES --------------- //
         private event Action<T> OnSelect;
 
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T _selected;
+        [FoldoutGroup("State", false, 5), ShowInInspector] private T _selected;
         public T Selected
         {
             get => _selected;
@@ -49,8 +49,6 @@ namespace JReact.Selection
             Selected = default;
         }
 
-        
-
         // --------------- VIRTUAL IMPLEMENTATION --------------- //
         //logic to stop the selection
         protected virtual bool CanSelect(T item) => true;
@@ -60,7 +58,7 @@ namespace JReact.Selection
 
         //logic to stop the deselection
         protected virtual bool CanDeselect(T selected) => true;
-        
+
         //any logic to apply on the deselected item
         protected virtual void ActOnDeselection(T item) {}
 

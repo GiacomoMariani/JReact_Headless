@@ -24,8 +24,7 @@ namespace JReact.Pathfinding
             //add multiplier for diagonals
             //if the xs or the ys are not the same we've a diagonal, so we add the diagonal cost
             if (!(nodeA.Coordinates.x == nodeB.Coordinates.x ||
-                  nodeA.Coordinates.y == nodeB.Coordinates.y))
-                cost *= PATHWEIGHT_Diagonal;
+                  nodeA.Coordinates.y == nodeB.Coordinates.y)) cost *= PATHWEIGHT_Diagonal;
 
             return cost;
         }

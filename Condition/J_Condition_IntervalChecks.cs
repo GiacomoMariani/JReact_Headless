@@ -7,12 +7,11 @@ namespace JReact.Conditions
 {
     public abstract class J_Condition_IntervalChecks : J_ReactiveCondition
     {
-        
         private string COROUTINE_Tag => name;
 
-        [BoxGroup("Setup", true, true, 0), SerializeField, MaxValue(10f), MinValue(0.1f)]
+        [BoxGroup("Setup", true, true), SerializeField, MaxValue(10f), MinValue(0.1f)]
         private float _secondsForCheck = 3;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Segment _segmentInterval = Segment.SlowUpdate;
+        [BoxGroup("Setup", true, true), SerializeField] private Segment _segmentInterval = Segment.SlowUpdate;
 
         [BoxGroup("State", true, true, 5), ShowInInspector, ReadOnly] private int _instanceID;
 
@@ -36,4 +35,3 @@ namespace JReact.Conditions
         }
     }
 }
-

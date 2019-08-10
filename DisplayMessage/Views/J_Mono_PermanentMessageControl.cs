@@ -14,13 +14,13 @@ namespace JReact.ScreenMessage
         //the coroutine tag for the message display
         private const string COROUTINE_MessageChangerTag = "COROUTINE_MessageChangerTag";
 
-        [BoxGroup("Setup", true, true, 0), SerializeField, Range(0.05f, 1f)] private float _secondsOfPause = .1f;
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private GameObject[] _views;
+        [BoxGroup("Setup", true, true), SerializeField, Range(0.05f, 1f)] private float _secondsOfPause = .1f;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private GameObject[] _views;
         [BoxGroup("Setup", true, true, 8), SerializeField, Required] private J_Mono_MessagePrinter _printer;
 
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event _checkNextEvent;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event _resetPrinterEvent;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event _onMessageComplete;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_Event _checkNextEvent;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_Event _resetPrinterEvent;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_Event _onMessageComplete;
 
         // --------------- INITIALIZATION --------------- //
         private void Awake() { SanityChecks(); }
@@ -45,8 +45,7 @@ namespace JReact.ScreenMessage
         //show or hide the views
         private void ShowViews(bool isActive)
         {
-            for (int i = 0; i < _views.Length; i++)
-                _views[i].SetActive(isActive);
+            for (int i = 0; i < _views.Length; i++) _views[i].SetActive(isActive);
         }
 
         //finish printing or close this 

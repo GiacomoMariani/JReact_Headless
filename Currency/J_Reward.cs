@@ -30,11 +30,10 @@ namespace JReact.Currency
         protected abstract bool TrySendReward(int amount, Transform sender);
 
         #region SUBSCRIBERS
-        public void Subscribe(Action<J_Reward<T>> actionToAdd) { OnRewardGranted      += actionToAdd; }
+        public void Subscribe(Action<J_Reward<T>>   actionToAdd)    { OnRewardGranted += actionToAdd; }
         public void UnSubscribe(Action<J_Reward<T>> actionToRemove) { OnRewardGranted -= actionToRemove; }
-        
 
-        public void SubscribeToFail(Action<J_Reward<T>> actionToAdd) { OnRewardFail      += actionToAdd; }
+        public void SubscribeToFail(Action<J_Reward<T>>   actionToAdd)    { OnRewardFail += actionToAdd; }
         public void UnSubscribeToFail(Action<J_Reward<T>> actionToRemove) { OnRewardFail -= actionToRemove; }
         #endregion
     }

@@ -9,7 +9,7 @@ namespace JReact.TimeProgress.Pause
     public class J_Mono_OutOfFocusPause : MonoBehaviour
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_PauseEvent _pauseEvent;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_PauseEvent _pauseEvent;
 
         // --------------- FOCUS --------------- //
         //catch the out of focus event

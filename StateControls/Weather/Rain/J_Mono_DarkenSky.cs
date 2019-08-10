@@ -17,22 +17,19 @@ namespace JReact.StateControl.Weather
         // --------------- FIELDS AND PROPERTIES --------------- //
         private const string COROUTINE_ThunderTag = "COROUTINE_ThunderTag";
 
-
         // --------------- SKY SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private Image _darkSky;
-        [BoxGroup("Setup - Sky", true, true, 0), SerializeField, Range(0.00f, 0.25f)]
-        private float _clearAlpha;
-        [BoxGroup("Setup - Sky", true, true, 0), SerializeField, Range(0.25f, 0.99f)]
-        private float _darkAlpha = .5f;
-        [BoxGroup("Setup - Sky", true, true, 0), SerializeField] private float _secondsToGetDark = 1.0f;
+        [BoxGroup("Setup",       true, true), SerializeField, Required] private Image _darkSky;
+        [BoxGroup("Setup - Sky", true, true), SerializeField, Range(0.00f, 0.25f)] private float _clearAlpha;
+        [BoxGroup("Setup - Sky", true, true), SerializeField, Range(0.25f, 0.99f)] private float _darkAlpha = .5f;
+        [BoxGroup("Setup - Sky", true, true), SerializeField] private float _secondsToGetDark = 1.0f;
 
         // --------------- THUNDER SETUP --------------- //
-        [BoxGroup("Setup - Thunder", true, true, 0), SerializeField] private Vector2 _thunderIntervals = new Vector2(5f, 30f);
-        [BoxGroup("Setup - Thunder", true, true, 0), SerializeField] private float _thunderChance = .5f;
-        [BoxGroup("Setup - Thunder", true, true, 0), SerializeField] private float _thunderLength = 4f;
-        [BoxGroup("Setup - Thunder", true, true, 0), SerializeField] private string _thunderSound;
-        [BoxGroup("Setup - Thunder", true, true, 0), SerializeField] private AnimationCurve _thunderCurve;
-        [BoxGroup("Setup - Thunder", true, true, 0), SerializeField] private SoundControl _soundControl;
+        [BoxGroup("Setup - Thunder", true, true), SerializeField] private Vector2 _thunderIntervals = new Vector2(5f, 30f);
+        [BoxGroup("Setup - Thunder", true, true), SerializeField] private float _thunderChance = .5f;
+        [BoxGroup("Setup - Thunder", true, true), SerializeField] private float _thunderLength = 4f;
+        [BoxGroup("Setup - Thunder", true, true), SerializeField] private string _thunderSound;
+        [BoxGroup("Setup - Thunder", true, true), SerializeField] private AnimationCurve _thunderCurve;
+        [BoxGroup("Setup - Thunder", true, true), SerializeField] private SoundControl _soundControl;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Tween _thunderTween;
@@ -48,7 +45,7 @@ namespace JReact.StateControl.Weather
         protected override void SanityChecks()
         {
             base.SanityChecks();
-            Assert.IsNotNull(_darkSky,       $"{gameObject.name} requires a _darkSky");
+            Assert.IsNotNull(_darkSky,      $"{gameObject.name} requires a _darkSky");
             Assert.IsNotNull(_soundControl, $"{gameObject.name} requires a _soundControl");
             Assert.IsTrue(_darkSky.color.a <= 0.01,
                           $"{gameObject.name}- the alpha of the image {_darkSky.gameObject.name} should start at 0");
@@ -101,6 +98,6 @@ namespace JReact.StateControl.Weather
 
         // --------------- ABSTRACT IMPLEMENTATION --------------- //
         protected override void EnterState() => DarkenSky();
-        protected override void ExitState() => ClearSky();
+        protected override void ExitState()  => ClearSky();
     }
 }

@@ -11,8 +11,8 @@ namespace JReact.Pool.SpecialEffect
     public sealed class J_PoolItem_Animation : J_PoolItem_SpecialEffect
     {
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private float _animationLength;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private string _animatorTrigger;
+        [BoxGroup("Setup", true, true), SerializeField] private float _animationLength;
+        [BoxGroup("Setup", true, true), SerializeField] private string _animatorTrigger;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Animator _thisAnimator;

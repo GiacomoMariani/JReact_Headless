@@ -15,7 +15,7 @@ namespace JReact.StateControl.LevelSystem
         private event Action<int> OnGain;
         private event Action<int> OnMaxChanged;
 
-        [BoxGroup("State", true, true, 0), SerializeField, AssetsOnly, Required] private J_LevelProgression _levelProgress;
+        [BoxGroup("State", true, true), SerializeField, AssetsOnly, Required] private J_LevelProgression _levelProgress;
 
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] private int _currentExperience;
         public int Current
@@ -55,8 +55,8 @@ namespace JReact.StateControl.LevelSystem
 
             SanityChecks();
 
-            IsActive     = true;
-            Current = 0;
+            IsActive = true;
+            Current  = 0;
 
             _levelProgress.Subscribe(LevelUpdate);
         }
@@ -78,7 +78,7 @@ namespace JReact.StateControl.LevelSystem
         {
             if (_debug)
                 JLog.Log($"{name} Granted Experience: {amountToAdd}. Current: {Current}. For next Level: {Max}",
-                             JLogTags.LevelSystem, this);
+                         JLogTags.LevelSystem, this);
 
             // --------------- CHECKERS --------------- //
             if (!CanAdd(amountToAdd)) return -1;
@@ -94,7 +94,8 @@ namespace JReact.StateControl.LevelSystem
                     return -1;
                 }
 
-                amountToAdd -= FreeCapacity;
+                //this also updates the experience without sending the event
+                _currentExperience = amountToAdd -= FreeCapacity;
                 //if we have a level up we will also get the event of UpdateMax and the MaxCapacity will be directly updated
                 _levelProgress.GainLevel();
             }
@@ -128,7 +129,7 @@ namespace JReact.StateControl.LevelSystem
 
             return true;
         }
-        
+
         public void End()
         {
             if (!IsActive)
@@ -142,9 +143,9 @@ namespace JReact.StateControl.LevelSystem
         }
 
         // --------------- SUBSCRIBERS --------------- //
-        public void Subscribe(Action<int> action) { OnGain                      += action; }
-        public void UnSubscribe(Action<int> action) { OnGain                    -= action; }
-        public void SubscribeToMaxCapacity(Action<int> action) { OnMaxChanged   += action; }
+        public void Subscribe(Action<int>                action) { OnGain       += action; }
+        public void UnSubscribe(Action<int>              action) { OnGain       -= action; }
+        public void SubscribeToMaxCapacity(Action<int>   action) { OnMaxChanged += action; }
         public void UnSubscribeToMaxCapacity(Action<int> action) { OnMaxChanged -= action; }
 
         // --------------- DISABLE AND RESET --------------- //
@@ -153,6 +154,9 @@ namespace JReact.StateControl.LevelSystem
             if (!IsActive) ResetThis();
         }
 
-        public void ResetThis() {if (IsActive) End(); }
+        public void ResetThis()
+        {
+            if (IsActive) End();
+        }
     }
 }

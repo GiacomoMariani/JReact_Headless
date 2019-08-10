@@ -10,7 +10,7 @@ namespace JReact.Selection
     public abstract class J_Mono_SelectActor<T> : J_Mono_Actor<T>
     {
         #region FIELDS AND PROPERTIES
-        [BoxGroup("Setup", true, true, 0), ReadOnly, ShowInInspector] protected abstract J_Selector<T> _ThisSelector { get; }
+        [BoxGroup("Setup", true, true), ReadOnly, ShowInInspector] protected abstract J_Selector<T> _ThisSelector { get; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected T _currentSelection;
         #endregion
 

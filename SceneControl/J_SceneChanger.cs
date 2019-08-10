@@ -84,8 +84,8 @@ namespace JReact.SceneControls
 
 #if UNITY_EDITOR
         // --------------- DEBUG --------------- //
-        [BoxGroup("Debug", true, true, 0), SerializeField] private string _sceneToLoad;
-        [BoxGroup("Debug", true, true, 0), Button(ButtonSizes.Medium)] private void DebugLoadScene() => LoadScene(_sceneToLoad);
+        [BoxGroup("Debug", true, true), SerializeField] private string _sceneToLoad;
+        [BoxGroup("Debug", true, true), Button(ButtonSizes.Medium)] private void DebugLoadScene() => LoadScene(_sceneToLoad);
 #endif
     }
 }

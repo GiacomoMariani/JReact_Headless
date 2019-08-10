@@ -10,9 +10,9 @@ namespace JReact.Conditions
     public class J_MultiCondition : J_ReactiveCondition
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private OperatorType _operator = OperatorType.And;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveBool[] _trueConditions;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveBool[] _falseConditions;
+        [BoxGroup("Setup", true, true), SerializeField] private OperatorType _operator = OperatorType.And;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ReactiveBool[] _trueConditions;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ReactiveBool[] _falseConditions;
 
         // --------------- INITIALIZATION METHODS --------------- //
         protected override void StartCheckingCondition()
@@ -46,7 +46,7 @@ namespace JReact.Conditions
         private void AndOperator()
         {
             Current = RequiresAllCondition(_trueConditions,  true) &&
-                           RequiresAllCondition(_falseConditions, false);
+                      RequiresAllCondition(_falseConditions, false);
         }
 
         private bool RequiresAllCondition(J_ReactiveBool[] collectionToCheck, bool expectedValue)
@@ -54,8 +54,7 @@ namespace JReact.Conditions
             //check all true
             for (int i = 0; i < collectionToCheck.Length; i++)
             {
-                if (collectionToCheck[i].Current != expectedValue)
-                    return false;
+                if (collectionToCheck[i].Current != expectedValue) return false;
             }
 
             return true;
@@ -65,7 +64,7 @@ namespace JReact.Conditions
         private void OrOperator()
         {
             Current = RequiresOneCondition(_trueConditions,  true) ||
-                           RequiresOneCondition(_falseConditions, false);
+                      RequiresOneCondition(_falseConditions, false);
         }
 
         //check all the values
@@ -74,8 +73,7 @@ namespace JReact.Conditions
             //check all true
             for (int i = 0; i < collectionToCheck.Length; i++)
             {
-                if (collectionToCheck[i].Current == expectedValue)
-                    return true;
+                if (collectionToCheck[i].Current == expectedValue) return true;
             }
 
             return false;

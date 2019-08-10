@@ -12,7 +12,7 @@ namespace JReact.UiView
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         //a way to store the starting position
-        [BoxGroup("Structure", true, true, 0), ReadOnly] private Vector2 _defaultPosition;
+        [BoxGroup("Structure", true, true), ReadOnly] private Vector2 _defaultPosition;
 
         //layer and canvas
         [BoxGroup("View", true, true, 5), ReadOnly] private string _defaultSortingLayer;

@@ -17,11 +17,11 @@ namespace JReact.Pool.SpecialEffect
         private event Action<GameObject> OnPointerChange;
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup - Cursor", true, true, 0), SerializeField, AssetsOnly, Required]
+        [BoxGroup("Setup - Cursor", true, true), SerializeField, AssetsOnly, Required]
         private J_TransformGenerator _transformParent;
-        [BoxGroup("Setup - Cursor", true, true, 0), SerializeField, AssetsOnly, Required]
+        [BoxGroup("Setup - Cursor", true, true), SerializeField, AssetsOnly, Required]
         private GameObject _defaultCursor;
-        [BoxGroup("Setup - Cursor", true, true, 0), SerializeField] private GameObject[] _customCursors;
+        [BoxGroup("Setup - Cursor", true, true), SerializeField] private GameObject[] _customCursors;
 
         [BoxGroup("Setup - Effect", true, true, 5), SerializeField, AssetsOnly] private J_Pool_SpecialEffects _effect;
         [BoxGroup("Setup - Effect", true, true, 5), SerializeField, Range(0.5f, 15f)]
@@ -55,8 +55,7 @@ namespace JReact.Pool.SpecialEffect
         public void StartCursor(Camera mainCamera)
         {
             EnableCursor(mainCamera);
-            if (_effect != null)
-                EnableEffect(mainCamera);
+            if (_effect != null) EnableEffect(mainCamera);
         }
 
         // --------------- MOUSE CURSOR --------------- //
@@ -183,9 +182,9 @@ namespace JReact.Pool.SpecialEffect
             DisableMouseCursor();
             DisableMouseEffect();
         }
-        
+
         // --------------- SUBSCRIBERS --------------- //
-        public void Subscribe(Action<GameObject> actionToAdd) { OnPointerChange      += actionToAdd; }
+        public void Subscribe(Action<GameObject>   actionToAdd)    { OnPointerChange += actionToAdd; }
         public void UnSubscribe(Action<GameObject> actionToRemove) { OnPointerChange -= actionToRemove; }
     }
 }

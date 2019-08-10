@@ -15,15 +15,15 @@ namespace JReact.StateControl.PopUp
         private const string DefaultDenyText = "Cancel";
 
         // --------------- STATE - OPTIONAL --------------- //
-        [InfoBox("Null => no connection with state"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly]
+        [InfoBox("Null => no connection with state"), BoxGroup("Setup", true, true), SerializeField, AssetsOnly]
         private J_SimpleStateControl _stateControl;
 
         // --------------- CONTENT --------------- //
         //J_Mono_ReactiveStringText might be used to display this
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _title;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _message;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _confirmButtonText;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveString _denyButtonText;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ReactiveString _title;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ReactiveString _message;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ReactiveString _confirmButtonText;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ReactiveString _denyButtonText;
 
         // --------------- STATE --------------- //
         [BoxGroup("State", true, true, 5), SerializeField, AssetsOnly, Required] private J_State _previousState;
@@ -62,7 +62,10 @@ namespace JReact.StateControl.PopUp
         // --------------- OPEN AND CLOSE --------------- //
         public void Open()
         {
-            if(_stateControl == null) Activate();
+            if (_stateControl == null)
+            {
+                Activate();
+            }
             else
             {
                 _previousState = _stateControl.CurrentState;

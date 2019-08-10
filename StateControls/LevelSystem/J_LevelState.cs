@@ -12,7 +12,7 @@ namespace JReact.StateControl.LevelSystem
     {
         public virtual string LevelName => name;
 
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _experienceNeeded;
+        [BoxGroup("Setup", true, true), SerializeField] private int _experienceNeeded;
         public int ExperienceNeeded { get => _experienceNeeded; private set => _experienceNeeded = value; }
 
         [FoldoutGroup("Book Keeping", false, 10), ReadOnly, ShowInInspector] public int PreviousExperience { get; private set; }

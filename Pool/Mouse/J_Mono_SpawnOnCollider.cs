@@ -11,11 +11,11 @@ namespace JReact
     public sealed class J_Mono_SpawnOnCollider : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         // --------------- FIELDS AND VALUES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Pool_SpecialEffects _effectsPool;
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private Camera _mainCamera;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _spawnOnEnter;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _spawnOnExit;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Quaternion _particleRotation;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_Pool_SpecialEffects _effectsPool;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private Camera _mainCamera;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _spawnOnEnter;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _spawnOnExit;
+        [BoxGroup("Setup", true, true), SerializeField] private Quaternion _particleRotation;
 
         // --------------- EVENT STARTERS --------------- //
         private void EnterArea()
@@ -35,6 +35,6 @@ namespace JReact
         // --------------- INTERFACE IMPLEMENTATION --------------- //
         //when mouse enter and exit the collider
         public void OnPointerEnter(PointerEventData eventData) { EnterArea(); }
-        public void OnPointerExit(PointerEventData eventData) { ExitArea(); }
+        public void OnPointerExit(PointerEventData  eventData) { ExitArea(); }
     }
 }

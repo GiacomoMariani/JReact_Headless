@@ -14,7 +14,7 @@ namespace JReact.StateControl.LevelSystem
         private const string ExperienceSuffix = "{0}_Experience";
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ExperienceReceiver _experience;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ExperienceReceiver _experience;
         public J_ExperienceReceiver Experience { get => _experience; private set => _experience = value; }
 
         // --------------- STATE --------------- //
@@ -65,7 +65,7 @@ namespace JReact.StateControl.LevelSystem
             SetupLevels();
             InitializeExperience();
         }
-        
+
         private void InitializeExperience()
         {
             _currentLevelIndex = 0;

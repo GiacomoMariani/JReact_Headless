@@ -7,7 +7,7 @@ namespace JReact.UiView
     [RequireComponent(typeof(Slider))]
     public class J_UiView_Slider_ToFloat : MonoBehaviour
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_ReactiveFloat _floatValue;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_ReactiveFloat _floatValue;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Slider _slider;
         private Slider ThisSlider

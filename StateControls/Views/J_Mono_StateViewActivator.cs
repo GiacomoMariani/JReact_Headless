@@ -10,7 +10,7 @@ namespace JReact.StateControl
     {
         // --------------- FIELD AND PROPERTIES --------------- //
         //the views related to this element
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private J_Mono_ViewActivator _view;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private J_Mono_ViewActivator _view;
         private J_Mono_ViewActivator ThisView
         {
             get
@@ -20,12 +20,12 @@ namespace JReact.StateControl
             }
         }
         //the desired state
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State _stateToActivate;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_State _stateToActivate;
 
         // --------------- OPEN AND CLOSE --------------- //
         //open or close the views as requested
         private void CloseView() { ThisView.ActivateView(false); }
-        private void OpenView() { ThisView.ActivateView(true); }
+        private void OpenView()  { ThisView.ActivateView(true); }
 
         // --------------- LISTENERS --------------- //
         //start and stop tracking on enable

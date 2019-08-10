@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using JReact.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace JReact.UiView.Collections
+namespace JReact.Collections.UiView
 {
     /// <summary>
     /// shows a collection of elements
@@ -12,7 +11,7 @@ namespace JReact.UiView.Collections
     public abstract class J_UiView_Collection<T> : MonoBehaviour
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract iReactiveCollection<T> _Collection { get; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract iReactiveIndexCollection<T> _Collection { get; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_Mono_Actor<T> _PrefabActor { get; }
         //the dictionary is used for safety and to track the current elements on this viewer
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
@@ -36,7 +35,6 @@ namespace JReact.UiView.Collections
         // --------------- VIEW UPDATER --------------- //
         protected virtual void OpenThis()
         {
-            //make sure all the elements are shown
             for (int i = 0; i < _Collection.Length; i++) Add(_Collection[i]);
         }
 

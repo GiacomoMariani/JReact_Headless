@@ -7,9 +7,9 @@ namespace JReact.SceneControls
     public class J_SceneChangeAction : J_ProcessableAction, iProcessable
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
+        [BoxGroup("State Control", true, true), SerializeField, AssetsOnly, Required]
         private J_SceneChanger _sceneChanger;
-        [BoxGroup("State Control", true, true, 0), SerializeField, AssetsOnly, Required]
+        [BoxGroup("State Control", true, true), SerializeField, AssetsOnly, Required]
         private string _desiredScene;
 
         /// <summary>

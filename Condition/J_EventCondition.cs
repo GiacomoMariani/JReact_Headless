@@ -11,16 +11,16 @@ namespace JReact.Conditions
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         //these events set the condition to true
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Event[] _trueEvents;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_Event[] _trueEvents;
         //these events set the condition to false
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Event[] _falseEvents;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly] private J_Event[] _falseEvents;
         //used to auto reset after a check
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _autoReset;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _autoReset;
 
         // --------------- INITIALIZE AND RESET --------------- //
-        protected override void StartCheckingCondition() => StartTrackEvents(); 
+        protected override void StartCheckingCondition() => StartTrackEvents();
 
-        protected override void StopCheckingCondition() => StopTrackEvents(); 
+        protected override void StopCheckingCondition() => StopTrackEvents();
 
         // --------------- ACTIONS AND TRACKING --------------- //
         private void SetAsFalse()
@@ -30,8 +30,8 @@ namespace JReact.Conditions
 
         private void SetAsTrue()
         {
-            if (!Current) Current = true;
-            if (_autoReset) Current    = false;
+            if (!Current) Current   = true;
+            if (_autoReset) Current = false;
         }
 
         private void StartTrackEvents()

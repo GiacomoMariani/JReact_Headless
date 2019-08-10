@@ -12,8 +12,8 @@ namespace JReact.StateControl
     public sealed class J_StateTracker : J_Service
     {
         // --------------- VALUES AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required, AssetsOnly] private J_SimpleStateControl _stateControl;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxStatesToTrack = 5;
+        [BoxGroup("Setup", true, true), SerializeField, Required, AssetsOnly] private J_SimpleStateControl _stateControl;
+        [BoxGroup("Setup", true, true), SerializeField] private int _maxStatesToTrack = 5;
 
         //used to get the previous state
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public J_State PreviousState

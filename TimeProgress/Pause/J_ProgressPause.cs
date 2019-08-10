@@ -11,7 +11,7 @@ namespace JReact.TimeProgress.Pause
     public class J_ProgressPause : J_Progress
     {
         #region FIELDS AND PROPERTIES
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_PauseEvent _pauseEvent;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly] private J_PauseEvent _pauseEvent;
         #endregion
 
         #region PAUSE
@@ -51,7 +51,7 @@ namespace JReact.TimeProgress.Pause
             _pauseEvent = null;
         }
 
-        private void Pause() { SetPause(true); }
+        private void Pause()           { SetPause(true); }
         private void UnPause(int item) { SetPause(false); }
         #endregion
 
