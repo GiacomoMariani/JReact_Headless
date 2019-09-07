@@ -9,22 +9,22 @@ namespace JReact.Selection
     /// selects one item
     /// </summary>
     /// <typeparam name="T">type of the selectable item</typeparam>
-    public abstract class J_Selector<T> : ScriptableObject, jObservable<T>, iResettable
+    public abstract class J_Selector<T> : ScriptableObject, jObservableValue<T>, iResettable
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         private event Action<T> OnSelect;
 
-        [FoldoutGroup("State", false, 5), ShowInInspector] private T _selected;
-        public T Selected
+        [FoldoutGroup("State", false, 5), ShowInInspector] private T _current;
+        public T Current
         {
-            get => _selected;
+            get => _current;
             private set
             {
                 //deselects if required
-                if (_selected != null) ActOnDeselection(_selected);
+                if (_current != null) ActOnDeselection(_current);
                 //set the value
-                _selected = value;
-                if (_selected != null) ActOnSelection(_selected);
+                _current = value;
+                if (_current != null) ActOnSelection(_current);
                 //send event
                 OnSelect?.Invoke(value);
             }
@@ -38,7 +38,7 @@ namespace JReact.Selection
         public void Select(T item)
         {
             if (!CanSelect(item)) return;
-            Selected = item;
+            Current = item;
         }
 
         /// <summary>
@@ -46,18 +46,18 @@ namespace JReact.Selection
         /// </summary>
         public void Deselect()
         {
-            if (!CanDeselect(Selected)) return;
-            Selected = default;
+            if (!CanDeselect(Current)) return;
+            Current = default;
         }
-        
+
         // --------------- QUERIES --------------- //
         /// <summary>
         /// checks if the item is selected
         /// </summary>
         public bool IsSelected(T item)
         {
-            if (EqualityComparer<T>.Default.Equals(Selected, default(T))) return false;
-            else return EqualityComparer<T>.Default.Equals(Selected, item);
+            if (EqualityComparer<T>.Default.Equals(Current, default(T))) return false;
+            else return EqualityComparer<T>.Default.Equals(Current, item);
         }
 
         // --------------- VIRTUAL IMPLEMENTATION --------------- //
@@ -74,11 +74,11 @@ namespace JReact.Selection
         protected virtual void ActOnDeselection(T item) {}
 
         // --------------- DISABLE AND RESET --------------- //
-        private        void OnDisable() { ResetThis(); }
-        public virtual void ResetThis() { Deselect(); }
+        private        void OnDisable() => ResetThis();
+        public virtual void ResetThis() => Deselect();
 
         // --------------- SUBSCRIBERS --------------- //
-        public void Subscribe(Action<T>   actionToAdd)    { OnSelect += actionToAdd; }
-        public void UnSubscribe(Action<T> actionToRemove) { OnSelect -= actionToRemove; }
+        public void Subscribe(Action<T>   actionToAdd)    => OnSelect += actionToAdd;
+        public void UnSubscribe(Action<T> actionToRemove) => OnSelect -= actionToRemove;
     }
 }
