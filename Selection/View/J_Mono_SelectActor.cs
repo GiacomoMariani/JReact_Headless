@@ -9,12 +9,11 @@ namespace JReact.Selection
     /// <typeparam name="T">a selectable</typeparam>
     public abstract class J_Mono_SelectActor<T> : J_Mono_Actor<T>
     {
-        #region FIELDS AND PROPERTIES
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true), ReadOnly, ShowInInspector] protected abstract J_Selector<T> _ThisSelector { get; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected T _currentSelection;
-        #endregion
 
-        #region INITIALIZATION
+        // --------------- INITIALIZATION --------------- //
         protected override void InitThis()
         {
             base.InitThis();
@@ -32,17 +31,16 @@ namespace JReact.Selection
             if (_ThisSelector.Selected != null) ActorUpdate(_ThisSelector.Selected);
             _ThisSelector.Subscribe(SelectionUpdate);
         }
-        #endregion
 
-        #region VIEW UPDATES
+        // --------------- VIEW UPDATES --------------- //
         //update of the selected element
         protected virtual void SelectionUpdate(T selectedElement)
         {
             _currentSelection = selectedElement;
             ActorUpdate(selectedElement);
         }
-        #endregion
 
+        // --------------- END --------------- //
         protected virtual void ResetThis() { _ThisSelector.UnSubscribe(SelectionUpdate); }
         protected virtual void OnDestroy() { ResetThis(); }
     }

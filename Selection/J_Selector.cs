@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -47,6 +48,16 @@ namespace JReact.Selection
         {
             if (!CanDeselect(Selected)) return;
             Selected = default;
+        }
+        
+        // --------------- QUERIES --------------- //
+        /// <summary>
+        /// checks if the item is selected
+        /// </summary>
+        public bool IsSelected(T item)
+        {
+            if (EqualityComparer<T>.Default.Equals(Selected, default(T))) return false;
+            else return EqualityComparer<T>.Default.Equals(Selected, item);
         }
 
         // --------------- VIRTUAL IMPLEMENTATION --------------- //

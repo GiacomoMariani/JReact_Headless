@@ -8,7 +8,6 @@ namespace JReact.Collections.UiView
     public abstract class J_UiView_Enumerable<T> : MonoBehaviour
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        // --------------- FIELDS AND PROPERTIES --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract iReactiveEnumerable<T> _Enumerable { get; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_Mono_Actor<T> _PrefabActor { get; }
         //the dictionary is used for safety and to track the current elements on this viewer

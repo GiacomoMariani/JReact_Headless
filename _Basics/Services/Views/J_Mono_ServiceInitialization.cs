@@ -4,14 +4,13 @@ using UnityEngine.Assertions;
 
 namespace JReact
 {
-    [CreateAssetMenu(menuName = "Reactive/Basics/Initialization")]
-    public class J_ServiceInitialization : ScriptableObject
+    public sealed class J_Mono_ServiceInitialization : MonoBehaviour
     {
+        // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Service[] _services;
-        //this can be used to force reactivation
         [BoxGroup("Setup", true, true, 0), SerializeField] private bool _resetBeforeActivation;
 
-        public void Initialize()
+        private void Initialize()
         {
             SanityChecks();
             JLog.Log($"{name} initialize with {_services.Length} services", JLogTags.Service, this);
@@ -28,7 +27,7 @@ namespace JReact
             JLog.Log($"{name} init completed for {_services.Length} services", JLogTags.Collection, this);
         }
 
-        public void DeInitialize()
+        private void DeInitialize()
         {
             SanityChecks();
 
@@ -49,16 +48,15 @@ namespace JReact
             Assert.IsTrue(_services.Length > 0, $"{name} has nothing to initialize");
         }
 
-        public void ResetAll()
-        {
-            JLog.Log($"{name} resets for {_services.Length} services", JLogTags.Collection, this);
-            for (int i = 0; i < _services.Length; i++) _services[i].ResetThis();
+        // --------------- LISTENER SETUP --------------- //
+        private void OnEnable()  => Initialize();
+        private void OnDisable() => DeInitialize();
 
-            JLog.Log($"{name} resets complete for {_services.Length} services", JLogTags.Collection, this);
-        }
-        
 #if UNITY_EDITOR
-        internal J_Service[] GetServices() => _services;
+        [BoxGroup("Conversion", true, true, 100), SerializeField, AssetsOnly] private J_ServiceInitialization _initialization;
+
+        [BoxGroup("Conversion", true, true, 100), Button(ButtonSizes.Medium)]
+        private void ImportFromScriptableObject() => _services = _initialization.GetServices();
 #endif
     }
 }
