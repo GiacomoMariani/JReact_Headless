@@ -48,9 +48,9 @@ namespace JReact.Conditions.Tasks
         }
 
         // --------------- IMPLEMENTATION --------------- //
-        public static J_CompletableTask CreateTask<T>(J_ReactiveCondition start, J_ReactiveCondition complete,
-                                                      J_ReactiveCondition dormant = null, bool autoReactivate = true,
-                                                      bool required = false)
+        public static J_CompletableTask CreateTask<T>(J_ReactiveCondition start,           J_ReactiveCondition complete,
+                                                      J_ReactiveCondition dormant  = null, bool                autoReactivate = true,
+                                                      bool                required = false)
             where T : J_CompletableTask
         {
             var task = CreateInstance<T>();
@@ -72,10 +72,10 @@ namespace JReact.Conditions.Tasks
             //subscribe to all triggers if the task is not started, otherwise only to complete
             if (_completeTrigger != null) _completeTrigger.SubscribeToCondition(TriggerComplete);
             if (_dormantTrigger  != null) _dormantTrigger.SubscribeToCondition(TriggerDormant);
-            if (_startTrigger != null) _startTrigger.SubscribeToCondition(TriggerStart);
-            
+            if (_startTrigger    != null) _startTrigger.SubscribeToCondition(TriggerStart);
+
             // --------------- STARTUP --------------- //
-            State = TaskState.Startup; 
+            State = TaskState.Startup;
             if (AlreadyComplete()) return;
             _activatedOnce = false;
 
@@ -184,28 +184,34 @@ namespace JReact.Conditions.Tasks
             StopCheckingCondition();
             CompleteTutorialStep();
             Current = true;
-            State        = TaskState.Complete;
+            State   = TaskState.Complete;
         }
 
         // --------------- CHECKS --------------- //
-        private bool ActivationValid() => _startTrigger  == null || _startTrigger.Current;
-        private bool CompleteReady() => _completeTrigger == null || _completeTrigger.Current;
+        private bool ActivationValid() => _startTrigger    == null || _startTrigger.Current;
+        private bool CompleteReady()   => _completeTrigger == null || _completeTrigger.Current;
 
         // --------------- VIRTUAL IMPLEMENTATION --------------- //
-        protected virtual void RunTask() { _unityEvents_AtActivation.Invoke(); }
-        protected virtual void SetDormant() { _unityEvents_AtDormant.Invoke(); }
+        protected virtual void RunTask()              { _unityEvents_AtActivation.Invoke(); }
+        protected virtual void SetDormant()           { _unityEvents_AtDormant.Invoke(); }
         protected virtual void CompleteTutorialStep() { _unityEvents_AtComplete.Invoke(); }
 
         // --------------- SUBSCRIBERS --------------- //
-        public void SubscribeToTaskChange(Action<J_CompletableTask> action) { Subscribe(action); }
+        public void SubscribeToTaskChange(Action<J_CompletableTask>   action) { Subscribe(action); }
         public void UnSubscribeToTaskChange(Action<J_CompletableTask> action) { UnSubscribe(action); }
-        public void Subscribe(Action<J_CompletableTask> action) { OnTaskUpdate   += action; }
-        public void UnSubscribe(Action<J_CompletableTask> action) { OnTaskUpdate -= action; }
+        public void Subscribe(Action<J_CompletableTask>               action) { OnTaskUpdate += action; }
+        public void UnSubscribe(Action<J_CompletableTask>             action) { OnTaskUpdate -= action; }
     }
 
     //the states related to this tutorial
     public enum TaskState
     {
-        NotInitialized = -100, Startup = -50, WaitStartCondition = 0, ActivationWaiting = 50, Active = 100, Dormant = 200, Complete = 300
+        NotInitialized = -100,
+        Startup = -50,
+        WaitStartCondition = 0,
+        ActivationWaiting = 50,
+        Active = 100,
+        Dormant = 200,
+        Complete = 300
     }
 }

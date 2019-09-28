@@ -110,10 +110,4 @@ namespace JReact
         float GetAxis(string    axisId);
         float GetAxisRaw(string axisId);
     }
-
-    public interface iTestable
-    {
-        void RunTest();
-        void StopTest();
-    }
 }

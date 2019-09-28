@@ -9,9 +9,7 @@ namespace JReact
     {
         [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Service[] _services;
         //this can be used to force reactivation
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _resetBeforeActivation = false;
-
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private bool? _initializing = null;
+        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _resetBeforeActivation;
 
         public void Initialize()
         {
@@ -54,10 +52,13 @@ namespace JReact
         public void ResetAll()
         {
             JLog.Log($"{name} resets for {_services.Length} services", JLogTags.Collection, this);
-            for (int i = 0; i < _services.Length; i++)
-                _services[i].ResetThis();
+            for (int i = 0; i < _services.Length; i++) _services[i].ResetThis();
 
             JLog.Log($"{name} resets complete for {_services.Length} services", JLogTags.Collection, this);
         }
+        
+#if UNITY_EDITOR
+        internal J_Service[] GetServices() => _services;
+#endif
     }
 }

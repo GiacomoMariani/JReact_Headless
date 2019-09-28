@@ -10,8 +10,8 @@ namespace JReact.JRandom
     [CreateAssetMenu(menuName = "Reactive/Random/Int")]
     public sealed class J_Random_Int : ScriptableObject
     {
-        [BoxGroup("Range", true, true, 0), SerializeField] private int _min;
-        [BoxGroup("Range", true, true, 0), SerializeField] private int _max = 1;
+        [BoxGroup("Range", true, true), SerializeField] private int _min;
+        [BoxGroup("Range", true, true), SerializeField] private int _max = 1;
 
         public static J_Random_Int CreateRandomFloat(int min, int max)
         {

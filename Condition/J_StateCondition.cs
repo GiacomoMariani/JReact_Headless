@@ -12,9 +12,9 @@ namespace JReact.Conditions
     public class J_StateCondition : J_ReactiveCondition
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _passOnEnter = true;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State[] _validStates;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_SimpleStateControl _stateControls;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _passOnEnter = true;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_State[] _validStates;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_SimpleStateControl _stateControls;
 
         // --------------- INITIALIZE AND RESET --------------- //
         protected override void StartCheckingCondition()
@@ -33,6 +33,5 @@ namespace JReact.Conditions
             if (_passOnEnter) Current = stateValid;
             else Current              = !stateValid;
         }
-
     }
 }

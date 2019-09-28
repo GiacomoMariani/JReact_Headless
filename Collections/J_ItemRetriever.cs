@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -10,10 +11,10 @@ namespace JReact.Collections
     /// </summary>
     /// <typeparam name="TValue">the element to track</typeparam>
     /// <typeparam name="TKey">the key to track the item</typeparam>
-    public abstract class J_ItemTracker<TKey, TValue> : J_ReactiveDictionary<TKey, TValue>
+    public abstract class J_ItemRetriever<TKey, TValue> : J_ReactiveDictionary<TKey, TValue>
     {
         //the array of buildings we want to have
-        [BoxGroup("Setup", true, true, 0), SerializeField] private TValue[] _elementsToStore;
+        [BoxGroup("Setup", true, true), SerializeField] protected TValue[] _items;
 
         /// <summary>
         /// checks if an element with given id can be found in this retriever
@@ -27,9 +28,17 @@ namespace JReact.Collections
         /// <returns>returns the value requests</returns>
         public TValue GetItemFromId(TKey id)
         {
+            if (_Dictionary       == null ||
+                _Dictionary.Count != _items.Length) PopulateThis();
+
             Assert.IsTrue(_Dictionary.ContainsKey(id), $"Name Key -{id}- not found in -{name}-");
             return _Dictionary[id];
         }
+
+        /// <summary>
+        /// add an item to the list, also at runtime,  low performance method (uses linq)
+        /// </summary>
+        public void InjectNewElement(TValue item) => _items = _items.AddItemToArray(item);
 
         /// <summary>
         /// this is the main implementation to get the name from the element
@@ -39,14 +48,14 @@ namespace JReact.Collections
         protected abstract TKey GetItemId(TValue item);
 
         // --------------- DISABLE AND RESET --------------- //
-        protected virtual void OnEnable() { PopulateThis(); }
+        protected virtual void OnEnable() => PopulateThis();
 
-        protected virtual void PopulateThis()
+        [BoxGroup("Commands", true, true, 100), Button(ButtonSizes.Medium)]
+        public virtual void PopulateThis()
         {
             //reset this, then add all the required item to the dictionary 
             Clear();
-            for (int i = 0; i < _elementsToStore.Length; i++)
-                Add(GetItemId(_elementsToStore[i]), _elementsToStore[i]);
+            for (int i = 0; i < _items.Length; i++) Add(GetItemId(_items[i]), _items[i]);
         }
     }
 }

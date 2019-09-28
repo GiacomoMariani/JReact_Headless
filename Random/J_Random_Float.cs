@@ -10,8 +10,8 @@ namespace JReact.JRandom
     [CreateAssetMenu(menuName = "Reactive/Random/Float")]
     public sealed class J_Random_Float : ScriptableObject
     {
-        [BoxGroup("Range", true, true, 0), SerializeField] private float _min;
-        [BoxGroup("Range", true, true, 0), SerializeField] private float _max = 1f;
+        [BoxGroup("Range", true, true), SerializeField] private float _min;
+        [BoxGroup("Range", true, true), SerializeField] private float _max = 1f;
 
         public static J_Random_Float CreateRandomFloat(float min, float max)
         {

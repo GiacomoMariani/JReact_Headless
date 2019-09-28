@@ -15,7 +15,7 @@ namespace JReact.TimeProgress
         protected event Action<float> OnTick;
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] protected Segment _desiredSegment = Segment.Update;
+        [BoxGroup("Setup", true, true), SerializeField] protected Segment _desiredSegment = Segment.Update;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _objectId = -1;

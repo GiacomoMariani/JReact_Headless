@@ -101,10 +101,10 @@ namespace JReact.TimeProgress.Pause
         #endregion
 
         #region SUBSCRIBERS
-        public void SubscribeToPauseStart(Action actionToSend) { OnPauseStart   += actionToSend; }
+        public void SubscribeToPauseStart(Action   actionToSend) { OnPauseStart += actionToSend; }
         public void UnSubscribeToPauseStart(Action actionToSend) { OnPauseStart -= actionToSend; }
 
-        public void SubscribeToPauseEnd(Action<int> actionToSend) { OnPauseEnds   += actionToSend; }
+        public void SubscribeToPauseEnd(Action<int>   actionToSend) { OnPauseEnds += actionToSend; }
         public void UnSubscribeToPauseEnd(Action<int> actionToSend) { OnPauseEnds -= actionToSend; }
         #endregion
 

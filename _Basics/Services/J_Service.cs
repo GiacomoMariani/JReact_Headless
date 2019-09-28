@@ -1,7 +1,6 @@
 ﻿using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace JReact
 {
@@ -67,10 +66,10 @@ namespace JReact
         //the specific implementation of activate
         protected virtual void EndThis() { OnExit?.Invoke(); }
 
-        public void Subscribe(Action actionToSubscribe) { OnActivate   += actionToSubscribe; }
+        public void Subscribe(Action   actionToSubscribe) { OnActivate += actionToSubscribe; }
         public void UnSubscribe(Action actionToSubscribe) { OnActivate -= actionToSubscribe; }
 
-        public void SubscribeToEnd(Action actionToSend) { OnExit   += actionToSend; }
+        public void SubscribeToEnd(Action   actionToSend) { OnExit += actionToSend; }
         public void UnSubscribeToEnd(Action actionToSend) { OnExit -= actionToSend; }
 
         /// <summary>

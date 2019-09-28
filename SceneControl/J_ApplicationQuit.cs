@@ -5,11 +5,11 @@ using UnityEngine;
 namespace JReact.SceneControls
 {
     [CreateAssetMenu(menuName = "Reactive/Scenes/Quit")]
-    public sealed class J_ApplicationQuit : ScriptableObject , jObservable
+    public sealed class J_ApplicationQuit : ScriptableObject, jObservable
     {
         private event Action OnQuit;
-        
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _exitCode = 0;
+
+        [BoxGroup("Setup", true, true), SerializeField] private int _exitCode;
 
         [ButtonGroup("Commands", 200), Button("Activate", ButtonSizes.Medium)]
         public void Quit()

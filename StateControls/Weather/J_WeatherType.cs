@@ -11,9 +11,9 @@ namespace JReact.StateControl.Weather
     {
         // --------------- SETUP --------------- //
         //chances to have this weather
-        [BoxGroup("Setup", true, true, 0), SerializeField, Range(1, 25)] private int _weight;
+        [BoxGroup("Setup", true, true), SerializeField, Range(1, 25)] private int _weight;
         public int Weight => _weight;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _minutesDurationRange = new Vector2(0.01f, 0.06f);
+        [BoxGroup("Setup", true, true), SerializeField] private Vector2 _minutesDurationRange = new Vector2(0.01f, 0.06f);
 
         // --------------- STATE --------------- //
         //used to show the next time of change

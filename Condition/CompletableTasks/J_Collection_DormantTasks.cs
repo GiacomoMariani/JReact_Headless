@@ -37,6 +37,7 @@ namespace JReact.Conditions.Tasks
                 case TaskState.ActivationWaiting:
                     if (Contains(task)) Remove(task);
                     break;
+
                 default: throw new ArgumentOutOfRangeException();
             }
         }
@@ -48,8 +49,7 @@ namespace JReact.Conditions.Tasks
         {
             if (!HasDormants) return;
 
-            for (int i = 0; i < Count; i++)
-                _ThisList[i].ReactivateTask();
+            for (int i = 0; i < Count; i++) _ThisList[i].ReactivateTask();
 
             Clear();
         }

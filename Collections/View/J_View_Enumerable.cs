@@ -1,18 +1,14 @@
-﻿using System.Collections.Generic;
-using JReact.Collections;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace JReact.UiView.Collections
+namespace JReact.Collections.View
 {
-    /// <summary>
-    /// shows a collection of elements
-    /// </summary>
-    public abstract class J_UiView_Collection<T> : MonoBehaviour
+    public abstract class J_View_Enumerable<T> : MonoBehaviour
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract iReactiveCollection<T> _Collection { get; }
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract iReactiveEnumerable<T> _Enumerable { get; }
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected abstract J_Mono_Actor<T> _PrefabActor { get; }
         //the dictionary is used for safety and to track the current elements on this viewer
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector]
@@ -28,39 +24,43 @@ namespace JReact.UiView.Collections
         protected virtual void SanityChecks()
         {
             Assert.IsNotNull(_PrefabActor, $"{gameObject.name} requires a {nameof(_PrefabActor)}");
-            Assert.IsNotNull(_Collection,  $"{gameObject.name} requires a {nameof(_Collection)}");
+            Assert.IsNotNull(_Enumerable,  $"{gameObject.name} requires a {nameof(_Enumerable)}");
         }
 
         protected virtual void InitThis() {}
 
         // --------------- VIEW UPDATER --------------- //
-        protected virtual void OpenThis()
+        protected virtual void Open()
         {
-            //make sure all the elements are shown
-            for (int i = 0; i < _Collection.Length; i++) Add(_Collection[i]);
+            foreach (T t in _Enumerable) UpdateView(t);
         }
 
-        protected virtual void CloseThis() {}
+        protected virtual void Close() {}
 
-        // --------------- ADD --------------- //
-        private void Add(T item)
+        // --------------- ADD / UPDATE --------------- //
+        private void UpdateView(T item)
         {
             //some views might be ignored
             if (!WantToShowElement(item)) return;
             // --------------- VIEW CREATION --------------- //
-            //Instantiate => updated => track on dictionary
-            J_Mono_Actor<T> newUiView = Instantiate(_PrefabActor, transform);
-            newUiView.ActorUpdate(item);
-            _trackedElements[item] = newUiView;
-            //add further adjustments here
-            AddedView(item, newUiView);
+            //get or instantiate
+            J_Mono_Actor<T> view = _trackedElements.ContainsKey(item)
+                                       ? _trackedElements[item]
+                                       : Instantiate(_PrefabActor, transform);
+
+            //update
+            view.ActorUpdate(item);
+            //track if required
+            if (_trackedElements.ContainsKey(item)) return;
+            _trackedElements[item] = view;
+            AddedView(item, view);
         }
 
         //used to decide if we want to hide some element
-        protected virtual bool WantToShowElement(T item) => !_trackedElements.ContainsKey(item);
+        protected virtual bool WantToShowElement(T item) => true;
 
         //an helper method if we want to apply further elements
-        protected virtual void AddedView(T itemAdded, J_Mono_Actor<T> newUiView) {}
+        protected virtual void AddedView(T item, J_Mono_Actor<T> view) {}
 
         // --------------- REMOVE --------------- //
         private void Remove(T itemRemoved)
@@ -71,21 +71,21 @@ namespace JReact.UiView.Collections
         }
 
         //further adjustments if we want to remove a view
-        protected virtual void RemovedView(T itemRemoved, J_Mono_Actor<T> newUiView) {}
+        protected virtual void RemovedView(T item, J_Mono_Actor<T> view) {}
 
         // --------------- UNITY EVENTS --------------- //
         private void OnEnable()
         {
-            OpenThis();
-            _Collection.SubscribeToAdd(Add);
-            _Collection.SubscribeToRemove(Remove);
+            Open();
+            _Enumerable.SubscribeToAdd(UpdateView);
+            _Enumerable.SubscribeToRemove(Remove);
         }
 
         private void OnDisable()
         {
-            _Collection.UnSubscribeToAdd(Add);
-            _Collection.UnSubscribeToRemove(Remove);
-            CloseThis();
+            _Enumerable.UnSubscribeToAdd(UpdateView);
+            _Enumerable.UnSubscribeToRemove(Remove);
+            Close();
         }
     }
 }

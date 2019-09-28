@@ -1,13 +1,12 @@
-#if UNITY_EDITOR && ODIN_INSPECTOR
 using Sirenix.OdinInspector.Editor;
-using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR && ODIN_INSPECTOR
+using Sirenix.Utilities;
 
 namespace JReact.OdinDrawers
 {
-    
     /// <summary>
     /// draws a fillable on the inspector
     /// </summary>
@@ -46,8 +45,7 @@ namespace JReact.OdinDrawers
             value.Max = SirenixEditorFields.IntField(rect.AlignRight(80f), value.Max);
 
             // --------------- LINE 4 - ERROR IF SOMETHING IS NOT SET PROPERLY--------------- //
-            if (!value.SanityChecks())
-                SirenixEditorGUI.ErrorMessageBox("Make sure that MIN <= CURRENT <= MAX");
+            if (!value.SanityChecks()) SirenixEditorGUI.ErrorMessageBox("Make sure that MIN <= CURRENT <= MAX");
 
             //BOX END
             SirenixEditorGUI.EndBox();

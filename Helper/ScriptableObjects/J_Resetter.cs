@@ -10,7 +10,7 @@ namespace JReact
     public class J_Resetter : ScriptableObject
     {
         //the elements to be reset
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private ScriptableObject[] _scriptableObjects;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private ScriptableObject[] _scriptableObjects;
 
         /// <summary>
         /// used to reset all elements
@@ -29,7 +29,7 @@ namespace JReact
                 else
                 {
                     JLog.Warning("The scriptable object \"" + group[i] + "\" is marked for reset, but is not an iResettable",
-                                     JLogTags.Reset, this);
+                                 JLogTags.Reset, this);
                 }
             }
         }

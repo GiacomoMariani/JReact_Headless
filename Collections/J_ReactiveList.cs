@@ -7,11 +7,7 @@ using UnityEngine.Assertions;
 
 namespace JReact.Collections
 {
-    /// <summary>
-    /// a reactive collection that sends events at add and remove
-    /// </summary>
-    /// <typeparam name="T">the type of this collection</typeparam>
-    public abstract class J_ReactiveList<T> : ScriptableObject, IList<T>, jObservable<T>, iReactiveCollection<T>
+    public abstract class J_ReactiveList<T> : ScriptableObject, IList<T>, jObservable<T>, iReactiveIndexCollection<T>
     {
         // --------------- EVENTS --------------- //
         private event Action<T> OnAdd;
@@ -21,14 +17,14 @@ namespace JReact.Collections
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected List<T> _ThisList { get; } = new List<T>(50);
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Length => _ThisList.Count;
         public int Count => _ThisList.Count;
-        
+
         // --------------- ACCESSOR --------------- //
         public T this[int index] { get => _ThisList[index]; set => Replace(index, value); }
 
         // --------------- MAIN COMMANDS --------------- //
         public void Add(T item)
         {
-            Assert.IsNotNull(_ThisList, $"{name} Collection not initialized");
+            Assert.IsNotNull(_ThisList, $"{name} List not initialized");
             Assert.IsTrue(item != null, $"{name} Null elements are not valid");
             _ThisList.Add(item);
             //a virtual method if we want to add further actions
@@ -56,8 +52,7 @@ namespace JReact.Collections
         public virtual void Clear()
         {
             //send the remove events for all the items
-            for (int i = 0; i < Count; i++)
-                OnRemove?.Invoke(_ThisList[i]);
+            for (int i = 0; i < Count; i++) OnRemove?.Invoke(_ThisList[i]);
 
             _ThisList.Clear();
         }
@@ -68,15 +63,14 @@ namespace JReact.Collections
         /// <param name="actionToCall">the action used on all the items</param>
         public void ProcessWith(Action<T> actionToCall)
         {
-            for (int i = 0; i < Count; i++)
-                actionToCall(_ThisList[i]);
+            for (int i = 0; i < Count; i++) actionToCall(_ThisList[i]);
         }
 
         // --------------- FURTHER IMPLEMENTATIONS AND HELPERS --------------- //
         //virtual methods to be applied if required
         protected virtual void WhatHappensOnRemove(T elementToRemove) {}
-        protected virtual void WhatHappensOnAdd(T elementToAdd) {}
-        
+        protected virtual void WhatHappensOnAdd(T    elementToAdd)    {}
+
         public virtual bool Contains(T elementToCheck) => _ThisList.Contains(elementToCheck);
 
         #region SUBSCRIBERS
@@ -92,14 +86,14 @@ namespace JReact.Collections
             OnRemove -= actionToRegister;
         }
 
-        public void SubscribeToAdd(Action<T> actionToRegister) { OnAdd   += actionToRegister; }
+        public void SubscribeToAdd(Action<T>   actionToRegister) { OnAdd += actionToRegister; }
         public void UnSubscribeToAdd(Action<T> actionToRegister) { OnAdd -= actionToRegister; }
 
-        public void SubscribeToRemove(Action<T> actionToRegister) { OnRemove   += actionToRegister; }
+        public void SubscribeToRemove(Action<T>   actionToRegister) { OnRemove += actionToRegister; }
         public void UnSubscribeToRemove(Action<T> actionToRegister) { OnRemove -= actionToRegister; }
         #endregion
 
-        // --------------- IENUMERABLE AND LIST IMPLEMENTATION --------------- //
+        #region IENUMERABLE AND LIST IMPLEMENTATION
         public void CopyTo(T[] array, int arrayIndex) { _ThisList.CopyTo(array, arrayIndex); }
 
         public bool IsReadOnly => false;
@@ -136,5 +130,6 @@ namespace JReact.Collections
             WhatHappensOnAdd(item);
             OnAdd?.Invoke(item);
         }
+        #endregion
     }
 }

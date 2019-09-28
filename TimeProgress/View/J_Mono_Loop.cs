@@ -1,7 +1,6 @@
 ﻿using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace JReact.TimeProgress
 {
@@ -11,7 +10,7 @@ namespace JReact.TimeProgress
     public sealed class J_Mono_Loop : MonoBehaviour, iActivable
     {
         // --------------- ELEMENTS RELATED TO COUTNINT --------------- //
-        [BoxGroup("Setup - Count", true, true, 0), SerializeField] private bool _startAtAwake = true;
+        [BoxGroup("Setup - Count", true, true), SerializeField] private bool _startAtAwake = true;
 
         // --------------- EVENTS TO SEND --------------- //
         [BoxGroup("Setup - Events", true, true, 5), SerializeField] private JUnityEvent _unityEvents_AtStart;
@@ -35,8 +34,7 @@ namespace JReact.TimeProgress
         //make sure we have a counter
         private void Counter()
         {
-            if (_counter == null)
-                _counter = J_Timer.CreateTimer(3f, Segment.FixedUpdate, true);
+            if (_counter == null) _counter = J_Timer.CreateTimer(3f, Segment.FixedUpdate);
         }
 
         // --------------- LOOP --------------- //
@@ -89,6 +87,6 @@ namespace JReact.TimeProgress
         // --------------- LISTENERS --------------- //
         //stop on destroy
         private void OnDestroy() => End();
-        public void ResetThis() => End();
+        public  void ResetThis() => End();
     }
 }

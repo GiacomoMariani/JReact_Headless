@@ -15,7 +15,7 @@ namespace JReact.TimeProgress
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, Range(0.05f, 2.5f)] private float _tickLengthInSeconds = 1.0f;
+        [BoxGroup("Setup", true, true), SerializeField, Range(0.05f, 2.5f)] private float _tickLengthInSeconds = 1.0f;
 
         // --------------- INITIALIZATION --------------- //
         /// <summary>

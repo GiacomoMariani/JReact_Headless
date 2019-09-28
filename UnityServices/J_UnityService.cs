@@ -19,7 +19,7 @@ namespace JReact.UnityService
         // --------------- INPUT --------------- //
         [FoldoutGroup("State - Input", false, 10), ReadOnly, ShowInInspector]
         private Unity_AxisCatcher _axis = new Unity_AxisCatcher();
-        public float GetAxis(string axisName) => _axis.GetAxis(axisName);
+        public float GetAxis(string    axisName) => _axis.GetAxis(axisName);
         public float GetAxisRaw(string axisName) => _axis.GetAxisRaw(axisName);
     }
 }

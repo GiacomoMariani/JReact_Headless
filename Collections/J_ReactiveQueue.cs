@@ -12,11 +12,11 @@ namespace JReact.Collections
         private Action<T> OnEnqueue;
 
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxLength = 10;
+        [BoxGroup("Setup", true, true), SerializeField] private int _maxLength = 10;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T[] _arrayQueue;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _first = 0;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _last = 0;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _first;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _last;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _last - _first;
 
         // --------------- MAIN COMMANDS --------------- //
@@ -61,8 +61,7 @@ namespace JReact.Collections
 
         public void Clear()
         {
-            for (int i = _first; i < _last; i++)
-                _arrayQueue[i] = default;
+            for (int i = _first; i < _last; i++) _arrayQueue[i] = default;
 
             _first = 0;
             _last  = 0;
@@ -80,27 +79,25 @@ namespace JReact.Collections
 
         public void CopyTo(Array array, int index)
         {
-            var newArray = (T[]) array;
-            for (int i = 0; i < Count; i++)
-                newArray[index + i] = _arrayQueue[i];
+            var newArray                                        = (T[]) array;
+            for (int i = 0; i < Count; i++) newArray[index + i] = _arrayQueue[i];
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = _first; i < _last; i++)
-                yield return _arrayQueue[i];
+            for (int i = _first; i < _last; i++) yield return _arrayQueue[i];
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         // --------------- SUBSCRIBERS --------------- //
-        public void Subscribe(Action<T> action) { OnEnqueue   += action; }
+        public void Subscribe(Action<T>   action) { OnEnqueue += action; }
         public void UnSubscribe(Action<T> action) { OnEnqueue -= action; }
 
-        public void SubscribeToEnqueue(Action<T> action) { Subscribe(action); }
+        public void SubscribeToEnqueue(Action<T>   action) { Subscribe(action); }
         public void UnSubscribeToEnqueue(Action<T> action) { UnSubscribe(action); }
 
-        public void SubscribeToDequeue(Action<T> action) { OnDequeue   += action; }
+        public void SubscribeToDequeue(Action<T>   action) { OnDequeue += action; }
         public void UnSubscribeToDequeue(Action<T> action) { OnDequeue -= action; }
     }
 }

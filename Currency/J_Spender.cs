@@ -5,11 +5,11 @@ namespace JReact.Currency
 {
     public abstract class J_Spender : ScriptableObject
     {
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Fillable _resource;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_Fillable _resource;
 
         public bool TrySpending(int amount)
         {
-            if(_resource.HasEnough(amount))
+            if (_resource.HasEnough(amount))
             {
                 _resource.Remove(amount);
                 return true;
@@ -23,4 +23,3 @@ namespace JReact.Currency
         protected abstract void NoSpendFeedback(int missingResources);
     }
 }
-

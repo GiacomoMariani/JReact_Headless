@@ -29,10 +29,10 @@ namespace JReact.StateControl
 
         // --------------- VALID STATES --------------- //
         /* These are used just a sanity check, to make sure we are implementing the correct states */
-        [Title("Setup", "Starts with this state"), BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly,
+        [Title("Setup", "Starts with this state"), BoxGroup("Setup", true, true), SerializeField, AssetsOnly,
          Required]
         protected T _firstState;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] protected T[] _validStates;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] protected T[] _validStates;
 
         // --------------- CURRENT SITUATION --------------- //
         /* The following items are used to track the current situation */

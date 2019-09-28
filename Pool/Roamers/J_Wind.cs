@@ -17,25 +17,24 @@ namespace JReact.Pool.Roamer
         private const string COROUTINE_WindTag = "COROUTINE_WindChanger";
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _randomWind = true;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _randomWind = true;
         private bool _notRandomWind => !_randomWind;
         // --------------- STATIC WIND --------------- //
-        [ShowIf("_notRandomWind"), BoxGroup("Setup", true, true, 0), SerializeField]
+        [ShowIf("_notRandomWind"), BoxGroup("Setup", true, true), SerializeField]
         private Vector2 _desiredSpeed = new Vector2(0.5f, 5f);
 
         // --------------- RANDOM WIND --------------- //
         //the min and max values for the velocity, the first value
-        [ShowIf("_randomWind"), BoxGroup("Setup", true, true, 0), SerializeField]
+        [ShowIf("_randomWind"), BoxGroup("Setup", true, true), SerializeField]
         private Vector2 _horizontalForceRange = new Vector2(-20f, 20f);
-        [ShowIf("_randomWind"), BoxGroup("Setup", true, true, 0), SerializeField]
+        [ShowIf("_randomWind"), BoxGroup("Setup", true, true), SerializeField]
         private Vector2 _verticalForceRange = new Vector2(-20f, 20f);
 
         // --------------- CHANGING WIND --------------- //
-        [ShowIf("_randomWind", true), BoxGroup("Setup", true, true, 0), SerializeField]
-        private bool _windChangeOverTime = true;
-        [ShowIf("_windChangeOverTime", true), BoxGroup("Setup", true, true, 0), SerializeField]
+        [ShowIf("_randomWind"), BoxGroup(        "Setup", true, true), SerializeField] private bool _windChangeOverTime = true;
+        [ShowIf("_windChangeOverTime"), BoxGroup("Setup", true, true), SerializeField]
         private Vector2 _secondsBeforeChange = new Vector2(0f, 15f);
-        [ShowIf("_windChangeOverTime", true), BoxGroup("Setup", true, true, 0), SerializeField]
+        [ShowIf("_windChangeOverTime"), BoxGroup("Setup", true, true), SerializeField]
         private bool _additiveChange;
 
         // --------------- STATE AND BOOKKEEPING --------------- //
@@ -116,7 +115,7 @@ namespace JReact.Pool.Roamer
         }
 
         // --------------- SUBSCRIBERS --------------- //
-        public void Subscribe(Action<Vector2> actionToAdd) { OnWindChange      += actionToAdd; }
+        public void Subscribe(Action<Vector2>   actionToAdd)    { OnWindChange += actionToAdd; }
         public void UnSubscribe(Action<Vector2> actionToRemove) { OnWindChange -= actionToRemove; }
     }
 }

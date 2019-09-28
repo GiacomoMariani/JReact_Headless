@@ -25,8 +25,8 @@ namespace JReact.Pathfinding
         private event Action<(Vector2Int startStep, Vector2Int endStep)> OnStep;
 
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, Range(0.1f, 1.5f)] private float _stepInSeconds = 0.75f;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_PathfindQueue<T> _pathQueue;
+        [BoxGroup("Setup", true, true), SerializeField, Range(0.1f, 1.5f)] private float _stepInSeconds = 0.75f;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_PathfindQueue<T> _pathQueue;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool IsMoving { get; private set; }
@@ -138,13 +138,13 @@ namespace JReact.Pathfinding
         private bool GetDoingAStep() => _doingStep;
 
         // --------------- SUBSCRIBERS --------------- //
-        public void SubscribeToPathStart(Action<T> actionToAdd) { OnStart                                    += actionToAdd; }
-        public void UnSubscribeToPathStart(Action<T> actionToRemove) { OnStart                               -= actionToRemove; }
+        public void SubscribeToPathStart(Action<T>   actionToAdd)    { OnStart += actionToAdd; }
+        public void UnSubscribeToPathStart(Action<T> actionToRemove) { OnStart -= actionToRemove; }
 
-        public void SubscribeToPathComplete(Action<T> actionToAdd) { OnComplete                              += actionToAdd; }
-        public void UnSubscribeToPathComplete(Action<T> actionToRemove) { OnComplete                         -= actionToRemove; }
+        public void SubscribeToPathComplete(Action<T>   actionToAdd)    { OnComplete += actionToAdd; }
+        public void UnSubscribeToPathComplete(Action<T> actionToRemove) { OnComplete -= actionToRemove; }
 
-        public void SubscribeToStep(Action<(Vector2Int startStep, Vector2Int endStep)> actionToAdd) { OnStep += actionToAdd; }
+        public void SubscribeToStep(Action<(Vector2Int startStep, Vector2Int endStep)>   actionToAdd)    { OnStep += actionToAdd; }
         public void UnSubscribeToStep(Action<(Vector2Int startStep, Vector2Int endStep)> actionToRemove) { OnStep -= actionToRemove; }
     }
 }

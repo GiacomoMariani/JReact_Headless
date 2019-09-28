@@ -18,16 +18,16 @@ namespace JReact.Pool.Roamer
         private string COROUTINE_RoamerSpawnTag = "COROUTINE_RoamerSpawnTag";
 
         // --------------- MAIN SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_Wind _windControl;
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_GameBorders _borders;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private J_RoamerPool _roamerPool;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_Wind _windControl;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_GameBorders _borders;
+        [BoxGroup("Setup", true, true), SerializeField] private J_RoamerPool _roamerPool;
 
         // --------------- ROAMER SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private float _adjustmentOnZ;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _secondsForSpawn = new Vector2(10f,      30f);
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _roamerSpeedRange = new Vector2(0.5f,    10);
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _raomerScale = new Vector2(1f,           1f);
-        [BoxGroup("Setup", true, true, 0), SerializeField] private Vector2 _roamerLifetimeMinutes = new Vector2(1f, 1f);
+        [BoxGroup("Setup", true, true), SerializeField] private float _adjustmentOnZ;
+        [BoxGroup("Setup", true, true), SerializeField] private Vector2 _secondsForSpawn = new Vector2(10f,      30f);
+        [BoxGroup("Setup", true, true), SerializeField] private Vector2 _roamerSpeedRange = new Vector2(0.5f,    10);
+        [BoxGroup("Setup", true, true), SerializeField] private Vector2 _raomerScale = new Vector2(1f,           1f);
+        [BoxGroup("Setup", true, true), SerializeField] private Vector2 _roamerLifetimeMinutes = new Vector2(1f, 1f);
 
         // --------------- STATE AND BOOK KEEPING --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private List<J_Mono_Roamer> _roamers = new List<J_Mono_Roamer>();
@@ -64,8 +64,7 @@ namespace JReact.Pool.Roamer
         {
             for (int i = 0; i < _roamers.Count; i++)
             {
-                if (_roamers[i] != null)
-                    _roamers[i].DestroyThis();
+                if (_roamers[i] != null) _roamers[i].DestroyThis();
             }
 
             _roamers.Clear();
@@ -102,29 +101,23 @@ namespace JReact.Pool.Roamer
             switch (windDirection)
             {
                 //if the direction is up the roamer will spawn from the bottom
-                case Direction.Up:
-                    return new Vector3(RandomHorizontalPosition(), _borders.DownBorder, _adjustmentOnZ);
+                case Direction.Up: return new Vector3(RandomHorizontalPosition(), _borders.DownBorder, _adjustmentOnZ);
 
                 //if the direction is right the roamer will spawn from the left
-                case Direction.Right:
-                    return new Vector3(_borders.LeftBorder, RandomVerticalPosition(), _adjustmentOnZ);
+                case Direction.Right: return new Vector3(_borders.LeftBorder, RandomVerticalPosition(), _adjustmentOnZ);
 
                 //if the direction is down the roamer will spawn from the top
-                case Direction.Down:
-                    return new Vector3(RandomHorizontalPosition(), _borders.UpBorder, _adjustmentOnZ);
+                case Direction.Down: return new Vector3(RandomHorizontalPosition(), _borders.UpBorder, _adjustmentOnZ);
 
                 //if the direction is left the roamer will spawn from the right
-                case Direction.Left:
-                    return new Vector3(_borders.RightBorder, RandomVerticalPosition(), _adjustmentOnZ);
+                case Direction.Left: return new Vector3(_borders.RightBorder, RandomVerticalPosition(), _adjustmentOnZ);
 
-                case Direction.None:
-                    return new Vector3(0, 0, _adjustmentOnZ);
-                default:
-                    throw new ArgumentOutOfRangeException("windDirection", windDirection, null);
+                case Direction.None: return new Vector3(0, 0, _adjustmentOnZ);
+                default:             throw new ArgumentOutOfRangeException("windDirection", windDirection, null);
             }
         }
 
         private float RandomHorizontalPosition() => Random.Range(_borders.LeftBorder, _borders.RightBorder);
-        private float RandomVerticalPosition() => Random.Range(_borders.DownBorder,   _borders.UpBorder);
+        private float RandomVerticalPosition()   => Random.Range(_borders.DownBorder, _borders.UpBorder);
     }
 }

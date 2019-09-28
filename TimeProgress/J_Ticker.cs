@@ -14,7 +14,7 @@ namespace JReact.TimeProgress
     public sealed class J_Ticker : J_GenericCounter
     {
         // --------------- FIELDS AND PROPERTIES --------------- // 
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _tickInterval = 1;
+        [BoxGroup("Setup", true, true), SerializeField] private int _tickInterval = 1;
 
         // --------------- INITIALIZATION --------------- //
         /// <summary>
@@ -45,8 +45,7 @@ namespace JReact.TimeProgress
         {
             float beforeTickTime = CurrentRealSeconds;
 
-            for (int i = 0; i < _tickInterval; i++)
-                yield return Timing.WaitForOneFrame;
+            for (int i = 0; i < _tickInterval; i++) yield return Timing.WaitForOneFrame;
 
             //calculate the real passed time
             float realTimePassed = CurrentRealSeconds - beforeTickTime;

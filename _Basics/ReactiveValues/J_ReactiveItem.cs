@@ -12,9 +12,9 @@ namespace JReact
         private event Action<T> OnPropertyChange;
 
         //optionally set a starting value
-        [BoxGroup("Setup", true, true, 0), SerializeField] protected T _startValue;
+        [BoxGroup("Setup", true, true), SerializeField] protected T _startValue;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public bool HasListeners => OnPropertyChange == null;
-       
+
         private T _current;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public virtual T Current
         {
@@ -26,7 +26,7 @@ namespace JReact
             }
         }
 
-        public virtual void Subscribe(Action<T> actionToSend) => OnPropertyChange += actionToSend;
+        public virtual void Subscribe(Action<T>   actionToSend) => OnPropertyChange += actionToSend;
         public virtual void UnSubscribe(Action<T> actionToSend) => OnPropertyChange -= actionToSend;
 
         public virtual void ResetThis() => _current = _startValue;

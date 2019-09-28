@@ -11,9 +11,9 @@ namespace JReact.TimeProgress
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         //the progress may be set manually of by injection
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] protected J_Progress _progressEvent;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly] protected J_Progress _progressEvent;
         //this may be left unassigned
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_Identifier _progressId;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly] private J_Identifier _progressId;
 
         //tracking elements
         [BoxGroup("State", true, true, 5), ReadOnly, SerializeField] private bool _isTracking;
@@ -90,7 +90,7 @@ namespace JReact.TimeProgress
         /// </summary>
         protected abstract void ProgressComplete(J_Progress progress);
 
-        protected virtual void ViewEnabled(J_Progress progress) {}
+        protected virtual void ViewEnabled(J_Progress  progress) {}
         protected virtual void ViewDisabled(J_Progress progress) {}
 
         // --------------- LISTENERS --------------- //

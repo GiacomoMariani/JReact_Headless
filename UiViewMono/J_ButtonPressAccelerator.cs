@@ -13,9 +13,9 @@ namespace JReact.UiView
         // --------------- FIELDS AND PROPERTIES --------------- //
         private const string ThisTag = "ButtonPressTag";
 
-        [BoxGroup("Setup", true, true, 0), SerializeField] private float _accelerationInterval = 2f;
-        [BoxGroup("Setup", true, true, 0), SerializeField, MinValue(1f)] private ushort[] _actionPerSeconds;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private UnityEvent _action;
+        [BoxGroup("Setup", true, true), SerializeField] private float _accelerationInterval = 2f;
+        [BoxGroup("Setup", true, true), SerializeField, MinValue(1f)] private ushort[] _actionPerSeconds;
+        [BoxGroup("Setup", true, true), SerializeField] private UnityEvent _action;
 
         //the amount of time this button has been pressed
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _instanceId;
@@ -33,7 +33,7 @@ namespace JReact.UiView
                 // --------------- PRE LOOP CALCULATION --------------- //
                 float secondsOfInterval = GetCurrentIterationIntervalInSeconds(iteration);
                 float timeAtStart       = Time.unscaledTime;
-                
+
                 // --------------- ITERATION LOOP --------------- //
                 while (Time.unscaledTime < timeAtStart + _accelerationInterval)
                 {

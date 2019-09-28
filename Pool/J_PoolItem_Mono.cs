@@ -12,7 +12,7 @@ namespace JReact.Pool
         where T : J_PoolItem_Mono<T>
     {
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _returnInPoolAtDisable = true;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _returnInPoolAtDisable = true;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private J_Pool<T> _poolOwner;

@@ -10,7 +10,7 @@ namespace JReact
     public sealed class J_TransformGenerator : ScriptableObject
     {
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly] private J_TransformGenerator _parent;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly] private J_TransformGenerator _parent;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Transform _thisTransform;
@@ -23,16 +23,15 @@ namespace JReact
             }
             private set => _thisTransform = value;
         }
-        
+
         // --------------- CREATION --------------- //
         public static J_TransformGenerator CreateTransformGenerator(string nameToSet, J_TransformGenerator parent = null)
         {
             var generator = CreateInstance<J_TransformGenerator>();
-            generator.name = nameToSet;
+            generator.name    = nameToSet;
             generator._parent = parent;
             return generator;
         }
-        
 
         //creates the transform when missing
         private Transform GenerateNewTransform()

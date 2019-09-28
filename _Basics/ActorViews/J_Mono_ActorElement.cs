@@ -23,8 +23,8 @@ namespace JReact
 
         // --------------- ABSTRACT IMPLEMENTATION --------------- //
         //change and remove actor methods
-        protected abstract void ActorUpdate(T actor);
-        protected virtual void ActorIsRemoved(T actor) {}
+        protected abstract void ActorUpdate(T    actor);
+        protected virtual  void ActorIsRemoved(T actor) {}
 
         // --------------- UNITY EVENTS --------------- //
         protected virtual void OnEnable()

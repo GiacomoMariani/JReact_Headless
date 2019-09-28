@@ -7,8 +7,8 @@ namespace JReact.Conditions.View
     public sealed class J_Mono_ConditionalView : MonoBehaviour
     {
         // --------------- VALUES AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _activeWhenTrue;
-        [BoxGroup("Setup", true, true, 0), SerializeField, Required] private J_Mono_ViewActivator _view;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _activeWhenTrue;
+        [BoxGroup("Setup", true, true), SerializeField, Required] private J_Mono_ViewActivator _view;
         private J_Mono_ViewActivator ThisView
         {
             get
@@ -19,7 +19,7 @@ namespace JReact.Conditions.View
         }
 
         //use a multi condition if it has multiple values
-        [BoxGroup("Controls", true, true, 0), SerializeField] protected J_ReactiveCondition _condition;
+        [BoxGroup("Controls", true, true), SerializeField] protected J_ReactiveCondition _condition;
 
         //to check the activation of this element
         private bool _isActive;
@@ -44,7 +44,7 @@ namespace JReact.Conditions.View
 
         // --------------- CHECK --------------- //
         private void CheckCondition(bool active) => IsActive = active == _activeWhenTrue;
-        
+
         // --------------- LISTENERS --------------- //
         private void OnEnable()
         {

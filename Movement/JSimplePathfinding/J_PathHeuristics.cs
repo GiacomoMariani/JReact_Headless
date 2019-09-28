@@ -12,7 +12,7 @@ namespace JReact.Pathfinding
         // --------------- FIELDS AND PROPERTIES --------------- //
         public enum HeuristicsType { Euclidean, Manhattan }
         public HeuristicsType _desiredHeuristic;
-        
+
         /// <summary>
         /// calculates the heuristic cost of 2 nodes
         /// </summary>
@@ -23,10 +23,8 @@ namespace JReact.Pathfinding
         {
             switch (_desiredHeuristic)
             {
-                case HeuristicsType.Euclidean:
-                    return EuclideanEstimate(start, goal);
-                case HeuristicsType.Manhattan:
-                    return ManhattanEstimate(start, goal);
+                case HeuristicsType.Euclidean: return EuclideanEstimate(start, goal);
+                case HeuristicsType.Manhattan: return ManhattanEstimate(start, goal);
                 default:
                     throw new ArgumentOutOfRangeException("_desiredHeuristic", _desiredHeuristic, "Heuristics not found");
             }

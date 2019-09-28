@@ -13,12 +13,12 @@ namespace JReact.StateControl
     {
         #region VALUES AND PROPERTIES
         //reference to the main control using the selection
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_SimpleStateControl _stateControl;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_SimpleStateControl _stateControl;
 
         //the state to be sent on deselection
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_State _deselectionState;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_State _deselectionState;
         //if we want to deselect the element when we move out of the state (without deselecting)
-        [BoxGroup("Setup", true, true, 0), SerializeField] private bool _deselectOnExit = true;
+        [BoxGroup("Setup", true, true), SerializeField] private bool _deselectOnExit = true;
 
         //the selected item
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private iSelectable<T> _selectedItem;

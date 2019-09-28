@@ -12,7 +12,7 @@ namespace JReact.Pathfinding
         where T : J_PathNode
     {
         // --------------- SETUP --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField, AssetsOnly, Required] private J_AStar<T> _algorithm;
+        [BoxGroup("Setup", true, true), SerializeField, AssetsOnly, Required] private J_AStar<T> _algorithm;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private Queue<PathRequest> _pathQueue = new Queue<PathRequest>();
@@ -28,7 +28,7 @@ namespace JReact.Pathfinding
         /// <param name="getCost">function to calculate distance costs</param>
         /// <param name="isAccessible">function to calculate accessibility</param>
         /// <param name="actionToApply">the callback at the end of the path</param>
-        public void FindPath(T start, T goal, Func<T, T, float> getCost, Func<T, bool> isAccessible,
+        public void FindPath(T               start, T goal, Func<T, T, float> getCost, Func<T, bool> isAccessible,
                              Action<List<T>> actionToApply)
         {
             _pathQueue.Enqueue(new PathRequest(start, goal, getCost, isAccessible, actionToApply));

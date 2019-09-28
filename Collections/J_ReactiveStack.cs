@@ -13,10 +13,10 @@ namespace JReact.Collections
         private Action<T> OnPush;
 
         // --------------- FIELDS AND PROPERTIES --------------- //
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _maxLength = 10;
+        [BoxGroup("Setup", true, true), SerializeField] private int _maxLength = 10;
 
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private T[] _arrayStack;
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _index = 0;
+        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] private int _index;
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Count => _index;
 
         // --------------- MAIN COMMANDS --------------- //
@@ -58,8 +58,7 @@ namespace JReact.Collections
 
         public void Clear()
         {
-            for (int i = _index - 1; i >= 0; i--)
-                _arrayStack[i] = default;
+            for (int i = _index - 1; i >= 0; i--) _arrayStack[i] = default;
 
             _index = 0;
         }
@@ -76,15 +75,13 @@ namespace JReact.Collections
 
         public void CopyTo(Array array, int index)
         {
-            var newArray = (T[]) array;
-            for (int i = 0; i < Count; i++)
-                newArray[index + i] = _arrayStack[i];
+            var newArray                                        = (T[]) array;
+            for (int i = 0; i < Count; i++) newArray[index + i] = _arrayStack[i];
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < Count; i++)
-                yield return _arrayStack[i];
+            for (int i = 0; i < Count; i++) yield return _arrayStack[i];
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

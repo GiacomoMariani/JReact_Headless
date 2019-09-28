@@ -9,7 +9,7 @@ namespace JReact
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         public UnityAction ThisAction => Process;
-        
+
         public void Process() => Current?.Invoke();
     }
 }

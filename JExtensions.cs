@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using JReact.StateControl;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -23,8 +26,6 @@ namespace JReact
         /// converts a float value into time string
         /// </summary>
         /// <param name="seconds">the time in seconds</param>
-        /// <param name="withFormat">if we want this formatted</param>
-        /// <returns>the string time format</returns>
         public static string SecondsToString(this float seconds)
         {
             TimeSpan time = TimeSpan.FromSeconds(seconds);
@@ -79,8 +80,8 @@ namespace JReact
         /// <returns>returns the axis</returns>
         public static float ToAxis(this byte axisByte)
         {
-            if (axisByte <= 100) return (axisByte * 0.01f);
-            return (axisByte                      * 0.01f) - 2.01f;
+            if (axisByte <= 100) return axisByte * 0.01f;
+            return axisByte                      * 0.01f - 2.01f;
         }
         #endregion PERCENTAGE
 
@@ -102,6 +103,11 @@ namespace JReact
         public static TEnum[] GetValues<TEnum>() where TEnum : struct => (TEnum[]) Enum.GetValues(typeof(TEnum));
 
         public static int CountValues<TEnum>() where TEnum : struct => Enum.GetValues(typeof(TEnum)).Length;
+        
+        /// <summary>
+        /// converts a string into an enum
+        public static T ToEnum<T>(this string enumString, bool caseSensitive = false)
+            => (T) Enum.Parse(typeof(T), enumString, caseSensitive);
         #endregion
 
         #region ARRAYS
@@ -114,6 +120,20 @@ namespace JReact
         public static bool ArrayContains<T>(this T[] array, T itemToCheck) => Array.IndexOf(array, itemToCheck) > -1;
 
         public static bool ArrayIsValid<T>(this T[] array) => array != null && array.Length > 0;
+        
+        public static T[] SubArray<T>(this T[] data, int index, int length)
+        {
+            T[] result = new T[length];
+            Array.Copy(data, index, result, 0, length);
+            return result;
+        }
+
+        public static T[] AddItemToArray<T>(this IEnumerable<T> data, T item)
+        {
+            List<T> tempList = data.ToList();
+            tempList.Add(item);
+            return tempList.ToArray();
+        }
         #endregion ARRAYS
 
         #region COLLECTIONS
@@ -137,6 +157,18 @@ namespace JReact
             where T : jObservable
         {
             foreach (T element in collection) element.UnSubscribe(actionToPerform);
+        }
+        
+        public static void SubscribeToAllEnd<T>(this IEnumerable<T> collection, Action action)
+            where T : J_State
+        {
+            foreach (T element in collection) element.SubscribeToEnd(action);
+        }
+
+        public static void UnSubscribeToAllEnd<T>(this IEnumerable<T> collection, Action action)
+            where T : J_State
+        {
+            foreach (T element in collection) element.UnSubscribeToEnd(action);
         }
 
         public static void SubscribeToAll<T>(this IEnumerable<jObservable<T>> collection, Action<T> actionToPerform)
@@ -167,7 +199,28 @@ namespace JReact
 
         #region SCRIPTABLE OBJECTS
         //a way to set the names of scriptable object
-        public static void SetName(this ScriptableObject item, string newName) { item.name = newName + ScriptableObjectSuffix; }
+        public static void SetName(this ScriptableObject item, string newName) =>item.name = newName + ScriptableObjectSuffix;
+        
+        #if UNITY_EDITOR
+        public static T GetOrCreateAtPath<T>(string folder, string assetName, string assetType = ".asset", bool createPathIfMissing = false)
+            where T : ScriptableObject
+        {
+            var path  = Path.Combine(folder, assetName + assetType);
+            if (createPathIfMissing) Directory.CreateDirectory(folder);
+
+            var asset = AssetDatabase.LoadAssetAtPath<T>(path);
+            //create ingredient asset at path
+            if (asset == null)
+            {
+                JLog.Log($"Creating asset {assetName} at path {path}");
+                asset = ScriptableObject.CreateInstance<T>();
+                AssetDatabase.CreateAsset(asset, path);
+                JLog.Log($"Asset created {assetName}");
+            }
+
+            return asset;
+        }
+        #endif
         #endregion SCRIPTABLE OBJECTS
 
         #region TRANSFORMS
@@ -178,13 +231,18 @@ namespace JReact
         {
             foreach (Transform child in transform) Object.Destroy(child.gameObject);
         }
+        
+        public static void ClearTransformImmediate(this Transform transform)
+        {
+            foreach (Transform child in transform) Object.DestroyImmediate(child.gameObject);
+        }
 
         /// <summary>
         /// print all transform up to its root, for debug purposes
         /// </summary>
         public static string PrintAllParents(this Transform transform)
         {
-            var transformNames = "";
+            string transformNames = "";
             while (transform.root != transform)
             {
                 transformNames = transformNames + " -> " + transform.gameObject.name;
@@ -214,7 +272,6 @@ namespace JReact
         /// <summary>
         /// returns the screen position of the given rect
         /// </summary>
-        /// <param name="camera">this might be null</param>
         public static Vector2 ToScreenPosition(this RectTransform rectTransform, Camera camera)
             => RectTransformUtility.WorldToScreenPoint(camera, rectTransform.transform.position);
         #endregion RECT TRANSFORM

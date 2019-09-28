@@ -7,11 +7,10 @@ namespace JReact.Collections
     /// <summary>
     /// an array that acts as a reactive collection, with the option to add at a given index, or add in the first empty place
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public abstract class J_ReactiveArray<T> : ScriptableObject,
                                                jObservable<(int index, T previous, T current)>,
                                                iResettable,
-                                               iReactiveCollection<T>
+                                               iReactiveIndexCollection<T>
     {
         // --------------- EVENTS --------------- //
         private event Action<(int index, T previous, T current)> OnChange;
@@ -19,15 +18,21 @@ namespace JReact.Collections
         public event Action<T> OnRemove;
 
         // --------------- SETUP --------------- //
-        [InfoBox("NULL => generated at default"), BoxGroup("Setup", true, true, 0), SerializeField]
+        [InfoBox("NULL => generated at default"), BoxGroup("Setup", true, true), SerializeField]
         protected T[] _thisArray;
-        [BoxGroup("Setup", true, true, 0), SerializeField] private int _desiredLength = 50;
 
         // --------------- STATE --------------- //
         [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] public int Length => _thisArray?.Length ?? 0;
 
         // --------------- ARRAY --------------- //
         public T this[int index] { get => _thisArray[index]; set => AddAt(index, value); }
+
+        public static J_ReactiveArray<T> Create(int length)
+        {
+            var reactiveArray = CreateInstance<J_ReactiveArray<T>>();
+            reactiveArray.SetupWith(length);
+            return reactiveArray;
+        }
 
         // --------------- COMMANDS - INDEX --------------- //
         /// <summary>
@@ -116,6 +121,18 @@ namespace JReact.Collections
         protected virtual void HappensOnRemove(T item) => OnAdd?.Invoke(item);
         protected virtual void HappensOnAdd(T    item) => OnRemove?.Invoke(item);
 
+        // --------------- RESETS --------------- //
+        [FoldoutGroup("Commands", false, 100), Button(ButtonSizes.Medium)]
+        public void ResetThis()
+        {
+            for (int i = 0; i < Length; i++) _thisArray[i] = default;
+        }
+
+        [FoldoutGroup("Commands", false, 100), Button(ButtonSizes.Medium)] 
+        public void SetupWith(int length) => _thisArray = new T[length];
+
+        public void Clear() => ResetThis();
+
         // --------------- HELPERS --------------- //
         /// <summary>
         /// process all the non null elements with an action
@@ -127,16 +144,11 @@ namespace JReact.Collections
                     actionToCall(_thisArray[i]);
         }
 
-        [FoldoutGroup("Commands", false, 100), Button(ButtonSizes.Medium)]
-        public void ResetThis() => _thisArray = new T[_desiredLength];
-
-        public void Clear() => ResetThis();
-
         public void CopyTo(T[] array, int arrayIndex) => _thisArray.CopyTo(array, arrayIndex);
 
         public bool Contains(T item) => IndexOf(item) != -1;
 
-        // --------------- SUBSCRIBERS & SETUP --------------- //
+        // --------------- SUBSCRIBERS--------------- //
         public void Subscribe(Action<(int index, T previous, T current)>   action) => OnChange += action;
         public void UnSubscribe(Action<(int index, T previous, T current)> action) => OnChange -= action;
 
@@ -145,7 +157,5 @@ namespace JReact.Collections
 
         public void SubscribeToRemove(Action<T>   actionToRegister) { OnRemove += actionToRegister; }
         public void UnSubscribeToRemove(Action<T> actionToRegister) { OnRemove -= actionToRegister; }
-
-        private void OnDisable() => _thisArray = _thisArray ?? new T[_desiredLength];
     }
 }

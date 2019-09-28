@@ -1,13 +1,12 @@
-#if UNITY_EDITOR && ODIN_INSPECTOR
 using Sirenix.OdinInspector.Editor;
-using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR && ODIN_INSPECTOR
+using Sirenix.Utilities;
 
 namespace JReact.OdinDrawers
 {
-    
     public class JO_ReactiveBoolDrawer : OdinValueDrawer<J_ReactiveBool>
     {
         protected override void DrawPropertyLayout(GUIContent label)
@@ -54,7 +53,7 @@ namespace JReact.OdinDrawers
             value.Current = SirenixEditorFields.IntField(rect.AlignCenter(200f), value.Current);
             //REFERENCE
             ValueEntry.SmartValue =
-                (J_ReactiveInt) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveBool), false);
+                (J_ReactiveInt) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveInt), false);
         }
     }
 
@@ -79,7 +78,7 @@ namespace JReact.OdinDrawers
             value.Current = SirenixEditorFields.FloatField(rect.AlignCenter(200f), value.Current);
             //REFERENCE
             ValueEntry.SmartValue =
-                (J_ReactiveFloat) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveBool), false);
+                (J_ReactiveFloat) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveFloat), false);
         }
     }
 
@@ -103,7 +102,7 @@ namespace JReact.OdinDrawers
 
             //REFERENCE
             ValueEntry.SmartValue =
-                (J_ReactiveString) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveBool), false);
+                (J_ReactiveString) SirenixEditorFields.UnityObjectField(rect.AlignRight(100f), value, typeof(J_ReactiveString), false);
 
             rect = EditorGUILayout.GetControlRect(false, 50f);
             //VALUE
