@@ -1,7 +1,7 @@
 using JReact.Collections;
 using UnityEngine;
 
-namespace JReact.Tilemaps
+namespace JReact.Tilemaps.Generator
 {
     [CreateAssetMenu(menuName = "Reactive/Tilemap/Tile Retriever", fileName = "TileRetriever")]
     public class J_TileRetriever : J_ItemRetriever<int, J_TileInfo>

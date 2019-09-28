@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
-namespace JReact.Tilemaps
+namespace JReact.Tilemaps.Generator
 {
     /// <summary>
     /// represent the code of a given layer

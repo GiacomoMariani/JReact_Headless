@@ -80,5 +80,15 @@ namespace JReact.Selection
         // --------------- SUBSCRIBERS --------------- //
         public void Subscribe(Action<T>   actionToAdd)    => OnSelect += actionToAdd;
         public void UnSubscribe(Action<T> actionToRemove) => OnSelect -= actionToRemove;
+
+#if UNITY_EDITOR
+        [BoxGroup("Debug", true, true, 100), SerializeField] private T _selectTest;
+
+        [BoxGroup("Debug", true, true, 100), Button("Select", ButtonSizes.Medium)]
+        private void DebugSelect() => Current = _selectTest;
+
+        [BoxGroup("Debug", true, true, 100), Button("DeSelect", ButtonSizes.Medium)]
+        private void DebugDeSelect() => Current = default;
+#endif
     }
 }

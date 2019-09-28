@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace JReact.Tilemaps
+namespace JReact.Tilemaps.Generator
 {
     public abstract class J_Map_Generator<T> : MonoBehaviour
         where T : J_Tile

@@ -1,11 +1,11 @@
-using JReact.Collections.UiView;
+using JReact.Collections.View;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace JReact.UiView.Collections
 {
-    public abstract class J_AbsPager_Creator<T> : J_UiView_Collection<T>
+    public abstract class J_AbsPager_Creator<T> : J_View_Collection<T>
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true), SerializeField, Required] private J_Pager _pager;

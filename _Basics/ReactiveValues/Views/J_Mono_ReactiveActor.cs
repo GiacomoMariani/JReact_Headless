@@ -11,7 +11,6 @@ namespace JReact
     {
         // --------------- FIELDS AND PROPERTIES --------------- //
         [BoxGroup("Setup", true, true), ReadOnly, ShowInInspector] protected abstract jObservableValue<T> _ThisReactiveItem { get; }
-        [FoldoutGroup("State", false, 5), ReadOnly, ShowInInspector] protected T _current;
 
         // --------------- INITIALIZATION --------------- //
         protected override void SanityChecks()
@@ -19,31 +18,19 @@ namespace JReact
             base.SanityChecks();
             Assert.IsNotNull(_ThisReactiveItem, $"{gameObject.name} requires a {nameof(_ThisReactiveItem)}");
         }
-        
-        // --------------- TRACKING --------------- //
-        private void TrackSelection()
-        {
-            if (_ThisReactiveItem.Current != null) ActorUpdate(_ThisReactiveItem.Current);
-            _ThisReactiveItem.Subscribe(SelectionUpdate);
-        }
-        protected virtual void StopTracking() => _ThisReactiveItem.UnSubscribe(SelectionUpdate);
 
         // --------------- VIEW UPDATES --------------- //
         //update of the selected element
-        protected virtual void SelectionUpdate(T selectedElement)
-        {
-            _current = selectedElement;
-            ActorUpdate(selectedElement);
-        }
+        protected virtual void SelectionUpdate(T selectedElement) => ActorUpdate(selectedElement);
 
         // --------------- LISTENER SETUP --------------- //
         protected override void OnEnable()
         {
             base.OnEnable();
-            TrackSelection();
+            if (_ThisReactiveItem.Current != null) SelectionUpdate(_ThisReactiveItem.Current);
+            _ThisReactiveItem.Subscribe(ActorUpdate);
         }
 
-        private void OnDisable() => StopTracking();
-
+        private void OnDisable() => _ThisReactiveItem.UnSubscribe(SelectionUpdate);
     }
 }
